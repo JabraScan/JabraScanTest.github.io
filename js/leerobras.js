@@ -158,26 +158,33 @@ function onLibroClick(libroId) {
   function ordenarLibrosPorFecha() {
       const container = document.querySelector('.book-list');
       if (!container) return;
-    
+      
       const articles = Array.from(container.querySelectorAll('article.book-card-main.libro-item'));
-    
+      
+      const parseFecha = (fechaStr) => {
+        // Asegura formato DD-MM-YYYY
+        const [dia, mes, año] = fechaStr.split('-');
+        return new Date(`${año}-${mes}-${dia}`);
+      };
+      
       const getFecha = (article) => {
-        const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
-        if (!fechaStr || fechaStr.trim() === '') return null;
+      const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
+      if (!fechaStr || !/^\d{2}-\d{2}-\d{4}$/.test(fechaStr)) return null;
         return parseFecha(fechaStr);
       };
-    
-      articles.sort((a, b) => {
+      
+      const sortedArticles = articles.sort((a, b) => {
         const fechaA = getFecha(a);
         const fechaB = getFecha(b);
-    
+        
         if (!fechaA && !fechaB) return 0;
         if (!fechaA) return 1;
         if (!fechaB) return -1;
-    
-        return fechaB - fechaA;
+        
+        return fechaB - fechaA; // Más reciente primero
       });
-    
+      
+      // Reemplaza el contenido del contenedor
       container.innerHTML = '';
-      articles.forEach(article => container.appendChild(article));
+      sortedArticles.forEach(article => container.appendChild(article));
   }
