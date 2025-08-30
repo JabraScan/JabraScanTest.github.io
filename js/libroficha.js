@@ -1,6 +1,6 @@
-// Importaciones necesarias
 import { obtenerCapitulos } from './capitulos.js';
 import { abrirLectorPDF } from './lector.js';
+import { parseDateDMY, parseChapterNumber, compareCapNumDesc } from './utils.js';
 import { activarLinksPDF, activarPaginacion } from './eventos.js';
 
 export function cargarlibro(libroId) {
@@ -9,12 +9,13 @@ export function cargarlibro(libroId) {
     return;
   }
 
-  fetch('../obras.xml')
-    .then(res => res.text())
+  fetch('../books.xml')
+    .then(response => response.text())
     .then(str => new DOMParser().parseFromString(str, "text/xml"))
     .then(data => {
       const obra = Array.from(data.getElementsByTagName('obra'))
-        .find(o => o.querySelector('clave').textContent.trim() === libroId);
+        .find(o => o.querySelector('clave')?.textContent.trim() === libroId);
+
       if (!obra) {
         document.body.innerHTML = '<p>Obra no encontrada.</p>';
         return;
@@ -32,7 +33,6 @@ export function cargarlibro(libroId) {
       const ubicacion = get("ubicacion");
       const traduccion = get("traductor");
       const contenido18 = get("adulto");
-      const bannerOpcional = get("bannerOpcional");
       const discord = get("discord");
       const aprobadaAutor = get("aprobadaAutor");
       const wiki = get("wiki");
@@ -89,13 +89,28 @@ export function cargarlibro(libroId) {
           </div>
         </div>
       `;
+
       DataBook.prepend(mainDataBook);
       DataBook.prepend(headerDataBook);
-      mainDataBook.querySelector(".book-image").insertBefore(imagenContenedor, mainDataBook.querySelector(".book-image").firstChild);
+      mainDataBook.querySelector(".book-image").prepend(imagenContenedor);
+
+      if (typeof mostrarDisqus === "function") {
+        mostrarDisqus(clave, clave);
+      }
 
       obtenerCapitulos(clave).then(listacapitulos => {
         const ultimosCapitulos = listacapitulos
+          .map(c => ({
+            ...c,
+            fechaObj: parseDateDMY(c.Fecha),
+            capNum: parseChapterNumber(c.numCapitulo)
+          }))
           .filter(c => c.fechaObj)
+          .sort((a, b) => {
+            const diffFecha = b.fechaObj - a.fechaObj;
+            if (diffFecha !== 0) return diffFecha;
+            return compareCapNumDesc(a, b);
+          })
           .slice(0, 6);
 
         const ultimosHTML = ultimosCapitulos.map(cap => `
@@ -118,10 +133,7 @@ export function cargarlibro(libroId) {
         let paginacionHTML = '';
 
         for (let i = 0; i < paginas; i++) {
-          const inicio = i * capitulosPorPagina;
-          const fin = inicio + capitulosPorPagina;
-          const pagina = listacapitulos.slice(inicio, fin);
-
+          const pagina = listacapitulos.slice(i * capitulosPorPagina, (i + 1) * capitulosPorPagina);
           const capitulosHTML = pagina.map(cap => `
             <li>
               <a href="#" data-pdf-obra="${clave}" data-pdf-capitulo="${cap.numCapitulo}" class="pdf-link">
@@ -156,10 +168,6 @@ export function cargarlibro(libroId) {
 
         activarLinksPDF();
         activarPaginacion();
-
-        if (typeof mostrarDisqus === "function") {
-          mostrarDisqus(clave, clave);
-        }
       });
     });
 }
