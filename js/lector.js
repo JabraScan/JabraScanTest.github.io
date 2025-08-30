@@ -1,15 +1,22 @@
 export function abrirLectorPDF() {
-  fetch('lectorpdf.html')
-    .then(r => r.text())
-    .then(html => {
-      document.querySelector('main').innerHTML = html;
-
-      // Importar el módulo dinámicamente
-      import('./lectorpdfmod.js')
-        .then(modulo => {
-          modulo.initLectorPDF(); // Llamar la función exportada
-        })
-        .catch(err => console.error('Error cargando lectorpdfmod.js:', err));
-    })
-    .catch(err => console.error('Error cargando lectorpdf.html:', err));
+    fetch('lectorpdf.html')
+      .then(r => r.text())
+      .then(html => {
+        const main = document.querySelector('main');
+        main.innerHTML = html;
+    
+        // Espera a que el DOM esté realmente listo
+        const observer = new MutationObserver(() => {
+          if (document.getElementById("pdfCanvas")) {
+            observer.disconnect();
+            import('./lectorpdfmod.js')
+              .then(modulo => modulo.initLectorPDF())
+              .catch(err => console.error('Error al cargar lectorpdfmod.js:', err));
+          }
+        });
+    
+        observer.observe(main, { childList: true, subtree: true });
+      })
+      .catch(err => console.error('Error cargando lectorpdf.html:', err));
 }
+
