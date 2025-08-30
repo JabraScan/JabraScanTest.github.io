@@ -4,6 +4,7 @@ export function activarLinksPDF() {
   document.querySelectorAll('.pdf-link').forEach(link => {
     link.addEventListener('click', function (e) {
       e.preventDefault();
+
       const clave = e.currentTarget.getAttribute("data-pdf-obra");
       const capitulo = e.currentTarget.getAttribute("data-pdf-capitulo");
 
@@ -11,7 +12,18 @@ export function activarLinksPDF() {
       localStorage.setItem('ultimoCapitulo', capitulo);
       localStorage.setItem("ultimaPagina", 1);
 
-      window.location.href = 'lectorpdf.html';
+      // Cargar dinámicamente lectorpdf.html
+        fetch('lectorpdf.html')
+          .then(r => r.text())
+          .then(html => {
+            const main = document.querySelector('main');
+            main.innerHTML = html;
+        
+            // Cargar el módulo dinámicamente
+            import('./lector.js')
+              .then(modulo => modulo.abrirLectorPDF())
+              .catch(err => console.error('Error al cargar lector.js:', err));
+          });
     });
   });
 }
@@ -27,3 +39,4 @@ export function activarPaginacion() {
     });
   });
 }
+
