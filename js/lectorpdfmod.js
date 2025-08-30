@@ -9,7 +9,7 @@ export function initLectorPDF() {
   ctx = canvas.getContext("2d");
   pageInfo = document.getElementById("pageInfo");
   body = document.body;
-
+console.log('initLectorPDF ejecutado');
   configurarModoOscuro();
   configurarMenuHamburguesa();
   configurarBotonesLectura();
