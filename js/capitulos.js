@@ -1,37 +1,31 @@
-import { parseDateDMY, parseChapterNumber, compareCapNumDesc } from './utils.js';
+export function obtenerCapitulos(clave) {
+  return fetch('../capitulos.json')
+    .then(response => response.json())
+    .then(index => {
+      const ruta = index[clave];
+      if (!ruta) {
+        console.error("Clave no encontrada en el índice.");
+        return [];
+      }
 
-export async function obtenerCapitulos(clave) { ... }
+      return fetch(ruta)
+        .then(res => {
+          if (!res.ok) throw new Error(`❌ No se pudo cargar "${clave}" desde ${ruta}`);
+          return res.json();
+        })
+        .then(dataObra => {
+          const capitulos = dataObra[clave] || [];
 
-async function obtenerCapitulos(clave) {
-  try {
-    const index = await fetch('capitulos.json').then(res => res.json());
-    const ruta = index[clave];
-    if (!ruta) throw new Error(`Clave "${clave}" no encontrada.`);
-
-    const dataObra = await fetch(ruta).then(res => {
-      if (!res.ok) throw new Error(`No se pudo cargar desde ${ruta}`);
-      return res.json();
+          return capitulos.map(item => ({
+            NombreArchivo: item.NombreArchivo,
+            Fecha: item.Fecha,
+            numCapitulo: item.numCapitulo,
+            nombreCapitulo: item.nombreCapitulo
+          }));
+        });
+    })
+    .catch(error => {
+      console.error("Error al cargar los capítulos:", error);
+      return [];
     });
-
-    const capitulos = dataObra[clave] || [];
-
-    return capitulos
-      .map(({ NombreArchivo, Fecha, numCapitulo, nombreCapitulo }) => ({
-        NombreArchivo,
-        Fecha,
-        numCapitulo,
-        nombreCapitulo,
-        fechaObj: parseDateDMY(Fecha),
-        capNum: parseChapterNumber(numCapitulo)
-      }))
-      .sort((a, b) => {
-        const diffFecha = b.fechaObj - a.fechaObj;
-        if (diffFecha !== 0) return diffFecha;
-        return compareCapNumDesc(a, b);
-      });
-
-  } catch (error) {
-    console.error("Error al obtener capítulos:", error);
-    return [];
-  }
 }
