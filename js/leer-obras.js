@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
+	import { cargarlibro } from './libroficha.js'; // Ajusta la ruta si está en otra carpeta
 	// Cargar el contenido en <main>
 	fetch('obras.xml')
 	  .then(response => response.text())
@@ -323,3 +324,4 @@ console.log(articles);
 			articles.forEach(article => section.appendChild(article));
 		}
 //fin funcion ordenar fichas de libro
+
