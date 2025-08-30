@@ -6,16 +6,17 @@ export function abrirLectorPDF() {
     .then(html => {
       document.querySelector('main').innerHTML = html;
 
-      if (typeof initlectorpdf === "function") {
+      //if (typeof initlectorpdf === "function") {
         initlectorpdf();
-      } else {
+      /*} else {
         const script = document.createElement('script');
-        script.src = 'js/lectorpdf.js';
+        script.src = 'js/lectorpdfmod.js';
         script.onload = () => initlectorpdf();
         document.body.appendChild(script);
-      }
+      }*/
     })
     .catch(err => console.error('Error cargando lectorpdf.html:', err));
 }
+
 
 
