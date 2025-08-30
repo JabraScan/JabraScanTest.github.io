@@ -1,26 +1,28 @@
-export function activarLinksPDF() { ... }
-export function activarPaginacion() { ... }
+import { abrirLectorPDF } from './lector.js';
 
-function activarLinksPDF() {
+export function activarLinksPDF() {
   document.querySelectorAll('.pdf-link').forEach(link => {
-    link.addEventListener('click', e => {
+    link.addEventListener('click', function (e) {
       e.preventDefault();
-      const clave = link.dataset.pdfObra;
-      const capitulo = link.dataset.pdfCapitulo;
+      const clave = e.currentTarget.getAttribute("data-pdf-obra");
+      const capitulo = e.currentTarget.getAttribute("data-pdf-capitulo");
+
       localStorage.setItem('ultimaObra', clave);
       localStorage.setItem('ultimoCapitulo', capitulo);
-      localStorage.setItem('ultimaPagina', 1);
-      abrirLectorPDF();
+      localStorage.setItem("ultimaPagina", 1);
+
+      window.location.href = 'lectorpdf.html';
     });
   });
 }
 
-function activarPaginacion() {
-  document.querySelectorAll('.pagina-btn').forEach(btn => {
+export function activarPaginacion() {
+  const botones = document.querySelectorAll('.pagina-btn');
+  botones.forEach(btn => {
     btn.addEventListener('click', () => {
-      const pagina = btn.dataset.pagina;
+      const pagina = btn.getAttribute('data-pagina');
       document.querySelectorAll('.chapter-page').forEach(div => {
-        div.style.display = div.dataset.pagina === pagina ? 'block' : 'none';
+        div.style.display = div.getAttribute('data-pagina') === pagina ? 'block' : 'none';
       });
     });
   });
