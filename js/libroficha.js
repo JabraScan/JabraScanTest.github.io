@@ -9,7 +9,7 @@ export function cargarlibro(libroId) {
     return;
   }
 
-  fetch('../books.xml')
+  fetch('books.xml')
     .then(response => response.text())
     .then(str => new DOMParser().parseFromString(str, "text/xml"))
     .then(data => {
@@ -171,3 +171,4 @@ export function cargarlibro(libroId) {
       });
     });
 }
+
