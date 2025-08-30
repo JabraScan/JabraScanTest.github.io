@@ -275,42 +275,9 @@ body {
     column-count: 1;
   }
 }
-/*
-.pdf-link {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  text-decoration: none;
-  color: inherit;
-  padding: 6px 8px;
-  border-radius: 4px;
-  transition: background 0.2s ease;
-  color: #888;
-    font-size: 1.07em;
-    transition: color 0.2s;
-}
-
-.pdf-link:hover {
-  background: #f0f0f0;
-}*/
-/*
-.pdf-link span {
-  flex: 1 1 45%;
-}
-*/
-
 .chapter-list .pdf-link {
   display: block; /* o lo que prefieras */
 }
-/*
-.pdf-link span:first-child {
-  text-align: left;
-}
-
-.pdf-link span:last-child {
-  text-align: right;
-}
-*/
 /* Responsive: en pantallas pequeñas, apilar los spans */
 @media (max-width: 600px) {
   .pdf-link {
@@ -322,4 +289,5 @@ body {
     flex: 1 1 100%;
     text-align: left;
   }
+
 
