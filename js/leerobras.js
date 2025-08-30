@@ -155,28 +155,29 @@ function onLibroClick(libroId) {
     .catch(err => console.error('Error:', err));
 }
 
-function ordenarLibrosPorFecha() {
-  const section = document.querySelector('section.book-card-main.libro-item');
-  if (!section) return;
-
-  const articles = Array.from(section.querySelectorAll('article.book-card-main.libro-item'));
-
-  const getFecha = (article) => {
-    const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
-    return parseFecha(fechaStr);
-  };
-
-  articles.sort((a, b) => {
-    const fechaA = getFecha(a);
-    const fechaB = getFecha(b);
-
-    if (!fechaA && !fechaB) return 0;
-    if (!fechaA) return 1;
-    if (!fechaB) return -1;
-
-    return fechaB - fechaA;
-  });
-
-  section.innerHTML = '';
-  articles.forEach(article => section.appendChild(article));
-}
+  function ordenarLibrosPorFecha() {
+      const container = document.querySelector('.book-list');
+      if (!container) return;
+    
+      const articles = Array.from(container.querySelectorAll('article.book-card-main.libro-item'));
+    
+      const getFecha = (article) => {
+        const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
+        if (!fechaStr || fechaStr.trim() === '') return null;
+        return parseFecha(fechaStr);
+      };
+    
+      articles.sort((a, b) => {
+        const fechaA = getFecha(a);
+        const fechaB = getFecha(b);
+    
+        if (!fechaA && !fechaB) return 0;
+        if (!fechaA) return 1;
+        if (!fechaB) return -1;
+    
+        return fechaB - fechaA;
+      });
+    
+      container.innerHTML = '';
+      articles.forEach(article => container.appendChild(article));
+  }
