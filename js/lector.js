@@ -1,10 +1,9 @@
-export function abrirLectorPDF() { ... }
-
-function abrirLectorPDF() {
+export function abrirLectorPDF() {
   fetch('lectorpdf.html')
     .then(r => r.text())
     .then(html => {
       document.querySelector('main').innerHTML = html;
+
       if (typeof initlectorpdf === "function") {
         initlectorpdf();
       } else {
