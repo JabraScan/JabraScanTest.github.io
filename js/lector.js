@@ -4,6 +4,10 @@ export function abrirLectorPDF() {
       .then(html => {
         const main = document.querySelector('main');
         main.innerHTML = html;
+          const canvas = document.getElementById("pdfCanvas");
+            if (canvas) {
+              console.log('Canvas detectado inmediatamente');
+            }
           console.log('HTML insertado:', main.innerHTML);
         // Espera a que el DOM esté realmente listo
         const observer = new MutationObserver(() => {
@@ -24,3 +28,4 @@ export function abrirLectorPDF() {
       })
       .catch(err => console.error('Error cargando lectorpdf.html:', err));
 }
+
