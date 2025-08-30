@@ -1,0 +1,9 @@
+{
+  "ShadowSlave": [
+    { "Fecha" : "05-03-2025", "NombreArchivo" : "ShadowSlave-0001_JabraScanvol01.pdf", "numCapitulo" :  "1", "nombreCapitulo" : "Comienza la Pesadilla"         , "tituloObra" : "Shadow Slave - Vol 01" },
+    { "Fecha" : "05-03-2025", "NombreArchivo" : "ShadowSlave-0002_JabraScanvol01.pdf", "numCapitulo" :  "2", "nombreCapitulo" : "Caravana de Esclavos"          , "tituloObra" : "Shadow Slave - Vol 01" },
+    { "Fecha" : "18-06-2025", "NombreArchivo" : "ShadowSlave-0348_JabraScanvol02.pdf", "numCapitulo" : "348", "nombreCapitulo" : "Irrompible"                             , "tituloObra" : "Shadow Slave - Vol 02" },
+    { "Fecha" : "18-06-2025", "NombreArchivo" : "ShadowSlave-0349_JabraScanvol02.pdf", "numCapitulo" : "349", "nombreCapitulo" : "Destino"                                , "tituloObra" : "Shadow Slave - Vol 02" },
+    { "Fecha" : "18-06-2025", "NombreArchivo" : "ShadowSlave-0350_JabraScanvol02.pdf", "numCapitulo" : "350", "nombreCapitulo" : "Fin de la Pesadilla"                    , "tituloObra" : "Shadow Slave - Vol 02" }
+  ]
+}

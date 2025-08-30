@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Traducciones de Libros | JabraScan</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/tooltip.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="js/general.js"></script>
+  <script src="js/leer-obras.js"></script>
+  <script src="js/carousel.js"></script>
+  <script src="js/libro-ficha.js"></script>
+  <script src="js/ultimoscapitulos.js"></script>
+  <script src="js/lectorpdf.js"></script>
+  <script src="js/disqus.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  </script>
+</head>
+<body>
+  <header>
+    <h1>JabraScan Traducciones</h1>
+    <nav>
+      <span onclick="window.location.reload();" class="active">Inicio</span>
+      <a class="active" id="disclaimer-link" href="#" data-target="disclaimer.html">Disclaimer</a>
+      <a class="active" id="ucaps-link" href="#" data-target="ultimosCapitulos.html">Últimos capítulos</a>
+      <span class="inactive" id="btnSeguir">Seguir leyendo</span>
+      <a href="https://northbladetl.com/" class="active" target="_blank">NorthBladeTL</a>
+      <!-- más enlaces aquí -->
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Carrusel -->
+    <div class="carousel">
+      <div class="carousel-track">
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn prev">&lt;</button>
+        <button class="carousel-btn next">&gt;</button>
+      </div>
+    </div>
+    <section class="book-list">      
+    </section>
+    <ul class="lista-libros">
+    </ul>
+  </main>
+  <footer>
+    <div id="disqus_thread" style="display:none;"></div>
+    </br>
+    <p id="copyjabra">&copy; 2025 JabraScan. No oficial, sin fines de lucro.</p>
+  </footer>
+</body>
+</html>
