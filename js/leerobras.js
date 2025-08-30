@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const booklistContainer = document.querySelector(".book-list");
       const booklistContainernopc = document.querySelector(".lista-libros");
 
+      const promesasCapitulos = [];
+
       obras.forEach(obra => {
         const clave = obra.querySelector("clave").textContent.trim();
         const nombreobra = obra.querySelector("nombreobra").textContent.trim();
@@ -94,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         `;
 
-        fetch("capitulos.json")
+        const promesaCapitulo = fetch("capitulos.json")
           .then((res) => res.json())
           .then((index) => {
             const ruta = index[clave];
@@ -124,6 +126,8 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .catch((err) => console.error("Error cargando capítulos:", err));
 
+        promesasCapitulos.push(promesaCapitulo);
+
         const imagenContenedorA = imagenContenedor.cloneNode(true);
         const imagenContenedorB = imagenContenedor.cloneNode(true);
         itemBook.prepend(imagenContenedorA);
@@ -132,10 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
         booklistContainer.appendChild(itemBook);
         booklistContainernopc.appendChild(itemBookNOpc);
       });
+
+      Promise.all(promesasCapitulos).then(() => {
+        ordenarLibrosPorFecha();
+      });
     })
     .catch(err => console.error("Error al cargar el XML:", err));
-
-  ordenarLibrosPorFecha();
 });
 
 function onLibroClick(libroId) {
@@ -155,36 +161,30 @@ function onLibroClick(libroId) {
     .catch(err => console.error('Error:', err));
 }
 
-  function ordenarLibrosPorFecha() {
-      const container = document.querySelector('.book-list');
-      if (!container) return;
-      
-      const articles = Array.from(container.querySelectorAll('article.book-card-main.libro-item'));
-      
-      const parseFecha = (fechaStr) => {
-        // Asegura formato DD-MM-YYYY
-        const [dia, mes, año] = fechaStr.split('-');
-        return new Date(`${año}-${mes}-${dia}`);
-      };
-      
-      const getFecha = (article) => {
-      const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
-      if (!fechaStr || !/^\d{2}-\d{2}-\d{4}$/.test(fechaStr)) return null;
-        return parseFecha(fechaStr);
-      };
-      
-      const sortedArticles = articles.sort((a, b) => {
-        const fechaA = getFecha(a);
-        const fechaB = getFecha(b);
-        
-        if (!fechaA && !fechaB) return 0;
-        if (!fechaA) return 1;
-        if (!fechaB) return -1;
-        
-        return fechaB - fechaA; // Más reciente primero
-      });
-      
-      // Reemplaza el contenido del contenedor
-      container.innerHTML = '';
-      sortedArticles.forEach(article => container.appendChild(article));
-  }
+function ordenarLibrosPorFecha() {
+  const container = document.querySelector('.book-list');
+  if (!container) return;
+
+  const articles = Array.from(container.querySelectorAll('article.book-card-main.libro-item'));
+
+  const getFecha = (article) => {
+    const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
+    if (!fechaStr || !/^\d{2}-\d{2}-\d{4}$/.test(fechaStr)) return null;
+    const [dia, mes, año] = fechaStr.split('-');
+    return new Date(`${año}-${mes}-${dia}`);
+  };
+
+  articles.sort((a, b) => {
+    const fechaA = getFecha(a);
+    const fechaB = getFecha(b);
+
+    if (!fechaA && !fechaB) return 0;
+    if (!fechaA) return 1;
+    if (!fechaB) return -1;
+
+    return fechaB - fechaA;
+  });
+
+  container.innerHTML = '';
+  articles.forEach(article => container.appendChild(article));
+}
