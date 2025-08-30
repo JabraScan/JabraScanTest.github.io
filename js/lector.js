@@ -1,4 +1,4 @@
-import { initLectorPDF } from '../js/lectorpdfmod.js';
+import { initLectorPDF } from './lectorpdfmod.js';
 
 export function abrirLectorPDF() {
   fetch('lectorpdf.html')
@@ -17,4 +17,5 @@ export function abrirLectorPDF() {
     })
     .catch(err => console.error('Error cargando lectorpdf.html:', err));
 }
+
 
