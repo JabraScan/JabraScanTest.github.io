@@ -21,7 +21,8 @@ import { cargarlibro } from './libroficha.js';
           const url = link.getAttribute("data-target");
             if (url === "index.html") {
               // 🧼 Elimina el hash y recarga la página base
-              window.location.href = window.location.origin + window.location.pathname.split('#')[0];
+              //window.location.href = window.location.origin + window.location.pathname.split('#')[0];
+              window.location.href = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
             } else {
               location.hash = url; // 🧭 Actualiza el hash para que lo maneje hashchange
             }
@@ -169,6 +170,7 @@ import { cargarlibro } from './libroficha.js';
     
       if (obra) abrirObraCapitulo(obra, capitulo);
     }
+
 
 
 
