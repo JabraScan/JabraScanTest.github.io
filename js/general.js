@@ -19,7 +19,12 @@ import { cargarlibro } from './libroficha.js';
         link.addEventListener("click", e => {
           e.preventDefault();
           const url = link.getAttribute("data-target");
-          location.hash = url; // 🧭 Actualiza el hash para que lo maneje hashchange
+            if (url === "index.html") {
+              // 🧼 Elimina el hash y recarga la página base
+              window.location.href = window.location.origin + window.location.pathname.split('#')[0];
+            } else {
+              location.hash = url; // 🧭 Actualiza el hash para que lo maneje hashchange
+            }
         });
       });
     
@@ -47,7 +52,6 @@ import { cargarlibro } from './libroficha.js';
     window.addEventListener("hashchange", () => {
       manejarHash(location.hash);
     });
-
 
 // 📦 Función para cargar vistas genéricas como disclaimer.html
     function cargarVista(url) {
@@ -165,5 +169,6 @@ import { cargarlibro } from './libroficha.js';
     
       if (obra) abrirObraCapitulo(obra, capitulo);
     }
+
 
 
