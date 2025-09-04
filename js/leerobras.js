@@ -1,8 +1,10 @@
 import { cargarlibro } from './libroficha.js';
 import { crearUltimoCapituloDeObra } from './capitulos.js';
 import { parseFecha } from './utils.js';
+import { incrementarVisita, leerVisitas, obtenerInfo, valorarRecurso } from './contadoresGoogle.js';
 
 document.addEventListener("DOMContentLoaded", function () {
+  incrementarVisita("obra_Inicio");
   fetch('obras.xml')
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, "text/xml"))

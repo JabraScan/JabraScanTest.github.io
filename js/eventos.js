@@ -88,5 +88,3 @@ export function activarPaginacion(rangos) {
 
   mostrarPagina(1);
 }
-
-
