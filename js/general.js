@@ -1,6 +1,7 @@
 // general.js
 import { initUltimosCapitulos } from './ultimoscapitulos.js';
 import { abrirLectorPDF } from './lector.js';
+import { cargarlibro } from './libroficha.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   // Detección de iOS
@@ -110,3 +111,4 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       });
+
