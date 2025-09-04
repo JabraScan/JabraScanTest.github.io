@@ -60,47 +60,53 @@ document.addEventListener("DOMContentLoaded", () => {
 // 📌 Función principal para mostrar contenido y actualizar la URL
     // ✅ Este módulo gestiona la navegación de obras y capítulos
     export function mostrarurl(obra, capitulo = null) {
-      const nuevaURL = `/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
-      // 🧭 Actualiza la URL sin recargar
-      history.pushState({ obra, capitulo }, null, nuevaURL);
+      // 🧭 Construye la ruta hash
+      const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+    
+      // 🔄 Actualiza la URL con hash
+      location.hash = nuevaHash;
+    
       // 🧠 Llama a la función correspondiente
-/*      if (capitulo === null) {
+      /*if (capitulo === null) {
         cargarlibro(obra);
       } else {
         cargarcapitulo(obra, capitulo);
-      }
-*/
+      }*/
     }
-    
+
     // 🔙 Maneja el botón "Atrás" del navegador
-    window.addEventListener("popstate", (event) => {
-      if (event.state) {
-        const { obra, capitulo } = event.state;
-        if (capitulo === null) {
-          cargarlibro(obra);
-        } else {
-          cargarcapitulo(obra, capitulo);
-        }
-      }
-    });
-    
-    // 🚀 Detecta acceso directo por URL al cargar la página
-    window.addEventListener("DOMContentLoaded", () => {
-      const path = window.location.pathname.split("/").filter(Boolean);
-    
-      if (path.length >= 1) {
-        const obra = path[0];
+      window.addEventListener("hashchange", () => {
+        const path = location.hash.slice(1).split("/"); // Elimina el "#"
+      
+        const obra = path[0] || null;
         const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
           ? parseInt(path[1].replace("Chapter", ""))
           : null;
-    
-        if (capitulo === null) {
-          cargarlibro(obra);
-        } else {
-          cargarcapitulo(obra, capitulo);
+      
+        if (obra) {
+          if (capitulo === null) {
+            cargarlibro(obra);
+          } else {
+            cargarcapitulo(obra, capitulo);
+          }
         }
+      });
+
     
-        // 🧠 Opcional: actualiza el estado inicial
-        history.replaceState({ obra, capitulo }, null, window.location.pathname);
-      }
-    });
+    // 🚀 Detecta acceso directo por URL al cargar la página
+      window.addEventListener("DOMContentLoaded", () => {
+        const path = location.hash.slice(1).split("/");
+      
+        const obra = path[0] || null;
+        const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
+          ? parseInt(path[1].replace("Chapter", ""))
+          : null;
+      
+        if (obra) {
+          if (capitulo === null) {
+            cargarlibro(obra);
+          } else {
+            cargarcapitulo(obra, capitulo);
+          }
+        }
+      });
