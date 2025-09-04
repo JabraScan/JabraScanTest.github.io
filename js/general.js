@@ -120,11 +120,32 @@ import { cargarlibro } from './libroficha.js';
 
 
 // 🔗 Actualiza la URL con hash para navegación semántica
-  export function mostrarurl(obra, capitulo = null) {
+  /*export function mostrarurl(obra, capitulo = null) {
     const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
     location.hash = nuevaHash;
-  }
-
+  }*/
+        /**
+         * 📍 Actualiza la URL con un nuevo hash basado en la obra y el capítulo.
+         * 🧼 Elimina "index.html" de la ruta si está presente.
+         * 🕹️ Usa pushState para guardar la navegación en el historial (permite botón "Atrás").
+         * 🚫 No recarga la página.
+         *
+         * @param {string} obra - Nombre de la obra (ej. "Naruto", "Bleach").
+         * @param {string|null} capitulo - Número de capítulo (opcional).
+         */
+        export function mostrarurl(obra, capitulo = null) {
+          // 🧩 Construye el nuevo hash dinámico
+          const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+        
+          // 🧼 Elimina "index.html" si está presente en la URL actual
+          const baseUrl = window.location.origin + window.location.pathname.replace(/index\.html$/, "");
+        
+          // 🧭 Construye la nueva URL completa con el hash
+          const nuevaUrl = `${baseUrl}${nuevaHash}`;
+        
+          // 🕹️ Actualiza la barra de direcciones y guarda en el historial
+          window.history.pushState(null, "", nuevaUrl);
+        }
 
 // 🧭 Interpreta el hash actual y carga la vista correspondiente
     function manejarHash(hash) {
@@ -144,4 +165,5 @@ import { cargarlibro } from './libroficha.js';
     
       if (obra) abrirObraCapitulo(obra, capitulo);
     }
+
 
