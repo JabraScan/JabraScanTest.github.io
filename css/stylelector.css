@@ -1,0 +1,245 @@
+/*
+body {
+  margin: 0;
+  font-family: sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  background: #eee;
+  flex-wrap: wrap;
+}
+*/
+
+header {
+  position: fixed;       /* Fija el header en pantalla */
+  top: 0;                /* Pegado arriba */
+  left: 0;
+  width: 100%;           /* Ocupa todo el ancho */
+  background-color: #14213d; /* Fondo sólido para que no se vea el contenido detrás */
+  z-index: 1000;         /* Encima de todo */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* Sombra sutil */
+}
+/* Ajusta el espacio para que el contenido no quede oculto debajo */
+body {
+  padding-top: 160px; /* Ajusta según la altura real del header */
+}
+header h1 {
+  font-weight: bold;
+  color: #f8b400;
+}
+.lector-book {
+  font-weight: bold;
+  color: #f8b400;
+  cursor: pointer;
+}
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px;
+  /*background-color: #f9f9f9;*/
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.controls select,
+.controls input,
+.controls button {
+  padding: 0.5em;
+  font-size: 1em;
+}
+.controls-left,
+.controls-center,
+.controls-right {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.light-mode {
+  background: #fff;
+  color: #000;
+}
+
+.dark-mode {
+  background: #121212;
+  color: #eee;
+}
+/* Canvas en modo claro */
+.light-mode canvas {
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+/* Canvas en modo oscuro */
+.dark-mode canvas {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+}
+.dark-mode canvas {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(1.1);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  margin-bottom: 1em;
+}
+
+.pdf-controls {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+button,select {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+  font-size: 0.95em;
+}
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #5f65d8, #9fa4fc);
+}
+button:active {
+  transform: scale(0.98);
+}
+button:disabled, select:disabled,
+  button[disabled] {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background: grey;
+    color: white;
+    font-weight: 500;
+    cursor: not-allowed;
+    transition: transform 0.2s ease, background 0.3s ease;
+    font-size: 0.95em;
+    background-color: grey;
+  }
+
+select {
+  background-color: white;
+  border: 1px solid #ccc;
+  color: #333;
+}
+select:hover {
+  border-color: #4e54c8;
+}
+.chapterSelect {
+  max-width: 100px;
+}
+
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .controls-left,
+  .controls-center,
+  .controls-right {
+    justify-content: center;
+  }
+  button, select {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+/* Botón hamburguesa */
+#menu-toggle {
+  display: none; /* solo en móvil */
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  background: #4e54c8;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  z-index: 1100;
+  cursor: pointer;
+}
+
+/* En pantallas pequeñas */
+@media (max-width: 600px) {
+  /* Mostrar botón hamburguesa */
+  #menu-toggle {
+    display: block;
+  }
+@media (max-width: 900px) { /* o el ancho que consideres */
+  #menu-toggle { display: block; }
+  #main-header { display: none; }
+  #main-header.show { display: block; }
+  .label { display: none; }
+}
+.menu-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 900; /* debajo del menú */
+}
+  /* Ocultar header por defecto */
+  #main-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #14213d;
+    z-index: 1000;
+    padding-top: 50px; /* espacio para que no tape el botón */
+  }
+
+  /* Mostrar header cuando tenga la clase .show */
+  #main-header.show {
+    display: block;
+  }
+
+  /* Solo iconos en móvil */
+  .label {
+    display: none;
+  }
+
+  .icon {
+    font-size: 1.2em;
+  }
+
+  /* Ajustar body para que no deje hueco fijo */
+  body {
+    padding-top: 0;
+  }
+}
+.callatedragonmalvado {
+  text-align: center; /* Esto centrará el contenido inline y inline-block */
+  display: inline-grid
+;}
+.callatedragonmalvado img {
+  max-width: 90%;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+.callatedragonmalvado span {
+    margin-top: 20px;
+}
+
