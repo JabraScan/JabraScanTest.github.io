@@ -59,76 +59,76 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 // 📌 Función principal para mostrar contenido y actualizar la URL
-    function abrirObraCapitulo(obra, capitulo = null) {
+      // ✅ Carga obra o capítulo dinámicamente
+      function abrirObraCapitulo(obra, capitulo = null) {
         const mainElement = document.querySelector('main');
-        mainElement.innerHTML = data;
-      // 🧠 Llama a la función correspondiente
-        if (capitulo === null) {
-              localStorage.setItem('libroSeleccionado', libroId);
-              fetch('books/libro-ficha.html')
-                .then(response => {
-                  if (!response.ok) {
-                    throw new Error('Error al cargar el archivo: ' + response.statusText);
-                  }
-                  return response.text();
-                })
-                .then(data => {
-                  const mainElement = document.querySelector('main');
-                  mainElement.innerHTML = data;
-        
-                  // Llama a cargarlibro
-                  cargarlibro(libroId);
-                })
-                .catch(err => console.error('Error:', err));
-        }
-    }
-    // ✅ Este módulo gestiona la navegación de obras y capítulos
-    export function mostrarurl(obra, capitulo = null) {
-      // 🧭 Construye la ruta hash
-      const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
-    
-      // 🔄 Actualiza la URL con hash
-      location.hash = nuevaHash;
-    }
-    // 🔙 Maneja el botón "Atrás" del navegador
-      window.addEventListener("hashchange", () => {
-          const path = location.hash.slice(1).split("/"); // Elimina el "#"
-        
-          const obra = path[0] || null;
-          const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
-            ? parseInt(path[1].replace("Chapter", ""))
-            : null;
-        
-          abrirObraCapitulo(obra, capitulo);
-      });
-
-    
-    // 🚀 Detecta acceso directo por URL al cargar la página
-      window.addEventListener("DOMContentLoaded", () => {
-        const path = location.hash.slice(1).split("/");
+        localStorage.setItem('libroSeleccionado', obra); // Guarda la obra seleccionada
       
+        if (capitulo === null) {
+          // 🔍 Carga la ficha de la obra
+          fetch('books/libro-ficha.html')
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Error al cargar el archivo: ' + response.statusText);
+              }
+              return response.text();
+            })
+            .then(data => {
+              mainElement.innerHTML = data;
+              cargarlibro(obra); // Función externa que carga los datos del libro
+            })
+            .catch(err => console.error('Error:', err));
+        } else {
+          // 📖 Carga el capítulo específico
+          fetch(`books/capitulos/${obra}-capitulo${capitulo}.html`)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Error al cargar el capítulo: ' + response.statusText);
+              }
+              return response.text();
+            })
+            .then(data => {
+              mainElement.innerHTML = data;
+              cargarCapitulo(obra, capitulo); // Función externa que carga los datos del capítulo
+            })
+            .catch(err => console.error('Error:', err));
+        }
+      }
+      
+      // 🔗 Actualiza la URL con hash para navegación
+      export function mostrarurl(obra, capitulo = null) {
+        const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+        location.hash = nuevaHash;
+      }
+      
+      // 🔙 Maneja el botón "Atrás" del navegador
+      window.addEventListener("hashchange", () => {
+        const path = location.hash.slice(1).split("/");
         const obra = path[0] || null;
         const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
           ? parseInt(path[1].replace("Chapter", ""))
           : null;
       
+        if (obra) {
           abrirObraCapitulo(obra, capitulo);
+        } else {
+          // 🏠 Si no hay hash, vuelve a la página principal
+          location.href = 'index.html';
+        }
       });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const hash = window.location.hash.slice(1); // Elimina el #
-    if (!hash) return;
-    
-    const path = hash.split('/');
-    const libroId = path[0] || null;
-    const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
-      ? parseInt(path[1].replace("Chapter", ""))
-      : null;
-
-    abrirObraCapitulo(obra, capitulo);
-  });
-
-
-
-
-
+      
+      // 🚀 Detecta acceso directo por URL al cargar la página
+      document.addEventListener("DOMContentLoaded", () => {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return;
+      
+        const path = hash.split('/');
+        const obra = path[0] || null;
+        const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
+          ? parseInt(path[1].replace("Chapter", ""))
+          : null;
+      
+        if (obra) {
+          abrirObraCapitulo(obra, capitulo);
+        }
+      });
