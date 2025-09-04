@@ -1,5 +1,5 @@
 import { obtenerCapitulos } from './capitulos.js';
-import { parseDateDMY, parseChapterNumber, compareCapNumDesc, crearBloqueValoracion } from './utils.js';
+import { parseDateDMY, parseChapterNumber, compareCapNumDesc, crearBloqueValoracion, mostrarurl } from './utils.js';
 import { activarLinksPDF, activarPaginacion } from './eventos.js';
 import { incrementarVisita, leerVisitas, obtenerInfo, valorarRecurso } from './contadoresGoogle.js';
 
@@ -40,7 +40,10 @@ export function cargarlibro(libroId) {
       const discord = get("discord");
       const aprobadaAutor = get("aprobadaAutor");
       const wikifan = get("wiki");
-      
+
+      //actualizar url
+      mostrarurl(clave);
+      //generar contenido
       const OKAutor = aprobadaAutor === 'si' ? `
         <span class="carousel-info-label">Traducción aprobada por el autor</span><br>
         <span>Discord Oficial : <a href="${discord}" target="_blank">${discord}</a></span>
@@ -251,6 +254,7 @@ function renderCapitulos(listacapitulos, clave, seccionUltimos, ordenActual = "a
     renderCapitulos(listacapitulos, clave, "", nuevoOrden);
   });
 }
+
 
 
 
