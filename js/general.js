@@ -64,7 +64,22 @@ document.addEventListener("DOMContentLoaded", () => {
         mainElement.innerHTML = data;
       // 🧠 Llama a la función correspondiente
         if (capitulo === null) {
-          cargarlibro(obra);
+              localStorage.setItem('libroSeleccionado', libroId);
+              fetch('books/libro-ficha.html')
+                .then(response => {
+                  if (!response.ok) {
+                    throw new Error('Error al cargar el archivo: ' + response.statusText);
+                  }
+                  return response.text();
+                })
+                .then(data => {
+                  const mainElement = document.querySelector('main');
+                  mainElement.innerHTML = data;
+        
+                  // Llama a cargarlibro
+                  cargarlibro(libroId);
+                })
+                .catch(err => console.error('Error:', err));
         }
     }
     // ✅ Este módulo gestiona la navegación de obras y capítulos
@@ -99,5 +114,22 @@ document.addEventListener("DOMContentLoaded", () => {
       
           abrirObraCapitulo(obra, capitulo);
       });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const hash = window.location.hash.slice(1); // Elimina el #
+    if (!hash) return;
+    
+    const path = hash.split('/');
+    const libroId = path[0] || null;
+    let capitulo = null;
+
+    const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
+      ? parseInt(path[1].replace("Chapter", ""))
+      : null;
+
+    abrirObraCapitulo(obra, capitulo);
+  });
+
+
 
 
