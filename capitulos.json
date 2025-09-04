@@ -1,7 +1,8 @@
 {
-  "CultivationOnline": "./books/CultivationOnline.json",
+  "CultivationOnline": "../books/CultivationOnline.json",
   "DualCultivation": "./books/DualCultivation.json",
   "LaLeyendaDeLaEspadaDelNorte": "./books/LaLeyendaDeLaEspadaDelNorte.json"
 }
+
 
 
