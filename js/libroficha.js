@@ -44,6 +44,7 @@ export function cargarlibro(libroId) {
       //actualizar url
       mostrarurl(clave);
       //generar contenido
+      /*
       const OKAutor = aprobadaAutor === 'si' ? `
         <span class="carousel-info-label">Traducción aprobada por el autor</span><br>
         <span>Discord Oficial : <a href="${discord}" target="_blank">${discord}</a></span>
@@ -97,7 +98,7 @@ export function cargarlibro(libroId) {
                 </div>
               </div>
             `;
-      
+      */
       /*leerVisitas(`obra_${clave}`).then(vis => {
           const visitas = vis === -1 ? 1 : vis+1;
             const numVisitas = document.createElement("a");
@@ -122,9 +123,9 @@ export function cargarlibro(libroId) {
           mainDataBook.querySelector(".book-info-container").appendChild(bloqueValoracion);
       });
 
-      DataBook.prepend(mainDataBook);
-      DataBook.prepend(headerDataBook);
-      mainDataBook.querySelector(".book-image").prepend(imagenContenedor);
+      //DataBook.prepend(mainDataBook);
+      //DataBook.prepend(headerDataBook);
+      //mainDataBook.querySelector(".book-image").prepend(imagenContenedor);
       
 
       if (typeof mostrarDisqus === "function") {
@@ -254,3 +255,4 @@ function renderCapitulos(listacapitulos, clave, seccionUltimos, ordenActual = "a
     renderCapitulos(listacapitulos, clave, "", nuevoOrden);
   });
 }
+
