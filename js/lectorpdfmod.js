@@ -62,7 +62,8 @@ export function cargarCapitulo(clave, capitulo, paginaInicial = 1) {
         }));
         const idx = capitulosObra.findIndex(c => c.numCapitulo === capitulo);
         if (idx === -1) return;
-
+        
+        mostrarurl(clave, capitulo); //actualizar barra de direcciones
         const cap = capitulosObra[idx];
         actualizarTituloObra(cap.tituloObra, clave);
         cargarPDF(clave, cap.NombreArchivo, paginaInicial, idx, capitulosObra);
