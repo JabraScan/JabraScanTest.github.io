@@ -59,6 +59,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 // 📌 Función principal para mostrar contenido y actualizar la URL
+    function abrirObraCapitulo(obra, capitulo = null) {
+        const mainElement = document.querySelector('main');
+        mainElement.innerHTML = data;
+      // 🧠 Llama a la función correspondiente
+        if (capitulo === null) {
+          cargarlibro(obra);
+        }
+    }
     // ✅ Este módulo gestiona la navegación de obras y capítulos
     export function mostrarurl(obra, capitulo = null) {
       // 🧭 Construye la ruta hash
@@ -66,31 +74,17 @@ document.addEventListener("DOMContentLoaded", () => {
     
       // 🔄 Actualiza la URL con hash
       location.hash = nuevaHash;
-    
-      // 🧠 Llama a la función correspondiente
-      /*if (capitulo === null) {
-        cargarlibro(obra);
-      } else {
-        cargarcapitulo(obra, capitulo);
-      }*/
     }
-
     // 🔙 Maneja el botón "Atrás" del navegador
       window.addEventListener("hashchange", () => {
-        const path = location.hash.slice(1).split("/"); // Elimina el "#"
-      
-        const obra = path[0] || null;
-        const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
-          ? parseInt(path[1].replace("Chapter", ""))
-          : null;
-      
-        if (obra) {
-          if (capitulo === null) {
-            cargarlibro(obra);
-          } else {
-            cargarcapitulo(obra, capitulo);
-          }
-        }
+          const path = location.hash.slice(1).split("/"); // Elimina el "#"
+        
+          const obra = path[0] || null;
+          const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
+            ? parseInt(path[1].replace("Chapter", ""))
+            : null;
+        
+          abrirObraCapitulo(obra, capitulo);
       });
 
     
@@ -103,12 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ? parseInt(path[1].replace("Chapter", ""))
           : null;
       
-        if (obra) {
-          if (capitulo === null) {
-            cargarlibro(obra);
-          } else {
-            cargarcapitulo(obra, capitulo);
-          }
-        }
+          abrirObraCapitulo(obra, capitulo);
       });
+
 
