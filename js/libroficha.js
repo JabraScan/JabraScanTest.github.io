@@ -45,7 +45,7 @@ export function cargarlibro(libroId) {
         <span class="carousel-info-label">Traducción aprobada por el autor</span><br>
         <span>Discord Oficial : <a href="${discord}" target="_blank">${discord}</a></span>
       ` : '';
-      const wiki = wikifan === '' ? '' : `<a class="book-wiki" href="${wiki}" target="_blank">Fans Wiki</a>`;
+      const wiki = wikifan === '' ? '' : `<a class="book-wiki" href="${wikifan}" target="_blank">Fans Wiki</a>`;
 
       const imagenContenedor = document.createElement("div");
       imagenContenedor.classList.add("imagen-contenedor");
@@ -251,6 +251,7 @@ function renderCapitulos(listacapitulos, clave, seccionUltimos, ordenActual = "a
     renderCapitulos(listacapitulos, clave, "", nuevoOrden);
   });
 }
+
 
 
 
