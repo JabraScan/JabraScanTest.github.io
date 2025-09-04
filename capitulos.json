@@ -1,12 +1,12 @@
 {
-  "CallateDragonaMalvadaNoQuieroTenerMasHijosContigo": "./books/CDMYNQTMHC.json",
+  "CDMNQTMHC": "./books/CDMNQTMHC.json",
   "CultivationOnline": "./books/CultivationOnline.json",
   "DualCultivation": "./books/DualCultivation.json",
   "LaLeyendaDeLaEspadaDelNorte": "./books/LaLeyendaDeLaEspadaDelNorte.json",
+  "MadamePleaseBehave" : "./books/MadamePleaseBehave.json",
   "PathtoDualCultivation": "./books/PathtoDualCultivation.json",
   "ShadowSlave": "./books/ShadowSlave.json",
   "Suzume": "./books/Suzume.json",
-  "TheEminenceInShadow": "./books/TheEminenceInShadow.json"
+  "TheEminenceInShadow": "./books/TheEminenceInShadow.json",
+  "DanmachiArgonauta": "./books/DanmachiArgonauta.json"
 }
-
-
