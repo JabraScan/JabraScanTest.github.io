@@ -121,14 +121,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const path = hash.split('/');
     const libroId = path[0] || null;
-    let capitulo = null;
-
     const capitulo = path.length >= 2 && path[1].startsWith("Chapter")
       ? parseInt(path[1].replace("Chapter", ""))
       : null;
 
     abrirObraCapitulo(obra, capitulo);
   });
+
 
 
 
