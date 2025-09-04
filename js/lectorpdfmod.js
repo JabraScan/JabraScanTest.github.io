@@ -305,7 +305,8 @@ function cargarUltimaLectura() {
  */
 function onLibroClick(libroId) {
   localStorage.setItem('libroSeleccionado', libroId);
-  fetch('books/libro-ficha.html')
+  console.log(libroId);
+  fetch(`books/${libroId}.html`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error al cargar el archivo: ' + response.statusText);
