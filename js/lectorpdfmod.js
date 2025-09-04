@@ -1,5 +1,6 @@
 import { parseDateDMY, parseChapterNumber } from './utils.js';
 import { incrementarVisita, leerVisitas } from './contadoresGoogle.js';
+import { mostrarurl } from './general.js';
 
 // Variables globales para el lector PDF
 let pdfDoc = null;
