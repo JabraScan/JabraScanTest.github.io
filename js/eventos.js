@@ -1,4 +1,5 @@
 import { abrirLectorPDF } from './lector.js';
+import { mostrarurl } from './general.js';
 
 export function activarLinksPDF() {
   document.querySelectorAll('.pdf-link').forEach(link => {
@@ -12,6 +13,7 @@ export function activarLinksPDF() {
       localStorage.setItem('ultimoCapitulo', capitulo);
       localStorage.setItem("ultimaPagina", 1);
 
+      mostrarurl(clave, capitulo);
       // Cargar dinámicamente lectorpdf.html
         fetch('lectorpdf.html')
           .then(r => r.text())
@@ -27,19 +29,7 @@ export function activarLinksPDF() {
     });
   });
 }
-/*
-export function activarPaginacion() {
-  const botones = document.querySelectorAll('.pagina-btn');
-  botones.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const pagina = btn.getAttribute('data-pagina');
-      document.querySelectorAll('.chapter-page').forEach(div => {
-        div.style.display = div.getAttribute('data-pagina') === pagina ? 'block' : 'none';
-      });
-    });
-  });
-}
-*/
+
 /**
  * Activa la paginación de capítulos con botones de navegación y rango dinámico.
  * @param {Array} rangos - Lista de rangos por página, ej. ["C.0001 - C.0010", "C.0011 - C.0020", ...]
@@ -98,4 +88,5 @@ export function activarPaginacion(rangos) {
 
   mostrarPagina(1);
 }
+
 
