@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function onLibroClick(libroId) {
   localStorage.setItem('libroSeleccionado', libroId);
-  fetch('books/libro-ficha.html')
+  fetch(`books/${libroId}.html`)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error al cargar el archivo: ' + response.statusText);
