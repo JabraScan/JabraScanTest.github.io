@@ -75,22 +75,37 @@ import { cargarlibro } from './libroficha.js';
   function abrirObraCapitulo(obra, capitulo = null) {
     const mainElement = document.querySelector('main');
     localStorage.setItem('libroSeleccionado', obra);
-  
+
     if (capitulo === null) {
       // 🔍 Carga la ficha de la obra
-      fetch('books/libro-ficha.html')
-        .then(response => {
-          if (!response.ok) throw new Error('Error al cargar la ficha: ' + response.statusText);
-          return response.text();
-        })
-        .then(data => {
-          mainElement.innerHTML = data;
-          cargarlibro(obra); // Función externa que carga los datos del libro
-        })
-        .catch(err => console.error('Error:', err));
-    }/* else {
+          fetch('books/libro-ficha.html')
+            .then(response => {
+              if (!response.ok) throw new Error('Error al cargar la ficha: ' + response.statusText);
+              return response.text();
+            })
+            .then(data => {
+              mainElement.innerHTML = data;
+              cargarlibro(obra); // Función externa que carga los datos del libro
+            })
+            .catch(err => console.error('Error:', err));
+    } else {
       // 📖 Carga el capítulo específico
-      fetch(`books/capitulos/${obra}-capitulo${capitulo}.html`)
+          localStorage.setItem('ultimaObra', obra);
+          localStorage.setItem('ultimoCapitulo', capitulo);
+          localStorage.setItem("ultimaPagina", 1);
+          // Cargar dinámicamente lectorpdf.html
+            fetch('lectorpdf.html')
+              .then(r => r.text())
+              .then(html => {
+                const main = document.querySelector('main');
+                main.innerHTML = html;
+            
+                // Cargar el módulo dinámicamente
+                import('./lector.js')
+                  .then(modulo => modulo.abrirLectorPDF())
+                  .catch(err => console.error('Error al cargar lector.js:', err));
+              });
+      /*fetch(`books/capitulos/${obra}-capitulo${capitulo}.html`)
         .then(response => {
           if (!response.ok) throw new Error('Error al cargar el capítulo: ' + response.statusText);
           return response.text();
@@ -99,8 +114,8 @@ import { cargarlibro } from './libroficha.js';
           mainElement.innerHTML = data;
           cargarCapitulo(obra, capitulo); // Función externa que carga los datos del capítulo
         })
-        .catch(err => console.error('Error:', err));
-    }*/
+        .catch(err => console.error('Error:', err));*/
+    }
   }
 
 
@@ -129,3 +144,4 @@ import { cargarlibro } from './libroficha.js';
     
       if (obra) abrirObraCapitulo(obra, capitulo);
     }
+
