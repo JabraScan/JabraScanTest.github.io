@@ -1,124 +1,131 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // 📱 Detección de iOS para aplicar estilos específicos
-  if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream) {
-    document.body.classList.add('ios');
-  }
+// general.js
+import { initUltimosCapitulos } from './ultimoscapitulos.js';
+import { abrirLectorPDF } from './lector.js';
+import { cargarlibro } from './libroficha.js';
 
-  // 📅 Inserta el año actual en el pie de página
-  const footElement = document.getElementById('copyjabra');
-  const now = new Date();
-  const annCurso = now.getFullYear();
-  footElement.innerHTML = `<p>&copy; ${annCurso} JabraScan. No oficial, sin fines de lucro.</p>`;
-
-  // 🔗 Enlaces con atributo data-target para cargar vistas HTML dinámicas
-    document.querySelectorAll("[data-target]").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault();
-        const url = link.getAttribute("data-target");
-        cargarVista(url); // ✅ Reutiliza la función
-      });
-    });
-  // 📖 Botón "Seguir leyendo" para reanudar lectura desde localStorage
-  const ultimaObra = localStorage.getItem("ultimaObra");
-  const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
-  const ultimaPagina = parseInt(localStorage.getItem("ultimaPagina"), 10);
-
-  if (ultimaObra && ultimoCapitulo) {
-    const spanSeguir = document.getElementById("btnSeguir");
-    if (spanSeguir) {
-      spanSeguir.classList.remove("inactive");
-      spanSeguir.classList.add("active");
-      spanSeguir.addEventListener("click", () => {
-        console.log(`Reanudar: ${ultimaObra} / Cap. ${ultimoCapitulo} / Página ${ultimaPagina}`);
-        abrirLectorPDF();
-      });
-    }
-  }
-
-  // 🧭 Navegación por hash al cargar la página
-  const hash = window.location.hash.slice(1);
-  if (!hash) return;
-
-  // 📄 Si el hash apunta a una página genérica como disclaimer.html
-  if (hash.endsWith(".html")) {
-    cargarVista(hash);
-    return; // ⛔ Evita ejecutar lógica de obra/capítulo
-  }
-
-  // 📚 Si el hash representa una obra o capítulo
-  const [obra, cap] = hash.split('/');
-  const capitulo = cap?.startsWith("Chapter") ? parseInt(cap.replace("Chapter", "")) : null;
-
-  if (obra) abrirObraCapitulo(obra, capitulo);
-});
-
-// 🔙 Maneja el botón "Atrás" del navegador
-      window.addEventListener("hashchange", () => {
-        const hash = location.hash.slice(1);
-        if (!hash) return;
-      
-        // 📄 Si el hash apunta a una página genérica como disclaimer.html
-        if (hash.endsWith(".html")) {
-          cargarVista(hash);
-          return;
-        }
-      
-        // 📚 Si el hash representa una obra o capítulo
-        const [obra, cap] = hash.split('/');
-        const capitulo = cap?.startsWith("Chapter") ? parseInt(cap.replace("Chapter", "")) : null;
-      
-        if (obra) abrirObraCapitulo(obra, capitulo);
-      });
-
-// 📦 Función para cargar páginas genéricas como disclaimer.html
-function cargarVista(url) {
-  fetch(url)
-    .then(res => {
-      if (!res.ok) throw new Error(`Error al cargar ${url}: ${res.statusText}`);
-      return res.text();
-    })
-    .then(html => {
-      document.querySelector("main").innerHTML = html;
-
-      // 🛠️ Inicialización específica por vista
-      if (url === "ultimosCapitulos.html") {
-        ocultarDisqus?.();
-        initUltimosCapitulos();
+    document.addEventListener("DOMContentLoaded", () => {
+      // 📱 Detección de iOS para aplicar estilos específicos
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream) {
+        document.body.classList.add('ios');
       }
+    
+      // 📅 Inserta el año actual en el pie de página
+      const footElement = document.getElementById('copyjabra');
+      const now = new Date();
+      footElement.innerHTML = `<p>&copy; ${now.getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
+    
+      // 🔗 Enlaces con atributo data-target para cargar vistas genéricas
+      document.querySelectorAll("[data-target]").forEach(link => {
+        link.addEventListener("click", e => {
+          e.preventDefault();
+          const url = link.getAttribute("data-target");
+          location.hash = url; // 🧭 Actualiza el hash para que lo maneje hashchange
+        });
+      });
+    
+      // 📖 Botón "Seguir leyendo" para reanudar lectura desde localStorage
+      const ultimaObra = localStorage.getItem("ultimaObra");
+      const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
+    
+      if (ultimaObra && ultimoCapitulo) {
+        const btnSeguir = document.getElementById("btnSeguir");
+        if (btnSeguir) {
+          btnSeguir.classList.remove("inactive");
+          btnSeguir.classList.add("active");
+          btnSeguir.addEventListener("click", () => {
+            mostrarurl(ultimaObra, parseInt(ultimoCapitulo, 10)); // ✅ Usa tu función
+            abrirLectorPDF();
+          });
+        }
+      }
+    
+      // 🧭 Navegación inicial por hash al cargar la página
+      manejarHash(location.hash);
+    });
 
-      // Puedes añadir más inicializaciones aquí si lo necesitas
-    })
-    .catch(err => console.error("Error:", err));
-}
+// 🔙 Maneja el botón "Atrás" del navegador o cambios de hash
+    window.addEventListener("hashchange", () => {
+      manejarHash(location.hash);
+    });
+
+
+// 📦 Función para cargar vistas genéricas como disclaimer.html
+    function cargarVista(url) {
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error(`Error al cargar ${url}: ${res.statusText}`);
+          return res.text();
+        })
+        .then(html => {
+          document.querySelector("main").innerHTML = html;
+    
+          // 🛠️ Inicialización específica por vista
+          if (url === "ultimosCapitulos.html") {
+            ocultarDisqus?.();
+            initUltimosCapitulos();
+          }
+    
+          // Puedes añadir más inicializaciones aquí si lo necesitas
+        })
+        .catch(err => console.error("Error:", err));
+    }
+
 
 // 📚 Carga una obra o capítulo dinámicamente
-function abrirObraCapitulo(obra, capitulo = null) {
-  const mainElement = document.querySelector('main');
-  localStorage.setItem('libroSeleccionado', obra);
+  function abrirObraCapitulo(obra, capitulo = null) {
+    const mainElement = document.querySelector('main');
+    localStorage.setItem('libroSeleccionado', obra);
+  
+    if (capitulo === null) {
+      // 🔍 Carga la ficha de la obra
+      fetch('books/libro-ficha.html')
+        .then(response => {
+          if (!response.ok) throw new Error('Error al cargar la ficha: ' + response.statusText);
+          return response.text();
+        })
+        .then(data => {
+          mainElement.innerHTML = data;
+          cargarlibro(obra); // Función externa que carga los datos del libro
+        })
+        .catch(err => console.error('Error:', err));
+    }/* else {
+      // 📖 Carga el capítulo específico
+      fetch(`books/capitulos/${obra}-capitulo${capitulo}.html`)
+        .then(response => {
+          if (!response.ok) throw new Error('Error al cargar el capítulo: ' + response.statusText);
+          return response.text();
+        })
+        .then(data => {
+          mainElement.innerHTML = data;
+          cargarCapitulo(obra, capitulo); // Función externa que carga los datos del capítulo
+        })
+        .catch(err => console.error('Error:', err));
+    }*/
+  }
 
-  if (capitulo === null) {
-    // 🔍 Carga la ficha de la obra
-    fetch('books/libro-ficha.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Error al cargar la ficha: ' + response.statusText);
-        return response.text();
-      })
-      .then(data => {
-        mainElement.innerHTML = data;
-        cargarlibro(obra); // Función externa que carga los datos del libro
-      })
-      .catch(err => console.error('Error:', err));
-  } /*else {
-    // 📖 Carga el capítulo específico
-    fetch(`books/capitulos/${obra}-capitulo${capitulo}.html`)
-      .then(response => {
-        if (!response.ok) throw new Error('Error al cargar el capítulo: ' + response.statusText);
-        return response.text();
-      })
-      .then(data => {
-        mainElement.innerHTML = data;
-        cargarCapitulo(obra, capitulo); // Función externa que carga los datos del capítulo
-      })
-      .catch(err => console.error('Error:', err));
-  }*/
-}
+
+// 🔗 Actualiza la URL con hash para navegación semántica
+  export function mostrarurl(obra, capitulo = null) {
+    const nuevaHash = `#${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+    location.hash = nuevaHash;
+  }
+
+
+// 🧭 Interpreta el hash actual y carga la vista correspondiente
+    function manejarHash(hash) {
+      const limpio = hash.replace(/^#/, "");
+    
+      if (!limpio) return;
+    
+      if (limpio.endsWith(".html")) {
+        // 📄 Página genérica como disclaimer.html
+        cargarVista(limpio);
+        return;
+      }
+    
+      // 📚 Hash representa una obra o capítulo
+      const [obra, cap] = limpio.split('/');
+      const capitulo = cap?.startsWith("Chapter") ? parseInt(cap.replace("Chapter", "")) : null;
+    
+      if (obra) abrirObraCapitulo(obra, capitulo);
+    }
