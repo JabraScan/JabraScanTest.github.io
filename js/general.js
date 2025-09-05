@@ -21,19 +21,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(location.search);
 
   if (params.has("redirect")) {
-    // Si viene desde 404.html con redirección
+    // 🧭 Si viene desde 404.html con redirección
     ruta = params.get("redirect").replace(/^\/+/, "");
+
+    // 🚫 Evita interpretar "index.html" como obra
+    if (ruta.includes("index.html")) ruta = null;
 
     // ❌ No usamos history.replaceState para evitar romper rutas relativas
     // ✅ Mantener index.html?redirect=... para que fetch('books/...') funcione correctamente
   } else {
-    // Elimina la parte inicial del pathname que corresponde al proyecto
+    // 🧹 Elimina la parte inicial del pathname que corresponde al proyecto
     const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
     const pathParts = path.split('/');
     ruta = pathParts.length > 1 ? pathParts.slice(1).join('/') : pathParts[0];
   }
 
-  // Carga la vista correspondiente si hay ruta válida
+  // 🚀 Carga la vista correspondiente si hay ruta válida
   if (ruta) manejarRuta(ruta);
 
   // 🔗 Enlaces internos con atributo personalizado [data-target]
@@ -43,11 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = link.getAttribute("data-target");
 
       if (url === "index.html") {
-        // Redirige a la raíz del proyecto sin recargar
+        // 🏠 Redirige a la raíz del proyecto sin recargar
         const base = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
         window.location.href = base;
       } else {
-        // ✅ Carga la vista sin modificar la URL visible
+        // 🔄 Carga la vista sin modificar la URL visible
         manejarRuta(url);
       }
     });
@@ -75,6 +78,8 @@ window.addEventListener("popstate", () => {
   const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
   const pathParts = path.split('/');
   const ruta = pathParts.length > 1 ? pathParts.slice(1).join('/') : pathParts[0];
+
+  // 🔄 Si no hay ruta, intenta usar el hash como fallback
   manejarRuta(ruta || location.hash.replace(/^#/, ""));
 });
 
@@ -88,7 +93,7 @@ function cargarVista(url) {
     .then(html => {
       document.querySelector("main").innerHTML = html;
 
-      // Inicializa lógica específica si es la vista de últimos capítulos
+      // 🧠 Inicializa lógica específica si es la vista de últimos capítulos
       if (url === "ultimosCapitulos.html") {
         ocultarDisqus?.(); // función opcional
         initUltimosCapitulos();
@@ -103,16 +108,16 @@ function abrirObraCapitulo(obra, capitulo = null) {
   localStorage.setItem('libroSeleccionado', obra);
 
   if (capitulo === null) {
-    // Carga ficha de la obra
+    // 📘 Carga ficha de la obra
     fetch('books/libro-ficha.html')
       .then(res => res.text())
       .then(html => {
         mainElement.innerHTML = html;
-        cargarlibro(obra); // carga datos específicos de la obra
+        cargarlibro(obra); // 🧠 Carga datos específicos de la obra
       })
       .catch(err => console.error('Error:', err));
   } else {
-    // Carga lector PDF con capítulo
+    // 📖 Carga lector PDF con capítulo
     localStorage.setItem('ultimaObra', obra);
     localStorage.setItem('ultimoCapitulo', capitulo);
     localStorage.setItem("ultimaPagina", 1);
@@ -139,13 +144,16 @@ function mostrarurlDesdeHash(hash) {
 
 // 🧭 Interpreta ruta limpia o hash y carga la vista correspondiente
 function manejarRuta(ruta) {
+  // 🚫 Ignora rutas vacías o que apuntan a index.html
   if (!ruta || ruta === "index.html") return;
 
+  // 📄 Si la ruta termina en .html, carga vista genérica
   if (ruta.endsWith(".html")) {
     cargarVista(ruta);
     return;
   }
 
+  // 📚 Interpretar como obra/capítulo
   const partes = ruta.split('/');
   const obra = partes[0];
   const capitulo = partes[1]?.startsWith("Chapter") ? parseInt(partes[1].replace("Chapter", "")) : null;
