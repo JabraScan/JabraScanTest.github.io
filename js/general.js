@@ -107,14 +107,29 @@ function abrirObraCapitulo(obra, capitulo = null) {
   }
 }
 
-// 🔗 Actualiza la URL con ruta limpia (sin hash)
+/*// 🔗 Actualiza la URL con ruta limpia (sin hash)
 export function mostrarurl(obra, capitulo = null) {
   const baseUrl = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
   const nuevaRuta = `${baseUrl}/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
   window.history.pushState(null, "", nuevaRuta);
   manejarRuta(); // 🔄 Carga el contenido correspondiente
-}
+}*/
+/**
+ * 🔁 Convierte una URL con hash (#) en una ruta limpia (/).
+ * 🧼 Reemplaza el hash por una ruta real usando pushState.
+ * 🧭 Llama a manejarRuta() para cargar el contenido correspondiente.
+ */
+/*function convertirHashARuta() {
+  const hash = window.location.hash;
+  if (!hash) return;
 
+  const limpio = hash.replace(/^#/, ""); // Ej: "CDMNQTMHC/Chapter1"
+  const baseUrl = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
+  const nuevaUrl = `${baseUrl}/${limpio}`;
+
+  window.history.replaceState(null, "", nuevaUrl);
+  return true; // ✅ Se hizo conversión
+}*/
 // 🧭 Interpreta la ruta actual y carga la vista correspondiente
 function manejarRuta() {
   const pathParts = window.location.pathname.split('/').filter(Boolean);
@@ -131,19 +146,24 @@ function manejarRuta() {
   }
 }
 
-/**
- * 🔁 Convierte una URL con hash (#) en una ruta limpia (/).
- * 🧼 Reemplaza el hash por una ruta real usando pushState.
- * 🧭 Llama a manejarRuta() para cargar el contenido correspondiente.
- */
+export function mostrarurl(obra, capitulo = null) {
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const repoName = pathParts[0];
+  const baseUrl = `${window.location.origin}/${repoName}`;
+  const nuevaRuta = `${baseUrl}/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+  window.history.pushState(null, "", nuevaRuta);
+  manejarRuta();
+}
 function convertirHashARuta() {
   const hash = window.location.hash;
   if (!hash) return;
 
-  const limpio = hash.replace(/^#/, ""); // Ej: "CDMNQTMHC/Chapter1"
-  const baseUrl = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
+  const limpio = hash.replace(/^#/, "");
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const repoName = pathParts[0];
+  const baseUrl = `${window.location.origin}/${repoName}`;
   const nuevaUrl = `${baseUrl}/${limpio}`;
 
   window.history.replaceState(null, "", nuevaUrl);
-  return true; // ✅ Se hizo conversión
+  return true;
 }
