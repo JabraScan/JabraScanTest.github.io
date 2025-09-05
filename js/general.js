@@ -164,9 +164,13 @@ export function mostrarurl(obra, capitulo = null) {
 
 // 🧭 Interpreta la ruta actual y carga la vista correspondiente
 function manejarRuta() {
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
-  const obra = pathParts[0];
-  const capSegment = pathParts[1];
+  const fullParts = window.location.pathname.split('/').filter(Boolean);
+
+  // Detectar si estamos en un subdirectorio (como GitHub Pages)
+  const base = fullParts[0] === 'JabraScanTest.github.io' ? 1 : 0;
+
+  const obra = fullParts[base];
+  const capSegment = fullParts[base + 1];
   const capitulo = capSegment?.startsWith("Chapter") ? parseInt(capSegment.replace("Chapter", "")) : null;
 
   if (!obra) return;
@@ -177,6 +181,7 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
 
 
 
