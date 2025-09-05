@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Redirigiendo...</title>
-    <meta http-equiv="refresh" content="0; url=/" />
+    <script>
+      // Extrae la ruta original y la pasa como parámetro
+      var redirectTo = "/?redirect=" + encodeURIComponent(location.pathname);
+      window.location.replace(redirectTo);
+    </script>
   </head>
   <body>
     <p>Redirigiendo a la página principal...</p>
