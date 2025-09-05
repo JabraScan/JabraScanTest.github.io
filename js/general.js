@@ -5,7 +5,17 @@ import { cargarlibro } from './libroficha.js';
 
 // 🚀 Evento principal: se ejecuta cuando el DOM está completamente cargado
 document.addEventListener("DOMContentLoaded", () => {
-  // 🧩 Detecta si el usuario está en un dispositivo Apple y aplica clase CSS
+  // 🧼 Limpieza de URL: elimina el nombre del archivo .html de la barra de direcciones
+  // Esto permite que al cargar cualquier vista directa (como disclaimer.html, about.html, etc.)
+  // la URL se muestre sin el sufijo .html, manteniendo una apariencia más limpia y profesional.
+  const htmlRegex = /\/([^\/]+\.html)(\?.*)?$/;
+  if (htmlRegex.test(window.location.href)) {
+    const cleanPath = window.location.pathname.replace(/\/([^\/]+\.html)$/, "/");
+    const newURL = window.location.origin + cleanPath;
+    history.replaceState({}, document.title, newURL);
+  }
+
+  // 🧩 Detecta si el usuario está en un dispositivo Apple y aplica clase CSS específica
   if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream) {
     document.body.classList.add('ios');
   }
@@ -34,18 +44,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔗 Enlaces internos con atributo personalizado [data-target]
   // Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
-  // Se distingue entre rutas que terminan en ".html" (vistas directas) y rutas dinámicas (obras/capítulos).
   document.querySelectorAll("[data-target]").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault(); // 🚫 Evita que el navegador siga el enlace de forma tradicional
 
       const url = link.getAttribute("data-target"); // 🧭 Obtiene la ruta destino desde el atributo personalizado
 
-      /*if (url === "index.html") {
-        // 🔄 Recarga limpia de la página base
-        window.location.href = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
+      if (url === "index.html") {
+        // 🔄 Recarga completa de la página base, eliminando "index.html" de la URL
+        const baseURL = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
+        window.location.replace(baseURL); // 🔁 Fuerza recarga sin añadir al historial
         return;
-      }*/
+      }
 
       // 🧭 Actualiza la URL en el navegador sin recargar la página
       const repoName = window.location.pathname.split('/')[1];
@@ -53,13 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
       history.pushState({}, "", `/${nuevaRuta}`);
 
       // 📥 Si la ruta termina en ".html", se trata como una vista directa
-      // Se carga directamente sin pasar por manejarRuta(), evitando interpretación como obra/capítulo
       if (url.endsWith(".html")) {
         console.log(`Cargando vista directa: ${url}`);
         cargarVista(url); // 👈 Carga el contenido HTML directamente en <main>
       } else {
         // 📚 Si no termina en ".html", se interpreta como obra/capítulo
-        // Se delega a manejarRuta() para que decida cómo cargarlo
         console.log(`Navegación interna con ruta: ${url}`);
         manejarRuta(url);
       }
@@ -180,4 +188,3 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
-
