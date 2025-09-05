@@ -8,13 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🧼 Limpieza de URL: elimina el nombre del archivo .html de la barra de direcciones
   // Esto permite que al cargar cualquier vista directa (como disclaimer.html, about.html, etc.)
   // la URL se muestre sin el sufijo .html, manteniendo una apariencia más limpia y profesional.
-  const htmlRegex = /\/([^\/]+\.html)(\?.*)?$/;
+ /* const htmlRegex = /\/([^\/]+\.html)(\?.*)?$/;
   if (htmlRegex.test(window.location.href)) {
     const cleanPath = window.location.pathname.replace(/\/([^\/]+\.html)$/, "/");
     const newURL = window.location.origin + cleanPath;
     history.replaceState({}, document.title, newURL);
   }
-
+*/
   // 🧩 Detecta si el usuario está en un dispositivo Apple y aplica clase CSS específica
   if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream) {
     document.body.classList.add('ios');
@@ -188,3 +188,4 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
