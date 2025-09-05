@@ -35,11 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = link.getAttribute("data-target");
 
       if (url === "index.html") {
+        console.log('Redirige a la raíz del proyecto sin recarga');
         // 🏠 Redirige a la raíz del proyecto sin recargar
         const base = `/${repoName}/`;
         history.pushState({}, "", base);
         manejarRuta("");
       } else {
+        console.log('Carga la vista y actualiza la URL sin recargar');
         // 🔄 Carga la vista y actualiza la URL sin recargar
         history.pushState({}, "", `/${repoName}/${url}`);
         manejarRuta(url);
@@ -134,6 +136,12 @@ export function mostrarurl(obra, capitulo = null) {
 
 // 🧭 Interpreta ruta limpia y carga la vista correspondiente
 function manejarRuta(ruta) {
+  const rutaActual = window.location.pathname.replace(/^\/+/, "").split('/').slice(1).join('/');
+  if (ruta === rutaActual) {
+    console.log("Ruta ya activa, no se procesa nuevamente.");
+    return;
+  }
+
   if (!ruta || ruta === "index.html") return;
 
   if (ruta.endsWith(".html")) {
@@ -151,3 +159,4 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
