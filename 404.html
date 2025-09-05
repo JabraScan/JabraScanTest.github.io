@@ -14,12 +14,16 @@
   </head>
   <body>
     <p>Redirigiendo a la aplicación...</p>
-    <script>
-      const repoName = window.location.pathname.split('/')[1];
-      const fullPath = window.location.pathname.replace(/^\/+/, "");
-      const rutaRelativa = fullPath.startsWith(repoName + "/") ? fullPath.slice(repoName.length + 1) : fullPath;
-      window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
+      <script>
+        const repoName = window.location.pathname.split('/')[1];
+        const fullPath = window.location.pathname.replace(/^\/+/, "");
+        const rutaRelativa = fullPath.startsWith(repoName + "/") ? fullPath.slice(repoName.length + 1) : fullPath;
+      
+        // Evita redirigir si ya estás en index.html
+        if (!rutaRelativa.startsWith("index.html")) {
+          window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
+        }
+      </script>
 
-    </script>
   </body>
 </html>
