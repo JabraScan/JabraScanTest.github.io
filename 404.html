@@ -4,18 +4,32 @@
     <meta charset="UTF-8" />
     <title>Redirigiendo...</title>
     <script>
-      // Carga index.html dentro del mismo documento sin cambiar la URL
-      fetch("index.html")
-        .then(res => res.text())
-        .then(html => {
-          document.open();
-          document.write(html);
-          document.close();
-        })
-        .catch(err => {
-          document.body.innerHTML = "<h1>Error al cargar la página principal.</h1>";
-          console.error("Error al cargar index.html:", err);
-        });
+      (function () {
+        const { pathname, search, hash, origin } = window.location;
+
+        // 🧠 Extrae la ruta base quitando el último segmento (el que causó el 404)
+        const pathParts = pathname.split('/').filter(Boolean);
+        const basePath = pathParts.slice(0, -1).join('/');
+
+        // 🛠️ Construye la URL absoluta a index.html desde el nivel correcto
+        const indexUrl = basePath ? `${origin}/${basePath}/index.html` : `${origin}/index.html`;
+
+        // 🔄 Carga index.html sin cambiar la URL visible
+        fetch(indexUrl + search)
+          .then(res => {
+            if (!res.ok) throw new Error(`No se encontró ${indexUrl}`);
+            return res.text();
+          })
+          .then(html => {
+            document.open();
+            document.write(html);
+            document.close();
+          })
+          .catch(err => {
+            document.body.innerHTML = `<h1>Error al cargar index.html</h1><p>${err.message}</p>`;
+            console.error("Error al cargar index.html:", err);
+          });
+      })();
     </script>
   </head>
   <body>
