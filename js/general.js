@@ -41,11 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const url = link.getAttribute("data-target"); // 🧭 Obtiene la ruta destino desde el atributo personalizado
 
-      if (url === "index.html") {
+      /*if (url === "index.html") {
         // 🔄 Recarga limpia de la página base
         window.location.href = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
         return;
-      }
+      }*/
 
       // 🧭 Actualiza la URL en el navegador sin recargar la página
       const repoName = window.location.pathname.split('/')[1];
@@ -180,3 +180,4 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
