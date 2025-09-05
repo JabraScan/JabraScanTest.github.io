@@ -5,22 +5,22 @@
   <title>Redirigiendo...</title>
   <script>
     (function () {
-      // Captura la ruta completa
+      // 🧭 Captura la ruta completa (incluye query y hash)
       const fullPath = location.pathname + location.search + location.hash;
 
-      // Guarda la ruta original para que general.js la recupere
+      // 💾 Guarda la ruta original para que general.js la restaure
       sessionStorage.redirectPath = fullPath;
 
-      // Detecta el path base dinámicamente
+      // 📁 Detecta el path base dinámicamente
       const pathSegments = location.pathname.split('/');
       let basePath = '/';
 
-      // Si está en un subdirectorio (como /JabraScanTest.github.io/)
+      // Si está en una subcarpeta (como /JabraScanTest.github.io/)
       if (pathSegments.length > 2 && pathSegments[1]) {
         basePath = '/' + pathSegments[1] + '/';
       }
 
-      // Redirige al index.html dentro del path base
+      // 🚀 Redirige al index.html dentro del path base
       location.replace(basePath + 'index.html');
     })();
   </script>
@@ -29,3 +29,4 @@
   <p>Redirigiendo a la aplicación...</p>
 </body>
 </html>
+
