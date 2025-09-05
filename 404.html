@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <title>Redirigiendo...</title>
     <script>
-        const pathParts = window.location.pathname.split('/').filter(Boolean);
-        
-        // Detecta si estás en GitHub Pages de usuario (ej: jabrascan.github.io)
-        const isUserDomain = window.location.hostname.endsWith('.github.io');
-        
-        // Si estás en un dominio de usuario, el repo está en pathParts[0]
-        const repoName = isUserDomain ? pathParts[0] : '';
-        const rutaInterna = isUserDomain ? pathParts.slice(1).join('/') : pathParts.join('/');
-        
-        // Construye la URL final
-        const nuevaUrl = `/${repoName}/index.html#${rutaInterna}`;
-        window.location.replace(nuevaUrl);
+      // Carga index.html dentro del mismo documento sin cambiar la URL
+      fetch("index.html")
+        .then(res => res.text())
+        .then(html => {
+          document.open();
+          document.write(html);
+          document.close();
+        })
+        .catch(err => {
+          document.body.innerHTML = "<h1>Error al cargar la página principal.</h1>";
+          console.error("Error al cargar index.html:", err);
+        });
     </script>
   </head>
   <body>
-    <p>Redirigiendo a la página principal...</p>
+    <p>Cargando contenido...</p>
   </body>
 </html>
