@@ -1,3 +1,8 @@
+// general.js
+import { initUltimosCapitulos } from './ultimoscapitulos.js';
+import { abrirLectorPDF } from './lector.js';
+import { cargarlibro } from './libroficha.js';
+
 // ─────────────────────────────────────────────────────────────
 // 🔁 Restaurar ruta original si venimos desde 404.html
 // GitHub Pages carga 404.html para rutas limpias como /Obra/ChapterX
@@ -172,6 +177,7 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
 
 
 
