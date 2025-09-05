@@ -32,10 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(el => el.getAttribute("data-target"));
     
     // ✅ Si la ruta coincide con un data-target, carga directamente la vista
-    if (ruta && rutasDataTarget.includes(ruta)) {
-      console.log(`Ruta "${ruta}" detectada como data-target. Cargando vista directa.`);
-      cargarVista(ruta);
-    } else if (ruta && !ruta.includes("index.html")) {
+    if (ruta && !ruta.includes("index.html")) {
       manejarRuta(ruta);
     }
 
@@ -43,30 +40,31 @@ document.addEventListener("DOMContentLoaded", () => {
 // 🔗 Enlaces internos con atributo personalizado [data-target]
 // Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
 // Se distingue entre rutas que terminan en ".html" (vistas directas) y rutas dinámicas (obras/capítulos).
-    document.querySelectorAll("[data-target]").forEach(link => {
-      link.addEventListener("click", e => {
-        e.preventDefault(); // 🚫 Evita que el navegador siga el enlace de forma tradicional
-    
-        const url = link.getAttribute("data-target"); // 🧭 Obtiene la ruta destino desde el atributo personalizado
-        const repoName = window.location.pathname.split('/')[1]; // 📦 Extrae el nombre del repositorio (útil en GitHub Pages)
-        const nuevaURL = `/${repoName}/${url}`; // 🛠 Construye la nueva URL interna
-    
-        // 🧭 Actualiza la URL en el navegador sin recargar la página
-        history.pushState({}, "", nuevaURL);
-    
-        // 📥 Si la ruta termina en ".html", se trata como una vista directa
-        // Se carga directamente sin pasar por manejarRuta(), evitando interpretación como obra/capítulo
-        if (url.endsWith(".html")) {
-          console.log(`Cargando vista directa: ${url}`);
-          cargarVista(url); // 👈 Carga el contenido HTML directamente en <main>
-        } else {
-          // 📚 Si no termina en ".html", se interpreta como obra/capítulo
-          // Se delega a manejarRuta() para que decida cómo cargarlo
-          console.log(`Navegación interna con ruta: ${url}`);
-          manejarRuta(url);
-        }
-      });
-    });
+          document.querySelectorAll("[data-target]").forEach(link => {
+            link.addEventListener("click", e => {
+              e.preventDefault();
+          
+              const url = link.getAttribute("data-target");
+              
+              if (url === "index.html") {
+                // 🔄 Recarga limpia de la página base
+                window.location.href = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
+                return;
+              }
+          
+              const repoName = window.location.pathname.split('/')[1];
+              const nuevaURL = `/${repoName}/${url}`;
+              history.pushState({}, "", nuevaURL);
+          
+              if (url.endsWith(".html")) {
+                console.log(`Cargando vista directa: ${url}`);
+                cargarVista(url);
+              } else {
+                console.log(`Navegación interna con ruta: ${url}`);
+                manejarRuta(url);
+              }
+            });
+          });
 
 
   // 📚 Botón "Seguir leyendo" si hay progreso guardado en localStorage
@@ -179,6 +177,7 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
 
 
 
