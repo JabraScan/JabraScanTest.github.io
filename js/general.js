@@ -1,22 +1,22 @@
-// 📦 Importación de módulos
+// 📦 Importación de módulos necesarios para la SPA
 import { initUltimosCapitulos } from './ultimoscapitulos.js';
 import { abrirLectorPDF } from './lector.js';
 import { cargarlibro } from './libroficha.js';
 
-// 🚀 Evento principal: cuando el DOM está listo
+// 🚀 Evento principal: se ejecuta cuando el DOM está completamente cargado
 document.addEventListener("DOMContentLoaded", () => {
-  // 🧩 Estilo específico para dispositivos Apple
+  // 🧩 Detecta si el usuario está en un dispositivo Apple y aplica clase CSS
   if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream) {
     document.body.classList.add('ios');
   }
 
-  // 📅 Inserta el año actual en el footer
+  // 📅 Inserta el año actual en el footer con el ID "copyjabra"
   const footElement = document.getElementById('copyjabra');
   if (footElement) {
     footElement.innerHTML = `<p>&copy; ${new Date().getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
   }
 
-  // 🔍 Detección automática de ruta SPA
+  // 🔍 Detección automática de ruta SPA desde el parámetro "redirect" o desde el pathname
   let ruta = null;
   const params = new URLSearchParams(location.search);
 
@@ -26,17 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🚫 Evita interpretar "index.html" como obra
     if (ruta.includes("index.html")) ruta = null;
-
-    // ❌ No usamos history.replaceState para evitar romper rutas relativas
-    // ✅ Mantener index.html?redirect=... para que fetch('books/...') funcione correctamente
   } else {
-    // 🧹 Elimina la parte inicial del pathname que corresponde al proyecto
+    // 🧹 Elimina el nombre del repositorio y "index.html" del pathname
     const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
     const pathParts = path.split('/');
     ruta = pathParts.length > 1 ? pathParts.slice(1).join('/') : pathParts[0];
+
+    // 🚫 Evita interpretar "index.html" como obra si accedes directamente
+    if (!ruta || ruta.includes("index.html")) ruta = null;
   }
 
-  // 🚀 Carga la vista correspondiente si hay ruta válida
+  // 🚀 Carga la vista correspondiente si hay una ruta válida
   if (ruta) manejarRuta(ruta);
 
   // 🔗 Enlaces internos con atributo personalizado [data-target]
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 📚 Botón "Seguir leyendo" si hay progreso guardado
+  // 📚 Botón "Seguir leyendo" si hay progreso guardado en localStorage
   const ultimaObra = localStorage.getItem("ultimaObra");
   const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
 
