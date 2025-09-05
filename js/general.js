@@ -23,6 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (params.has("redirect")) {
     // Si viene desde 404.html con redirección
     ruta = params.get("redirect").replace(/^\/+/, "");
+
+    // ✅ NUEVO: Reemplaza la URL visible para mostrar /CDMNQTMHC en lugar de index.html?redirect=...
+    const base = window.location.origin + window.location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+    history.replaceState(null, "", `${base}/${ruta}`);
   } else {
     // Elimina la parte inicial del pathname que corresponde al proyecto
     const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
