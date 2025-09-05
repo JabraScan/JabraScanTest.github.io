@@ -18,23 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 🔍 Detección automática de ruta SPA desde el parámetro "redirect" o desde el pathname
   let ruta = null;
-  const params = new URLSearchParams(location.search);
-
-  if (params.has("redirect")) {
-    // 🧭 Si viene desde 404.html con redirección
-    ruta = params.get("redirect").replace(/^\/+/, "");
-
-    // 🚫 Evita interpretar "index.html" como obra
-    if (ruta.includes("index.html")) ruta = null;
-  } else {
-    // 🧹 Elimina el nombre del repositorio y "index.html" del pathname
-    const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
-    const pathParts = path.split('/');
-    ruta = pathParts.length > 1 ? pathParts.slice(1).join('/') : pathParts[0];
-
-    // 🚫 Evita interpretar "index.html" como obra si accedes directamente
-    if (!ruta || ruta.includes("index.html")) ruta = null;
-  }
+    // 🧭 Extrae la ruta desde pathname, ignorando el nombre del repositorio
+    const repoName = window.location.pathname.split('/')[1];
+    const fullPath = window.location.pathname.replace(/^\/+/, "");
+    ruta = fullPath.startsWith(repoName + "/")
+      ? fullPath.slice(repoName.length + 1)
+      : fullPath;
+  
+      // 🚫 Evita interpretar "index.html" como obra si accedes directamente
+      if (!ruta || ruta.includes("index.html")) ruta = null;
 
   // 🚀 Carga la vista correspondiente si hay una ruta válida
   if (ruta) manejarRuta(ruta);
@@ -164,3 +156,4 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
