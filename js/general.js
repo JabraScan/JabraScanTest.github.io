@@ -4,14 +4,16 @@
 // Este bloque recupera la URL original guardada en sessionStorage
 // y la restaura sin recargar la página, para que manejarRuta() funcione
 // ─────────────────────────────────────────────────────────────
-const redirectPath = sessionStorage.redirectPath;
-if (redirectPath) {
-  sessionStorage.removeItem('redirectPath');
-  history.replaceState(null, '', redirectPath);
-// 📦 Importa módulos externos
-import { initUltimosCapitulos } from './ultimoscapitulos.js';
-import { abrirLectorPDF } from './lector.js';
-import { cargarlibro } from './libroficha.js';
+  // 🔁 Restaurar ruta original si venimos desde 404.html
+  if (sessionStorage.redirectPath && typeof sessionStorage.redirectPath === 'string') {
+    const redirectPath = sessionStorage.redirectPath;
+    sessionStorage.removeItem('redirectPath');
+  
+    // Solo restaurar si la ruta parece válida
+    if (redirectPath.startsWith('/')) {
+      history.replaceState(null, '', redirectPath);
+    }
+  }
 
 // 🚀 Inicialización al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -160,4 +162,5 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
 
