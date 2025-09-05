@@ -25,10 +25,15 @@
 </head>
 <body>
 <script>
-  // Extrae la ruta que causó el 404
-  const ruta = window.location.pathname.replace(/^\/+/, "");
-  // Redirige a index.html con la ruta como parámetro
-  window.location.replace(`/JabraScanTest.github.io/index.html?redirect=${encodeURIComponent(ruta)}`);
+  // Detecta la ruta completa
+  const fullPath = window.location.pathname.replace(/^\/+/, "");
+
+  // Extrae solo la parte después del nombre del repositorio
+  const repoName = window.location.pathname.split('/')[1]; // Ej: "JabraScanTest.github.io"
+  const rutaRelativa = fullPath.startsWith(repoName + "/") ? fullPath.slice(repoName.length + 1) : fullPath;
+
+  // Redirige a index.html con la ruta limpia
+  window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
 </script>
   <header>
     <h1>Test JabraScan</h1>
