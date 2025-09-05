@@ -14,10 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if (footElement) {
     footElement.innerHTML = `<p>&copy; ${new Date().getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
   }
-  const ruta = obtenerRutaSPA();
-  if (ruta) {
-    manejarRuta(ruta);
+
+  // Determinar ruta única
+  let ruta = null;
+  const params = new URLSearchParams(location.search);
+  if (params.has("redirect")) {
+    ruta = params.get("redirect").replace(/^\/+/, "");
+  } else if (location.pathname && location.pathname !== "/") {
+    const partes = location.pathname.split('/');
+    const base = partes[1]; // JabraScanTest.github.io
+    ruta = partes.slice(2).join('/'); // Ignora la carpeta base
+  } else if (location.hash) {
+    ruta = location.hash.replace(/^#/, "");
   }
+
+  if (ruta) manejarRuta(ruta);
+
   // Enlaces internos
   document.querySelectorAll("[data-target]").forEach(link => {
     link.addEventListener("click", e => {
@@ -45,28 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
-
-  // Redirección desde 404.html
-  const params = new URLSearchParams(location.search);
-  const redirect = params.get("redirect");
-  if (redirect) {
-    const ruta = redirect.replace(/^\/+/, "");
-    manejarRuta(ruta);
-    return;
-  }
-
-  // Rutas limpias
-  const rutaLimpia = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
-  if (rutaLimpia && rutaLimpia !== "") {
-    manejarRuta(rutaLimpia);
-    return;
-  }
-
-  // Compatibilidad con hash
-  if (location.hash) {
-    manejarRuta(location.hash.replace(/^#/, ""));
-  }
 });
+
 
 // Botón "Atrás"
 window.addEventListener("popstate", () => {
@@ -156,3 +148,4 @@ function obtenerRutaSPA() {
   const rutaSPA = rutaRelativa.slice(1).join('/'); // Ignora la carpeta base del proyecto
   return rutaSPA || location.hash.replace(/^#/, "");
 }
+
