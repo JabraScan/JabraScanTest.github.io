@@ -24,9 +24,21 @@ document.addEventListener("DOMContentLoaded", () => {
     : fullPath;
 
   // 🚫 Ignora rutas vacías o que contienen "index.html"
-  if (ruta && !ruta.includes("index.html")) {
+  /*if (ruta && !ruta.includes("index.html")) {
     manejarRuta(ruta);
-  }
+  }*/
+  // 🔍 Recoge todos los valores de data-target definidos en el HTML
+    const rutasDataTarget = Array.from(document.querySelectorAll("[data-target]"))
+      .map(el => el.getAttribute("data-target"));
+    
+    // ✅ Si la ruta coincide con un data-target, carga directamente la vista
+    if (ruta && rutasDataTarget.includes(ruta)) {
+      console.log(`Ruta "${ruta}" detectada como data-target. Cargando vista directa.`);
+      cargarVista(ruta);
+    } else if (ruta && !ruta.includes("index.html")) {
+      manejarRuta(ruta);
+    }
+
 
 // 🔗 Enlaces internos con atributo personalizado [data-target]
 // Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
@@ -167,6 +179,7 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
 
 
 
