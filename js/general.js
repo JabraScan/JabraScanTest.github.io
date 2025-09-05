@@ -16,20 +16,17 @@ document.addEventListener("DOMContentLoaded", () => {
     footElement.innerHTML = `<p>&copy; ${new Date().getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
   }
 
-  // 🔍 Detección automática de ruta SPA desde el parámetro "redirect" o desde el pathname
-  let ruta = null;
-    // 🧭 Extrae la ruta desde pathname, ignorando el nombre del repositorio
-    const repoName = window.location.pathname.split('/')[1];
-    const fullPath = window.location.pathname.replace(/^\/+/, "");
-    ruta = fullPath.startsWith(repoName + "/")
-      ? fullPath.slice(repoName.length + 1)
-      : fullPath;
-  
-      // 🚫 Evita interpretar "index.html" como obra si accedes directamente
-      if (!ruta || ruta.includes("index.html")) ruta = null;
+  // 🧭 Extrae la ruta limpia desde pathname
+  const repoName = window.location.pathname.split('/')[1];
+  const fullPath = window.location.pathname.replace(/^\/+/, "");
+  const ruta = fullPath.startsWith(repoName + "/")
+    ? fullPath.slice(repoName.length + 1)
+    : fullPath;
 
-  // 🚀 Carga la vista correspondiente si hay una ruta válida
-  if (ruta) manejarRuta(ruta);
+  // 🚫 Ignora rutas vacías o que contienen "index.html"
+  if (ruta && !ruta.includes("index.html")) {
+    manejarRuta(ruta);
+  }
 
   // 🔗 Enlaces internos con atributo personalizado [data-target]
   document.querySelectorAll("[data-target]").forEach(link => {
@@ -39,10 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (url === "index.html") {
         // 🏠 Redirige a la raíz del proyecto sin recargar
-        const base = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
-        window.location.href = base;
+        const base = `/${repoName}/`;
+        history.pushState({}, "", base);
+        manejarRuta("");
       } else {
-        // 🔄 Carga la vista sin modificar la URL visible
+        // 🔄 Carga la vista y actualiza la URL sin recargar
+        history.pushState({}, "", `/${repoName}/${url}`);
         manejarRuta(url);
       }
     });
@@ -67,12 +66,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 🔙 Maneja navegación con el botón "Atrás" del navegador
 window.addEventListener("popstate", () => {
-  const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
-  const pathParts = path.split('/');
-  const ruta = pathParts.length > 1 ? pathParts.slice(1).join('/') : pathParts[0];
+  const repoName = window.location.pathname.split('/')[1];
+  const fullPath = window.location.pathname.replace(/^\/+/, "");
+  const ruta = fullPath.startsWith(repoName + "/")
+    ? fullPath.slice(repoName.length + 1)
+    : fullPath;
 
-  // 🔄 Si no hay ruta, intenta usar el hash como fallback
-  manejarRuta(ruta || location.hash.replace(/^#/, ""));
+  manejarRuta(ruta || "");
 });
 
 // 📥 Carga vistas genéricas como ultimosCapitulos.html
@@ -126,26 +126,21 @@ function abrirObraCapitulo(obra, capitulo = null) {
 
 // 🔗 Actualiza la vista internamente sin modificar la URL visible
 export function mostrarurl(obra, capitulo = null) {
-  manejarRuta(`${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`);
+  const repoName = window.location.pathname.split('/')[1];
+  const ruta = `${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+  history.pushState({}, "", `/${repoName}/${ruta}`);
+  manejarRuta(ruta);
 }
 
-// 🔗 Compatibilidad con hash (enlaces internos)
-function mostrarurlDesdeHash(hash) {
-  manejarRuta(hash);
-}
-
-// 🧭 Interpreta ruta limpia o hash y carga la vista correspondiente
+// 🧭 Interpreta ruta limpia y carga la vista correspondiente
 function manejarRuta(ruta) {
-  // 🚫 Ignora rutas vacías o que apuntan a index.html
   if (!ruta || ruta === "index.html") return;
 
-  // 📄 Si la ruta termina en .html, carga vista genérica
   if (ruta.endsWith(".html")) {
     cargarVista(ruta);
     return;
   }
 
-  // 📚 Interpretar como obra/capítulo
   const partes = ruta.split('/');
   const obra = partes[0];
   const capitulo = partes[1]?.startsWith("Chapter") ? parseInt(partes[1].replace("Chapter", "")) : null;
@@ -156,4 +151,3 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
-
