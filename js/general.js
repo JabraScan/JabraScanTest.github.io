@@ -2,7 +2,22 @@
 import { initUltimosCapitulos } from './ultimoscapitulos.js';
 import { abrirLectorPDF } from './lector.js';
 import { cargarlibro } from './libroficha.js';
-
+// ─────────────────────────────────────────────────────────────
+// 🌐 Detección dinámica del subdirectorio base
+// Esto permite que la web funcione en cualquier dominio o carpeta
+// Ejemplo: https://dominio.com/proyecto/ → basePath = "/proyecto"
+// ─────────────────────────────────────────────────────────────
+const basePath = (() => {
+  const path = window.location.pathname;
+  const parts = path.split('/');
+  if (parts.length > 2) {
+    // Elimina el último segmento si es archivo (index.html, etc.)
+    const last = parts.at(-1);
+    const isFile = last.includes('.') || last === '';
+    return parts.slice(0, isFile ? -1 : parts.length).join('/');
+  }
+  return '';
+  })();
 // ─────────────────────────────────────────────────────────────
 // 🔁 Restaurar ruta original si venimos desde 404.html
 // GitHub Pages carga 404.html para rutas limpias como /Obra/ChapterX
@@ -175,3 +190,4 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
