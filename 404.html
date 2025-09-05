@@ -18,29 +18,43 @@
   </head>
   <body>
     <p>Redirigiendo a la aplicación...</p>
+        <script>
+          // 🧭 Extrae el nombre del repositorio desde la URL
+          // Ejemplo: /JabraScanTest.github.io/ObraX → repoName = "JabraScanTest.github.io"
+          const repoName = window.location.pathname.split('/')[1];
+        
+          // 🔍 Obtiene la ruta completa eliminando las barras iniciales
+          // Ejemplo: "/JabraScanTest.github.io/ObraX" → "JabraScanTest.github.io/ObraX"
+          const fullPath = window.location.pathname.replace(/^\/+/, "");
+        
+          // 🧩 Elimina el nombre del repositorio para obtener la ruta interna relativa
+          // Ejemplo: "JabraScanTest.github.io/ObraX" → "ObraX"
+          const rutaRelativa = fullPath.startsWith(repoName + "/")
+            ? fullPath.slice(repoName.length + 1)
+            : fullPath;
+        
+          // 🛑 Detecta si ya estás en index.html (en cualquier parte de la ruta)
+          // Esto previene redirecciones innecesarias o bucles infinitos
+          const yaEnIndex = window.location.pathname.includes("index.html");
+        
+          // 🧪 Detecta si ya hay un parámetro redirect en la URL
+          // Si existe, significa que ya se ha redirigido correctamente
+          const tieneRedirect = window.location.search.includes("redirect=");
+        
+          // 🚫 Considera inválida cualquier ruta vacía o que contenga "index.html"
+          // Esto evita que se intente cargar index.html como si fuera una obra
+          const esRutaInvalida = !rutaRelativa || rutaRelativa.includes("index.html");
+        
+          // ✅ Redirige solo si:
+          // - No estás ya en index.html
+          // - No hay parámetro redirect
+          // - La ruta relativa es válida (no vacía ni apunta a index.html)
+          if (!yaEnIndex && !tieneRedirect && !esRutaInvalida) {
+            // 🚀 Redirige a index.html con la ruta original como parámetro
+            // Esto permite que la SPA interprete la ruta y cargue la vista correspondiente
+            window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
+          }
+        </script>
 
-    <script>
-      // 🧭 Extrae el nombre del repositorio desde la URL
-      // Ejemplo: /MiRepo/alguna/ruta → repoName = "MiRepo"
-      const repoName = window.location.pathname.split('/')[1];
-
-      // 🔍 Obtiene la ruta completa sin barras iniciales
-      const fullPath = window.location.pathname.replace(/^\/+/, "");
-
-      // 🧩 Elimina el nombre del repositorio para obtener la ruta relativa interna
-      const rutaRelativa = fullPath.startsWith(repoName + "/")
-        ? fullPath.slice(repoName.length + 1)
-        : fullPath;
-
-      // 🛑 Detecta si ya estás en index.html o si ya hay parámetro redirect
-      const yaEnIndex = window.location.pathname.endsWith("index.html");
-      const tieneRedirect = window.location.search.includes("redirect=");
-
-      // 🚫 Evita redirigir si ya estás en index.html con redirect (previene bucles infinitos)
-      if (!yaEnIndex && !tieneRedirect) {
-        // 🚀 Redirige a index.html con la ruta original como parámetro
-        window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
-      }
-    </script>
   </body>
 </html>
