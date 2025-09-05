@@ -2,6 +2,7 @@
 import { initUltimosCapitulos } from './ultimoscapitulos.js';
 import { abrirLectorPDF } from './lector.js';
 import { cargarlibro } from './libroficha.js';
+
 // ─────────────────────────────────────────────────────────────
 // 🌐 Detección dinámica del subdirectorio base
 // Esto permite que la web funcione en cualquier dominio o carpeta
@@ -17,23 +18,17 @@ const basePath = (() => {
     return parts.slice(0, isFile ? -1 : parts.length).join('/');
   }
   return '';
-  })();
-// ─────────────────────────────────────────────────────────────
-// 🔁 Restaurar ruta original si venimos desde 404.html
-// GitHub Pages carga 404.html para rutas limpias como /Obra/ChapterX
-// Este bloque recupera la URL original guardada en sessionStorage
-// y la restaura sin recargar la página, para que manejarRuta() funcione
-// ─────────────────────────────────────────────────────────────
-  // 🔁 Restaurar ruta original si venimos desde 404.html
-  if (document.referrer.includes('404.html') && sessionStorage.redirectPath) {
-    const redirectPath = sessionStorage.redirectPath;
-    sessionStorage.removeItem('redirectPath');
-  
-    if (redirectPath.startsWith('/')) {
-      history.replaceState(null, '', redirectPath);
-    }
-  }
+})();
 
+// 🔁 Restaurar ruta original si venimos desde 404.html
+if (document.referrer.includes('404.html') && sessionStorage.redirectPath) {
+  const redirectPath = sessionStorage.redirectPath;
+  sessionStorage.removeItem('redirectPath');
+
+  if (redirectPath.startsWith('/')) {
+    history.replaceState(null, '', redirectPath);
+  }
+}
 
 // 🚀 Inicialización al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -54,15 +49,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = link.getAttribute("data-target");
 
       if (url === "index.html") {
-        // 🧼 Redirige a la raíz del proyecto
-        window.location.href = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
+        // Redirige a la raíz del proyecto sin recargar
+        const nuevaUrl = `${window.location.origin}${basePath}/`;
+        window.history.pushState(null, "", nuevaUrl);
+        manejarRuta();
       } else if (url.startsWith("#")) {
-        // 🧭 Compatibilidad con hash antiguo
+        // Compatibilidad con hash antiguo
         location.hash = url;
       } else {
-        // 🚪 Migración a ruta limpia
+        // Navegación limpia
         const limpio = url.replace(/^#/, "");
-        const nuevaUrl = `${window.location.origin}/${limpio}`;
+        const nuevaUrl = `${window.location.origin}${basePath}/${limpio}`;
         window.history.pushState(null, "", nuevaUrl);
         manejarRuta();
       }
@@ -102,7 +99,7 @@ function convertirHashARuta() {
   if (!hash) return false;
 
   const limpio = hash.replace(/^#/, "");
-  const nuevaUrl = `${window.location.origin}/${limpio}`;
+  const nuevaUrl = `${window.location.origin}${basePath}/${limpio}`;
   window.history.replaceState(null, "", nuevaUrl);
   return true;
 }
@@ -117,7 +114,6 @@ function cargarVista(url) {
     .then(html => {
       document.querySelector("main").innerHTML = html;
 
-      // 🛠️ Inicialización específica por vista
       if (url === "ultimosCapitulos.html") {
         ocultarDisqus?.();
         initUltimosCapitulos();
@@ -132,7 +128,6 @@ function abrirObraCapitulo(obra, capitulo = null) {
   localStorage.setItem('libroSeleccionado', obra);
 
   if (capitulo === null) {
-    // 📘 Ficha del libro
     fetch('books/libro-ficha.html')
       .then(response => {
         if (!response.ok) throw new Error('Error al cargar la ficha: ' + response.statusText);
@@ -144,7 +139,6 @@ function abrirObraCapitulo(obra, capitulo = null) {
       })
       .catch(err => console.error('Error:', err));
   } else {
-    // 📖 Capítulo en lector PDF
     localStorage.setItem('ultimaObra', obra);
     localStorage.setItem('ultimoCapitulo', capitulo);
     localStorage.setItem("ultimaPagina", 1);
@@ -162,24 +156,23 @@ function abrirObraCapitulo(obra, capitulo = null) {
 
 // 🔗 Actualiza la URL con ruta limpia
 export function mostrarurl(obra, capitulo = null) {
-  const nuevaRuta = `/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
+  const nuevaRuta = `${basePath}/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
   window.history.pushState(null, "", nuevaRuta);
   manejarRuta();
 }
 
 // 🧭 Interpreta la ruta actual y carga la vista correspondiente
-// 🧭 Interpreta la ruta actual y carga la vista correspondiente
 function manejarRuta() {
   const fullParts = window.location.pathname.split('/').filter(Boolean);
 
-  // 🧼 Ignorar si estamos en index.html directamente
-  if (fullParts.at(-1) === 'index.html') return;
+  // Ignorar si estamos en index.html directamente
+  const lastSegment = fullParts.at(-1);
+  if (lastSegment === 'index.html') return;
 
-  // Detectar si estamos en un subdirectorio (como GitHub Pages)
-  const base = fullParts[0] === 'JabraScanTest.github.io' ? 1 : 0;
-
-  const obra = fullParts[base];
-  const capSegment = fullParts[base + 1];
+  // Detectar posición del basePath
+  const baseIndex = fullParts.findIndex(part => part === basePath.replace("/", ""));
+  const obra = fullParts[baseIndex + 1];
+  const capSegment = fullParts[baseIndex + 2];
   const capitulo = capSegment?.startsWith("Chapter") ? parseInt(capSegment.replace("Chapter", "")) : null;
 
   if (!obra) return;
@@ -190,4 +183,3 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
-
