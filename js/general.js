@@ -28,27 +28,34 @@ document.addEventListener("DOMContentLoaded", () => {
     manejarRuta(ruta);
   }
 
-  // 🔗 Enlaces internos con atributo personalizado [data-target]
+// 🔗 Enlaces internos con atributo personalizado [data-target]
+// Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
+// Se distingue entre rutas que terminan en ".html" (vistas directas) y rutas dinámicas (obras/capítulos).
     document.querySelectorAll("[data-target]").forEach(link => {
       link.addEventListener("click", e => {
-        e.preventDefault();
-        const url = link.getAttribute("data-target");
-        const repoName = window.location.pathname.split('/')[1];
+        e.preventDefault(); // 🚫 Evita que el navegador siga el enlace de forma tradicional
     
-        // 🧵 Grupo que NO debe pasar por manejarRuta
-        const vistasDirectas = ["index.html", "ultimosCapitulos.html", "home.html"];
+        const url = link.getAttribute("data-target"); // 🧭 Obtiene la ruta destino desde el atributo personalizado
+        const repoName = window.location.pathname.split('/')[1]; // 📦 Extrae el nombre del repositorio (útil en GitHub Pages)
+        const nuevaURL = `/${repoName}/${url}`; // 🛠 Construye la nueva URL interna
     
-        if (vistasDirectas.includes(url)) {
+        // 🧭 Actualiza la URL en el navegador sin recargar la página
+        history.pushState({}, "", nuevaURL);
+    
+        // 📥 Si la ruta termina en ".html", se trata como una vista directa
+        // Se carga directamente sin pasar por manejarRuta(), evitando interpretación como obra/capítulo
+        if (url.endsWith(".html")) {
           console.log(`Cargando vista directa: ${url}`);
-          history.pushState({}, "", `/${repoName}/${url}`);
-          cargarVista(url); // 👈 carga directa sin manejarRuta
+          cargarVista(url); // 👈 Carga el contenido HTML directamente en <main>
         } else {
+          // 📚 Si no termina en ".html", se interpreta como obra/capítulo
+          // Se delega a manejarRuta() para que decida cómo cargarlo
           console.log(`Navegación interna con ruta: ${url}`);
-          history.pushState({}, "", `/${repoName}/${url}`);
-          manejarRuta(url); // 👈 navegación normal
+          manejarRuta(url);
         }
       });
     });
+
 
   // 📚 Botón "Seguir leyendo" si hay progreso guardado en localStorage
   const ultimaObra = localStorage.getItem("ultimaObra");
@@ -160,5 +167,6 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
 
 
