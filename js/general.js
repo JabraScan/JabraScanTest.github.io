@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (footElement) {
     footElement.innerHTML = `<p>&copy; ${new Date().getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
   }
-
+  const ruta = obtenerRutaSPA();
+  if (ruta) {
+    manejarRuta(ruta);
+  }
   // Enlaces internos
   document.querySelectorAll("[data-target]").forEach(link => {
     link.addEventListener("click", e => {
@@ -145,4 +148,11 @@ function manejarRuta(ruta) {
   const capitulo = cap?.startsWith("Chapter") ? parseInt(cap.replace("Chapter", "")) : null;
 
   if (obra) abrirObraCapitulo(obra, capitulo);
+}
+// Detecta ruta relativa desde el punto de entrada
+function obtenerRutaSPA() {
+  const basePath = window.location.pathname.replace(/\/index\.html$/, "");
+  const rutaRelativa = basePath.replace(/^\/+/, "").split('/');
+  const rutaSPA = rutaRelativa.slice(1).join('/'); // Ignora la carpeta base del proyecto
+  return rutaSPA || location.hash.replace(/^#/, "");
 }
