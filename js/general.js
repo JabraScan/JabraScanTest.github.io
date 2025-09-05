@@ -4,7 +4,7 @@
 // Este bloque recupera la URL original guardada en sessionStorage
 // y la restaura sin recargar la página, para que manejarRuta() funcione
 // ─────────────────────────────────────────────────────────────
-  // 🔁 Restaurar ruta original si venimos desde 404.html
+/*  // 🔁 Restaurar ruta original si venimos desde 404.html
   if (sessionStorage.redirectPath && typeof sessionStorage.redirectPath === 'string') {
     const redirectPath = sessionStorage.redirectPath;
     sessionStorage.removeItem('redirectPath');
@@ -13,7 +13,17 @@
     if (redirectPath.startsWith('/')) {
       history.replaceState(null, '', redirectPath);
     }
+  }*/
+// 🔁 Restaurar ruta original si venimos desde 404.html
+if (document.referrer.includes('404.html') && sessionStorage.redirectPath) {
+  const redirectPath = sessionStorage.redirectPath;
+  sessionStorage.removeItem('redirectPath');
+
+  if (redirectPath.startsWith('/')) {
+    history.replaceState(null, '', redirectPath);
   }
+}
+
 
 // 🚀 Inicialización al cargar el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -162,5 +172,6 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
 
 
