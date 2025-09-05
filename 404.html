@@ -1,38 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Redirigiendo...</title>
-    <script>
-      (function () {
-        const { pathname, search, hash, origin } = window.location;
+<script>
+  // Extrae la ruta interna ignorando la primera barra
+  const rutaInterna = window.location.pathname.replace(/^\/+/, '');
 
-        // 🧠 Extrae la ruta base quitando el último segmento (el que causó el 404)
-        const pathParts = pathname.split('/').filter(Boolean);
-        const basePath = pathParts.slice(0, -1).join('/');
+  // Construye la URL base (sin duplicar nada)
+  const baseUrl = window.location.origin;
 
-        // 🛠️ Construye la URL absoluta a index.html desde el nivel correcto
-        const indexUrl = basePath ? `${origin}/${basePath}/index.html` : `${origin}/index.html`;
-
-        // 🔄 Carga index.html sin cambiar la URL visible
-        fetch(indexUrl + search)
-          .then(res => {
-            if (!res.ok) throw new Error(`No se encontró ${indexUrl}`);
-            return res.text();
-          })
-          .then(html => {
-            document.open();
-            document.write(html);
-            document.close();
-          })
-          .catch(err => {
-            document.body.innerHTML = `<h1>Error al cargar index.html</h1><p>${err.message}</p>`;
-            console.error("Error al cargar index.html:", err);
-          });
-      })();
-    </script>
-  </head>
-  <body>
-    <p>Cargando contenido...</p>
-  </body>
-</html>
+  // Redirige a index.html con el hash correcto
+  const nuevaUrl = `${baseUrl}/index.html#${rutaInterna}`;
+  window.location.replace(nuevaUrl);
+</script>
