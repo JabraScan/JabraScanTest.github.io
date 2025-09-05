@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const now = new Date();
   footElement.innerHTML = `<p>&copy; ${now.getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
 
+  convertirHashARuta(); // ✅ Convierte hash si existe
   // 🔗 Enlaces con atributo data-target para cargar vistas genéricas
   document.querySelectorAll("[data-target]").forEach(link => {
     link.addEventListener("click", e => {
@@ -50,7 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 🔙 Maneja el botón "Atrás" del navegador
 window.addEventListener("popstate", () => {
+  convertirHashARuta();
   manejarRuta();
+});
+// maneja el cambio de hash - Soporte para enlaces externos con hash
+window.addEventListener("hashchange", () => {
+  if (convertirHashARuta()) manejarRuta();
 });
 
 // 📦 Función para cargar vistas genéricas como disclaimer.html
@@ -123,4 +129,21 @@ function manejarRuta() {
   } else {
     abrirObraCapitulo(obra, capitulo);
   }
+}
+
+/**
+ * 🔁 Convierte una URL con hash (#) en una ruta limpia (/).
+ * 🧼 Reemplaza el hash por una ruta real usando pushState.
+ * 🧭 Llama a manejarRuta() para cargar el contenido correspondiente.
+ */
+function convertirHashARuta() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const limpio = hash.replace(/^#/, ""); // Ej: "CDMNQTMHC/Chapter1"
+  const baseUrl = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
+  const nuevaUrl = `${baseUrl}/${limpio}`;
+
+  window.history.replaceState(null, "", nuevaUrl);
+  return true; // ✅ Se hizo conversión
 }
