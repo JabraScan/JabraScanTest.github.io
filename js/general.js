@@ -24,9 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si viene desde 404.html con redirección
     ruta = params.get("redirect").replace(/^\/+/, "");
 
-    // ✅ NUEVO: Reemplaza la URL visible para mostrar /CDMNQTMHC en lugar de index.html?redirect=...
-    const base = window.location.origin + window.location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
-    history.replaceState(null, "", `${base}/${ruta}`);
+    // ❌ Eliminamos history.replaceState para mantener rutas relativas funcionales
+    // ✅ Mantener index.html?redirect=... para que fetch('books/...') funcione correctamente
   } else {
     // Elimina la parte inicial del pathname que corresponde al proyecto
     const path = location.pathname.replace(/\/index\.html$/, "").replace(/^\/+/, "");
@@ -130,17 +129,14 @@ function abrirObraCapitulo(obra, capitulo = null) {
 
 // 🔗 Actualiza la URL limpia y carga la vista
 export function mostrarurl(obra, capitulo = null) {
-  const base = window.location.origin + window.location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
-  const nuevaRuta = `${base}/${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
-  window.history.pushState(null, "", nuevaRuta);
+  // ❌ No modificamos la URL con pushState para evitar romper rutas relativas
+  // ✅ Solo manejamos la ruta internamente
   manejarRuta(`${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`);
 }
 
 // 🔗 Compatibilidad con hash (enlaces internos)
 function mostrarurlDesdeHash(hash) {
-  const base = window.location.origin + window.location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
-  const nuevaRuta = `${base}/${hash}`;
-  window.history.pushState(null, "", nuevaRuta);
+  // ❌ No modificamos la URL con pushState
   manejarRuta(hash);
 }
 
