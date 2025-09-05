@@ -1,3 +1,13 @@
+// ─────────────────────────────────────────────────────────────
+// 🔁 Restaurar ruta original si venimos desde 404.html
+// GitHub Pages carga 404.html para rutas limpias como /Obra/ChapterX
+// Este bloque recupera la URL original guardada en sessionStorage
+// y la restaura sin recargar la página, para que manejarRuta() funcione
+// ─────────────────────────────────────────────────────────────
+const redirectPath = sessionStorage.redirectPath;
+if (redirectPath) {
+  sessionStorage.removeItem('redirectPath');
+  history.replaceState(null, '', redirectPath);
 // 📦 Importa módulos externos
 import { initUltimosCapitulos } from './ultimoscapitulos.js';
 import { abrirLectorPDF } from './lector.js';
@@ -150,3 +160,4 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
+
