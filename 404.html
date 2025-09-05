@@ -24,6 +24,12 @@
   </script>
 </head>
 <body>
+<script>
+  // Extrae la ruta que causó el 404
+  const ruta = window.location.pathname.replace(/^\/+/, "");
+  // Redirige a index.html con la ruta como parámetro
+  window.location.replace(`/JabraScanTest.github.io/index.html?redirect=${encodeURIComponent(ruta)}`);
+</script>
   <header>
     <h1>Test JabraScan</h1>
     <nav>
