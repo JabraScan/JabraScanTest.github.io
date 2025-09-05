@@ -1,16 +1,32 @@
-<!-- 404.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <title>Redirigiendo...</title>
   <script>
-    const rutaOriginal = location.pathname + location.search + location.hash;
-    const base = location.origin + location.pathname.split('/').slice(0, -1).join('/');
-    location.replace(`${base}/index.html?redirect=${encodeURIComponent(rutaOriginal)}`);
+    (function () {
+      // 🧭 Captura la ruta completa (incluye query y hash)
+      const fullPath = location.pathname + location.search + location.hash;
+
+      // 💾 Guarda la ruta original para que general.js la restaure
+      sessionStorage.redirectPath = fullPath;
+
+      // 📁 Detecta el path base dinámicamente
+      const pathSegments = location.pathname.split('/');
+      let basePath = '/';
+
+      // Si está en una subcarpeta (como /JabraScanTest.github.io/)
+      if (pathSegments.length > 2 && pathSegments[1]) {
+        basePath = '/' + pathSegments[1] + '/';
+      }
+
+      // 🚀 Redirige al index.html dentro del path base
+      location.replace(basePath + 'index.html');
+    })();
   </script>
 </head>
 <body>
   <p>Redirigiendo a la aplicación...</p>
 </body>
 </html>
+
