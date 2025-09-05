@@ -15,13 +15,11 @@
   <body>
     <p>Redirigiendo a la aplicación...</p>
     <script>
-      // Detecta el nombre del repositorio
       const repoName = window.location.pathname.split('/')[1];
       const fullPath = window.location.pathname.replace(/^\/+/, "");
       const rutaRelativa = fullPath.startsWith(repoName + "/") ? fullPath.slice(repoName.length + 1) : fullPath;
-
-      // Redirige a index.html con la ruta limpia
       window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
+
     </script>
   </body>
 </html>
