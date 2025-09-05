@@ -29,25 +29,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 🔗 Enlaces internos con atributo personalizado [data-target]
-  document.querySelectorAll("[data-target]").forEach(link => {
-    link.addEventListener("click", e => {
-      e.preventDefault();
-      const url = link.getAttribute("data-target");
-
-      if (url === "index.html") {
-        console.log('Redirige a la raíz del proyecto sin recarga');
-        // 🏠 Redirige a la raíz del proyecto sin recargar
-        const base = `/${repoName}/`;
-        history.pushState({}, "", base);
-        manejarRuta("");
-      } else {
-        console.log('Carga la vista y actualiza la URL sin recargar');
-        // 🔄 Carga la vista y actualiza la URL sin recargar
-        history.pushState({}, "", `/${repoName}/${url}`);
-        manejarRuta(url);
-      }
+    document.querySelectorAll("[data-target]").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const url = link.getAttribute("data-target");
+        const repoName = window.location.pathname.split('/')[1];
+    
+        // 🧵 Grupo que NO debe pasar por manejarRuta
+        const vistasDirectas = ["index.html", "ultimosCapitulos.html", "home.html"];
+    
+        if (vistasDirectas.includes(url)) {
+          console.log(`Cargando vista directa: ${url}`);
+          history.pushState({}, "", `/${repoName}/${url}`);
+          cargarVista(url); // 👈 carga directa sin manejarRuta
+        } else {
+          console.log(`Navegación interna con ruta: ${url}`);
+          history.pushState({}, "", `/${repoName}/${url}`);
+          manejarRuta(url); // 👈 navegación normal
+        }
+      });
     });
-  });
 
   // 📚 Botón "Seguir leyendo" si hay progreso guardado en localStorage
   const ultimaObra = localStorage.getItem("ultimaObra");
@@ -159,4 +160,5 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
+
 
