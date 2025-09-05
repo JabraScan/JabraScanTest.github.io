@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Si viene desde 404.html con redirección
     ruta = params.get("redirect").replace(/^\/+/, "");
 
-    // ❌ Eliminamos history.replaceState para mantener rutas relativas funcionales
+    // ❌ No usamos history.replaceState para evitar romper rutas relativas
     // ✅ Mantener index.html?redirect=... para que fetch('books/...') funcione correctamente
   } else {
     // Elimina la parte inicial del pathname que corresponde al proyecto
@@ -47,8 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const base = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
         window.location.href = base;
       } else {
-        // Actualiza la URL y carga la vista correspondiente
-        mostrarurlDesdeHash(url);
+        // ✅ Carga la vista sin modificar la URL visible
+        manejarRuta(url);
       }
     });
   });
@@ -127,16 +127,13 @@ function abrirObraCapitulo(obra, capitulo = null) {
   }
 }
 
-// 🔗 Actualiza la URL limpia y carga la vista
+// 🔗 Actualiza la vista internamente sin modificar la URL visible
 export function mostrarurl(obra, capitulo = null) {
-  // ❌ No modificamos la URL con pushState para evitar romper rutas relativas
-  // ✅ Solo manejamos la ruta internamente
   manejarRuta(`${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`);
 }
 
 // 🔗 Compatibilidad con hash (enlaces internos)
 function mostrarurlDesdeHash(hash) {
-  // ❌ No modificamos la URL con pushState
   manejarRuta(hash);
 }
 
