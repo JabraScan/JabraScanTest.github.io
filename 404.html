@@ -3,7 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>Redirigiendo...</title>
+
+    <!-- 🕵️ Evita que los motores de búsqueda indexen esta página de error -->
     <meta name="robots" content="noindex" />
+
+    <!-- 🎨 Estilos básicos para mostrar el mensaje de redirección -->
     <style>
       body {
         font-family: sans-serif;
@@ -14,16 +18,29 @@
   </head>
   <body>
     <p>Redirigiendo a la aplicación...</p>
-      <script>
-        const repoName = window.location.pathname.split('/')[1];
-        const fullPath = window.location.pathname.replace(/^\/+/, "");
-        const rutaRelativa = fullPath.startsWith(repoName + "/") ? fullPath.slice(repoName.length + 1) : fullPath;
-      
-        // Evita redirigir si ya estás en index.html
-        if (!rutaRelativa.startsWith("index.html")) {
-          window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
-        }
-      </script>
 
+    <script>
+      // 🧭 Extrae el nombre del repositorio desde la URL
+      // Ejemplo: /MiRepo/alguna/ruta → repoName = "MiRepo"
+      const repoName = window.location.pathname.split('/')[1];
+
+      // 🔍 Obtiene la ruta completa sin barras iniciales
+      const fullPath = window.location.pathname.replace(/^\/+/, "");
+
+      // 🧩 Elimina el nombre del repositorio para obtener la ruta relativa interna
+      const rutaRelativa = fullPath.startsWith(repoName + "/")
+        ? fullPath.slice(repoName.length + 1)
+        : fullPath;
+
+      // 🛑 Detecta si ya estás en index.html o si ya hay parámetro redirect
+      const yaEnIndex = window.location.pathname.endsWith("index.html");
+      const tieneRedirect = window.location.search.includes("redirect=");
+
+      // 🚫 Evita redirigir si ya estás en index.html con redirect (previene bucles infinitos)
+      if (!yaEnIndex && !tieneRedirect) {
+        // 🚀 Redirige a index.html con la ruta original como parámetro
+        window.location.replace(`/${repoName}/index.html?redirect=${encodeURIComponent(rutaRelativa)}`);
+      }
+    </script>
   </body>
 </html>
