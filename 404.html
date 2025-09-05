@@ -4,14 +4,18 @@
     <meta charset="UTF-8" />
     <title>Redirigiendo...</title>
     <script>
-      // Detecta el nombre del repositorio (subcarpeta) automáticamente
-      const pathParts = location.pathname.split("/").filter(Boolean);
-      const repoName = pathParts[0]; // Ej: "JabraScanTest.github.io"
-      const ruta = pathParts.slice(1).join("/"); // Ej: "CDMNQTMHC" o "obra/Chapter1"
-
-      // Redirige a index.html dentro del mismo repositorio con hash
-      const nuevaUrl = `/${repoName}/index.html#${ruta}`;
-      location.replace(nuevaUrl);
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        
+        // Detecta si estás en GitHub Pages de usuario (ej: jabrascan.github.io)
+        const isUserDomain = window.location.hostname.endsWith('.github.io');
+        
+        // Si estás en un dominio de usuario, el repo está en pathParts[0]
+        const repoName = isUserDomain ? pathParts[0] : '';
+        const rutaInterna = isUserDomain ? pathParts.slice(1).join('/') : pathParts.join('/');
+        
+        // Construye la URL final
+        const nuevaUrl = `/${repoName}/index.html#${rutaInterna}`;
+        window.location.replace(nuevaUrl);
     </script>
   </head>
   <body>
