@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Redirigiendo...</title>
+  <script>
+    (function () {
+      // Captura la ruta completa
+      const fullPath = location.pathname + location.search + location.hash;
+
+      // Guarda la ruta original para que general.js la recupere
+      sessionStorage.redirectPath = fullPath;
+
+      // Detecta el path base dinámicamente
+      const pathSegments = location.pathname.split('/');
+      let basePath = '/';
+
+      // Si está en un subdirectorio (como /JabraScanTest.github.io/)
+      if (pathSegments.length > 2 && pathSegments[1]) {
+        basePath = '/' + pathSegments[1] + '/';
+      }
+
+      // Redirige al index.html dentro del path base
+      location.replace(basePath + 'index.html');
+    })();
+  </script>
+</head>
+<body>
+  <p>Redirigiendo a la aplicación...</p>
+</body>
+</html>
