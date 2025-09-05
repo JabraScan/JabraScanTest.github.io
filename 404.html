@@ -19,6 +19,7 @@
   <body>
     <p>Redirigiendo a la aplicación...</p>
         <script>
+          console.log(window.location.pathname);
           // 🧭 Extrae el nombre del repositorio desde la URL
           // Ejemplo: /JabraScanTest.github.io/ObraX → repoName = "JabraScanTest.github.io"
           const repoName = window.location.pathname.split('/')[1];
