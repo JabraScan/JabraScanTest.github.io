@@ -16,57 +16,55 @@ document.addEventListener("DOMContentLoaded", () => {
     footElement.innerHTML = `<p>&copy; ${new Date().getFullYear()} JabraScan. No oficial, sin fines de lucro.</p>`;
   }
 
-  // 🧭 Extrae la ruta limpia desde pathname
+  // 🧭 Extrae la ruta limpia desde pathname, eliminando el nombre del repositorio si está presente
   const repoName = window.location.pathname.split('/')[1];
   const fullPath = window.location.pathname.replace(/^\/+/, "");
   const ruta = fullPath.startsWith(repoName + "/")
     ? fullPath.slice(repoName.length + 1)
     : fullPath;
 
-  // 🚫 Ignora rutas vacías o que contienen "index.html"
-  /*if (ruta && !ruta.includes("index.html")) {
-    manejarRuta(ruta);
-  }*/
   // 🔍 Recoge todos los valores de data-target definidos en el HTML
-    const rutasDataTarget = Array.from(document.querySelectorAll("[data-target]"))
-      .map(el => el.getAttribute("data-target"));
-    
-    // ✅ Si la ruta coincide con un data-target, carga directamente la vista
-    if (ruta && !ruta.includes("index.html")) {
-      manejarRuta(ruta);
-    }
+  const rutasDataTarget = Array.from(document.querySelectorAll("[data-target]"))
+    .map(el => el.getAttribute("data-target"));
 
+  // ✅ Si la ruta coincide con un data-target, carga directamente la vista
+  if (ruta && !ruta.includes("index.html")) {
+    manejarRuta(ruta);
+  }
 
-// 🔗 Enlaces internos con atributo personalizado [data-target]
-// Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
-// Se distingue entre rutas que terminan en ".html" (vistas directas) y rutas dinámicas (obras/capítulos).
-          document.querySelectorAll("[data-target]").forEach(link => {
-            link.addEventListener("click", e => {
-              e.preventDefault();
-          
-              const url = link.getAttribute("data-target");
-              
-              if (url === "index.html") {
-                // 🔄 Recarga limpia de la página base
-                //window.location.href = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
-                window.location.href = window.location.origin + window.location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
-                return;
-              }
-          
-              const repoName = window.location.pathname.split('/')[1];
-              const nuevaURL = `/${repoName}/${url}`;
-              history.pushState({}, "", nuevaURL);
-          
-              if (url.endsWith(".html")) {
-                console.log(`Cargando vista directa: ${url}`);
-                cargarVista(url);
-              } else {
-                console.log(`Navegación interna con ruta: ${url}`);
-                manejarRuta(url);
-              }
-            });
-          });
+  // 🔗 Enlaces internos con atributo personalizado [data-target]
+  // Este bloque gestiona la navegación dentro de la SPA sin recargar la página.
+  // Se distingue entre rutas que terminan en ".html" (vistas directas) y rutas dinámicas (obras/capítulos).
+  document.querySelectorAll("[data-target]").forEach(link => {
+    link.addEventListener("click", e => {
+      e.preventDefault(); // 🚫 Evita que el navegador siga el enlace de forma tradicional
 
+      const url = link.getAttribute("data-target"); // 🧭 Obtiene la ruta destino desde el atributo personalizado
+
+      if (url === "index.html") {
+        // 🔄 Recarga limpia de la página base
+        window.location.href = window.location.origin + window.location.pathname.split('/').slice(0, 2).join('/');
+        return;
+      }
+
+      // 🧭 Actualiza la URL en el navegador sin recargar la página
+      const repoName = window.location.pathname.split('/')[1];
+      const nuevaRuta = `${repoName}/${url}`;
+      history.pushState({}, "", `/${nuevaRuta}`);
+
+      // 📥 Si la ruta termina en ".html", se trata como una vista directa
+      // Se carga directamente sin pasar por manejarRuta(), evitando interpretación como obra/capítulo
+      if (url.endsWith(".html")) {
+        console.log(`Cargando vista directa: ${url}`);
+        cargarVista(url); // 👈 Carga el contenido HTML directamente en <main>
+      } else {
+        // 📚 Si no termina en ".html", se interpreta como obra/capítulo
+        // Se delega a manejarRuta() para que decida cómo cargarlo
+        console.log(`Navegación interna con ruta: ${url}`);
+        manejarRuta(url);
+      }
+    });
+  });
 
   // 📚 Botón "Seguir leyendo" si hay progreso guardado en localStorage
   const ultimaObra = localStorage.getItem("ultimaObra");
@@ -78,7 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btnSeguir.classList.remove("inactive");
       btnSeguir.classList.add("active");
       btnSeguir.addEventListener("click", () => {
-        mostrarurl(ultimaObra, parseInt(ultimoCapitulo, 10));
+        // 🔗 Actualiza la URL y carga la vista correspondiente
+        const ruta = mostrarurl(ultimaObra, parseInt(ultimoCapitulo, 10));
+        manejarRuta(ruta);
         abrirLectorPDF();
       });
     }
@@ -145,12 +145,14 @@ function abrirObraCapitulo(obra, capitulo = null) {
   }
 }
 
-// 🔗 Actualiza la vista internamente sin modificar la URL visible
+// 🔗 Actualiza la URL sin cargar vista
+// Esta función reemplaza la anterior que también llamaba a manejarRuta()
+// Ahora solo actualiza la URL y devuelve la ruta para que se maneje aparte
 export function mostrarurl(obra, capitulo = null) {
   const repoName = window.location.pathname.split('/')[1];
   const ruta = `${obra}${capitulo !== null ? `/Chapter${capitulo}` : ""}`;
   history.pushState({}, "", `/${repoName}/${ruta}`);
-  manejarRuta(ruta);
+  return ruta;
 }
 
 // 🧭 Interpreta ruta limpia y carga la vista correspondiente
@@ -178,9 +180,3 @@ function manejarRuta(ruta) {
     console.warn("Ruta no válida:", ruta);
   }
 }
-
-
-
-
-
-
