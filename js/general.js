@@ -9,25 +9,15 @@ import { cargarlibro } from './libroficha.js';
 // Este bloque recupera la URL original guardada en sessionStorage
 // y la restaura sin recargar la página, para que manejarRuta() funcione
 // ─────────────────────────────────────────────────────────────
-/*  // 🔁 Restaurar ruta original si venimos desde 404.html
-  if (sessionStorage.redirectPath && typeof sessionStorage.redirectPath === 'string') {
+  // 🔁 Restaurar ruta original si venimos desde 404.html
+  if (document.referrer.includes('404.html') && sessionStorage.redirectPath) {
     const redirectPath = sessionStorage.redirectPath;
     sessionStorage.removeItem('redirectPath');
   
-    // Solo restaurar si la ruta parece válida
     if (redirectPath.startsWith('/')) {
       history.replaceState(null, '', redirectPath);
     }
-  }*/
-// 🔁 Restaurar ruta original si venimos desde 404.html
-if (document.referrer.includes('404.html') && sessionStorage.redirectPath) {
-  const redirectPath = sessionStorage.redirectPath;
-  sessionStorage.removeItem('redirectPath');
-
-  if (redirectPath.startsWith('/')) {
-    history.replaceState(null, '', redirectPath);
   }
-}
 
 
 // 🚀 Inicialización al cargar el DOM
@@ -163,8 +153,12 @@ export function mostrarurl(obra, capitulo = null) {
 }
 
 // 🧭 Interpreta la ruta actual y carga la vista correspondiente
+// 🧭 Interpreta la ruta actual y carga la vista correspondiente
 function manejarRuta() {
   const fullParts = window.location.pathname.split('/').filter(Boolean);
+
+  // 🧼 Ignorar si estamos en index.html directamente
+  if (fullParts.at(-1) === 'index.html') return;
 
   // Detectar si estamos en un subdirectorio (como GitHub Pages)
   const base = fullParts[0] === 'JabraScanTest.github.io' ? 1 : 0;
@@ -181,8 +175,3 @@ function manejarRuta() {
     abrirObraCapitulo(obra, capitulo);
   }
 }
-
-
-
-
-
