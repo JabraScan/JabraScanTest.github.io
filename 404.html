@@ -1,0 +1,17 @@
+<!-- /404.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirigiendo...</title>
+    <script>
+      // Redirige a index.html con hash, que tu código ya sabe manejar
+      const ruta = location.pathname.replace(/^\/|\/$/g, ""); // Ej: "CDMNQTMHC"
+      console.log(location.replace(`index.html#${ruta}`));
+      //location.replace(`index.html#${ruta}`);
+    </script>
+  </head>
+  <body>
+    <p>Redirigiendo a la página principal...</p>
+  </body>
+</html>

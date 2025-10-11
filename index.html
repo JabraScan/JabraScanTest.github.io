@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Traducciones de Novelas | JabraScan</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/libro-ficha.css">
+  <link rel="stylesheet" href="css/tooltip.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!--<script src="js/general.js"></script>-->
+  <!--<script src="js/leer-obras.js"></script>-->
+  <!--<script src="js/libro-ficha.js"></script>-->
+  <script type="module" src="./js/general.js"></script>
+  <script type="module" src="./js/leerobras.js"></script>
+  <script type="module" src="./js/libroficha.js"></script>
+  <script src="./js/carousel.js"></script>
+  <!--<script src="js/ultimoscapitulos.js"></script>-->
+  <!--<script src="js/lectorpdf.js"></script>-->
+  <script type="module" src="./js/lectorpdfmod.js"></script>
+  <script src="js/disqus.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  </script>
+</head>
+<body>
+  <header>
+    <h1>JabraScan Traducciones</h1>
+    <nav>
+      <!--<span onclick="window.location.reload();" class="active">Inicio</span>-->
+      <a class="active" id="main-link" href="#" data-target="index.html">Inicio</a>
+      <a class="active" id="ucaps-link" href="#" data-target="ultimosCapitulos.html">Últimos capítulos</a>
+      <span class="inactive" id="btnSeguir">Seguir leyendo</span>
+        <div class="tool-tip main-ultimoCapituloleido hide-on-tablet"></div>
+      <a class="active" id="counts-link" href="#" data-target="counts.html">Estadísticas</a>
+      <a class="active" id="disclaimer-link" href="#" data-target="disclaimer.html">Disclaimer</a>
+      <a class="active" id="acercade-link" href="#" data-target="about.html">Sobre Nosotros</a>
+      
+      <!-- Menú desplegable Webs Amigas -->
+        <div class="dropdown-mainnav hide-on-mobile">
+          <button class="dropbtn-mainnav active">Webs Amigas</button>
+          <div class="dropdown-mainnav-content">
+            <a href="https://northbladetl.com/" target="_blank">NorthBladeTL</a>
+            <a href="https://frizcosas.blogspot.com/" target="_blank">TurretTranslations</a>
+          </div>
+        </div>
+      <!--<a href="https://northbladetl.com/" class="active hide-on-mobile" target="_blank">NorthBladeTL</a>-->
+      <!-- más enlaces aquí -->
+    </nav>
+  </header>
+  
+  <main>
+    <!-- Carrusel -->
+    <div class="carousel">
+      <div class="carousel-track">
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn prev">&lt;</button>
+        <button class="carousel-btn next">&gt;</button>
+      </div>
+    </div>
+    <section class="book-list">      
+    </section>
+    <ul class="lista-libros">
+    </ul>
+  </main>
+  <footer>
+    <div id="disqus_thread" style="display:none;"></div>
+    </br>
+    <p id="copyjabra">&copy; 2025 JabraScan. No oficial, sin fines de lucro.</p>
+  </footer>
+</body>
+</html>
+
+

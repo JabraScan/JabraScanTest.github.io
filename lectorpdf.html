@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lector PDF JabraScan</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/stylelector.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body class="light-mode">
+  <!-- Botón hamburguesa -->
+  <button id="menu-toggle" aria-label="Mostrar/Ocultar menú">☰</button>
+  
+  <header id="main-header">
+    <nav>
+      <center><h1 id="tituloObraPdf">Lector PDF</h1></center>
+      <a href="index.html" class="active">
+        <span class="icon">🏠</span>
+        <span class="label">Volver a la página principal de JabraScan</span>
+      </a>
+      <!-- más enlaces aquí -->
+    </nav>
+
+    <div class="controls">
+      <div class="controls-left">
+        <button id="readAloud"><span class="icon">🔊</span><span class="label">Leer página</span></button>
+        <button id="pauseReading" style="display:none;"><span class="icon">⏸️</span><span class="label">Pausar</span></button>
+        <button id="resumeReading" style="display:none;"><span class="icon">⏯️</span><span class="label">Reanudar</span></button>
+        <button id="stopReading" style="display:none;"><span class="icon">⏹️</span><span class="label">Detener</span></button>
+      </div>
+    
+      <div class="controls-center">
+        <button id="btnPrevCap" class="btnPrevCap"><span class="icon">⬅️</span><span class="label">Anterior</span></button>
+        <select id="chapterSelect" class="chapterSelect"></select>
+        <button id="btnNextCap" class="btnNextCap"><span class="icon">➡️</span><span class="label">Siguiente</span></button>
+      </div>
+    
+      <div class="controls-right">
+        <button id="toggleMode"><span class="icon">☀️</span><span class="label">Modo</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!--botones navegación cabecera pdf-->    
+    <div class="pdf-controls">
+      <button id="prevPage" class="prevPage"><span class="icon">⬅️</span><span class="label">Página anterior</span></button>
+      <span id="pageInfo" class="pageInfo">Página 1</span>
+      <button id="nextPage" class="nextPage"><span class="icon">➡️</span><span class="label">Página siguiente</span></button>
+    </div>
+    <!--contenido pdf-->
+    <canvas id="pdfCanvas"></canvas>
+    <!--botones navegación pie pdf-->    
+    <div class="pdf-controls">
+      <button id="prevPage" class="prevPage"><span class="icon">⬅️</span><span class="label">Página anterior</span></button>
+      <span id="pageInfo" class="pageInfo">Página 1</span>
+      <button id="nextPage" class="nextPage"><span class="icon">➡️</span><span class="label">Página siguiente</span></button>
+    </div>
+    <div class="optionaldata"></div>
+  </main>
+
+  <!--<script src="js/lectorpdf.js"></script>-->
+  <script type="module" src="js/lector.js"></script>
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const header = document.getElementById('main-header');
+  
+    menuToggle.addEventListener('click', () => {
+      header.classList.toggle('show');
+    });
+  </script>
+</body>
+</html>
+
+
