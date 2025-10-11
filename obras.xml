@@ -87,7 +87,7 @@
     <ubicacion>Novela USA</ubicacion>
     <estado>Activo</estado>
     <traductor>Jabracadabra</traductor>
-    <adulto>si</adulto>
+    <adulto>adulto</adulto>
     <aprobadaAutor>no</aprobadaAutor>
     <observaciones></observaciones>
     <discord></discord>
@@ -332,7 +332,7 @@
     <ubicacion>Novela Inglesa</ubicacion>
     <estado>Activo</estado>
     <traductor>Leo</traductor>
-    <adulto>si</adulto>
+    <adulto>adulto</adulto>
     <aprobadaAutor>no</aprobadaAutor>
     <observaciones></observaciones>
     <discord></discord>
