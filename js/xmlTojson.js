@@ -1,59 +1,74 @@
 /**
  * 📂 Archivo: /js/xmlTojson.js
  * 📝 Convierte obras.xml en JSON-LD según Schema.org
- * 🚀 El resultado se muestra en el <pre id="output"> de obras.html
+ * 🚀 Muestra el resultado en <pre id="output"> y lo descarga como json-ld.json
+ * ✅ Obvia etiquetas vacías o inexistentes
  */
 
 async function xmlToJsonLd() {
-  // 📥 1. Cargar el archivo XML
   const response = await fetch("obras.xml");
   const text = await response.text();
 
-  // 🔎 2. Parsear XML
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(text, "application/xml");
 
-  // 📚 3. Recorrer todas las <obra>
   const obras = Array.from(xmlDoc.querySelectorAll("obra")).map(obra => {
-    const nombres = Array.from(obra.querySelectorAll("nombreobra")).map(n => n.textContent.trim());
-    const imagenes = Array.from(obra.querySelectorAll("imagen")).map(img => img.textContent.trim());
+    const jsonObra = { "@type": "Book" };
+
+    // 🏷️ Títulos múltiples
+    const nombres = Array.from(obra.querySelectorAll("nombreobra")).map(n => n.textContent.trim()).filter(Boolean);
+    if (nombres.length) jsonObra.name = nombres;
+
+    // 🖼️ Imágenes múltiples
+    const imagenes = Array.from(obra.querySelectorAll("imagen")).map(img => img.textContent.trim()).filter(Boolean);
+    if (imagenes.length) jsonObra.image = imagenes;
+
+    // 🏷️ Categorías separadas por coma
     const categorias = (obra.querySelector("categoria")?.textContent || "")
       .split(",").map(c => c.trim()).filter(Boolean);
+    if (categorias.length) jsonObra.genre = categorias;
 
-    return {
-      "@type": "Book",
-      // --- Campos estándar ---
-      "identifier": obra.querySelector("clave")?.textContent.trim() || "",
-      "name": nombres,
-      "author": { "@type": "Person", "name": obra.querySelector("autor")?.textContent.trim() || "" },
-      "description": obra.querySelector("sinopsis")?.textContent.trim() || "",
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": obra.querySelector("valoracion")?.textContent.trim() || "" },
-      "bookFormat": obra.querySelector("tipoobra")?.textContent.trim() || "",
-      "genre": categorias,
-      "image": imagenes,
-      "dateCreated": normalizarFecha(obra.querySelector("fechaCreacion")?.textContent.trim() || ""),
-      "locationCreated": obra.querySelector("ubicacion")?.textContent.trim() || "",
-      "creativeWorkStatus": obra.querySelector("estado")?.textContent.trim() || "",
-      "translator": obra.querySelector("traductor")?.textContent.trim() || "",
-      "audience": {
-        "@type": "PeopleAudience",
-        "suggestedMinAge": obra.querySelector("adulto")?.textContent.includes("adulto") ? 18 : undefined
-      },
-      "mainEntityOfPage": obra.querySelector("wiki")?.textContent.trim() || "",
-      // --- Campos personalizados ---
-      "visible": obra.querySelector("visible")?.textContent.trim() || "",
-      "aprobadaAutor": obra.querySelector("aprobadaAutor")?.textContent.trim() || "",
-      "observaciones": obra.querySelector("observaciones")?.textContent.trim() || "",
-      "discussionUrl": obra.querySelector("discord")?.textContent.trim() || "",
-      "bannerOpcional": obra.querySelector("bannerOpcional")?.textContent.trim() || ""
-    };
+    // --- Campos estándar ---
+    addIfExists(jsonObra, "identifier", obra.querySelector("clave"));
+    addIfExists(jsonObra, "description", obra.querySelector("sinopsis"));
+    addIfExists(jsonObra, "bookFormat", obra.querySelector("tipoobra"));
+    addIfExists(jsonObra, "dateCreated", normalizarFecha(obra.querySelector("fechaCreacion")?.textContent.trim()));
+    addIfExists(jsonObra, "locationCreated", obra.querySelector("ubicacion"));
+    addIfExists(jsonObra, "creativeWorkStatus", obra.querySelector("estado"));
+    addIfExists(jsonObra, "translator", obra.querySelector("traductor"));
+    addIfExists(jsonObra, "mainEntityOfPage", obra.querySelector("wiki"));
+
+    // Autor
+    const autor = obra.querySelector("autor")?.textContent.trim();
+    if (autor) jsonObra.author = { "@type": "Person", "name": autor };
+
+    // Valoración
+    const valoracion = obra.querySelector("valoracion")?.textContent.trim();
+    if (valoracion) jsonObra.aggregateRating = { "@type": "AggregateRating", "ratingValue": valoracion };
+
+    // Audiencia (adulto)
+    const adulto = obra.querySelector("adulto")?.textContent.trim();
+    if (adulto && adulto.toLowerCase().includes("adulto")) {
+      jsonObra.audience = { "@type": "PeopleAudience", "suggestedMinAge": 18 };
+    }
+
+    // --- Campos personalizados ---
+    addIfExists(jsonObra, "visible", obra.querySelector("visible"));
+    addIfExists(jsonObra, "aprobadaAutor", obra.querySelector("aprobadaAutor"));
+    addIfExists(jsonObra, "observaciones", obra.querySelector("observaciones"));
+    addIfExists(jsonObra, "discussionUrl", obra.querySelector("discord"));
+    addIfExists(jsonObra, "bannerOpcional", obra.querySelector("bannerOpcional"));
+
+    return jsonObra;
   });
 
-  // 🧩 4. Construir JSON-LD completo
   const jsonLd = { "@context": "https://schema.org", "@graph": obras };
 
-  // 🖨️ 5. Mostrar en la página
+  // Mostrar en la página
   document.getElementById("output").textContent = JSON.stringify(jsonLd, null, 2);
+
+  // Descargar automáticamente
+  //descargarJson(jsonLd);
 }
 
 /**
@@ -67,6 +82,29 @@ function normalizarFecha(fecha) {
     return `${anio}-${mes.padStart(2, "0")}-${dia.padStart(2, "0")}`;
   }
   return fecha;
+}
+
+/**
+ * ➕ Añade propiedad al objeto solo si existe y no está vacía
+ */
+function addIfExists(obj, propName, nodeOrValue) {
+  const value = typeof nodeOrValue === "string" ? nodeOrValue.trim() : nodeOrValue?.textContent.trim();
+  if (value) obj[propName] = value;
+}
+
+/**
+ * 💾 Descarga el JSON-LD como archivo json-ld.json
+ */
+function descargarJson(jsonLd) {
+  const blob = new Blob([JSON.stringify(jsonLd, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "json-ld.json";
+  a.click();
+
+  URL.revokeObjectURL(url);
 }
 
 // ▶️ Ejecutar conversión al cargar la página
