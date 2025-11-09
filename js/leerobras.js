@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Último capítulo leído (mostrar solo si hay datos válidos)
         const ultimaObra = localStorage.getItem("ultimaObra");
-        const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");*/
+        const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
     /*inicio cambio 09-11-2025
       fetch('./_data/json-ld.json')
         .then(res => res.json())
