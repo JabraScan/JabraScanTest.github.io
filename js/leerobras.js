@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
       
             // Último capítulo leído (igual que tenías)
             const ultimaObra = localStorage.getItem("ultimaObra");
-            const ultimoCapitulo = localStorage.getItem("ultimoCapitulo"
+            const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
                                                         
         if (booklastread) {
           if (
