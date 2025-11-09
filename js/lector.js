@@ -9,6 +9,13 @@ export function abrirLectorPDF() {
       }
 
       main.innerHTML = html;
+      // Oculta el header global completo (no solo la navbar), dejamos solo la del lector
+      const globalHeader = document.querySelector('header');
+      if (globalHeader) {
+        globalHeader.style.display = 'none';
+      }
+      // Añadimos clase de página de lector para estilos específicos
+      document.body.classList.add('reader-page');
       // Verifica si el canvas ya está presente
       const canvas = document.getElementById("pdfCanvas");
       if (canvas) {
@@ -31,7 +38,47 @@ export function abrirLectorPDF() {
 }
 
 function cargarModuloLectorPDF() {
-  import('./lectorpdfmod.js')
+  // Cargar pdf.js dinámicamente antes de importar el módulo del lector
+  const pdfUrl = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  const pdfWorker = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`);
+      // Si ya existe el script en el DOM, comprobamos si la librería global ya está definida.
+      if (existing) {
+        // Caso específico: comprobación rápida para pdf.js
+        if (src.includes('pdf.min.js')) {
+          if (window.pdfjsLib) return resolve();
+          // Si el script existe pero no ha sido ejecutado (inserción vía innerHTML), creamos uno nuevo para forzar ejecución
+          const s2 = document.createElement('script');
+          s2.src = src;
+          s2.onload = () => resolve();
+          s2.onerror = () => reject(new Error('No se pudo cargar ' + src));
+          document.head.appendChild(s2);
+          return;
+        }
+        return resolve();
+      }
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('No se pudo cargar ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  loadScript(pdfUrl)
+    .then(() => {
+      try {
+        if (window.pdfjsLib) {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+        }
+      } catch (e) {
+        console.warn('No se pudo configurar pdfjs worker:', e);
+      }
+      return import('./lectorpdfmod.js');
+    })
     .then(modulo => {
       if (typeof modulo.initLectorPDF === 'function') {
         modulo.initLectorPDF();
@@ -39,7 +86,7 @@ function cargarModuloLectorPDF() {
         console.warn('initLectorPDF no está definido en lectorpdfmod.js');
       }
     })
-    .catch(err => console.error('Error al cargar lectorpdfmod.js:', err));
+    .catch(err => console.error('Error al cargar lectorpdfmod.js o pdf.js:', err));
 }
 
 

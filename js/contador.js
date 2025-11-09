@@ -50,6 +50,7 @@ export async function renderResumenObras() {
       });
     // 📈 Gráfico con descripciones
     new Chart(canvasDescripcion, {
+      plugins: [ChartDataLabels],
       type: "bar",
       data: {
         labels: etiquetasCombinadas,
@@ -81,6 +82,25 @@ export async function renderResumenObras() {
                 const visitas = context.dataset.data[index];
                 return `${etiquetasCompletas[index]}: ${visitas} visitas`;
               }
+            }
+          },
+          datalabels: {
+            anchor: 'end',
+            align: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              const max = Math.max(...context.dataset.data);
+              const porcentaje = value / max;
+              return porcentaje > 0.9 ? 'start' : 'right';
+            },
+            formatter: value => value,
+            color: function(context) {
+              const value = context.dataset.data[context.dataIndex];
+              const max = Math.max(...context.dataset.data);
+              const porcentaje = value / max;
+              return porcentaje > 0.5 ? '#fff' : '#333';
+            },
+            font: {
+              weight: 'bold'
             }
           }
         },

@@ -1,5 +1,5 @@
 import { obtenerCapitulos } from './capitulos.js';
-import { parseDateDMY, parseChapterNumber, compareCapNumDesc, crearBloqueValoracion } from './utils.js';
+import { parseDateDMY, parseChapterNumber, compareCapNumDesc, crearBloqueValoracion, seleccionarImagen, obtenerNombreObra } from './utils.js';
 import { activarLinksPDF, activarPaginacion } from './eventos.js';
 import { incrementarVisita, leerVisitas, obtenerInfo, valorarRecurso } from './contadoresGoogle.js';
 import { mostrarurl } from './general.js';
@@ -32,10 +32,12 @@ export function cargarlibro(libroId) {
 
       const get = tag => obra.querySelector(tag)?.textContent.trim() || '';
       const clave = get("clave");
-      const nombreobra = get("nombreobra");
+      //const nombreobra = get("nombreobra");
+      //const imagen = get("imagen");
+      const { nombreobra, nombresAlternativos } = obtenerNombreObra(obra.querySelectorAll("nombreobra"));
+      const imagen = seleccionarImagen(obra.querySelectorAll("imagen"));
       const autor = get("autor");
       const sinopsis = get("sinopsis");
-      const imagen = get("imagen");
       const tipoobra = get("tipoobra");
       const Categoria = get("categoria");
       const estado = get("estado");
@@ -75,6 +77,13 @@ export function cargarlibro(libroId) {
       headerDataBook.className = "book-header";
       headerDataBook.innerHTML = `<i class="fa-solid fa-book"></i> ${nombreobra.toUpperCase()}`;
 
+      // 👻 generar bloque oculto con los alternativos
+      const hiddenNames = nombresAlternativos.length > 0 
+        ? `<div class="hidden-alt-names" style="display:none;">
+             ${nombresAlternativos.map(n => `<span style="display:flex;">${n}</span>`).join("")}
+           </div>`
+        : "";
+      
       const mainDataBook = document.createElement("div");
       mainDataBook.className = "book-main";
          mainDataBook.innerHTML = `
@@ -89,6 +98,7 @@ export function cargarlibro(libroId) {
               <div class="book-info-container">
                 <div class="book-info">
                   <h2 id="nombre-obra" class="ficha-obra-nombre">${nombreobra}</h2>
+                  ${hiddenNames}
                   <div class="ficha-obra-autor"><b>Autor: </b> ${autor}</div>
                   <div class="ficha-obra-traductor"><b>Traducción: </b>${traduccion}</div>
                   ${OKAutor}
@@ -259,4 +269,8 @@ function renderCapitulos(listacapitulos, clave, seccionUltimos, ordenActual = "a
     renderCapitulos(listacapitulos, clave, "", nuevoOrden);
   });
 }
+
+
+
+
 

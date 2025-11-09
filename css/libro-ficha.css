@@ -3,6 +3,9 @@ body {
   background: #f5f7fa;
   font-family: 'Segoe UI', Arial, sans-serif;
 }
+.ficha-obra-sinopsis {
+  white-space: pre-line;
+}
 
 .book-card-caps {
   background: #fff;
@@ -399,3 +402,4 @@ body {
   color: #555;
 }
 /*Fin valoracion obras*/
+

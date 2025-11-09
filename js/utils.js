@@ -157,3 +157,60 @@ export function crearBloqueValoracion(clave, valoracionPromedio = 0, votos = 0) 
 export function truncarTexto(texto, maxLength = 40) {
   return texto.length > maxLength ? texto.slice(0, maxLength) + "…" : texto;
 }
+// 🖼️ Selecciona la imagen correcta para que TODAS se muestren en un año
+export function seleccionarImagen(nodosImagen) {
+  const totalImagenes = nodosImagen.length;
+
+  // 🚫 Sin imágenes → vacío
+  if (totalImagenes === 0) return "";
+
+  // ⚡ Solo 1 imagen → siempre la misma
+  if (totalImagenes === 1) return nodosImagen[0].textContent.trim();
+
+  // 📅 Fecha actual
+  const hoy = new Date();
+  const año = hoy.getFullYear();
+
+  // 🔍 Comprobamos si el año es bisiesto
+  const esBisiesto = (año % 4 === 0 && año % 100 !== 0) || (año % 400 === 0);
+  const diasEnAño = esBisiesto ? 366 : 365;
+
+  // 📅 Día del año (0–364 o 0–365 si bisiesto)
+  const inicio = new Date(año, 0, 0);
+  const diff = hoy - inicio;
+  const diaDelAño = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  // 🔢 Cuántos días dura cada imagen
+  const diasPorImagen = diasEnAño / totalImagenes;
+
+  // 🎯 Índice de la imagen
+  let indice = Math.floor(diaDelAño / diasPorImagen);
+
+  // ✅ Seguridad: no pasarse del array
+  if (indice >= totalImagenes) indice = totalImagenes - 1;
+
+  return nodosImagen[indice].textContent.trim();
+}
+
+/**
+ * 📚 Función para obtener los nombres de obra
+ * Recibe directamente la lista de nodos <nombreobra>
+ * Devuelve:
+ *   - nombreobra: 🏷️ el primer nombre (el que se muestra)
+ *   - nombresAlternativos: 📂 el resto de nombres (para ocultar en HTML)
+ */
+export function obtenerNombreObra(nodosNombreObra) {
+  // 🔎 convertir NodeList en array y limpiar
+  const nombresObra = Array.from(nodosNombreObra)
+    .map(n => n.textContent.trim())   // ✂️ limpiar espacios
+    .filter(Boolean);                 // ✅ filtrar vacíos
+
+  // 🏷️ el primero es el que se muestra
+  const nombreobra = nombresObra[0] || "";
+
+  // 📂 el resto son los alternativos
+  const nombresAlternativos = nombresObra.slice(1);
+
+  // 📦 devolver ambos parámetros
+  return { nombreobra, nombresAlternativos };
+}

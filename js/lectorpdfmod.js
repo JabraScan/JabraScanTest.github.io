@@ -6,6 +6,7 @@ import { mostrarurl } from './general.js';
 let pdfDoc = null;
 let pageNum = 1;
 let canvas, ctx, pageInfo, body;
+let lastContainerWidth = 0;
 
 /**
  * Inicializa el lector PDF al cargar la página.
@@ -23,6 +24,20 @@ export function initLectorPDF() {
   configurarBotonesLectura();
   configurarEnlacesPDF();
   cargarUltimaLectura();
+
+  // Re-render responsivo en resize con debounce
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    const container = document.getElementById('pdfContainer') || canvas?.parentElement;
+    const cw = Math.max(0, (container?.clientWidth || 0) - 24);
+    if (cw === lastContainerWidth) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (pdfDoc && canvas) {
+        renderPage(pageNum);
+      }
+    }, 150);
+  });
 }
 
 /**
@@ -30,15 +45,44 @@ export function initLectorPDF() {
  * @param {number} num - Número de página a renderizar.
  */
 export function renderPage(num) {
+  const container = document.getElementById('pdfContainer') || canvas?.parentElement;
+  const containerWidth = Math.max(0, (container?.clientWidth || 0) - 24); // margen interno
   pdfDoc.getPage(num).then(page => {
-    const scale = 1.5;
+    // Escala base para viewport de pdf.js
+    const baseViewport = page.getViewport({ scale: 1.0 });
+    let scale = 1.0;
+    if (containerWidth > 0) {
+      scale = containerWidth / baseViewport.width;
+      // límites de escala razonables
+      scale = Math.max(0.5, Math.min(scale, 3));
+    } else {
+      scale = 1.5; // fallback
+    }
+
     const viewport = page.getViewport({ scale });
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
+
+    // Soporte HiDPI para nitidez
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(viewport.width * dpr);
+    canvas.height = Math.floor(viewport.height * dpr);
+    canvas.style.width = `${Math.floor(viewport.width)}px`;
+    canvas.style.height = `${Math.floor(viewport.height)}px`;
+
+    // Reset transform y aplicar escala para HiDPI
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+
     page.render({ canvasContext: ctx, viewport });
-    pageInfo.textContent = `Página ${num} de ${pdfDoc.numPages}`;
+
+    // Actualiza todos los indicadores de página (arriba y abajo)
+    document.querySelectorAll('.pageInfo').forEach(el => {
+      el.textContent = `Página ${num} de ${pdfDoc.numPages}`;
+    });
     speechSynthesis.cancel();
     localStorage.setItem("ultimaPagina", num);
+
+    // Guarda el ancho para evitar re-render innecesario
+    lastContainerWidth = containerWidth;
   });
 }
 
@@ -55,12 +99,17 @@ export function cargarCapitulo(clave, capitulo, paginaInicial = 1) {
       .then(res => res.json())
       .then(data => {
         const capitulos = data[clave] || [];
+        // 📅 Fecha actual sin horas
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        // 🔎 Mapear y filtrar capítulos publicados
         const capitulosObra = capitulos.map(cap => ({
           ...cap,
           _clave: clave,
           _fecha: parseDateDMY(cap.Fecha),
           _num: parseChapterNumber(cap.numCapitulo)
-        }));
+        }))
+        .filter(cap => cap._fecha <= hoy); // ✅ solo capítulos con fecha <= hoy
         const idx = capitulosObra.findIndex(c => c.numCapitulo === capitulo);
         if (idx === -1) return;
         
@@ -120,6 +169,9 @@ function actualizarTituloObra(titulo, clave) {
     `;
     datosAdic.appendChild(divBanner);
   }
+
+  const enlaceObra = document.getElementById("volverAObra");
+  enlaceObra.href = `index.html#${clave}`; 
 }
 
 /**
@@ -161,13 +213,15 @@ function actualizarBotonesNav(idx, capitulos, clave) {
       : null;
 
   document.querySelectorAll(".prevPage").forEach(btn => {
-    btn.textContent = prevAction ? "Página anterior" : "Capítulo anterior";
+    const label = btn.querySelector('.label');
+    if (label) label.textContent = prevAction ? "Página anterior" : "Capítulo anterior";
     btn.disabled = !prevAction;
     btn.onclick = prevAction;
   });
 
   document.querySelectorAll(".nextPage").forEach(btn => {
-    btn.textContent = nextAction ? "Página siguiente" : "Capítulo siguiente";
+    const label = btn.querySelector('.label');
+    if (label) label.textContent = nextAction ? "Página siguiente" : "Capítulo siguiente";
     btn.disabled = !nextAction;
     btn.onclick = nextAction;
   });
@@ -181,14 +235,27 @@ function configurarModoOscuro() {
   toggleMode.onclick = () => {
     body.classList.toggle("dark-mode");
     body.classList.toggle("light-mode");
-    toggleMode.textContent = body.classList.contains("dark-mode") ? "☀️" : "🌙";
+    const icon = toggleMode.querySelector('.theme-icon');
+    if (icon) {
+      if (body.classList.contains('dark-mode')) {
+        icon.classList.remove('fa-moon','fa-regular');
+        icon.classList.add('fa-sun','fa-solid');
+      } else {
+        icon.classList.remove('fa-sun','fa-solid');
+        icon.classList.add('fa-moon','fa-regular');
+      }
+    }
     localStorage.setItem("modoNocturno", body.classList.contains("dark-mode") ? "true" : "false");
   };
 
   if (localStorage.getItem("modoNocturno") === "true") {
     body.classList.add("dark-mode");
     body.classList.remove("light-mode");
-    toggleMode.textContent = "☀️";
+    const icon = toggleMode.querySelector('.theme-icon');
+    if (icon) {
+      icon.classList.remove('fa-moon','fa-regular');
+      icon.classList.add('fa-sun','fa-solid');
+    }
   }
 }
 
@@ -196,14 +263,19 @@ function configurarModoOscuro() {
  * Configura el menú hamburguesa para dispositivos móviles.
  */
 function configurarMenuHamburguesa() {
-  const menuToggle = document.getElementById('menu-toggle');
+  // Ya no usamos el menú hamburguesa custom; la navbar usa offcanvas de Bootstrap.
+  // Mantener compatibilidad si se abre este archivo en modo no-SPA o plantillas antiguas.
   const mainHeader = document.getElementById('main-header');
-
-  menuToggle.addEventListener('click', () => {
-    mainHeader.classList.toggle('show');
-    document.body.classList.toggle('no-scroll', mainHeader.classList.contains('show'));
-  });
-
+  if (!mainHeader) {
+    return; // No hay header legacy; nada que configurar.
+  }
+  const menuToggle = document.getElementById('menu-toggle');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      mainHeader.classList.toggle('show');
+      document.body.classList.toggle('no-scroll', mainHeader.classList.contains('show'));
+    });
+  }
   mainHeader.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       if (window.innerWidth <= 600) {
@@ -248,8 +320,9 @@ startBtn.onclick = () => {
       utterance.onend = () => {
         const btnNext = document.querySelector('.nextPage');
         if (btnNext && !btnNext.disabled) {
+          stopBtn.click();
           btnNext.click();
-          setTimeout(() => startBtn.click(), 500);
+          setTimeout(() => startBtn.click(), 1000);
         } else {
           const fin = new SpeechSynthesisUtterance("Ya no hay más contenido para leer");
           fin.lang = "es-ES";
