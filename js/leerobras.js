@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
   incrementarVisita("obra_Inicio");
   paginationContainer = document.getElementById('pagination');
   searchInput = document.getElementById('q-index');
-  /* codigo a sustituir 09-11-2025
   fetch('obras.xml')
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
@@ -53,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Último capítulo leído (mostrar solo si hay datos válidos)
         const ultimaObra = localStorage.getItem("ultimaObra");
         const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");*/
-    /*inicio cambio 09-11-2025*/
+    /*inicio cambio 09-11-2025
       fetch('./_data/json-ld.json')
         .then(res => res.json())
         .then(data => {
@@ -106,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Último capítulo leído (igual que tenías)
             const ultimaObra = localStorage.getItem("ultimaObra");
             const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
-    /*fin cambio 09-11-2025*/                                                    
+    fin cambio 09-11-2025*/                                                 
         if (booklastread) {
           if (
             ultimaObra &&
