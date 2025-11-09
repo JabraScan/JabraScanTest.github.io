@@ -4,73 +4,139 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lector PDF JabraScan</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/stylelector.css" />
+  <!-- PDF.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-</head>
-<body class="light-mode">
-  <!-- Botón hamburguesa -->
-  <button id="menu-toggle" aria-label="Mostrar/Ocultar menú">☰</button>
-  
-  <header id="main-header">
-    <nav>
-      <center><h1 id="tituloObraPdf">Lector PDF</h1></center>
-      <a href="index.html" class="active">
-        <span class="icon">🏠</span>
-        <span class="label">Volver a la página principal de JabraScan</span>
-      </a>
-      <!-- más enlaces aquí -->
-    </nav>
-
-    <div class="controls">
-      <div class="controls-left">
-        <button id="readAloud"><span class="icon">🔊</span><span class="label">Leer página</span></button>
-        <button id="pauseReading" style="display:none;"><span class="icon">⏸️</span><span class="label">Pausar</span></button>
-        <button id="resumeReading" style="display:none;"><span class="icon">⏯️</span><span class="label">Reanudar</span></button>
-        <button id="stopReading" style="display:none;"><span class="icon">⏹️</span><span class="label">Detener</span></button>
-      </div>
-    
-      <div class="controls-center">
-        <button id="btnPrevCap" class="btnPrevCap"><span class="icon">⬅️</span><span class="label">Anterior</span></button>
-        <select id="chapterSelect" class="chapterSelect"></select>
-        <button id="btnNextCap" class="btnNextCap"><span class="icon">➡️</span><span class="label">Siguiente</span></button>
-      </div>
-    
-      <div class="controls-right">
-        <button id="toggleMode"><span class="icon">☀️</span><span class="label">Modo</span></button>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <!--botones navegación cabecera pdf-->    
-    <div class="pdf-controls">
-      <button id="prevPage" class="prevPage"><span class="icon">⬅️</span><span class="label">Página anterior</span></button>
-      <span id="pageInfo" class="pageInfo">Página 1</span>
-      <button id="nextPage" class="nextPage"><span class="icon">➡️</span><span class="label">Página siguiente</span></button>
-    </div>
-    <!--contenido pdf-->
-    <canvas id="pdfCanvas"></canvas>
-    <!--botones navegación pie pdf-->    
-    <div class="pdf-controls">
-      <button id="prevPage" class="prevPage"><span class="icon">⬅️</span><span class="label">Página anterior</span></button>
-      <span id="pageInfo" class="pageInfo">Página 1</span>
-      <button id="nextPage" class="nextPage"><span class="icon">➡️</span><span class="label">Página siguiente</span></button>
-    </div>
-    <div class="optionaldata"></div>
-  </main>
-
-  <!--<script src="js/lectorpdf.js"></script>-->
-  <script type="module" src="js/lector.js"></script>
   <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const header = document.getElementById('main-header');
-  
-    menuToggle.addEventListener('click', () => {
-      header.classList.toggle('show');
+    // Configurar worker de PDF.js
+    window.addEventListener('DOMContentLoaded', function() {
+      if (window.pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+      }
     });
   </script>
+  <!-- FontAwesome opcional -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Nota: en modo SPA, los <script> insertados por innerHTML no se ejecutan; el módulo se carga desde js/lector.js -->
+  <style>
+    /* Evita scroll horizontal por offcanvas */
+    body { overflow-x: hidden; }
+  </style>
+  
+</head>
+<body class="reader-page light-mode">
+  <!-- Navbar del lector (única en modo SPA) -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-jabrascan fixed-top reader-navbar">
+    <div class="container-fluid">
+      <!--<a class="navbar-brand d-flex align-items-center gap-2" href="#" data-target="index.html">-->
+      <a class="navbar-brand d-flex align-items-center gap-2" id="volverAObra" href="index.html">
+        <img src="favicon.ico" alt="Logo de la comunidad JabraScan" class="navbar-brand-logo">
+        <span class="brand-text" id="tituloObraPdf">Lector PDF</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasReader" aria-controls="offcanvasReader" aria-label="Abrir menú">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasReader" aria-labelledby="offcanvasReaderLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasReaderLabel">Menú lector</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column gap-3">
+          <div class="nav flex-column">
+            <a class="nav-link" href="index.html" data-target="index.html">
+              <i class="fas fa-home me-2"></i> página principal
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles del lector en la navbar (lado opuesto al título) -->
+      <div class="navbar-controls ms-auto d-flex align-items-center gap-2 flex-wrap" role="toolbar" aria-label="Controles de lectura y tema">
+        <div class="btn-group me-1" role="group">
+          <button id="readAloud" type="button" class="btn btn-primary" aria-label="Leer página">
+            <i class="fa-solid fa-volume-high me-1" aria-hidden="true"></i>
+            <span class="label">Leer página</span>
+          </button>
+          <button id="pauseReading" type="button" class="btn btn-outline-primary" style="display:none;" aria-label="Pausar lectura">
+            <i class="fa-solid fa-pause me-1" aria-hidden="true"></i>
+            <span class="label">Pausar</span>
+          </button>
+          <button id="resumeReading" type="button" class="btn btn-outline-primary" style="display:none;" aria-label="Reanudar lectura">
+            <i class="fa-solid fa-play me-1" aria-hidden="true"></i>
+            <span class="label">Reanudar</span>
+          </button>
+          <button id="stopReading" type="button" class="btn btn-outline-danger" style="display:none;" aria-label="Detener lectura">
+            <i class="fa-solid fa-stop me-1" aria-hidden="true"></i>
+            <span class="label">Detener</span>
+          </button>
+        </div>
+        <button id="toggleMode" type="button" class="btn btn-outline-secondary" aria-label="Cambiar tema">
+          <i class="theme-icon fa-regular fa-moon" aria-hidden="true"></i>
+          <span class="label ms-1">Modo</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-fluid py-3 pt-5">
+    <!-- Navegación de capítulos (se queda en main) -->
+  <div class="row g-2 align-items-center mb-4 mt-4">
+      <div class="col-12">
+        <div class="input-group cap-input-group flex-wrap flex-md-nowrap justify-content-md-center" role="group" aria-label="Navegación de capítulos">
+          <button id="btnPrevCap" type="button" class="btnPrevCap btn btn-brand" aria-label="Capítulo anterior">
+            <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>
+            <span class="label">Anterior</span>
+          </button>
+          <span class="input-group-text d-none d-sm-inline">Capítulo</span>
+          <select id="chapterSelect" class="chapterSelect form-select" aria-label="Seleccionar capítulo"></select>
+          <button id="btnNextCap" type="button" class="btnNextCap btn btn-brand" aria-label="Capítulo siguiente">
+            <i class="fa-solid fa-arrow-right me-1" aria-hidden="true"></i>
+            <span class="label">Siguiente</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--botones navegación cabecera pdf-->
+  <div class="pdf-controls d-flex gap-2 align-items-center justify-content-center mt-3 mb-4">
+      <button class="prevPage btn btn-outline-secondary" aria-label="Página anterior">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        <span class="label ms-1">Página anterior</span>
+      </button>
+      <span class="pageInfo badge bg-secondary">Página 1</span>
+      <button class="nextPage btn btn-outline-secondary" aria-label="Página siguiente">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <span class="label ms-1">Página siguiente</span>
+      </button>
+    </div>
+    <!--contenido pdf-->
+  <div id="pdfContainer" class="d-flex justify-content-center w-100 my-3 my-md-3">
+      <canvas id="pdfCanvas"></canvas>
+    </div>
+    <!--botones navegación pie pdf-->
+  <div class="pdf-controls d-flex gap-2 align-items-center justify-content-center mt-3">
+      <button class="prevPage btn btn-outline-secondary" aria-label="Página anterior">
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+        <span class="label ms-1">Página anterior</span>
+      </button>
+      <span class="pageInfo badge bg-secondary">Página 1</span>
+      <button class="nextPage btn btn-outline-secondary" aria-label="Página siguiente">
+        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        <span class="label ms-1">Página siguiente</span>
+      </button>
+    </div>
+    <div class="optionaldata mt-3"></div>
+  </main>
+
+  <!-- En modo SPA no se ejecuta este módulo; se usa js/lector.js -->
+  <script type="module" src="js/lector.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+
 
 

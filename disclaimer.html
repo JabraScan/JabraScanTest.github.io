@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Descargo de responsabilidad - JabraScan Traducciones</title>
+  <!-- Bootstrap 5.3.x CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Font Awesome CDN (backup si no carga desde CSS del proyecto) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/tooltip.css">
   <style>
@@ -14,75 +20,43 @@
       margin: 0;
       padding: 0;
     }
-    .disclaimer-container {
-      max-width: 600px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.07);
-      padding: 2.5em 2em 2em 2em;
-      text-align: center;
-    }
-    .disclaimer-container h1 {
-      font-size: 2em;
-      letter-spacing: 1px;
-      margin-bottom: 0.2em;
-      color: #3d5a80;
-    }
-    .disclaimer-container .fa-triangle-exclamation {
-      color: #fbbf24;
-      font-size: 2.2em;
-      margin-bottom: 0.2em;
-    }
-    .disclaimer-title {
-      font-size: 1.3em;
-      font-weight: 700;
-      margin: 1em 0 0.6em 0;
-      color: #e63946;
-      letter-spacing: 1px;
-    }
-    .disclaimer-body {
-      font-size: 1.05em;
-      line-height: 1.7;
-      margin-bottom: 1.8em;
-      color: #333;
-    }
-    .disclaimer-footer {
-      font-size: 1.1em;
-      font-weight: 600;
-      color: #22223b;
-      margin-top: 2em;
-      border-top: 1px solid #e0e0e0;
-      padding-top: 1em;
-      font-style: italic;
-    }
-    @media (max-width: 700px) {
-      .disclaimer-container {
-        margin: 12vw 2vw;
-        padding: 1.2em 1em;
-      }
-    }
+
+    /* CSS minimalista - Bootstrap maneja responsividad y estilos base */
+    /* Colores corporativos preservados con inline styles para mantener brand identity */
   </style>
 </head>
+
 <body>
-  <div class="disclaimer-container">
-    <h1>
-      <i class="fa-solid fa-language"></i> Bienvenido a JabraScan Traducciones
-    </h1>
-    <div class="disclaimer-title">
-      <i class="fa-solid fa-triangle-exclamation"></i> Descargo de responsabilidad
-    </div>
-    <div class="disclaimer-body">
-      El copyright y la autoría de todas las obras pertenecen a sus respectivos autores.<br>
-      <b>No te atribuyas el crédito ni obtengas beneficio económico de nuestro trabajo.</b><br>
-      Nuestras traducciones pueden leerse de manera gratuita y sin anuncios.<br>
-      No pedimos donaciones.<br>
-      Por favor, compra la novela o el manhwa original/traducción oficial si puedes permitirlo.<br>
-      El traductor solo se motiva por los comentarios, pero no pidas lanzamientos más rápidos.
-    </div>
-    <div class="disclaimer-footer">
-      Las traducciones de esta página son de Fans para Fans.
+  <div class="container-sm my-3 my-md-5">
+    <div class="card shadow-lg border-0 disclaimer-container" style="max-width: 600px; margin: 0 auto;">
+      <div class="card-body text-center p-3 p-md-4 p-lg-5">
+        <h1 class="display-6 mb-2" style="color: #3d5a80; letter-spacing: 1px;">
+          <i class="fa-solid fa-language"></i> Bienvenido a JabraScan Traducciones
+        </h1>
+        <div class="h4 fw-bold my-3" style="color: #e63946; letter-spacing: 1px;">
+          <i class="fa-solid fa-triangle-exclamation" style="color: #fbbf24; font-size: 1.2em;"></i> Descargo de
+          responsabilidad
+        </div>
+        <div class="lead lh-lg mb-4 text-dark">
+          El copyright y la autoría de todas las obras pertenecen a sus respectivos autores.<br>
+          <span class="fw-bold">No te atribuyas el crédito ni obtengas beneficio económico de nuestro
+            trabajo.</span><br>
+          Nuestras traducciones pueden leerse de manera gratuita y sin anuncios.<br>
+          No pedimos donaciones.<br>
+          Por favor, compra la novela o el manhwa original/traducción oficial si puedes permitirlo.<br>
+          El traductor solo se motiva por los comentarios, pero no pidas lanzamientos más rápidos.
+        </div>
+        <div class="h6 fw-semibold text-muted mt-4 pt-3 border-top fst-italic" style="color: #22223b;">
+          Las traducciones de esta página son de Fans para Fans.
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Bootstrap 5.3.x JavaScript Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
