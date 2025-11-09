@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const promesasCapitulos = [];
 
-      obras.forEach(obra => {
+      /*obras.forEach(obra => {
         const visible = obra.querySelector("visible")?.textContent.trim().toLowerCase();
         if (visible !== "si") return; // Salta al siguiente si no es visible
 
@@ -51,7 +51,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Último capítulo leído (mostrar solo si hay datos válidos)
         const ultimaObra = localStorage.getItem("ultimaObra");
-        const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
+        const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");*/
+      fetch('json-ld.json')
+        .then(res => res.json())
+        .then(data => {
+          const obras = Array.isArray(data['@graph']) ? data['@graph'] : [];
+          const carouselContainer = document.querySelector(".custom-carousel-track");
+          const booklistContainer = document.querySelector(".book-list");
+          const booklistContainernopc = document.querySelector(".lista-libros");
+          const booklastread = document.querySelector(".main-ultimoCapituloleido");
+      
+          const promesasCapitulos = [];
+      
+          // Helpers para reutilizar tus utilidades (crean nodos con textContent)
+          const toNodes = (arr) => arr.map(s => {
+            const el = document.createElement('span');
+            el.textContent = String(s || '').trim();
+            return el;
+          });
+          const toArray = (v) => Array.isArray(v) ? v : (v != null ? [v] : []);
+      
+          obras.forEach(obra => {
+            const visible = String(obra.visible || '').trim().toLowerCase();
+            if (visible !== "si") return;
+      
+            const clave = String(obra.identifier || '').trim();
+      
+            // nombres (string o array) → obtenerNombreObra(NodeList-like)
+            const nombresArray = toArray(obra.name).map(n => String(n || '').trim()).filter(Boolean);
+            const { nombreobra, nombresAlternativos } = obtenerNombreObra(toNodes(nombresArray));
+      
+            const autor = String(obra?.author?.name || '').trim();
+      
+            // imágenes (string o array) → seleccionarImagen(NodeList-like)
+            const imagenesArray = toArray(obra.image).map(u => String(u || '').trim()).filter(Boolean);
+            const imagen = seleccionarImagen(toNodes(imagenesArray));
+      
+            const estado = String(obra.creativeWorkStatus || '').trim();
+      
+            // categoría/genre (array o CSV)
+            const generoArray = Array.isArray(obra.genre)
+              ? obra.genre
+              : (obra.genre ? String(obra.genre).split(',') : []);
+            const Categoria = generoArray.map(s => String(s || '').trim()).filter(Boolean).join(', ');
+      
+            const traduccion = String(obra.translator || '').trim();
+            const contenido18 = (obra?.audience && Number(obra.audience.suggestedMinAge) >= 18) ? "adulto" : "";
+            const discord = String(obra.discussionUrl || '').trim();
+            const aprobadaAutor = String(obra.aprobadaAutor || '').trim();
+            const sinopsis = String(obra.description || '').trim();
+      
+            // Último capítulo leído (igual que tenías)
+            const ultimaObra = localStorage.getItem("ultimaObra");
+            const ultimoCapitulo = localStorage.getItem("ultimoCapitulo"
+                                                        
         if (booklastread) {
           if (
             ultimaObra &&
