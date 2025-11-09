@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const ultimaObra = localStorage.getItem("ultimaObra");
         const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");*/
     /*inicio cambio 09-11-2025*/
-      fetch('_data/json-ld.json')
+      fetch('./_data/json-ld.json')
         .then(res => res.json())
         .then(data => {
           const obras = Array.isArray(data['@graph']) ? data['@graph'] : [];
