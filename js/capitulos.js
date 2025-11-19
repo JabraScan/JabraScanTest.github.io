@@ -8,51 +8,40 @@ import { generarEtiquetaNuevo, parseFecha } from './utils.js';
  * @returns {HTMLElement|null} - Elemento HTML con la información del último capítulo o null si no hay capítulos válidos.
  */
 export function crearUltimoCapituloDeObra(data, claveObra) {
-  // Convierte una fecha en formato "dd-mm-yyyy" a un objeto Date
-  const parseDateDMY = (s) => {
-    const [dd, mm, yyyy] = s.split("-").map(Number);
+  // Convierte fecha "dd-mm-yyyy" a Date
+  const parseDateDMY = s => {
+    const [dd, mm, yyyy] = String(s).split('-').map(Number);
     return new Date(yyyy, mm - 1, dd);
   };
 
-  // Extrae el número de capítulo como float, ignorando caracteres no numéricos
-  const parseChapterNumber = (n) => {
-    const num = parseFloat(String(n).replace(/[^0-9.]/g, ""));
-    return Number.isNaN(num) ? -Infinity : num;
-  };
-
-  // Formatea una fecha Date al formato "dd-mm-yyyy"
-  const formatDateEs = (d) => {
-    const dd = String(d.getDate()).padStart(2, "0");
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
+  // Formatea Date a "dd-mm-yyyy"
+  const formatDateEs = d => {
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
     const yyyy = d.getFullYear();
     return `${dd}-${mm}-${yyyy}`;
   };
 
-  // Obtiene los capítulos de la obra especificada
   const capitulos = data[claveObra];
-  if (!Array.isArray(capitulos) || capitulos.length === 0) return null;
+  if (!capitulos) return null;
 
-  // Ordena los capítulos por fecha descendente y luego por número de capítulo
-  const ordenados = capitulos.slice().sort((a, b) => {
-    const fechaDiff = parseDateDMY(b.Fecha) - parseDateDMY(a.Fecha);
-    if (fechaDiff !== 0) return fechaDiff;
-    return parseChapterNumber(b.numCapitulo) - parseChapterNumber(a.numCapitulo);
-  });
+  // Si te pasan un array, se asume que contiene capítulos; si te pasan un objeto,
+  // se trata como el capítulo ya seleccionado.
+  const ultimo = Array.isArray(capitulos) ? (capitulos[0] || null) : capitulos;
+  if (!ultimo || !ultimo.Fecha || !ultimo.numCapitulo) return null;
 
-  // Selecciona el capítulo más reciente
-  const ultimo = ordenados[0];
   const fechaUltimo = parseDateDMY(ultimo.Fecha);
 
-  // Crea el elemento HTML con la información del último capítulo
-  const divsection = document.createElement("div");
-  divsection.className = "book-latest-chapter";
+  const divsection = document.createElement('div');
+  divsection.className = 'book-latest-chapter';
   divsection.setAttribute('data-fecha', ultimo.Fecha);
   divsection.innerHTML = `
-    <span>Último cap.</span>  
+    <span>Último cap.</span>
     <span class="cap">${ultimo.numCapitulo}</span>
     <span class="fecha">( ${formatDateEs(fechaUltimo)} )</span>
     ${generarEtiquetaNuevo(fechaUltimo)}
   `;
+
   return divsection;
 }
 
@@ -177,6 +166,7 @@ export function obtenerCapitulos(clave) {
       return [];
     });
 }
+
 
 
 
