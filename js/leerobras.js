@@ -19,12 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
   paginationContainer = document.getElementById('pagination');
   searchInput = document.getElementById('q-index');
 // Reemplazar fetch('obras.xml') { ... } por esto:
+  console.log('inicio descarga datos');
 fetch('https://jabrascan.net/obras/carrousel')
   .then(res => {
     if (!res.ok) throw new Error('Error al obtener obras desde el endpoint');
     return res.json();
   })
   .then(obrasArray => {
+    console.log('inicio datos endpoint');
     const carouselContainer = document.querySelector(".custom-carousel-track");
     const booklistContainer = document.querySelector(".book-list");
     const booklistContainernopc = document.querySelector(".lista-libros");
@@ -272,6 +274,7 @@ fetch('https://jabrascan.net/obras/carrousel')
         renderPage(1);
         setupPagination();
       });
+      console.log('fin datos endpoint');
     }
   })
   .catch(err => console.error("Error al cargar el endpoint de obras:", err));
