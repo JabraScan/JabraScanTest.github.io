@@ -18,68 +18,69 @@ document.addEventListener("DOMContentLoaded", function () {
   incrementarVisita("obra_Inicio");
   paginationContainer = document.getElementById('pagination');
   searchInput = document.getElementById('q-index');
-  fetch('obras.xml')
-    .then(response => response.text())
-    .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
-    .then(data => {
-      const obras = data.querySelectorAll("obra");
-      const carouselContainer = document.querySelector(".custom-carousel-track");
-      const booklistContainer = document.querySelector(".book-list");
-      const booklistContainernopc = document.querySelector(".lista-libros");
-      const booklastread = document.querySelector(".main-ultimoCapituloleido");
+async function run() {
+  const res = await fetch(URL, { timeout: 10000 });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const obras = await res.json();
 
-      const promesasCapitulos = [];
+  if (!Array.isArray(obras)) throw new TypeError("Se esperaba un array");
 
-      obras.forEach(obra => {
-        const visible = obra.querySelector("visible")?.textContent.trim().toLowerCase();
-        if (visible !== "si") return; // Salta al siguiente si no es visible
+  const carouselContainer = document.querySelector(".custom-carousel-track");
+  const booklistContainer = document.querySelector(".book-list");
+  const booklistContainernopc = document.querySelector(".lista-libros");
+  const booklastread = document.querySelector(".main-ultimoCapituloleido");
 
-        const clave = obra.querySelector("clave").textContent.trim();
-        //const nombreobra = obra.querySelector("nombreobra").textContent.trim();
-        const { nombreobra, nombresAlternativos } = obtenerNombreObra(obra.querySelectorAll("nombreobra"));
-        const autor = obra.querySelector("autor").textContent.trim();
-        //const imagen = obra.querySelector("imagen").textContent.trim();
-        // 🎨 Seleccionamos la imagen correcta según el mes
-        const imagen = seleccionarImagen(obra.querySelectorAll("imagen"));
-        const estado = obra.querySelector("estado").textContent.trim();
-        const Categoria = obra.querySelector("categoria").textContent.trim();
-        const traduccion = obra.querySelector("traductor").textContent.trim();
-        const contenido18 = obra.querySelector("adulto").textContent.trim();
-        const discord = obra.querySelector("discord").textContent.trim();
-        const aprobadaAutor = obra.querySelector("aprobadaAutor").textContent.trim();
-        const sinopsis = obra.querySelector("sinopsis")?.textContent.trim() || "";
+    for (const obra of obras) {
+      // Asignar a variables (las que pidas)
+      const obra_id = obra.obra_id;
+      const visible = obra.visible;
+      const nombreobra = obra.nombreobra;
+      const nombresAlternativos = obra.nombresAlternativos; // array
+      const autor = obra.autor;
+      const sinopsis = obra.sinopsis;
+      const tipoobra = obra.tipoobra;
+      const fechaCreacion = obra.fechaCreacion;
+      const ubicacion = obra.ubicacion;
+      const estado = obra.estado;
+      const traductor = obra.traductor;
+      const aprobadaAutor = obra.aprobadaAutor;
+      const adulto = obra.adulto;
+      const icono = obra.icono;
+      const bannerOpcional = obra.bannerOpcional;
+      const Categoria = obra.categoria; // puede ser array o string
+      const discord = obra.discord;
+      const valoracion = obra.valoracion;
+      const wiki = obra.wiki;
+      const imagen = seleccionarImagen(obra.imagen); // array
+      const UltimoCapNum = seleccionarImagen(obra.UltimoCapNum);
+      const UltimoCapNom = seleccionarImagen(obra.UltimoCapNom);
+      const UltimoCapFecha = seleccionarImagen(obra.UltimoCapFecha);
 
         // Último capítulo leído (mostrar solo si hay datos válidos)
-        const ultimaObra = localStorage.getItem("ultimaObra");
-        const ultimoCapitulo = localStorage.getItem("ultimoCapitulo");
-        if (booklastread) {
-          if (
-            ultimaObra &&
-            ultimoCapitulo &&
-            ultimaObra !== "null" &&
-            ultimoCapitulo !== "null"
-          ) {
-            // Mostrar formato Obra-Capítulo
-            booklastread.textContent = `${ultimaObra}-${ultimoCapitulo}`;
-            booklastread.classList.remove('d-none');
-          } else {
-            // Vaciar para que :empty de CSS lo oculte y evitar "null-null"
-            booklastread.textContent = "";
-            booklastread.classList.add('d-none');
+        const renderLastRead = (el = booklastread) => {
+          if (!el) return;                                      // salir si no hay elemento
+          const obra = localStorage.getItem('ultimaObra');      // leer clave: última obra
+          const cap = localStorage.getItem('ultimoCapitulo');   // leer clave: último capítulo
+          const ok = v => v && v !== 'null';                    // validador: existe y no es 'null'
+
+          if (ok(obra) && ok(cap)) {                            // si ambos son válidos
+            el.textContent = `${obra}-${cap}`;                  // mostrar "Obra-Capítulo"
+            el.classList.remove('d-none');                      // asegurar visibilidad
+          } else {                                              // si falta cualquiera
+            el.textContent = '';                                // evitar mostrar "null-null"
+            el.classList.add('d-none');                         // ocultar elemento
           }
-        }
-
-        let OKAutor = '';
-        if (aprobadaAutor === 'si') {
-          OKAutor = `
-            <span class="carousel-info-label">Traducción aprobada por el autor</span><br>
-            <span>Discord Oficial : <a href="${discord}" target="_blank">${discord}</a></span>
-          `;
-        }
-
+        };
+        renderLastRead(); // ejecutar inmediatamente
+        //aprobada autor
+        const OKAutor = aprobadaAutor === 'si'
+          ? `<span class="carousel-info-label">Traducción aprobada por el autor</span><br>
+             <span>Discord Oficial : <a href="${discord}" target="_blank">${discord}</a></span>`
+          : '';
+        //Categorias
         const categoriaIndiv = Categoria.split(",").map(item => item.trim());
         const categoriaObj = categoriaIndiv.map(item => `<span class="etiqueta">${item}</span>`).join('');
-
+        //Manejo de imagenes
         const imagenContenedor = document.createElement("div");
         imagenContenedor.classList.add("imagen-contenedor");
         const img = document.createElement("img");
@@ -123,9 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
           // reemplaza el handler por el segundo paso
           this.onerror = function () { this.onerror = null; this.style.display = 'none'; };
         };
-
-
         imagenContenedor.appendChild(img);
+        //Contenido +18
         if (contenido18 === "adulto") {
           imagenContenedor.classList.add("adulto");
           const indicador = document.createElement("div");
@@ -192,92 +192,55 @@ document.addEventListener("DOMContentLoaded", function () {
             Estado: <span class="${estado}">${estado}</span><br>
           </div>
         `;
-        /*
-                const promesaCapitulo = fetch("capitulos.json")
-                  .then((res) => res.json())
-                  .then((index) => {
-                    const ruta = index[clave];
-                    return fetch(ruta)
-                      .then((res) => res.json())
-                      .then((data) => {
-                        const capitulos = data[clave] || [];
-                        const capitulosConObra = capitulos.map((cap) => ({ ...cap, obra: clave }));
-                        return { [clave]: capitulosConObra };
-                      });
-                  })
-                  .then((data) => {
-                    const bloque = crearUltimoCapituloDeObra(data, clave);
-                    if (bloque) {
-                      const bloqueB = bloque.cloneNode(true);
-                      itemBook.querySelector(".book-info-main").appendChild(bloque);
-                      itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
-        
-                      const hoyTag = itemBook.querySelector('.tag-capitulo.hoy');
-                      if (hoyTag) {
-                        const bookInfoMain = hoyTag.closest('.book-card-main');
-                        if (bookInfoMain) {
-                          bookInfoMain.classList.add('hoy-book');
-                        }
-                      }
-                    }
-                  })
-                  .catch((err) => console.error("Error cargando capítulos:", err));*/
-        const promesaCapitulo = fetch("capitulos.json")
-          .then((res) => res.json())
-          .then((index) => {
-            const ruta = index[clave];
-            return fetch(ruta)
-              .then((res) => res.json())
-              .then((data) => {
-                const capitulos = data[clave] || [];
 
-                // 🗓️ Filtrar capítulos cuya fecha sea mayor que hoy
-                const hoy = new Date();
-                hoy.setHours(0, 0, 0, 0); // Elimina la hora para comparar solo la fecha
-
-                const capitulosConObra = capitulos
-                  .filter((cap, i) => {
-                    const fechaCap = new Date(parseFecha(cap.Fecha));
-                    if (fechaCap > hoy) {
-                      //console.info(`⏳ Capítulo "${cap.nombreCapitulo}" programado para el futuro (${cap.Fecha}), se omite.`);
-                      return false;
-                    }
-                    return true;
-                  })
-                  .map((cap) => ({ ...cap, obra: clave }));
-
-                // ⚠️ Aviso si todos los capítulos fueron filtrados
-                if (capitulosConObra.length === 0) {
-                  console.warn(`⚠️ No hay capítulos disponibles en este momento.`);
+        //Ultimo capítulo
+          const promesaCapitulo = Promise.resolve().then(() => {
+            // No continuar si faltan datos esenciales
+            if (!UltimoCapNum || !UltimoCapNom || !UltimoCapFecha) return;
+            // Construimos el objeto 'data' con la misma estructura que espera crearUltimoCapituloDeObra
+            // clave es la clave de la obra que ya tienes en el scope
+            const data = {
+              [obra_id]: [
+                {
+                  numCapitulo: UltimoCapNum,      // número del capítulo (igual que en tus JSON)
+                  nombreCapitulo: UltimoCapNom,   // nombre del capítulo (igual que en tus JSON)
+                  Fecha: UltimoCapFecha           // fecha en formato "dd-mm-yyyy"
                 }
+              ]
+            };
 
-                return { [clave]: capitulosConObra };
-              });
-          })
-          .then((data) => {
-            const bloque = crearUltimoCapituloDeObra(data, clave);
-            if (bloque) {
-              const bloqueB = bloque.cloneNode(true);
-              const bloqueC = bloque.cloneNode(true);
-              itemBook.querySelector(".card-body").appendChild(bloque);
-              itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
+            // crea el elemento HTML del último capítulo
+            const bloque = crearUltimoCapituloDeObra(data, obra_id);
+            if (!bloque) return; // si devuelve null, no hay nada que insertar
 
-              // Agregar el último capítulo al carrusel
-              const carouselChapterBadge = itemCarousel.querySelector(".carousel-chapter-badge");
-              if (carouselChapterBadge) {
-                bloqueC.classList.add('carousel-chapter-badge-info');
-                carouselChapterBadge.appendChild(bloqueC);
-              }
+            // Clonamos el bloque para los distintos lugares donde se debe insertar
+            const bloqueA = bloque;                 // bloque original para la tarjeta principal
+            const bloqueB = bloque.cloneNode(true); // clon para la versión sin opciones
+            const bloqueC = bloque.cloneNode(true); // clon para el carrusel
 
-              const hoyTag = itemBook.querySelector('.tag-capitulo.hoy');
-              if (hoyTag) {
-                // Añadir clase al div.col que contiene la tarjeta
-                itemBook.classList.add('hoy-book');
-              }
+            // Insertar en la card principal dentro de .card-body
+            const cardBody = itemBook.querySelector('.card-body');
+            if (cardBody) cardBody.appendChild(bloqueA);
+
+            // Insertar en la vista sin opciones dentro de .info-libro
+            const infoLibro = itemBookNOpc.querySelector('.info-libro');
+            if (infoLibro) infoLibro.appendChild(bloqueB);
+
+            // Si existe el contenedor del carrusel, añadir la versión adaptada
+            const carouselChapterBadge = itemCarousel.querySelector('.carousel-chapter-badge');
+            if (carouselChapterBadge) {
+              bloqueC.classList.add('carousel-chapter-badge-info'); // clase específica para carrusel
+              carouselChapterBadge.appendChild(bloqueC);
             }
-          })
-          .catch((err) => console.error("❌ Error cargando capítulos:", err));
-        promesasCapitulos.push(promesaCapitulo);
+
+            // Si la tarjeta incluye la etiqueta .tag-capitulo.hoy, marcamos el contenedor
+            // con la clase .hoy-book para estilos adicionales
+            if (itemBook.querySelector('.tag-capitulo.hoy')) {
+              itemBook.classList.add('hoy-book');
+            }
+          });
+          // Mantener la colección de promesas como antes
+          promesasCapitulos.push(promesaCapitulo);
 
         // Función auxiliar para clonar imagen con srcset
         const clonarImagenConSrcset = (contenedor) => {
@@ -378,35 +341,6 @@ function onLibroClick(libroId) {
     })
     .catch(err => console.error('Error:', err));
 }
-/*
-function ordenarLibrosPorFecha() {
-  const container = document.querySelector('.book-list');
-  if (!container) return;
-
-  const articles = Array.from(container.querySelectorAll('article.book-card-main.libro-item'));
-
-  const getFecha = (article) => {
-    const fechaStr = article.querySelector('.book-latest-chapter')?.getAttribute('data-fecha');
-    if (!fechaStr || !/^\d{2}-\d{2}-\d{4}$/.test(fechaStr)) return null;
-    const [dia, mes, año] = fechaStr.split('-');
-    return new Date(`${año}-${mes}-${dia}`);
-  };
-
-  articles.sort((a, b) => {
-    const fechaA = getFecha(a);
-    const fechaB = getFecha(b);
-
-    if (!fechaA && !fechaB) return 0;
-    if (!fechaA) return 1;
-    if (!fechaB) return -1;
-
-    return fechaB - fechaA;
-  });
-
-  container.innerHTML = '';
-  articles.forEach(article => container.appendChild(article));
-}
-*/
 /**
  * 📚 Función: ordenarLibrosPorFecha
  * ----------------------------------
