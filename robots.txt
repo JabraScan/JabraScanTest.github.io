@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://jabrascan.github.io/sitemap.xml
