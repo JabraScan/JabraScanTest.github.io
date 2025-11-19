@@ -1,0 +1,306 @@
+/* ====== Utilidades y Clases Auxiliares ====== */
+
+/* Paginación */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.pagination-container .page-btn {
+    border: 1px solid rgba(252, 163, 17, 0.4);
+    background: rgba(20, 33, 61, 0.15);
+    color: var(--color-secondary);
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-normal) ease;
+}
+
+.pagination-container .page-btn:hover {
+    background: rgba(252, 163, 17, 0.2);
+    color: var(--color-white);
+}
+
+.pagination-container .page-btn.active {
+    background: rgba(252, 163, 17, 0.3);
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.pagination-container .page-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#pagination .btn {
+    margin: 0 0.2rem;
+    min-width: 2.5rem;
+}
+
+#pagination .btn-warning {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+#pagination .btn-outline-warning {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+#pagination .btn-outline-warning:hover {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+/* Indicador adulto (badge 18+) */
+.indicador-adulto {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--border-radius-full);
+    border: 2px solid red;
+    background-color: var(--color-white);
+    color: red;
+    font-size: var(--font-size-xs);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.imagen-contenedor {
+    position: relative;
+    display: inline-block;
+}
+
+.imagen-contenedor:not(.adulto) .indicador-adulto {
+    display: none;
+}
+
+/* Etiquetas */
+.etiqueta {
+    font-size: 0.8em;
+    border-radius: 50px;
+    background: blue;
+    color: var(--color-white);
+    padding: 0 20px;
+    font-weight: bold;
+}
+
+.clave {
+    display: none;
+}
+
+.obra {
+    font-weight: bold;
+    color: var(--color-accent);
+}
+
+/* Estados de libro */
+.Activo {
+    color: var(--color-teal);
+    font-weight: bold;
+}
+
+.Finalizado {
+    color: var(--color-danger);
+    font-weight: bold;
+}
+
+.Cancelado {
+    color: var(--color-purple);
+    font-weight: bold;
+}
+
+.Pausado,
+.Hiatus {
+    color: var(--color-gray);
+    font-weight: bold;
+}
+
+/* Etiquetas para capítulos */
+.tag-capitulo {
+    padding: 4px 8px;
+    border-radius: var(--border-radius-xl);
+    font-family: sans-serif;
+    font-size: 0.9em;
+    color: var(--color-white);
+    display: inline-block;
+}
+
+.tag-capitulo.hoy {
+    background-color: var(--color-success);
+}
+
+.tag-capitulo.nuevo {
+    background-color: var(--color-info);
+}
+
+/* Listas de capítulos */
+.chapter-list,
+.chapter-list-ultimos {
+    background: var(--color-white);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-md);
+}
+
+.chapter-list h2,
+.chapter-list-ultimos h2 {
+    margin-top: 0;
+}
+
+.chapter-list ul,
+.chapter-list-ultimos ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.chapter-list li,
+.chapter-list-ultimos li {
+    margin-bottom: 0.6em;
+}
+
+.chapter-list a,
+.chapter-list-ultimos a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-size: 1.07em;
+    transition: color var(--transition-normal);
+    -webkit-transition: color var(--transition-normal);
+}
+
+.chapter-list a:hover,
+.chapter-list-ultimos a:hover {
+    color: var(--color-secondary);
+}
+
+.ultcap-chapter {
+    justify-content: flex-start;
+}
+
+.ultcap-chapter span {
+    margin: 0 0.1em 0 0.1em;
+    display: block;
+}
+
+.book-chapters-list ul li {
+    display: flex;
+    align-items: right;
+    gap: var(--spacing-sm);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.book-chapters-list ul li span:last-child {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 400px;
+}
+
+/* Enlaces a capítulos PDF */
+.pdf-link {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-decoration: none;
+    color: inherit;
+    padding: 6px 4px;
+    border-radius: 4px;
+    transition: background var(--transition-normal) ease;
+    -webkit-transition: background var(--transition-normal) ease;
+}
+
+.pdf-link:hover {
+    background: #f0f0f0;
+}
+
+.pdf-link span:first-child {
+    text-align: left;
+}
+
+.pdf-link span:last-child {
+    text-align: right;
+}
+
+/* Buscador */
+.buscador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    background: #ffebcd;
+}
+
+.buscador select,
+.buscador input,
+.buscador button {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+}
+
+.buscador-left,
+.buscador-center,
+.buscador-right {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Loader */
+.loader {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: var(--spacing-md);
+    animation: parpadeo 1s infinite;
+}
+
+@keyframes parpadeo {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Canvas gráfica */
+canvas#graficaObras {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100%;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    color: #888;
+    font-size: 0.95em;
+    padding: 2em 0 var(--spacing-md) 0;
+    margin-top: 4em;
+}
+
+/* Main container */
+main {
+    padding-top: var(--spacing-md);
+}

@@ -1,0 +1,213 @@
+/* ====== Carrusel Personalizado ====== */
+.custom-carousel {
+    position: relative;
+    width: 100%;
+    margin: 0 auto 2rem;
+    overflow: hidden;
+    border-radius: var(--border-radius-xxl);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: #222;
+    mask-image: radial-gradient(white, black);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.custom-carousel-track {
+    display: flex;
+    transition: transform 0.5s var(--transition-ease);
+    -webkit-transition: -webkit-transform 0.5s var(--transition-ease);
+}
+
+.custom-carousel-item {
+    min-width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 450px;
+}
+
+.custom-carousel-item .imagen-contenedor {
+    flex: 0 0 auto;
+    width: 28%;
+    min-width: 180px;
+    max-width: 280px;
+    position: relative;
+    height: 100%;
+}
+
+.custom-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--border-radius-xxl) 0 0 var(--border-radius-xxl);
+}
+
+.carousel-info-overlay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(90deg, rgba(20, 33, 61, 0.98) 0%, rgba(20, 33, 61, 0.95) 100%);
+    color: var(--color-white);
+    padding: 1.2em var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
+    border-radius: 0 var(--border-radius-xxl) var(--border-radius-xxl) 0;
+    gap: 0.6em;
+    position: relative;
+}
+
+.carousel-info-title {
+    font-size: var(--font-size-xxl);
+    font-weight: bold;
+    margin: 0;
+    cursor: pointer;
+}
+
+.carousel-info-sinopsis {
+    font-size: var(--font-size-base);
+    color: #e0e0e0;
+    margin: 0.5em 0 0.7em 0;
+    line-height: 1.3;
+    font-style: italic;
+    max-height: 4.2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.carousel-info-row,
+.carousel-info-row-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6em;
+}
+
+.carousel-info-label {
+    font-weight: bold;
+    color: var(--color-secondary);
+    margin-right: 0.4em;
+}
+
+.carousel-chapter-badge {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    background: rgba(20, 33, 61, 0.95);
+    border: 2px solid rgba(252, 163, 17, 0.7);
+    border-radius: 8px;
+    padding: 0.6em var(--spacing-md);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-xl);
+    z-index: var(--z-index-badge);
+    max-width: calc(100% - 2em);
+}
+
+.carousel-chapter-badge-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4em;
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.carousel-chapter-badge-info span {
+    color: var(--color-white);
+}
+
+.carousel-chapter-badge-info .cap {
+    color: var(--color-secondary);
+    font-weight: bold;
+    font-size: var(--font-size-lg);
+}
+
+.carousel-chapter-badge-info .fecha {
+    color: #ccc;
+    font-size: var(--font-size-md);
+}
+
+.carousel-chapter-badge-info .tag-capitulo {
+    font-size: var(--font-size-xs);
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.carousel-chapter-badge-info .tag-capitulo.hoy {
+    background-color: var(--color-success);
+    color: var(--color-white);
+}
+
+.carousel-chapter-badge-info .tag-capitulo.nuevo {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+
+.custom-carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    padding: 0 var(--spacing-md);
+}
+
+.custom-carousel-btn {
+    background: rgba(20, 33, 61, 0.1) !important;
+    border: 2px solid rgba(252, 163, 17, 0.7) !important;
+    color: var(--color-secondary) !important;
+    font-size: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--border-radius-full) !important;
+    cursor: pointer;
+    pointer-events: all;
+    transition: all var(--transition-slow) ease !important;
+    -webkit-transition: all var(--transition-slow) ease !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.custom-carousel-btn:hover,
+.custom-carousel-btn:focus {
+    background: rgba(252, 163, 17, 0.8) !important;
+    color: var(--color-primary) !important;
+    border-color: rgba(252, 163, 17, 0.9) !important;
+    transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(252, 163, 17, 0.5);
+}
+
+.custom-carousel-btn:active {
+    transform: scale(0.95) !important;
+    -webkit-transform: scale(0.95) !important;
+}
+
+.custom-carousel-btn:focus-visible {
+    outline: 3px solid var(--color-secondary);
+    outline-offset: 3px;
+}
+
+.custom-carousel-btn i {
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+.custom-carousel-btn.prev {
+    margin-left: var(--spacing-sm);
+}
+
+.custom-carousel-btn.next {
+    margin-right: var(--spacing-sm);
+}

@@ -1,0 +1,31 @@
+/* ====== Archivo principal de estilos ====== */
+/* Importa todos los módulos CSS en el orden correcto */
+
+@import url('variables.css');
+@import url('header.css');
+@import url('carousel.css');
+@import url('cards.css');
+@import url('utilities.css');
+@import url('responsive.css');
+
+/* ====== Estilos globales ====== */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family-base);
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* ====== Estilos que aún no se han modularizado ====== */
+/* Estos estilos permanecen en style.css hasta una futura reorganización */

@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /.github/
+Disallow: /node_modules/
+Disallow: /scripts/
+Disallow: /*.pdf$
+
+Sitemap: https://jabrascan.net/sitemap.xml

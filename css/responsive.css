@@ -1,0 +1,364 @@
+/* ====== Media Queries y Responsivo ====== */
+
+/* Tablets y pantallas medianas (hasta 991px) */
+@media (max-width: 991px) {
+    .navbar-jabrascan {
+        padding: 0.7rem 0.7rem 0.7rem 0.7rem;
+    }
+
+    .navbar-jabrascan .navbar-nav {
+        gap: 0.2rem;
+    }
+
+    .navbar-jabrascan .nav-search.form-control {
+        min-width: 100%;
+        margin-bottom: var(--spacing-sm);
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .navbar-jabrascan .nav-item {
+        margin-bottom: 0.3rem;
+        margin-right: 0.1rem;
+        margin-left: 0.1rem;
+    }
+
+    /* Ocultar último capítulo leído en vista colapsada */
+    .main-ultimoCapituloleido {
+        display: none !important;
+    }
+
+    .navbar-jabrascan .nav-item.position-relative {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        padding-bottom: 0;
+        position: relative;
+    }
+
+    .navbar-jabrascan .nav-item.position-relative .nav-link {
+        padding-left: var(--spacing-sm);
+    }
+}
+
+/* Tablets pequeñas (hasta 900px) */
+@media (max-width: 900px) {
+    .book-card-main {
+        max-width: 100%;
+    }
+}
+
+/* Tablets y móviles (hasta 768px) */
+@media screen and (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+
+    .book-chapters-list ul li span:last-child {
+        overflow: visible;
+    }
+
+    /* Botones del carrusel más pequeños en móviles */
+    .custom-carousel-btn {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+        font-size: 1rem !important;
+    }
+
+    .custom-carousel-btn i {
+        font-size: 0.9rem !important;
+    }
+
+    .custom-carousel-controls {
+        padding: 0 var(--spacing-sm);
+    }
+
+    /* Ajustar tamaño de fuentes en carrusel */
+    .carousel-info-title {
+        font-size: var(--font-size-xl) !important;
+    }
+
+    .carousel-info-row,
+    .carousel-info-row-tags {
+        font-size: var(--font-size-md) !important;
+    }
+
+    .carousel-info-overlay {
+        padding: 0.8em var(--spacing-md) !important;
+    }
+
+    /* Badge del último capítulo en móvil */
+    .carousel-chapter-badge {
+        bottom: var(--spacing-sm) !important;
+        right: var(--spacing-sm) !important;
+        padding: 0.4em 0.7em !important;
+        font-size: var(--font-size-md) !important;
+    }
+
+    .carousel-chapter-badge-info {
+        font-size: 0.8em !important;
+        gap: 0.3em !important;
+    }
+
+    .carousel-chapter-badge-info .cap {
+        font-size: var(--font-size-base) !important;
+    }
+
+    /* Cards de capítulos */
+    .chapter-card .card-body {
+        padding: var(--spacing-md);
+        min-height: 180px;
+    }
+
+    .chapter-card .card-title {
+        font-size: 0.9rem;
+    }
+
+    /* Ajustes móvil */
+    body {
+        background-attachment: scroll !important;
+    }
+
+    .brand-iconos {
+        font-size: 0.9em;
+        margin-left: 0.3rem;
+    }
+
+    .user-avatar {
+        max-width: 3em;
+    }
+}
+
+/* Móviles (hasta 700px) */
+@media (max-width: 700px) {
+    .book-detail {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .book-detail .cover {
+        width: 100%;
+        max-width: 230px;
+    }
+
+    .book-card,
+    .book-detail,
+    .chapter-list {
+        width: 100%;
+    }
+
+    /* Carrusel en pantallas pequeñas */
+    .custom-carousel-item {
+        min-height: 280px;
+        height: auto;
+    }
+
+    .custom-carousel-item .imagen-contenedor {
+        width: 40%;
+        min-width: 150px;
+    }
+
+    .custom-carousel-item img {
+        border-radius: var(--border-radius-xxl) 0 0 var(--border-radius-xxl);
+    }
+
+    .carousel-info-overlay {
+        font-size: var(--font-size-md);
+        padding: 0.8em var(--spacing-md);
+        justify-content: flex-start;
+    }
+
+    .carousel-info-title {
+        font-size: var(--font-size-xl) !important;
+    }
+
+    .carousel-info-sinopsis {
+        font-size: 0.9em !important;
+        -webkit-line-clamp: 2 !important;
+        line-clamp: 2 !important;
+        max-height: 2.6em !important;
+    }
+
+    .pdf-link {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pdf-link span {
+        flex: 1 1 100%;
+        text-align: left;
+    }
+}
+
+/* Móviles pequeños (hasta 576px) */
+@media (max-width: 576px) {
+
+    /* Carrusel móviles pequeños */
+    .custom-carousel-item {
+        min-height: 250px;
+        height: auto;
+    }
+
+    .custom-carousel-item .imagen-contenedor {
+        width: 38%;
+        min-width: 130px;
+    }
+
+    .carousel-info-overlay {
+        font-size: var(--font-size-sm);
+        padding: 0.6em 0.8em;
+        justify-content: flex-start;
+    }
+
+    .carousel-info-title {
+        font-size: 1.2em !important;
+    }
+
+    .carousel-info-sinopsis {
+        font-size: var(--font-size-md) !important;
+        -webkit-line-clamp: 2 !important;
+        line-clamp: 2 !important;
+    }
+
+    .carousel-info-row,
+    .carousel-info-row-tags {
+        font-size: 0.9em !important;
+        gap: 0.4em !important;
+    }
+
+    .navbar-jabrascan {
+        padding: 0.75rem var(--spacing-md);
+    }
+
+    .navbar-jabrascan .navbar-brand {
+        font-size: 1.6rem;
+    }
+
+    .navbar-jabrascan .navbar-brand-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    /* Cards de capítulos */
+    .chapter-card .card-body {
+        padding: 0.875rem 0.75rem;
+        min-height: 160px;
+    }
+
+    .chapter-card .card-title {
+        font-size: var(--font-size-md);
+    }
+
+    .chapter-card .btn-primary {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    #pagination .btn {
+        min-width: 2rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    #pagination .mx-2 {
+        margin-left: var(--spacing-sm) !important;
+        margin-right: var(--spacing-sm) !important;
+    }
+}
+
+/* iOS - tablets y móviles (hasta 1200px) */
+@media only screen and (max-width: 1200px) {
+    body.ios .lista-libros {
+        display: block;
+        padding: var(--spacing-md);
+    }
+
+    body.ios .book-list,
+    body.ios .libro-item,
+    body.ios .book-card-main,
+    body.ios .book-card-main.libro-item {
+        display: none !important;
+    }
+
+    /* Ajustes para la lista en pantallas pequeñas */
+    body.ios .item-libro {
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+        background: var(--color-white);
+        border-radius: var(--border-radius-md);
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    body.ios .item-libro .imagen-contenedor {
+        width: 90px;
+        min-width: 90px;
+        height: 130px;
+    }
+}
+
+/* Animaciones solo en pantallas grandes (PC) */
+@media (min-width: 768px) {
+    .tag-capitulo.hoy {
+        animation: parpadeo 2s infinite;
+    }
+
+    .hoy-book>article.card {
+        animation: bordeParpadeante 2s infinite;
+    }
+
+    @keyframes bordeParpadeante {
+
+        0%,
+        100% {
+            border-color: rgba(40, 167, 69, 0.6) !important;
+            box-shadow: 0 0 12px rgba(40, 167, 69, 0.5) !important;
+        }
+
+        50% {
+            border-color: rgba(40, 167, 69, 0.2) !important;
+            box-shadow: 0 0 6px rgba(40, 167, 69, 0.2) !important;
+        }
+    }
+}
+
+/* Efecto lupa - solo hover en escritorio */
+@media (hover: hover) {
+    .lupa:hover img {
+        transform: scale(2);
+        -webkit-transform: scale(2);
+    }
+}
+
+/* Fallback táctil para lupa */
+.lupa:active img {
+    transform: scale(2);
+    -webkit-transform: scale(2);
+}
+
+/* Fixes iOS */
+@supports (-webkit-touch-callout: none) {
+
+    .carousel,
+    .chapter-list,
+    .book-detail {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Fix para renderizado de imágenes en iOS Safari */
+    .book-card-main .imagen-contenedor,
+    .book-card-main .imagen-contenedor img,
+    .book-card-main .card-img-top {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    /* Asegurar que las imágenes no tengan espacios en blanco */
+    .book-card-main .imagen-contenedor img {
+        vertical-align: middle;
+        line-height: 0;
+    }
+}

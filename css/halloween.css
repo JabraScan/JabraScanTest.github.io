@@ -1,0 +1,32 @@
+/* 🎃 Halloween */
+/* 🦇 Estilos para los murciélagos */
+.bat {
+  position: fixed; /* siempre visibles aunque hagas scroll */
+  width: 40px;
+  height: 20px;
+  background: url('https://commons.wikimedia.org/wiki/Category:Bat_silhouettes#/media/File:Bat_shadow_black.svg')
+              no-repeat center/contain;
+  animation: fly 10s linear infinite;
+  z-index: 9999; /* por encima del contenido */
+}
+
+/* 🌀 Animación de vuelo de izquierda a derecha */
+@keyframes fly {
+  from { transform: translateX(-100px) translateY(0); }
+  to   { transform: translateX(110vw) translateY(0); }
+}
+
+/* ♿ Accesibilidad: si el usuario prefiere reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .bat {
+    animation: none !important; /* sin animación */
+  }
+}
+
+/* 📱 Ajustes móviles */
+@media (max-width: 600px) {
+  .bat {
+    width: 25px;  /* murciélagos más pequeños */
+    height: 12px;
+  }
+}

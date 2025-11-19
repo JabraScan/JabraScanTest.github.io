@@ -1,0 +1,55 @@
+/* ====== Estilos específicos para la página de login ====== */
+.login-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-align: center;
+}
+
+.login-container h1 {
+  margin-bottom: 1.5rem;
+  color: #14213d; /* coherente con tu CSS global */
+}
+
+/* Iconos de los botones de login */
+.login-icon {
+  /*width: 20px;*/
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Ajustes de botones */
+.login-btn {
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.login-btn:hover {
+  transform: scale(1.03);
+}
+
+/* Colores corporativos */
+.google {
+  background-color: #4285F4;
+  border: none;
+}
+
+.meta {
+  background-color: #1877F2;
+  border: none;
+}
+
+/* Información del usuario */
+.user-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #14213d;
+}
+.login-logo {
+  width: 100px;       /* tamaño del logo */
+  height: 100px;
+  /*border-radius: 50%;*/ /* lo convierte en círculo */
+  object-fit: contain;
+  /*border: 3px solid #14213d;*/ /* opcional: borde alrededor */
+}

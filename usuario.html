@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Usuario - Jabrascan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="js/usuario.js"></script>
+
+</head>
+  <body class="bg-light">
+  
+    <div class="container py-5">
+      <!-- Perfil básico -->
+      <div class="d-flex align-items-center mb-4">
+        <img id="avatar" src="" alt="avatar" class="rounded-circle me-3" style="width:80px;height:80px;">
+        <div>
+          <h3 id="nick"></h3>
+          <p class="text-muted">ID: <span id="usuario_id"></span></p>
+        </div>
+      </div>
+    
+      <!-- Pestañas -->
+      <ul class="nav nav-tabs" id="usuarioTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="biblioteca-tab" data-bs-toggle="tab" data-bs-target="#biblioteca" type="button" role="tab">Biblioteca</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="obras-tab" data-bs-toggle="tab" data-bs-target="#obras" type="button" role="tab">Mis Obras</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="avatar-tab" data-bs-toggle="tab" data-bs-target="#avatar" type="button" role="tab">Avatares</button>
+        </li>
+      </ul>
+    
+      <div class="tab-content mt-3">
+        <!-- Biblioteca -->
+        <div class="tab-pane fade show active" id="biblioteca" role="tabpanel">
+          <div id="bibliotecaResultado"></div>
+        </div>
+        <!-- Obras -->
+        <div class="tab-pane fade" id="obras" role="tabpanel">
+          <div id="obrasResultado"></div>
+        </div>
+        <!-- Avatares -->
+        <div class="tab-pane fade" id="avatar" role="tabpanel">
+          <div id="avatarResultado"></div>
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
