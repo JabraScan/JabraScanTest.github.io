@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>{{titlePrincipal}} - {{author}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="canonical" href="{{url}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="book">
+  <meta property="og:title" content="{{titlePrincipal}}">
+  <meta property="og:description" content="{{description}}">
+  <meta property="og:image" content="{{image}}">
+  <meta property="og:url" content="{{url}}">
+
+  <!-- Datos estructurados -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "{{titlePrincipal}}",
+    "author": { "@type": "Person", "name": "{{author}}" },
+    "description": "{{description}}",
+    "image": "{{image}}",
+    "url": "{{url}}",
+    "alternateName": "{{titlesAlternativos}}",
+    "inLanguage": "es",
+    "genre": "{{tipoobra}} {{ubicacion}}",
+    "keywords": "{{categoria}}",
+    "datePublished": "{{fechaCreacion}}",
+    "translator": { "@type": "Person", "name": "{{traductor}}" }
+  }
+  </script>
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fafafa; }
+    main { max-width: 900px; margin: auto; padding: 20px; background: #fff; }
+    h1 { font-size: 1.8em; margin-bottom: 10px; }
+    h2 { margin-top: 25px; font-size: 1.4em; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
+    .meta p { margin: 4px 10px 4px 10px; color: #555; }
+    .portada { max-width: 250px; border-radius: 6px; margin: 10px auto; display: block; }
+    .sinopsis { margin-top: 20px; }
+    .galeria { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+    .galeria img { max-width: 140px; flex: 1 1 auto; border: 1px solid #ddd; border-radius: 4px; }
+    .acciones { margin-top: 20px; }
+    .acciones a { display: inline-block; margin-right: 15px; color: #0066cc; text-decoration: none; }
+    .acciones a:hover { text-decoration: underline; }
+    .alternativos p { margin: 2px 0 2px 20px; color: #666; }
+    .info { display: flex; gap: 20px; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.5em; }
+      .portada { max-width: 100%; }
+      .galeria img { max-width: 45%; }
+      .info { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>{{titlePrincipal}}</h1>
+    <div class="info">
+      <img class="portada" src="{{image}}" alt="Portada de {{titlePrincipal}}">
+
+      <div class="meta">
+        <p><strong>Autor:</strong> {{author}}</p>
+        <p><strong>Género:</strong> {{tipoobra}}</p>
+        <p><strong>Categoría:</strong> {{categoria}}</p>
+        <p><strong>Fecha de creación:</strong> {{fechaCreacion}}</p>
+        <p><strong>Traductor:</strong> {{traductor}}</p>
+        <p><strong>Otros Títulos:</strong></p>
+        <div class="alternativos">
+          {{titlesAlternativos}}
+        </div>
+      </div>
+    </div>
+
+    <div class="sinopsis">
+      <h2>Sinopsis</h2>
+      <p>{{description}}</p>
+    </div>
+    <div class="acciones">
+      <a href="/#{{clave}}">📖 Leer Capítulos</a>
+    </div>
+    <!-- Bloque de aprobación y discord -->
+    {{aprobacion}}
+
+    <h2>Galería</h2>
+    <div class="galeria">
+      {{galeria}}
+    </div>
+
+    <div class="acciones">
+      {{wiki}}
+    </div>
+  </main>
+</body>
+</html>
