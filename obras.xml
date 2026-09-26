@@ -352,7 +352,8 @@
 		<bannerOpcional></bannerOpcional>
 		<wiki></wiki>
 	</obra>	
-	<obra>	
+	<obra>
+		<idioma>ca</idioma>
 		<visible>si</visible>
 		<clave>ForSaleFallenLadyCA</clave>
 		<nombreobra>(CATALÀ) En Venda. Dama Caiguda. Mai Utilitzada.</nombreobra>
