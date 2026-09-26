@@ -11,8 +11,15 @@
   <meta property="og:type" content="book">
   <meta property="og:title" content="Guía de Supervivencia del Extra de la Academia">
   <meta property="og:description" content="Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.">
-  <meta property="og:image" content="/img/TEASG/WebNovel_Cover_1-300w.webp">
+  <meta property="og:image" content="/img/TEASG/WebNovel_Cover_1.webp">
   <meta property="og:url" content="https://jabrascan.net/books/TEASG.html">
+  <meta property="og:locale" content="es_ES">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Guía de Supervivencia del Extra de la Academia">
+  <meta name="twitter:description" content="Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.">
+  <meta name="twitter:image" content="/img/TEASG/WebNovel_Cover_1.webp">
+
 
   <!-- Datos estructurados -->
   <script type="application/ld+json">
@@ -20,94 +27,208 @@
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "Guía de Supervivencia del Extra de la Academia",
-    "author": { "@type": "Person", "name": "Plutoe (플루토)" },
+    "author": {
+        "@type": "Person",
+        "name": "Plutoe (플루토)"
+    },
+    "translator": {
+        "@type": "Person",
+        "name": "Leo"
+    },
     "description": "Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.",
-    "image": "/img/TEASG/WebNovel_Cover_1-300w.webp",
+    "image": "/img/TEASG/WebNovel_Cover_1.webp",
     "url": "https://jabrascan.net/books/TEASG.html",
     "alternateName": "<p>The Extra's Academy Survival Guide</p>
 <p>아카데미 엑스트라의 생존기</p>
 <p>The Academy Extra's Survival Guide</p>
 <p>Oh! I Can Buy It in the Academy! / The Academy Extra's Survival Guide</p>",
     "inLanguage": "es",
-    "genre": "Novela Web Coreana Novela Coreana",
+    "genre": "Novela Web Novela Coreana",
     "keywords": "Acción, Aventura, Comedia, Drama, Fantasía, Harem, Romance, Shounen, Vida Escolar",
-    "datePublished": "24/09/2026",
-    "translator": { "@type": "Person", "name": "Leo" }
+    "datePublished": "24/09/2026"
   }
   </script>
-
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fafafa; }
-    main { max-width: 900px; margin: auto; padding: 20px; background: #fff; }
-    h1 { font-size: 1.8em; margin-bottom: 10px; }
-    h2 { margin-top: 25px; font-size: 1.4em; border-bottom: 1px solid #ddd; padding-bottom: 5px; }
-    .meta p { margin: 4px 10px 4px 10px; color: #555; }
-    .portada { max-width: 250px; border-radius: 6px; margin: 10px auto; display: block; }
-    .sinopsis { margin-top: 20px; }
-    .galeria { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
-    .galeria img { max-width: 140px; flex: 1 1 auto; border: 1px solid #ddd; border-radius: 4px; }
-    .acciones { margin-top: 20px; }
-    .acciones a { display: inline-block; margin-right: 15px; color: #0066cc; text-decoration: none; }
-    .acciones a:hover { text-decoration: underline; }
-    .alternativos p { margin: 2px 0 2px 20px; color: #666; }
-    .info { display: flex; gap: 20px; }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      h1 { font-size: 1.5em; }
-      .portada { max-width: 100%; }
-      .galeria img { max-width: 45%; }
-      .info { flex-direction: column; }
+    :root {
+      --bg: #fafafa;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #555;
+      --border: #e0e0e0;
+      --accent: #0066cc;
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+      background: var(--card);
+    }
+    
+    h1 {
+      font-size: 1.75rem;
+      margin: 0 0 16px;
+      line-height: 1.25;
+    }
+    
+    h2 {
+      font-size: 1.3rem;
+      margin: 28px 0 12px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .info {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+    
+    .portada {
+      width: 220px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      flex-shrink: 0;
+    }
+    
+    .meta p {
+      margin: 5px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    .meta strong { color: var(--text); }
+    
+    .alternativos p {
+      margin: 2px 0 2px 12px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .sinopsis p {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    
+    .acciones {
+      margin: 20px 0;
+    }
+    
+    .acciones a {
+      display: inline-block;
+      margin-right: 16px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .acciones a:hover {
+      text-decoration: underline;
+    }
+    
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    
+    .galeria img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      background: #eee;
+    }
+    
+    /* Mobile */
+    @media (max-width: 640px) {
+      main { padding: 12px; }
+      h1 { font-size: 1.45rem; }
+      .info { flex-direction: column; align-items: center; text-align: center; }
+      .portada { width: 180px; }
+      .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
   </style>
 </head>
 <body>
   <main>
-    <h1>Guía de Supervivencia del Extra de la Academia</h1>
-    <div class="info">
-      <img class="portada" src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Portada de Guía de Supervivencia del Extra de la Academia">
+    <article>
+      <header>
+        <h1>Guía de Supervivencia del Extra de la Academia</h1>
+        <div class="info">
+          <img 
+            class="portada" 
+            src="/img/TEASG/WebNovel_Cover_1.webp" 
+            alt="Portada de Guía de Supervivencia del Extra de la Academia - Plutoe (플루토)"
+            width="220"
+            height="330"
+            loading="eager"
+            decoding="async"
+          >
 
-      <div class="meta">
-        <p><strong>Autor:</strong> Plutoe (플루토)</p>
-        <p><strong>Género:</strong> Novela Web Coreana</p>
-        <p><strong>Categoría:</strong> Acción, Aventura, Comedia, Drama, Fantasía, Harem, Romance, Shounen, Vida Escolar</p>
-        <p><strong>Fecha de creación:</strong> 24/09/2026</p>
-        <p><strong>Traductor:</strong> Leo</p>
-        <p><strong>Otros Títulos:</strong></p>
-        <div class="alternativos">
-          <p>The Extra's Academy Survival Guide</p>
+          <div class="meta">
+            <p><strong>Autor:</strong> Plutoe (플루토)</p>
+            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Categoría:</strong> Acción, Aventura, Comedia, Drama, Fantasía, Harem, Romance, Shounen, Vida Escolar</p>
+            <p><strong>Fecha de creación:</strong> 24/09/2026</p>
+            <p><strong>Traductor:</strong> Leo</p>
+            <p><strong>Otros Títulos:</strong></p>
+            <div class="alternativos">
+              <p>The Extra's Academy Survival Guide</p>
 <p>아카데미 엑스트라의 생존기</p>
 <p>The Academy Extra's Survival Guide</p>
 <p>Oh! I Can Buy It in the Academy! / The Academy Extra's Survival Guide</p>
+            </div>
+          </div>
         </div>
+      </header>
+
+      <div class="sinopsis">
+        <h2>Sinopsis</h2>
+        <p>Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.</p>
       </div>
-    </div>
 
-    <div class="sinopsis">
-      <h2>Sinopsis</h2>
-      <p>Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.</p>
-    </div>
-    <div class="acciones">
-      <a href="/#TEASG">📖 Leer Capítulos</a>
-    </div>
-    <!-- Bloque de aprobación y discord -->
-    
+      <div class="acciones">
+        <a href="/#TEASG">📖 Leer Capítulos</a>
+      </div>
+      <!-- Bloque de aprobación y discord -->
+      
 
-    <h2>Galería</h2>
-    <div class="galeria">
-      <img src="/img/TEASG/WebNovel_Cover_2-300w.webp"  alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_01-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_02-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_03-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_04-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_05-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_06-300w.webp"       alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-      <img src="/img/TEASG/WC_Cover_KR2_01-300w.webp"   alt="Imagen de Guía de Supervivencia del Extra de la Academia" style="max-width:150px;">
-    </div>
+      <section>
+        <h2>Galería</h2>
+        <div class="galeria">
+                    <img src="/img/TEASG/WebNovel_Cover_1.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 1" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WebNovel_Cover_2.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 2" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_01.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 3" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_02.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 4" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_03.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 5" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_04.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 6" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_05.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 7" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_06.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 8" loading="lazy" decoding="async" width="140" height="210">
+          <img src="/img/TEASG/WC_Cover_KR2_01.webp" alt="Guía de Supervivencia del Extra de la Academia ilustración 9" loading="lazy" decoding="async" width="140" height="210">
 
-    <div class="acciones">
-      <p><a href="https://academysurvival.fandom.com/wiki/The_Extra%E2%80%99s_Academy_Survival_Guide_Wiki">Wiki</a></p>
-    </div>
+        </div>
+      </section>
+
+      <div class="acciones">
+        <a href="https://academysurvival.fandom.com/wiki/The_Extra%E2%80%99s_Academy_Survival_Guide_Wiki" rel="noopener noreferrer">Wiki</a>
+      </div>
   </main>
 </body>
 </html>
