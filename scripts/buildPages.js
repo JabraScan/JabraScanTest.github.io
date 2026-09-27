@@ -1,89 +1,184 @@
 const fs = require('fs');
+const path = require('path');
 const { XMLParser } = require('fast-xml-parser');
 
 function parseObras(xmlText) {
   const parser = new XMLParser({ ignoreAttributes: false, trimValues: true });
   const doc = parser.parse(xmlText);
 
-  // Recoge todas las <obra>
   const obras = Array.isArray(doc.obras?.obra)
     ? doc.obras.obra
     : [doc.obras?.obra || doc.obra].filter(Boolean);
 
   return obras.map(o => {
-    const clave = o.clave || "sin-clave";
+    // Comprovar si és visible
+    const visible = String(o.visible || "").trim();
+    if (visible.toLowerCase() !== "si") return null;
 
-    // Si hay múltiples <nombreobra>, fast-xml-parser devuelve array
+    const clave = o.clave || "";
+    if (!clave) return null;
+
+    // Idioma i locale
+    const idioma = String(o.idioma || "es").trim().toLowerCase();
+    const langCode = idioma === "ca" ? "ca" : "es";
+    const ogLocale = idioma === "ca" ? "ca_ES" : "es_ES";
+
+    // Títols
     const titles = Array.isArray(o.nombreobra) ? o.nombreobra : [o.nombreobra].filter(Boolean);
     const titlePrincipal = titles[0] || "Obra sin título";
 
-    // MODIFICACIÓN: generar los alternativos como párrafos HTML
     const titlesAlternativos = titles.slice(1)
       .map(t => `<p>${t}</p>`)
       .join("\n");
 
+    const titlesAlternativosJson = titles.slice(1)
+      .map(t => `"${t}"`)
+      .join(", ");
+
     const author = o.autor || "";
-    const description = o.sinopsis || "";
+    
+    // Netejar la sinopsi per a HTML i JSON
+    const descriptionRaw = String(o.sinopsis || "");
+    const description = descriptionRaw.replace(/[\n\r]+/g, ' ').replace(/"/g, '&quot;');
+    const descriptionJson = descriptionRaw.replace(/[\n\r]+/g, ' ').replace(/"/g, '\\"');
 
-    // Imágenes: admite múltiples <imagen>
+    // Imatges i optimització -300w
     const imagenes = Array.isArray(o.imagen) ? o.imagen : (o.imagen ? [o.imagen] : []);
-    const normalizaRuta = img => String(img).startsWith('http') ? img : `/img/${img}`;
-    const imagenesConRuta = imagenes.map(normalizaRuta);
+    
+    let image = "";
+    if (imagenes.length > 0) {
+      const imgPath = imagenes[0];
+      const lastDotIndex = imgPath.lastIndexOf('.');
+      if (lastDotIndex !== -1) {
+        image = `/img/${imgPath.substring(0, lastDotIndex)}-300w${imgPath.substring(lastDotIndex)}`;
+      } else {
+        image = `/img/${imgPath}`;
+      }
+    }
 
-    // Portada = primera imagen
-    const image = imagenesConRuta[0] || "";
+    const galeria = imagenes.map((imgPath, i) => {
+      const lastDotIndex = imgPath.lastIndexOf('.');
+      let imgOptimizada = imgPath;
+      if (lastDotIndex !== -1) {
+        imgOptimizada = `${imgPath.substring(0, lastDotIndex)}-300w${imgPath.substring(lastDotIndex)}`;
+      }
+      return `          <img src="/img/${imgOptimizada}" alt="${titlePrincipal} ilustración ${i+1}" loading="lazy" decoding="async" width="140" height="210">`;
+    }).join("\n");
 
-    // Galería = resto (sin primera)
-    const galeria = imagenesConRuta.slice(1)
-      .map(img => `<img src="${img}" alt="Imagen de ${titlePrincipal}" style="max-width:150px;">`)
-      .join("\n");
+    // Categories i Keywords JSON
+    const categoriaRaw = o.categoria || "";
+    const listaKeywords = categoriaRaw.split(",").map(c => c.trim()).filter(Boolean);
+    const keywordsJson = `[${listaKeywords.map(k => `"${k}"`).join(", ")}]`;
 
-    // Aprobación del autor → boolean
+    // Data de creació normalitzada
+    let fechaCreacion = o.fechaCreacion || "";
+    try {
+      let cleanDate = fechaCreacion.trim().replace(/-/g, '/');
+      const parts = cleanDate.split('/');
+      if (parts.length === 3) {
+        cleanDate = `${String(parseInt(parts[0], 10)).padStart(2, '0')}/${String(parseInt(parts[1], 10)).padStart(2, '0')}/${parts[2]}`;
+        const [d, m, y] = cleanDate.split('/');
+        fechaCreacion = `${y}-${m}-${d}`;
+      }
+    } catch (e) {
+      // Si falla, manté l'original
+    }
+
     const aprobadaAutor = String(o.aprobadaAutor || o.aprobada || "").trim().toLowerCase() === "si";
     const discord = o.discord || "";
-
     const url = `https://jabrascan.net/books/${clave}.html`;
+    const tipoobra = o.tipoobra || "";
+    const ubicacion = o.ubicacion || "";
+    const traductor = o.traductor || "Desconegut";
+    const wikiUrl = o.wiki || "";
+    const wiki = wikiUrl ? `<a href="${wikiUrl}" rel="noopener noreferrer">Wiki</a>` : "";
 
     return {
       clave,
       titlePrincipal,
-      titlesAlternativos, // ahora viene ya formateado en <p>
+      titlesAlternativos,
+      titlesAlternativosJson,
       author,
       description,
+      descriptionJson,
       image,
       galeria,
       url,
       aprobadaAutor,
       discord,
-      tipoobra: o.tipoobra || "",
-      categoria: o.categoria || "",
-      fechaCreacion: o.fechaCreacion || "",
-      ubicacion: o.ubicacion || "",
-      traductor: o.traductor || "",
-      wiki: o.wiki ? `<p><a href="${o.wiki}">Wiki</a></p>` : ""
+      tipoobra,
+      categoria: categoriaRaw,
+      keywordsJson,
+      fechaCreacion,
+      ubicacion,
+      traductor,
+      wiki,
+      langCode,
+      ogLocale
     };
-  });
+  }).filter(Boolean);
 }
 
 function renderTemplate(tpl, data) {
-  // Sustituye cada marcador {{...}} por el valor correspondiente
+  // Diccionari d'etiquetes segons l'idioma
+  const traduccions = {
+    ca: {
+      autor: "Autor:",
+      genero: "Gènere:",
+      categoria: "Categoria:",
+      fecha: "Data de creació:",
+      traductor: "Traductor:",
+      otros_titulos: "Altres Títols:",
+      sinopsis: "Sinopsi",
+      galeria: "Galeria",
+      leer_capitulos: "Llegir Capítols"
+    },
+    es: {
+      autor: "Autor:",
+      genero: "Género:",
+      categoria: "Categoría:",
+      fecha: "Fecha de creación:",
+      traductor: "Traductor:",
+      otros_titulos: "Otros Títulos:",
+      sinopsis: "Sinopsis",
+      galeria: "Galería",
+      leer_capitulos: "Leer Capítulos"
+    }
+  };
+
+  const lbl = traduccions[data.langCode] || traduccions["es"];
+
   let html = tpl
     .replace(/{{titlePrincipal}}/g, data.titlePrincipal)
     .replace(/{{description}}/g, data.description || "")
+    .replace(/{{descriptionJson}}/g, data.descriptionJson || "")
     .replace(/{{author}}/g, data.author || "")
     .replace(/{{image}}/g, data.image || "")
     .replace(/{{url}}/g, data.url)
     .replace(/{{clave}}/g, data.clave)
     .replace(/{{tipoobra}}/g, data.tipoobra || "")
     .replace(/{{categoria}}/g, data.categoria || "")
+    .replace(/{{categoriaJson}}/g, data.keywordsJson || "[]")
     .replace(/{{fechaCreacion}}/g, data.fechaCreacion || "")
     .replace(/{{ubicacion}}/g, data.ubicacion || "")
     .replace(/{{traductor}}/g, data.traductor || "")
     .replace(/{{wiki}}/g, data.wiki || "")
     .replace(/{{titlesAlternativos}}/g, data.titlesAlternativos || "")
-    .replace(/{{galeria}}/g, data.galeria || "");
+    .replace(/{{titlesAlternativosJson}}/g, data.titlesAlternativosJson || "")
+    .replace(/{{galeria}}/g, data.galeria || "")
+    .replace(/{{lang}}/g, data.langCode)
+    .replace(/{{og_locale}}/g, data.ogLocale)
+    .replace(/{{lbl_autor}}/g, lbl.autor)
+    .replace(/{{lbl_genero}}/g, lbl.genero)
+    .replace(/{{lbl_categoria}}/g, lbl.categoria)
+    .replace(/{{lbl_fecha}}/g, lbl.fecha)
+    .replace(/{{lbl_traductor}}/g, lbl.traductor)
+    .replace(/{{lbl_otros_titulos}}/g, lbl.otros_titulos)
+    .replace(/{{lbl_sinopsis}}/g, lbl.sinopsis)
+    .replace(/{{lbl_galeria}}/g, lbl.galeria)
+    .replace(/{{lbl_leer_capitulos}}/g, lbl.leer_capitulos);
 
-  // Bloque de aprobación/discord
+  // Bloc d'aprovació/discord
   const extra = data.aprobadaAutor
     ? `<p><strong>Aprobado por el autor</strong></p>${data.discord ? `<p><a href="${data.discord}">Discord</a></p>` : ""}`
     : "";
@@ -117,15 +212,18 @@ function main() {
 
   obras.forEach(obra => {
     const filePath = `books/${obra.clave}.html`;
-    // Sobrescribe siempre (comentar if)
-    // Solo html de obras que no existen (descomenta el if si quieres crear solo si no existe)
+    
+    // Només genera el fitxer HTML si NO existeix prèviament
     if (!fs.existsSync(filePath)) {
       const html = renderTemplate(tpl, obra);
       fs.writeFileSync(filePath, html, 'utf8');
+      console.log(`Generat correctament (nou): ${obra.clave}.html`);
+    } else {
+      console.log(`Omissió (ja existeix): ${obra.clave}.html`);
     }
   });
 
-  // Generar sitemap.xml (siempre se actualiza)
+  // Generar sitemap.xml (s'actualitza sempre amb totes les obres)
   const sitemap =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
@@ -134,6 +232,7 @@ function main() {
     `\n</urlset>\n`;
 
   fs.writeFileSync('sitemap.xml', sitemap, 'utf8');
+  console.log("\n¡Sitemap.xml actualitzat i procés finalitzat!");
 }
 
 main();

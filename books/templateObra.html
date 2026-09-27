@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{lang}}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{titlePrincipal}} - {{author}}</title>
-
   <meta name="description" content="{{description}}">
-
   <link rel="canonical" href="{{url}}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Open Graph -->
   <meta property="og:type" content="book">
   <meta property="og:title" content="{{titlePrincipal}}">
   <meta property="og:description" content="{{description}}">
-  <meta property="og:image" content="{{image}}">
+  <meta property="og:image" content="https://jabrascan.net{{image}}">
   <meta property="og:url" content="{{url}}">
-  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale" content="{{og_locale}}">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{titlePrincipal}}">
   <meta name="twitter:description" content="{{description}}">
-  <meta name="twitter:image" content="{{image}}">
+  <meta name="twitter:image" content="https://jabrascan.net{{image}}">
 
-  <meta name="theme-color" content="#1a1a1a">
 
   <!-- Datos estructurados -->
   <script type="application/ld+json">
@@ -38,13 +35,13 @@
         "@type": "Person",
         "name": "{{traductor}}"
     },
-    "description": "{{description}}",
-    "image": "{{image}}",
+    "description": "{{descriptionJson}}",
+    "image": "https://jabrascan.net{{image}}",
     "url": "{{url}}",
-    "alternateName": "{{titlesAlternativos}}",
-    "inLanguage": "es",
-    "genre": "{{tipoobra}} {{ubicacion}}",
-    "keywords": "{{categoria}}",
+    "alternateName": [{{titlesAlternativosJson}}],
+    "inLanguage": "{{lang}}",
+    "genre": ["{{tipoobra}}", "{{ubicacion}}"],
+    "keywords": {{categoriaJson}},
     "datePublished": "{{fechaCreacion}}"
   }
   </script>
@@ -183,12 +180,12 @@
           >
 
           <div class="meta">
-            <p><strong>Autor:</strong> {{author}}</p>
-            <p><strong>Género:</strong> {{tipoobra}}</p>
-            <p><strong>Categoría:</strong> {{categoria}}</p>
-            <p><strong>Fecha de creación:</strong> {{fechaCreacion}}</p>
-            <p><strong>Traductor:</strong> {{traductor}}</p>
-            <p><strong>Otros Títulos:</strong></p>
+            <p><strong>{{lbl_autor}}</strong> {{author}}</p>
+            <p><strong>{{lbl_genero}}</strong> {{tipoobra}}</p>
+            <p><strong>{{lbl_categoria}}</strong> {{categoria}}</p>
+            <p><strong>{{lbl_fecha}}</strong> {{fechaCreacion}}</p>
+            <p><strong>{{lbl_traductor}}</strong> {{traductor}}</p>
+            <p><strong>{{lbl_otros_titulos}}</strong></p>
             <div class="alternativos">
               {{titlesAlternativos}}
             </div>
@@ -196,24 +193,28 @@
         </div>
       </header>
 
-      <section class="sinopsis">
-        <h2>Sinopsis</h2>
+      <div class="sinopsis">
+        <h2>{{lbl_sinopsis}}</h2>
         <p>{{description}}</p>
-      </section>
+      </div>
 
       <div class="acciones">
-        <a href="/#{{clave}}">📖 Leer Capítulos</a>
-        {{wiki}}
+        <a href="/#{{clave}}">📖 {{lbl_leer_capitulos}}</a>
       </div>
       <!-- Bloque de aprobación y discord -->
       {{aprobacion}}
 
       <section>
-        <h2>Galería</h2>
+        <h2>{{lbl_galeria}}</h2>
         <div class="galeria">
           {{galeria}}
         </div>
       </section>
+
+      <div class="acciones">
+        {{wiki}}
+      </div>
+    </article>
   </main>
 </body>
 </html>
