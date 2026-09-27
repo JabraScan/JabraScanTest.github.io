@@ -11,9 +11,9 @@ function parseObras(xmlText) {
     : [doc.obras?.obra || doc.obra].filter(Boolean);
 
   return obras.map(o => {
-    // Comprovar si és visible
-    const visible = String(o.visible || "").trim();
-    if (visible.toLowerCase() !== "si") return null;
+    // Comprovar si és visible (Filtre visibilitat)
+    // const visible = String(o.visible || "").trim();
+    // if (visible.toLowerCase() !== "si") return null;
 
     const clave = o.clave || "";
     if (!clave) return null;
