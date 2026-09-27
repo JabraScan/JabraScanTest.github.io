@@ -50,6 +50,7 @@ function parseXML(xmlText) {
         .replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, '$1')
         .trim();
     }
+    let meta = getTag("meta");
     const clave = getTag("clave");
     const idioma = getTag("idioma") || "es";
     const tipoobra = getTag("tipoobra");
@@ -104,7 +105,9 @@ function parseXML(xmlText) {
       };
     }
 
-    if (sinopsis) {
+    if (meta) {
+      jsonObra.description = meta;
+    } else if (sinopsis) {
       jsonObra.description = sinopsis;
     }
 
