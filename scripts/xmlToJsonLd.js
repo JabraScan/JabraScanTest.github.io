@@ -43,7 +43,13 @@ function parseXML(xmlText) {
 
     const autor = getTag("autor");
     const traductor = getTag("traductor");
-    const sinopsis = getTag("sinopsis");
+    let sinopsis = getTag("sinopsis");
+    // Netejar les etiquetes CDATA si existeixen
+    if (sinopsis) {
+      sinopsis = sinopsis
+        .replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, '$1')
+        .trim();
+    }
     const clave = getTag("clave");
     const idioma = getTag("idioma") || "es";
     const tipoobra = getTag("tipoobra");
