@@ -92,6 +92,7 @@ function parseObras(xmlText) {
     const traductor = o.traductor || "Desconegut";
     const wikiUrl = o.wiki || "";
     const wiki = wikiUrl ? `<a href="${wikiUrl}" rel="noopener noreferrer">Wiki</a>` : "";
+    const similaresHtml = "";
 
     return {
       clave,
@@ -114,7 +115,8 @@ function parseObras(xmlText) {
       traductor,
       wiki,
       langCode,
-      ogLocale
+      ogLocale,
+      similaresHtml
     };
   }).filter(Boolean);
 }
@@ -131,7 +133,8 @@ function renderTemplate(tpl, data) {
       otros_titulos: "Altres Títols:",
       sinopsis: "Sinopsi",
       galeria: "Galeria",
-      leer_capitulos: "Llegir Capítols"
+      leer_capitulos: "Llegir Capítols",
+      recomendaciones: "Recomanacions"
     },
     es: {
       autor: "Autor:",
@@ -142,7 +145,8 @@ function renderTemplate(tpl, data) {
       otros_titulos: "Otros Títulos:",
       sinopsis: "Sinopsis",
       galeria: "Galería",
-      leer_capitulos: "Leer Capítulos"
+      leer_capitulos: "Leer Capítulos",
+      recomendaciones: "Recomendaciones"
     }
   };
 
@@ -176,7 +180,8 @@ function renderTemplate(tpl, data) {
     .replace(/{{lbl_otros_titulos}}/g, lbl.otros_titulos)
     .replace(/{{lbl_sinopsis}}/g, lbl.sinopsis)
     .replace(/{{lbl_galeria}}/g, lbl.galeria)
-    .replace(/{{lbl_leer_capitulos}}/g, lbl.leer_capitulos);
+    .replace(/{{lbl_leer_capitulos}}/g, lbl.leer_capitulos)
+    .replace(/{{lbl_similares}}/g, lbl.recomendaciones);
 
   // Bloc d'aprovació/discord
   const extra = data.aprobadaAutor

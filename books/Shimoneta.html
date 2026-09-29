@@ -212,10 +212,27 @@
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
     }
+
+    /* Navegador */
+    .breadcrumbs {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .breadcrumbs a {
+      color: var(--accent);
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
   <main>
+    <nav class="breadcrumbs" aria-label="Migas de pan">
+      <a href="/">Inicio</a>
+      <span>›</span>
+      <span>Shimoneta</span>
+    </nav>
     <article>
       <header>
         <h1>Shimoneta</h1>
