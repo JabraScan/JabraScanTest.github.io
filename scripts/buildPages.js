@@ -134,7 +134,7 @@ function renderTemplate(tpl, data) {
       sinopsis: "Sinopsi",
       galeria: "Galeria",
       leer_capitulos: "Llegir Capítols",
-      recomendaciones: "Recomanacions"
+      recomendaciones: "Suggeriments"
     },
     es: {
       autor: "Autor:",
