@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="css/tooltip.css">
     <link rel="stylesheet" href="css/users.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
   
     <script type="module" src="./js/storage.js"></script>
     <script type="module" src="./js/general.js"></script>
@@ -155,10 +156,16 @@
             </div>
             <div class="custom-carousel-controls">
               <button class="btn btn-outline-warning custom-carousel-btn prev" type="button" aria-label="Anterior">
-                <i class="fas fa-chevron-left"></i>
+                <!--<i class="fas fa-chevron-left"></i>-->
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
               </button>
               <button class="btn btn-outline-warning custom-carousel-btn next" type="button" aria-label="Siguiente">
-                <i class="fas fa-chevron-right"></i>
+                <!--<i class="fas fa-chevron-right"></i>-->
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
               </button>
             </div>
           </div>
