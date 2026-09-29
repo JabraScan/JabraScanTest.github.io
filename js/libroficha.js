@@ -91,6 +91,7 @@ export function cargarlibro(libroId) {
               <div class="book-image">
                 <div class="book-genres"><span><i class="fa-solid fa-tags"></i>${Categoria}</span></div>
                 <div class="book-links">
+                  <a href="books/${clave}.html"> Ficha</a>
                   <a href="#"><i class="fa-solid fa-book" ></i> ${tipoobra}</a>
                   <a href="#"><i class="fa-solid fa-globe"></i> ${ubicacion}</a>
                   <a href="#"><i class="fa-solid fa-clock"></i> ${estado}</a>
