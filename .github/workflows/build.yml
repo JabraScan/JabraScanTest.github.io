@@ -30,8 +30,8 @@ jobs:
         run: npm install fast-xml-parser --no-save
 
       # 4️⃣ Bloque A: Generar JSON-LD e insertarlo en index.html
-      - name: Generar JSON-LD en index.html
-        run: node scripts/xmlToJsonLd.js
+      #- name: Generar JSON-LD en index.html
+      #  run: node scripts/xmlToJsonLd.js
 
       # 5️⃣ Bloque B: Generar HTML de obras y sitemap
       - name: Generar HTML de obras y sitemap
