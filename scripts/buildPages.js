@@ -27,6 +27,13 @@ function parseObras(xmlText) {
     const titles = Array.isArray(o.nombreobra) ? o.nombreobra : [o.nombreobra].filter(Boolean);
     const titlePrincipal = titles[0] || "Obra sin título";
 
+    // Títol SEO optimizat (màxim ~50 caracters)
+    let titleSeo = titlePrincipal;
+    if (titleSeo.length > 50) {
+      const corte = titleSeo.substring(0, 47).lastIndexOf(' ');
+      titleSeo = corte !== -1 ? titleSeo.substring(0, corte) + "..." : titleSeo.substring(0, 47) + "...";
+    }
+
     const titlesAlternativos = titles.slice(1)
       .map(t => `<p>${t}</p>`)
       .join("\n");
@@ -97,6 +104,7 @@ function parseObras(xmlText) {
     return {
       clave,
       titlePrincipal,
+      titleSeo,
       titlesAlternativos,
       titlesAlternativosJson,
       author,
@@ -154,6 +162,7 @@ function renderTemplate(tpl, data) {
 
   let html = tpl
     .replace(/{{titlePrincipal}}/g, data.titlePrincipal)
+    .replace(/{{titleSeo}}/g, data.titleSeo || data.titlePrincipal)
     .replace(/{{description}}/g, data.description || "")
     .replace(/{{descriptionJson}}/g, data.descriptionJson || "")
     .replace(/{{author}}/g, data.author || "")
