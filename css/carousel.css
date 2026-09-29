@@ -1,20 +1,25 @@
-/* ====== Carrusel Personalizado ====== */
+/* ====== Carrusel Personalizado Optimizado ====== */
 .custom-carousel {
     position: relative;
     width: 100%;
+    height: 450px; /* Altura fija reservada desde el primer milisegundo para evitar CLS */
     margin: 0 auto 2rem;
     overflow: hidden;
     border-radius: var(--border-radius-xxl);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     background: var(--color-text);
-    mask-image: radial-gradient(white, black);
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    /* Se elimina la máscara radial si no es estrictamente necesaria para ganar rendimiento */
 }
 
 .custom-carousel-track {
     display: flex;
-    transition: transform 0.5s var(--transition-ease);
-    -webkit-transition: -webkit-transform 0.5s var(--transition-ease);
+    height: 100%;
+    /* Forzamos aceleración por hardware pura para evitar reflows */
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .custom-carousel-item {
@@ -23,7 +28,8 @@
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    height: 450px;
+    height: 100%;
+    flex-shrink: 0;
 }
 
 .custom-carousel-item .imagen-contenedor {
@@ -169,8 +175,8 @@
     border-radius: var(--border-radius-full) !important;
     cursor: pointer;
     pointer-events: all;
-    transition: all var(--transition-slow) ease !important;
-    -webkit-transition: all var(--transition-slow) ease !important;
+    will-change: transform; /* Avisa al navegador que este botón va a cambiar de tamaño con GPU */
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -184,14 +190,14 @@
     background: rgba(252, 163, 17, 0.8) !important;
     color: var(--color-primary) !important;
     border-color: rgba(252, 163, 17, 0.9) !important;
-    transform: scale(1.1);
-    -webkit-transform: scale(1.1);
+    transform: scale(1.1) translateZ(0);
+    -webkit-transform: scale(1.1) translateZ(0);
     box-shadow: 0 6px 20px rgba(252, 163, 17, 0.5);
 }
 
 .custom-carousel-btn:active {
-    transform: scale(0.95) !important;
-    -webkit-transform: scale(0.95) !important;
+    transform: scale(0.95) translateZ(0) !important;
+    -webkit-transform: scale(0.95) translateZ(0) !important;
 }
 
 .custom-carousel-btn:focus-visible {
