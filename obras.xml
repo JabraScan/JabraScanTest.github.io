@@ -1,6 +1,39 @@
 <obras>
 	<obra>	
 		<visible>si</visible>
+		<clave>TheDemonKingOverrun</clave>
+		<nombreobra>Demasiados Héroes para el Rey Demonio</nombreobra>
+		<nombreobra>The Demon King Overrun by Heroes</nombreobra>
+		<nombreobra>마왕인데 용사가 너무 많음</nombreobra>
+		<nombreobra>I'm the Demon King, but There Are Too Many Heroes</nombreobra>
+		<nombreobra>The Demon King Overrun by Heroes</nombreobra>
+		<nombreobra>El Rey Demonio Superado por los Héroes</nombreobra>
+		<nombreobra>El Rey Demonio Invadido por Héroes</nombreobra>
+		<nombreobra>El Rey Demonio Arrasado por los Héroes</nombreobra>
+		<nombreobra></nombreobra>
+		<autor>Mirip (미립)</autor>
+		<sinopsis><![CDATA[Siguiendo estrictamente el Canon del Rey Demonio, un rey demonio se prepara meticulosamente para reinar secuestrando princesas y criando héroes, solo para descubrir con horror que los héroes no son presas fáciles, sino dragones listos para devorarlo.]]>
+		</sinopsis>
+		<valoracion>9.2</valoracion>
+		<tipoobra>Novela Web</tipoobra>
+		<categoria>Acción, Aventura, Comedia, Fantasía, Comedia,  Reencarnación</categoria>
+		<imagen>TheDemonKingOverrun/TheDemonKingOverrun01.webp</imagen>
+		<imagen>TheDemonKingOverrun/TheDemonKingOverrun02.webp</imagen>
+		<imagen>TheDemonKingOverrun/TheDemonKingOverrun03.webp</imagen>
+		<fechaCreacion>29/09/2026</fechaCreacion>
+		<ubicacion>Novela Coreana</ubicacion>
+		<estado>Activo</estado>
+		<traductor>Leo</traductor>
+		<adulto></adulto>
+		<aprobadaAutor>no</aprobadaAutor>
+		<observaciones></observaciones>
+		<discord></discord>
+		<bannerOpcional></bannerOpcional>
+		<wiki></wiki>
+	</obra>	
+
+	<obra>	
+		<visible>si</visible>
 		<clave>MushokuTensei</clave>
 		<nombreobra>Mushoku Tensei: Jobless Reincarnation</nombreobra>
 		<nombreobra>無職転生 ～異世界行ったら本気だす～</nombreobra>
