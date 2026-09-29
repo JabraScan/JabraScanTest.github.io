@@ -83,6 +83,10 @@ function parseXML(xmlText) {
     }
 
     const jsonObra = {
+      "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+      },
       "@type": "Book",
       "name": tituloPrincipal
     };

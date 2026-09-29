@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "¡El Héroe de Nivel Máximo Ha Regresado!",
@@ -41,7 +45,7 @@
     "alternateName": ["¡Max Level Hero Strikes Back!", "만렙 영웅님께서 귀환하신다!"],
     "inLanguage": "es",
     "genre": ["Novela Web", "Novela Coreana"],
-    "keywords": ["Acción", "Aventura", "Fantasia", "Harén"],
+    "keywords": ["Acción", "Aventura", "Fantasía", "Harén"],
     "datePublished": "2025-09-28"
   }
   </script>
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -182,7 +233,7 @@
           <div class="meta">
             <p><strong>Autor:</strong> Devil's tail</p>
             <p><strong>Género:</strong> Novela Web</p>
-            <p><strong>Categoría:</strong> Acción, Aventura, Fantasia, Harén</p>
+            <p><strong>Categoría:</strong> Acción, Aventura, Fantasía, Harén</p>
             <p><strong>Fecha de creación:</strong> 2025-09-28</p>
             <p><strong>Traductor:</strong> Jabracadabra</p>
             <p><strong>Otros Títulos:</strong></p>
@@ -214,8 +265,40 @@
       </section>
 
       <div class="acciones">
-        <a href="https://the-max-level-hero-strikes-back.fandom.com/wiki/The_Max_Level_Hero_Strikes_Back_Wiki" rel="noopener noreferrer">Wiki</a>
+        <a href="https://the-max-level-hero-strikes-back.fandom.com/wiki/The_Max_Level_Hero_Strikes_Back_Wiki" rel="noopener noreferrer" target="_blank">Wiki</a>
       </div>
+
+      <section>
+        <h2>Recomendaciones</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/FirstDemonicDragon.html" class="similar-card">
+            <img src="https://jabrascan.netFirstDemonicDragon/FirstDemonicDragon-300w.webp" alt="Portada de First Demonic Dragon" loading="lazy" width="140" height="210">
+            <span>First Demonic Dragon</span>
+          </a>
+        
+          <a href="/books/PathtoDualCultivation.html" class="similar-card">
+            <img src="https://jabrascan.netPathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Portada de Path to Dual Cultivation" loading="lazy" width="140" height="210">
+            <span>Path to Dual Cultivation</span>
+          </a>
+        
+          <a href="/books/MeConvertiEnPatronVillanos.html" class="similar-card">
+            <img src="https://jabrascan.netMeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos-300w.webp" alt="Portada de Me convertí en el patrón de los villanos" loading="lazy" width="140" height="210">
+            <span>Me convertí en el patrón de los villanos</span>
+          </a>
+        
+          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
+            <img src="https://jabrascan.netYoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Portada de Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
+            <span>Yo Mate al Jugador de la Academia</span>
+          </a>
+        
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="https://jabrascan.netMyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Portada de Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>

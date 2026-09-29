@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "The Eminence in Shadow",
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -224,8 +275,40 @@
       </section>
 
       <div class="acciones">
-        <a href="https://the-eminence-in-shadow.fandom.com/wiki/The_Eminence_in_Shadow_Wiki" rel="noopener noreferrer">Wiki</a>
+        <a href="https://the-eminence-in-shadow.fandom.com/wiki/The_Eminence_in_Shadow_Wiki" rel="noopener noreferrer" target="_blank">Wiki</a>
       </div>
+
+      <section>
+        <h2>Recomendaciones</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/CDMNQTMHC.html" class="similar-card">
+            <img src="https://jabrascan.netCDMNQTMHC/CallateDragonaMalvada-300w.webp" alt="Portada de ¡Cállate, dragón malvado! No quiero tener mas hijos contigo." loading="lazy" width="140" height="210">
+            <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
+          </a>
+        
+          <a href="/books/StarInstructorMasterBaek.html" class="similar-card">
+            <img src="https://jabrascan.netStarInstructorMasterBaek/StarInstructorMasterBaek-300w.webp" alt="Portada de Instructor Estelar, Maestro Baek" loading="lazy" width="140" height="210">
+            <span>Instructor Estelar, Maestro Baek</span>
+          </a>
+        
+          <a href="/books/MushokuTensei.html" class="similar-card">
+            <img src="https://jabrascan.netMushokuTensei/MushokuTensei01-300w.webp" alt="Portada de Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
+            <span>Mushoku Tensei: Jobless Reincarnation</span>
+          </a>
+        
+          <a href="/books/DanmachiArgonauta.html" class="similar-card">
+            <img src="https://jabrascan.netDanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Portada de Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
+            <span>Danmachi - Relato Heroico: Argonauta</span>
+          </a>
+        
+          <a href="/books/LaLeyendaDeLaEspadaDelNorte.html" class="similar-card">
+            <img src="https://jabrascan.netLaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte-300w.webp" alt="Portada de La Leyenda de la Espada del Norte" loading="lazy" width="140" height="210">
+            <span>La Leyenda de la Espada del Norte</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>

@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "(CATALÀ) En Venda. Dama Caiguda. Mai Utilitzada.",
@@ -41,7 +45,7 @@
     "alternateName": ["En Venda. Dama Caiguda. Mai Usada", "En Venda. Noble Caiguda. Mai Utilitzada.", "En Venda. Noble Caiguda. Mai Usada", "(팝니다. 몰락영애. 한 번도 안 쓴)", "For Sale. Fallen Lady. Never Used", "Oh! I Can Buy This One Easily!", "팝니다. 몰락영애. 한 번도 안 쓴.", "The Fallen Lady is on Sale", "FS:FL:NU", "La Dama Caiguda és en Venda", "Oh! Aquesta la puc comprar fàcilment!"],
     "inLanguage": "ca",
     "genre": ["Novel·la Web", "Novel·la Coreana"],
-    "keywords": ["Acció", "Adult", "Fantasia", "Harem", "Romanç"],
+    "keywords": ["Acció", "Adult", "Fantasía", "Harem", "Romanç"],
     "datePublished": "2026-08-26"
   }
   </script>
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -182,7 +233,7 @@
           <div class="meta">
             <p><strong>Autor:</strong> 오리너구리, Ori Neoguri</p>
             <p><strong>Gènere:</strong> Novel·la Web</p>
-            <p><strong>Categoria:</strong> Acció, Adult, Fantasia, Harem, Romanç</p>
+            <p><strong>Categoria:</strong> Acció, Adult, Fantasía, Harem, Romanç</p>
             <p><strong>Data de creació:</strong> 2026-08-26</p>
             <p><strong>Traductor:</strong> Jabracadabra</p>
             <p><strong>Altres Títols:</strong></p>
@@ -233,6 +284,38 @@
       <div class="acciones">
         
       </div>
+
+      <section>
+        <h2>Recomanacions</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/CityOfWitches.html" class="similar-card">
+            <img src="https://jabrascan.netCityOfWitches/CityOfWitches-300w.webp" alt="Portada de City of Witches" loading="lazy" width="140" height="210">
+            <span>City of Witches</span>
+          </a>
+        
+          <a href="/books/IAmTheFatedVillain.html" class="similar-card">
+            <img src="https://jabrascan.netIAmTheFatedVillain/IAmFatedVillain_1-300w.webp" alt="Portada de Yo Soy El Villano Predestinado" loading="lazy" width="140" height="210">
+            <span>Yo Soy El Villano Predestinado</span>
+          </a>
+        
+          <a href="/books/TEASG.html" class="similar-card">
+            <img src="https://jabrascan.netTEASG/WebNovel_Cover_1-300w.webp" alt="Portada de Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
+            <span>Guía de Supervivencia del Extra de la Academia</span>
+          </a>
+        
+          <a href="/books/MeComiAUnArbolDelMundo.html" class="similar-card">
+            <img src="https://jabrascan.netMeComiAUnArbolDelMundo/MeComiAUnArbolDelMundo-300w.webp" alt="Portada de Me comí a un Árbol del Mundo" loading="lazy" width="140" height="210">
+            <span>Me comí a un Árbol del Mundo</span>
+          </a>
+        
+          <a href="/books/Arifureta.html" class="similar-card">
+            <img src="https://jabrascan.netArifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Portada de Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
+            <span>Arifureta: De ordinario al más fuerte del mundo</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>

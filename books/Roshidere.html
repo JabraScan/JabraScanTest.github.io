@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso.",
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -226,8 +277,40 @@
       </section>
 
       <div class="acciones">
-        <a href="https://roshidere.fandom.com/wiki/Alya_Sometimes_Hides_Her_Feelings_in_Russian_(Light_Novel)#Japanese" rel="noopener noreferrer">Wiki</a>
+        <a href="https://roshidere.fandom.com/wiki/Alya_Sometimes_Hides_Her_Feelings_in_Russian_(Light_Novel)#Japanese" rel="noopener noreferrer" target="_blank">Wiki</a>
       </div>
+
+      <section>
+        <h2>Recomendaciones</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/MadamePleaseBehave.html" class="similar-card">
+            <img src="https://jabrascan.netMadamePleaseBehave/MadamePleaseBehave-300w.webp" alt="Portada de Señora, por favor comportese" loading="lazy" width="140" height="210">
+            <span>Señora, por favor comportese</span>
+          </a>
+        
+          <a href="/books/MyWifeisFromaThousandYearsAgo.html" class="similar-card">
+            <img src="https://jabrascan.netMyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo-300w.webp" alt="Portada de Mi Esposa Es De Hace Mil Años" loading="lazy" width="140" height="210">
+            <span>Mi Esposa Es De Hace Mil Años</span>
+          </a>
+        
+          <a href="/books/UnicoHombreUnidadMilitar.html" class="similar-card">
+            <img src="https://jabrascan.netUnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar-300w.webp" alt="Portada de El Único Hombre En La Unidad Militar" loading="lazy" width="140" height="210">
+            <span>El Único Hombre En La Unidad Militar</span>
+          </a>
+        
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="https://jabrascan.netMyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Portada de Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
+          </a>
+        
+          <a href="/books/TheEminenceInShadow.html" class="similar-card">
+            <img src="https://jabrascan.netTheEminenceInShadow/TheEminenceInShadow-300w.webp" alt="Portada de The Eminence in Shadow" loading="lazy" width="140" height="210">
+            <span>The Eminence in Shadow</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>

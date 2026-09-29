@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "Shimoneta",
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -215,6 +266,38 @@
       <div class="acciones">
         
       </div>
+
+      <section>
+        <h2>Recomendaciones</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
+            <img src="https://jabrascan.netYoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Portada de Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
+            <span>Yo Mate al Jugador de la Academia</span>
+          </a>
+        
+          <a href="/books/CityOfWitches.html" class="similar-card">
+            <img src="https://jabrascan.netCityOfWitches/CityOfWitches-300w.webp" alt="Portada de City of Witches" loading="lazy" width="140" height="210">
+            <span>City of Witches</span>
+          </a>
+        
+          <a href="/books/ForSaleFallenLady.html" class="similar-card">
+            <img src="https://jabrascan.netForSaleFallenLady/ForSaleFallenLady01-300w.webp" alt="Portada de En Venta. Noble Caída. Nunca Usada" loading="lazy" width="140" height="210">
+            <span>En Venta. Noble Caída. Nunca Usada</span>
+          </a>
+        
+          <a href="/books/FirstDemonicDragon.html" class="similar-card">
+            <img src="https://jabrascan.netFirstDemonicDragon/FirstDemonicDragon-300w.webp" alt="Portada de First Demonic Dragon" loading="lazy" width="140" height="210">
+            <span>First Demonic Dragon</span>
+          </a>
+        
+          <a href="/books/UnicoHombreUnidadMilitar.html" class="similar-card">
+            <img src="https://jabrascan.netUnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar-300w.webp" alt="Portada de El Único Hombre En La Unidad Militar" loading="lazy" width="140" height="210">
+            <span>El Único Hombre En La Unidad Militar</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>

@@ -24,6 +24,10 @@
   <!-- Datos estructurados -->
   <script type="application/ld+json">
   {
+    "publisher": {
+        "@type": "Organization",
+        "name": "Jabrascan"
+    },
     "@context": "https://schema.org",
     "@type": "Book",
     "name": "Señora, por favor comportese",
@@ -161,6 +165,53 @@
       .portada { width: 180px; }
       .galeria { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
     }
+    /* Similares */
+    /* Obras Similares */
+    .similares-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    
+    .similar-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .similar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .similar-card img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 4px;
+      background: #eee;
+    }
+
+    .similar-card span {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 8px;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
   </style>
 </head>
 <body>
@@ -216,6 +267,38 @@
       <div class="acciones">
         
       </div>
+
+      <section>
+        <h2>Recomendaciones</h2>
+        <div class="similares-grid">
+          
+          <a href="/books/MyWifeisFromaThousandYearsAgo.html" class="similar-card">
+            <img src="https://jabrascan.netMyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo-300w.webp" alt="Portada de Mi Esposa Es De Hace Mil Años" loading="lazy" width="140" height="210">
+            <span>Mi Esposa Es De Hace Mil Años</span>
+          </a>
+        
+          <a href="/books/MyCollegeTeacherMyChildrenMom.html" class="similar-card">
+            <img src="https://jabrascan.netMyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom-300w.webp" alt="Portada de Mi Maestra de la Universidad es la Mamá de Mis Hijos" loading="lazy" width="140" height="210">
+            <span>Mi Maestra de la Universidad es la Mamá de Mis Hijos</span>
+          </a>
+        
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="https://jabrascan.netMyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Portada de Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
+          </a>
+        
+          <a href="/books/MushokuTensei.html" class="similar-card">
+            <img src="https://jabrascan.netMushokuTensei/MushokuTensei01-300w.webp" alt="Portada de Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
+            <span>Mushoku Tensei: Jobless Reincarnation</span>
+          </a>
+        
+          <a href="/books/DanmachiArgonauta.html" class="similar-card">
+            <img src="https://jabrascan.netDanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Portada de Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
+            <span>Danmachi - Relato Heroico: Argonauta</span>
+          </a>
+        
+        </div>
+      </section>
     </article>
   </main>
 </body>
