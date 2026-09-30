@@ -334,7 +334,14 @@ export function seleccionarImagen(nodosImagen) {
     const imagenPath = (Array.isArray(imagen) ? (imagen[0] || '') : imagen).replace(/\.(jpg|jpeg|png|webp)$/i, '');
     // Src principal con cache-busting; sirve como fallback si no hay versiones optimizadas
     const version = '?v=20260930';
-    img.src = `img/${Array.isArray(imagen) ? (imagen[0] || '') : imagen}${version}`;
+    //img.src = `img/${Array.isArray(imagen) ? (imagen[0] || '') : imagen}${version}`;
+    // Después
+    if (imagen.includes('/')) {
+      // Usamos la versión 300w como src principal
+      img.src = `img/${imagenPath}-300w.webp${version}`;
+    } else {
+      img.src = `img/${Array.isArray(imagen) ? (imagen[0] || '') : imagen}${version}`;
+    }
     // Texto alternativo accesible
     img.alt = nombreobra;  
     // Carga perezosa por defecto para evitar bloquear el render inicial
