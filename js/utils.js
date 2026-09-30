@@ -369,7 +369,7 @@ export function seleccionarImagen(nodosImagen) {
       // El sizes estándar de la industria: si la pantalla es menor a 600px ocupa el 100vw, 
       // de lo contrario se asume un ancho máximo estándar de 600px.
       //img.sizes = "(max-width: 600px) 100vw, 600px";
-      img.sizes = "(max-width: 576px) 100vw, (max-width: 992px) 40vw, 280px";
+      img.sizes = "(max-width: 576px) 55vw, (max-width: 992px) 30vw, 200px";
     }
     // Manejo de error en carga: quitar srcset y reintentar con el src sin query; si falla, ocultar
     img.onerror = function () {
