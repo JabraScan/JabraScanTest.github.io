@@ -333,7 +333,7 @@ export function seleccionarImagen(nodosImagen) {
     // Extraer la ruta base sin extensión (.jpg .jpeg .png .webp)
     const imagenPath = (Array.isArray(imagen) ? (imagen[0] || '') : imagen).replace(/\.(jpg|jpeg|png|webp)$/i, '');
     // Src principal con cache-busting; sirve como fallback si no hay versiones optimizadas
-    const version = '?v=20251131';
+    const version = '?v=20260930';
     img.src = `img/${Array.isArray(imagen) ? (imagen[0] || '') : imagen}${version}`;
     // Texto alternativo accesible
     img.alt = nombreobra;  
@@ -355,6 +355,7 @@ export function seleccionarImagen(nodosImagen) {
       const webpPath = imagenPath;
       // srcset con varias anchuras en webp; el navegador elegirá la mejor y usará src como fallback
       img.srcset = `img/${webpPath}-300w.webp${version} 300w, img/${webpPath}-600w.webp${version} 600w, img/${webpPath}-900w.webp${version} 900w`;
+      /*
       // Ajuste de sizes según device pixel ratio para evitar descargar imágenes sobredimensionadas
       const dpr = window.devicePixelRatio || 1;
       if (dpr > 2) {
@@ -364,6 +365,11 @@ export function seleccionarImagen(nodosImagen) {
         // Comportamiento por defecto para densidades normales
         img.sizes = "(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 33vw, (max-width: 1200px) 25vw, 20vw";
       }
+      */
+      // El sizes estándar de la industria: si la pantalla es menor a 600px ocupa el 100vw, 
+      // de lo contrario se asume un ancho máximo estándar de 600px.
+      //img.sizes = "(max-width: 600px) 100vw, 600px";
+      img.sizes = "(max-width: 576px) 100vw, (max-width: 992px) 40vw, 280px";
     }
     // Manejo de error en carga: quitar srcset y reintentar con el src sin query; si falla, ocultar
     img.onerror = function () {
