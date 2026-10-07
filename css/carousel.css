@@ -2,6 +2,7 @@
 .custom-carousel {
     position: relative;
     width: 100%;
+    min-height: 450px;
     margin: 0 auto 2rem;
     overflow: hidden;
     border-radius: var(--border-radius-xxl);

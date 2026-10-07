@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const promesasCapitulos = [];
 
-    obrasArr.forEach(obj => {
+    obrasArr.forEach((obj, index) => {
       if ((obj.visible || '').toLowerCase() !== 'si') return;
 
       const clave = obj.obra_id;
@@ -148,6 +148,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const imagenContenedor = document.createElement("div");
       imagenContenedor.classList.add("imagen-contenedor");
       const img = createImg(imagen, nombreobra, 'main');
+      // 🚀 bloque para optimizar el LCP de la primera imagen:
+      if (index === 0) {
+        img.loading = "eager";
+        img.setAttribute("fetchpriority", "high");
+      } else {
+        img.loading = "lazy";
+      }
 
       imagenContenedor.appendChild(img);
       if (contenido18 === "adulto") {

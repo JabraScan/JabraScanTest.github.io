@@ -43,7 +43,8 @@ const token = getItem("jwt");
   if (!hasBootstrapCSS) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css";
+    //link.href = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css";
+    link.href = "./css/bootstrap.min.css";
     document.head.appendChild(link);
   }
 
@@ -51,7 +52,8 @@ const token = getItem("jwt");
     .some(s => s.src && s.src.includes("bootstrap"));
   if (!hasBootstrapJS) {
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js";
+    //script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js";
+    script.src = "./js/bootstrap.bundle.min.js";
     document.body.appendChild(script);
   }
 })();

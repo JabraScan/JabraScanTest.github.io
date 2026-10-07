@@ -58,6 +58,11 @@
     .book-chapters-list ul li span:last-child {
         overflow: visible;
     }
+    /* Altura del carrusel menor en moviles */
+
+    .custom-carousel {
+        min-height: 265px !important;
+    }
 
     /* Botones del carrusel más pequeños en móviles */
     .custom-carousel-btn {

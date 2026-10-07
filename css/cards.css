@@ -1,6 +1,7 @@
 /* ====== Cards y Tarjetas ====== */
 .book-list {
     justify-content: center;
+    min-height: 500px;
 }
 
 .book-card,
@@ -142,6 +143,12 @@
     cursor: pointer;
 }
 
+span.Activo, .libro-item .Activo {
+    background-color: #1b6332; /* Un verde oscuro que cumple perfectamente el ratio 4.5:1 */
+    color: #ffffff;            /* Texto blanco nítido */
+    font-weight: bold;
+}
+
 /* Cards de últimos capítulos */
 .chapter-card {
     border: 1px solid var(--color-border);
@@ -199,6 +206,12 @@
     transform: none;
     box-shadow: 0 2px 4px rgba(252, 163, 17, 0.3);
 }
+/* Modifica o añade esto en cards.css */
+.book-card-main .card-body {
+    font-size: 0.9rem;
+    padding: var(--spacing-md);
+    min-height: 165px; /* 👈 Reserva espacio fijo para evitar saltos en escritorio */
+}
 
 /* Lista de libros para iOS */
 .lista-libros {
@@ -216,6 +229,7 @@
     border-bottom: 1px solid var(--color-medium-gray);
     padding-bottom: var(--spacing-md);
     cursor: pointer;
+    min-height: 260px; /* 👈 Reserva espacio fijo para evitar saltos en móvil */
 }
 
 /* Contenedor de imagen en la lista iOS */

@@ -65,9 +65,13 @@
     width: 30px;
     height: 30px;
     border-radius: var(--border-radius-full);
-    border: 2px solid var(--color-red);
+    /*border: 2px solid var(--color-red);
     background-color: var(--color-white);
-    color: var(--color-red);
+    color: var(--color-red);*/
+    border: 2px solid #800000;   /* 👈 Opcional: un borde más oscuro para perfilarlo */
+    background-color: #b30000; /* 👈 Un rojo oscuro sólido que supera el contraste con creces */
+    color: var(--color-white);   /* 👈 Texto blanco brillante */
+
     font-size: var(--font-size-xs);
     font-weight: bold;
     display: flex;
@@ -138,6 +142,10 @@
 
 .tag-capitulo.hoy {
     background-color: var(--color-success);
+    /*background-color: #28a745;*/ /* Un verde vibrante y sólido */
+    color: #ffffff;            /* Texto blanco nítido */
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.6); /* Un resplandor estático en lugar de parpadeo */
 }
 
 
