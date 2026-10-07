@@ -1,5 +1,6 @@
 /* ====== Archivo principal de estilos ====== */
 /* Importa todos los módulos CSS en el orden correcto */
+@import ulr('./css/bootstrap.min.css');
 @import url('variables.css');
 @import url('header.css');
 @import url('svgicons.css');
