@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/OtonariNoTenshiSama.html",
     "alternateName": ["The Angel Next Door Spoils Me Rotten", "お隣の天使様にいつの間にか駄目人間にされていた件", "Otonari no Tenshi-sama ni Itsu no Ma ni ka Dame Ningen ni Sareteita Ken", "La enviada por el ángel de al lado me ha convertido en un caso perdido"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Japonesa"],
-    "keywords": ["Comedia", "Iyashikei", "Rom-Com", "Romance", "Romance Escolar", "Recuentos de Vida", "Vida Escolar"],
+    "genre": ["Comedia", "Iyashikei", "Rom-Com", "Romance", "Romance Escolar", "Recuentos de Vida", "Vida Escolar"],
+    "keywords": ["Novela Web", "Novela Japonesa", "Adaptado a anime", "Adaptado a manga", "Convivencia", "Protagonista de fondo", "Protagonista femenina hermosa", "Romance lento", "Vecinos"],
     "datePublished": "2026-01-22"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> 佐伯さん (Saekisan)</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Comedia, Iyashikei, Rom-Com, Romance, Romance Escolar, Recuentos de Vida, Vida Escolar</p>
             <p><strong>Fecha de creación:</strong> 2026-01-22</p>
             <p><strong>Traductor:</strong> Leo</p>
@@ -307,14 +311,9 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/MyCollegeTeacherMyChildrenMom.html" class="similar-card">
-            <img src="/img/MyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom-300w.webp" alt="Mi Maestra de la Universidad es la Mamá de Mis Hijos" loading="lazy" width="140" height="210">
-            <span>Mi Maestra de la Universidad es la Mamá de Mis Hijos</span>
-          </a>
-        
-          <a href="/books/MadamePleaseBehave.html" class="similar-card">
-            <img src="/img/MadamePleaseBehave/MadamePleaseBehave-300w.webp" alt="Señora, por favor comportese" loading="lazy" width="140" height="210">
-            <span>Señora, por favor comportese</span>
+          <a href="/books/Shimoneta.html" class="similar-card">
+            <img src="/img/Shimoneta/Shimoneta-300w.webp" alt="Shimoneta" loading="lazy" width="140" height="210">
+            <span>Shimoneta</span>
           </a>
         
           <a href="/books/MyWifeisFromaThousandYearsAgo.html" class="similar-card">
@@ -322,14 +321,19 @@
             <span>Mi Esposa Es De Hace Mil Años</span>
           </a>
         
-          <a href="/books/UnicoHombreUnidadMilitar.html" class="similar-card">
-            <img src="/img/UnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar-300w.webp" alt="El Único Hombre En La Unidad Militar" loading="lazy" width="140" height="210">
-            <span>El Único Hombre En La Unidad Militar</span>
+          <a href="/books/MyCollegeTeacherMyChildrenMom.html" class="similar-card">
+            <img src="/img/MyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom-300w.webp" alt="Mi Maestra de la Universidad es la Mamá de Mis Hijos" loading="lazy" width="140" height="210">
+            <span>Mi Maestra de la Universidad es la Mamá de Mis Hijos</span>
           </a>
         
-          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
-            <img src="/img/YoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
-            <span>Yo Mate al Jugador de la Academia</span>
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
+          </a>
+        
+          <a href="/books/Roshidere.html" class="similar-card">
+            <img src="/img/Roshidere/Roshidere_Light_Novel_Volume_1_Inner_Cover-300w.webp" alt="Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso." loading="lazy" width="140" height="210">
+            <span>Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso.</span>
           </a>
         
         </div>

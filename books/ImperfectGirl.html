@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/ImperfectGirl.html",
     "alternateName": ["少女不十分 (Shōjo Fujūbun)"],
     "inLanguage": "es",
-    "genre": ["Novela", "Novela Japonesa"],
-    "keywords": ["Drama", "Maduro", "Misterio", "Psicológico"],
+    "genre": ["Drama", "Maduro", "Misterio", "Psicológico"],
+    "keywords": ["Novela", "Novela Japonesa", "Adaptado a manga", "Confinamiento", "Época actual", "Filosófico", "Flashbacks", "Oscuro", "Personajes abusivos", "Personajes agresivos", "Personajes arrogantes", "Protagonista apático", "Protagonista introvertido", "Protagonista masculino", "Protagonista tranquilo", "Secuestros"],
     "datePublished": "2025-10-18"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Nisio Isin (西尾維新)</p>
-            <p><strong>Género:</strong> Novela</p>
+            <p><strong>Tipo:</strong> Novela (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Drama, Maduro, Misterio, Psicológico</p>
             <p><strong>Fecha de creación:</strong> 2025-10-18</p>
             <p><strong>Traductor:</strong> Gran Maestro</p>
@@ -291,29 +295,29 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/Arifureta.html" class="similar-card">
-            <img src="/img/Arifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
-            <span>Arifureta: De ordinario al más fuerte del mundo</span>
+          <a href="/books/Shimoneta.html" class="similar-card">
+            <img src="/img/Shimoneta/Shimoneta-300w.webp" alt="Shimoneta" loading="lazy" width="140" height="210">
+            <span>Shimoneta</span>
           </a>
         
-          <a href="/books/OmniscientReaderViewPoint.html" class="similar-card">
-            <img src="/img/OmniscientReaderViewPoint/Omniscient001-300w.webp" alt="Punto de Vista del Lector Omnisciente" loading="lazy" width="140" height="210">
-            <span>Punto de Vista del Lector Omnisciente</span>
+          <a href="/books/AbsoluteSwordSense.html" class="similar-card">
+            <img src="/img/AbsoluteSwordSense/AbsoluteSwordSense01-300w.webp" alt="Sentido Absoluto de la Espada" loading="lazy" width="140" height="210">
+            <span>Sentido Absoluto de la Espada</span>
           </a>
         
-          <a href="/books/MyCollegeTeacherMyChildrenMom.html" class="similar-card">
-            <img src="/img/MyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom-300w.webp" alt="Mi Maestra de la Universidad es la Mamá de Mis Hijos" loading="lazy" width="140" height="210">
-            <span>Mi Maestra de la Universidad es la Mamá de Mis Hijos</span>
+          <a href="/books/Roshidere.html" class="similar-card">
+            <img src="/img/Roshidere/Roshidere_Light_Novel_Volume_1_Inner_Cover-300w.webp" alt="Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso." loading="lazy" width="140" height="210">
+            <span>Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso.</span>
           </a>
         
-          <a href="/books/Suzume.html" class="similar-card">
-            <img src="/img/Suzume/Suzume-300w.webp" alt="Suzume no Tojimari" loading="lazy" width="140" height="210">
-            <span>Suzume no Tojimari</span>
+          <a href="/books/MadamePleaseBehave.html" class="similar-card">
+            <img src="/img/MadamePleaseBehave/MadamePleaseBehave-300w.webp" alt="Señora, por favor comportese" loading="lazy" width="140" height="210">
+            <span>Señora, por favor comportese</span>
           </a>
         
-          <a href="/books/ZombieClaseSApocalipsis.html" class="similar-card">
-            <img src="/img/ZombieClaseSApocalipsis/ZombieClaseSApocalipsis-300w.webp" alt="Zombi de Clase S en un Apocalipsis" loading="lazy" width="140" height="210">
-            <span>Zombi de Clase S en un Apocalipsis</span>
+          <a href="/books/WifePleaseBeObedient.html" class="similar-card">
+            <img src="/img/WifePleaseBeObedient/WifePleaseBeObedient-300w.webp" alt="Por favor, compórtate, esposa mía" loading="lazy" width="140" height="210">
+            <span>Por favor, compórtate, esposa mía</span>
           </a>
         
         </div>

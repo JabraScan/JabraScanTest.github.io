@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/TheEminenceInShadow.html",
     "alternateName": ["La Eminencia en la Sombra", "陰の実力者になりたくて!", "Kage no Jitsuryokusha ni Naritakute!", "TEIS", "KageJitsu", "Shadow-sama"],
     "inLanguage": "es",
-    "genre": ["Novela", "Novela Japonesa"],
-    "keywords": ["Academia", "Acción", "Artes Marciales", "Aventura", "Comedia", "Drama", "fantasía", "Magia", "Reencarnación"],
+    "genre": ["Academia", "Acción", "Artes Marciales", "Aventura", "Comedia", "Drama", "fantasía", "Magia", "Reencarnación"],
+    "keywords": ["Novela", "Novela Japonesa", "Academia", "Academia de combate", "Adaptado a anime", "Adaptado a juego", "Adaptado a manga", "Amor obsesivo", "Apocalipsis", "Aristocracia", "Batallas estratégicas", "Buscador de dinero", "Caballeros", "Chuunibyou", "Comerciantes", "Competición de batalla", "Complejo de hermanos", "Conocimiento moderno", "Construcción de ejércitos", "Construcción de reinos", "De fuerte a más fuerte", "Demonios", "Diferente estatus social", "Ejército", "Elfos", "Embaucador", "Esclavos", "Espacio exterior", "Espada y magia", "Falta de sentido común", "Habilidades especiales", "Hombres bestia", "Identidad secreta", "Intereses amorosos fuertes", "Loli", "Magia", "Maldiciones", "Malentendidos", "Monstruos", "Múltiples puntos de vista", "Nobles", "Ocultar habilidades verdaderas", "Ocultar identidad verdadera", "Organizaciones malvadas", "Organizaciones secretas", "Parodia", "Personajes arrogantes", "Personajes excéntricos", "Planes y conspiraciones", "Protagonista abrumadoramente poderoso", "Protagonista afortunado", "Protagonista antihéroe", "Protagonista carismático", "Protagonista denso", "Protagonista de fondo", "Protagonista despreocupado", "Protagonista fuerte desde el inicio", "Protagonista implacable", "Protagonista masculino", "Protagonista proactivo", "Protagonista subestimado", "Protagonista trabajador", "R-15", "Realeza", "Reencarnación", "Reencarnado en otro mundo", "Reinos", "Relación amo-sirviente", "Relación jefe-subordinado", "Representaciones de crueldad", "Salto temporal", "Semihumanos", "Sirvientas", "Subordinados leales", "Subtrama romántica", "Traición", "Vampiros", "Yandere"],
     "datePublished": "2025-07-01"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> 逢沢大介, 坂野杏梨</p>
-            <p><strong>Género:</strong> Novela</p>
+            <p><strong>Tipo:</strong> Novela (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Academia, Acción, Artes Marciales, Aventura, Comedia, Drama, fantasía, Magia, Reencarnación</p>
             <p><strong>Fecha de creación:</strong> 2025-07-01</p>
             <p><strong>Traductor:</strong> Tavo</p>
@@ -302,14 +306,19 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/CDMNQTMHC.html" class="similar-card">
-            <img src="/img/CDMNQTMHC/CallateDragonaMalvada-300w.webp" alt="¡Cállate, dragón malvado! No quiero tener mas hijos contigo." loading="lazy" width="140" height="210">
-            <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
+          <a href="/books/Arifureta.html" class="similar-card">
+            <img src="/img/Arifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
+            <span>Arifureta: De ordinario al más fuerte del mundo</span>
           </a>
         
-          <a href="/books/StarInstructorMasterBaek.html" class="similar-card">
-            <img src="/img/StarInstructorMasterBaek/StarInstructorMasterBaek-300w.webp" alt="Instructor Estelar, Maestro Baek" loading="lazy" width="140" height="210">
-            <span>Instructor Estelar, Maestro Baek</span>
+          <a href="/books/MeConvertiEnPatronVillanos.html" class="similar-card">
+            <img src="/img/MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos-300w.webp" alt="Me convertí en el patrón de los villanos" loading="lazy" width="140" height="210">
+            <span>Me convertí en el patrón de los villanos</span>
+          </a>
+        
+          <a href="/books/IAmTheFatedVillain.html" class="similar-card">
+            <img src="/img/IAmTheFatedVillain/IAmFatedVillain_1-300w.webp" alt="Yo Soy El Villano Predestinado" loading="lazy" width="140" height="210">
+            <span>Yo Soy El Villano Predestinado</span>
           </a>
         
           <a href="/books/MushokuTensei.html" class="similar-card">
@@ -317,14 +326,9 @@
             <span>Mushoku Tensei: Jobless Reincarnation</span>
           </a>
         
-          <a href="/books/DanmachiArgonauta.html" class="similar-card">
-            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
-            <span>Danmachi - Relato Heroico: Argonauta</span>
-          </a>
-        
-          <a href="/books/LaLeyendaDeLaEspadaDelNorte.html" class="similar-card">
-            <img src="/img/LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte-300w.webp" alt="La Leyenda de la Espada del Norte" loading="lazy" width="140" height="210">
-            <span>La Leyenda de la Espada del Norte</span>
+          <a href="/books/TEASG.html" class="similar-card">
+            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
+            <span>Guía de Supervivencia del Extra de la Academia</span>
           </a>
         
         </div>

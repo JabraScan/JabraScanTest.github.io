@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/MadamePleaseBehave.html",
     "alternateName": ["Madam, Please Behave", "太太请自重"],
     "inLanguage": "es",
-    "genre": ["Qidian", "Novela China"],
-    "keywords": ["Comedia", "Drama", "Fantasía", "Recuentos de Vida", "Romance", "Tragedia"],
+    "genre": ["Comedia", "Drama", "Fantasía", "Recuentos de Vida", "Romance", "Tragedia"],
+    "keywords": ["Qidian", "Novela China", "Abuso infantil", "Adulterio", "Cuidado de niños", "De pobre a rico", "Divorcio", "Época actual", "Escritores", "Interés amoroso que se enamora primero", "Malentendidos", "Protagonista juguetón", "Protagonista maduro", "Protagonista masculino", "Protagonista masculino atractivo", "Transmigración"],
     "datePublished": "2025-08-21"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> 刘家长子.CS</p>
-            <p><strong>Género:</strong> Qidian</p>
+            <p><strong>Tipo:</strong> Qidian (Novela China)</p>
             <p><strong>Categoría:</strong> Comedia, Drama, Fantasía, Recuentos de Vida, Romance, Tragedia</p>
             <p><strong>Fecha de creación:</strong> 2025-08-21</p>
             <p><strong>Traductor:</strong> Tavo</p>
@@ -297,24 +301,24 @@
             <span>Mi Esposa Es De Hace Mil Años</span>
           </a>
         
-          <a href="/books/MyCollegeTeacherMyChildrenMom.html" class="similar-card">
-            <img src="/img/MyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom-300w.webp" alt="Mi Maestra de la Universidad es la Mamá de Mis Hijos" loading="lazy" width="140" height="210">
-            <span>Mi Maestra de la Universidad es la Mamá de Mis Hijos</span>
+          <a href="/books/YernoNobleQuiereDivorcio.html" class="similar-card">
+            <img src="/img/YernoNobleQuiereDivorcio/YernoNobleQuiereDivorcio1-300w.webp" alt="El Yerno de la Prestigiosa Familia Quiere el Divorcio." loading="lazy" width="140" height="210">
+            <span>El Yerno de la Prestigiosa Familia Quiere el Divorcio.</span>
+          </a>
+        
+          <a href="/books/Roshidere.html" class="similar-card">
+            <img src="/img/Roshidere/Roshidere_Light_Novel_Volume_1_Inner_Cover-300w.webp" alt="Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso." loading="lazy" width="140" height="210">
+            <span>Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso.</span>
+          </a>
+        
+          <a href="/books/CDMNQTMHC.html" class="similar-card">
+            <img src="/img/CDMNQTMHC/CallateDragonaMalvada-300w.webp" alt="¡Cállate, dragón malvado! No quiero tener mas hijos contigo." loading="lazy" width="140" height="210">
+            <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
           </a>
         
           <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
             <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
             <span>Mis Esposas son Hermosos Demonios</span>
-          </a>
-        
-          <a href="/books/MushokuTensei.html" class="similar-card">
-            <img src="/img/MushokuTensei/MushokuTensei01-300w.webp" alt="Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
-            <span>Mushoku Tensei: Jobless Reincarnation</span>
-          </a>
-        
-          <a href="/books/DanmachiArgonauta.html" class="similar-card">
-            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
-            <span>Danmachi - Relato Heroico: Argonauta</span>
           </a>
         
         </div>

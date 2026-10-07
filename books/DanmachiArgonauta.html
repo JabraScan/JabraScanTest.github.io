@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/DanmachiArgonauta.html",
     "alternateName": ["Familia Chronicle: Episodio Argonauta", "Arugonouto zenshou douke koushin danjon ni deai o motomeru no wa machigatte irudarou ka eiyuutan", "ダンまち外伝 英雄譚 アルゴノゥト", "Danmachi Gaiden Eiyuutan Arugonouto", "Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle: Episode Argonaut"],
     "inLanguage": "es",
-    "genre": ["Novela Ligera", "Novela Japonesa"],
-    "keywords": ["Acción", "Aventura", "Comedia", "Fantasía", "Romance"],
+    "genre": ["Acción", "Aventura", "Comedia", "Fantasía", "Romance"],
+    "keywords": ["Novela Ligera", "Novela Japonesa", "Adaptado a CD de drama", "Adaptado a juego", "Adaptado a manga", "Amor a primera vista", "Compañeros bestia", "Crecimiento acelerado", "De débil a fuerte", "Diosas", "Dioses", "Elfos", "Enanos", "Espada y magia", "Herrero", "Intereses amorosos devotos", "Intereses amorosos fuertes", "Kuudere", "Mazmorras", "Monstruos", "Mundo de fantasía", "Obra premiada", "Personajes estoicos", "Protagonista afortunado", "Protagonista denso", "Protagonista determinado", "Protagonista encantador", "Protagonista femenina hermosa", "Protagonista indeciso", "Protagonista ingenuo", "Protagonista masculino", "Protagonista masculino atractivo", "Protagonista se enamora primero", "Protagonista trabajador", "Relación dios-humano", "Semihumanos", "Sistema de niveles"],
     "datePublished": "31/04/2024"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Fujino Ōmori</p>
-            <p><strong>Género:</strong> Novela Ligera</p>
+            <p><strong>Tipo:</strong> Novela Ligera (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Acción, Aventura, Comedia, Fantasía, Romance</p>
             <p><strong>Fecha de creación:</strong> 31/04/2024</p>
             <p><strong>Traductor:</strong> Turret Translations</p>
@@ -295,9 +299,19 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/FirstDemonicDragon.html" class="similar-card">
-            <img src="/img/FirstDemonicDragon/FirstDemonicDragon-300w.webp" alt="First Demonic Dragon" loading="lazy" width="140" height="210">
-            <span>First Demonic Dragon</span>
+          <a href="/books/PathtoDualCultivation.html" class="similar-card">
+            <img src="/img/PathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Path to Dual Cultivation" loading="lazy" width="140" height="210">
+            <span>Path to Dual Cultivation</span>
+          </a>
+        
+          <a href="/books/SoloSwordMaster.html" class="similar-card">
+            <img src="/img/SoloSwordMaster/SoloSwordMaster01-300w.webp" alt="Solo Swordmaster" loading="lazy" width="140" height="210">
+            <span>Solo Swordmaster</span>
+          </a>
+        
+          <a href="/books/TheDemonKingOverrun.html" class="similar-card">
+            <img src="/img/TheDemonKingOverrun/TheDemonKingOverrun01-300w.webp" alt="Demasiados Héroes para el Rey Demonio" loading="lazy" width="140" height="210">
+            <span>Demasiados Héroes para el Rey Demonio</span>
           </a>
         
           <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
@@ -305,19 +319,9 @@
             <span>Yo Mate al Jugador de la Academia</span>
           </a>
         
-          <a href="/books/ThouasMyKnight.html" class="similar-card">
-            <img src="/img/ThouasMyKnight/ThouasMyKnight1-300w.webp" alt="Thou, as My Knight" loading="lazy" width="140" height="210">
-            <span>Thou, as My Knight</span>
-          </a>
-        
-          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
-            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
-            <span>Mis Esposas son Hermosos Demonios</span>
-          </a>
-        
-          <a href="/books/PathtoDualCultivation.html" class="similar-card">
-            <img src="/img/PathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Path to Dual Cultivation" loading="lazy" width="140" height="210">
-            <span>Path to Dual Cultivation</span>
+          <a href="/books/MeConvertiEnPatronVillanos.html" class="similar-card">
+            <img src="/img/MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos-300w.webp" alt="Me convertí en el patrón de los villanos" loading="lazy" width="140" height="210">
+            <span>Me convertí en el patrón de los villanos</span>
           </a>
         
         </div>

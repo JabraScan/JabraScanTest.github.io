@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/ShadowSlave.html",
     "alternateName": ["Esclavo de la Sombra", "Nightmare Spell", "Awakened Chronicles", "Slave of Shadows"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Inglesa"],
-    "keywords": ["Acción", "Aventura", "Drama", "Fantasía", "Romance", "Sobrenatural"],
+    "genre": ["Acción", "Aventura", "Drama", "Fantasía", "Romance", "Sobrenatural"],
+    "keywords": ["Novela Web", "Novela Inglesa", "Aspectos divinos", "Atributos y defectos", "Criaturas de pesadilla", "Dioses y demonios", "Hechizo de la pesadilla", "Hilos del destino", "Memorias y ecos", "Mundo de los sueños", "Núcleos de alma", "Protagonista astuto", "Supervivencia extrema", "Verdaderos nombres"],
     "datePublished": "2025-03-05"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Guiltythree</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Inglesa)</p>
             <p><strong>Categoría:</strong> Acción, Aventura, Drama, Fantasía, Romance, Sobrenatural</p>
             <p><strong>Fecha de creación:</strong> 2025-03-05</p>
             <p><strong>Traductor:</strong> Morlan</p>
@@ -294,29 +298,29 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
+          <a href="/books/StarInstructorMasterBaek.html" class="similar-card">
+            <img src="/img/StarInstructorMasterBaek/StarInstructorMasterBaek-300w.webp" alt="Instructor Estelar, Maestro Baek" loading="lazy" width="140" height="210">
+            <span>Instructor Estelar, Maestro Baek</span>
+          </a>
+        
           <a href="/books/Suzume.html" class="similar-card">
             <img src="/img/Suzume/Suzume-300w.webp" alt="Suzume no Tojimari" loading="lazy" width="140" height="210">
             <span>Suzume no Tojimari</span>
           </a>
         
-          <a href="/books/CDMNQTMHC.html" class="similar-card">
-            <img src="/img/CDMNQTMHC/CallateDragonaMalvada-300w.webp" alt="¡Cállate, dragón malvado! No quiero tener mas hijos contigo." loading="lazy" width="140" height="210">
-            <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
+          <a href="/books/WifePleaseBeObedient.html" class="similar-card">
+            <img src="/img/WifePleaseBeObedient/WifePleaseBeObedient-300w.webp" alt="Por favor, compórtate, esposa mía" loading="lazy" width="140" height="210">
+            <span>Por favor, compórtate, esposa mía</span>
           </a>
         
-          <a href="/books/ThouasMyKnight.html" class="similar-card">
-            <img src="/img/ThouasMyKnight/ThouasMyKnight1-300w.webp" alt="Thou, as My Knight" loading="lazy" width="140" height="210">
-            <span>Thou, as My Knight</span>
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
           </a>
         
-          <a href="/books/DanmachiArgonauta.html" class="similar-card">
-            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
-            <span>Danmachi - Relato Heroico: Argonauta</span>
-          </a>
-        
-          <a href="/books/ZombieClaseSApocalipsis.html" class="similar-card">
-            <img src="/img/ZombieClaseSApocalipsis/ZombieClaseSApocalipsis-300w.webp" alt="Zombi de Clase S en un Apocalipsis" loading="lazy" width="140" height="210">
-            <span>Zombi de Clase S en un Apocalipsis</span>
+          <a href="/books/SupremeHusbandWifeSystem.html" class="similar-card">
+            <img src="/img/SupremeHusbandWifeSystem/SupremeHusbandWifeSystem1-300w.webp" alt="¡Sistema Supremo del Marido! y Esposas" loading="lazy" width="140" height="210">
+            <span>¡Sistema Supremo del Marido! y Esposas</span>
           </a>
         
         </div>

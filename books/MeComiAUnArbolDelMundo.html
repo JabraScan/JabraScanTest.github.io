@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/MeComiAUnArbolDelMundo.html",
     "alternateName": ["Fucked the World Tree", "세계수를 따먹다", "I Ate the World Tree", "Potential Husband of The World Tree", "Árbol del Mundo", "Comer del árbol del mundo", "Eat the World Tree", "Devouring the World Tree", "Fked the World Tree"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Coreana"],
-    "keywords": ["Aventura", "Drama", "Romance", "Harem", "Isekai", "Acción", "Ecchi", "Comedia", "Fantasía"],
+    "genre": ["Acción", "Aventura", "Comedia", "Drama", "Ecchi", "Fantasía", "Harem", "Isekai", "Romance"],
+    "keywords": ["Novela Web", "Novela Coreana", "Academia", "Adaptado a manhwa", "Adulto", "Anal", "Cuidado de niños", "Cunnilingus", "De gordo a en forma", "Diferente estatus social", "Ecchi", "Fantasía", "Harén", "Maduro", "Mazmorras", "Niños lindos", "Padres amorosos", "Protagonista encantador", "Protagonista gordo", "Romance", "Romance temprano", "Vida escolar"],
     "datePublished": "2025-11-29"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,13 +250,14 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Mang Moong Ming, Yam Yeong</p>
-            <p><strong>Género:</strong> Novela Web</p>
-            <p><strong>Categoría:</strong> Aventura, Drama, Romance, Harem, Isekai, Acción, Ecchi, Comedia, Fantasía</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Coreana)</p>
+            <p><strong>Categoría:</strong> Acción, Aventura, Comedia, Drama, Ecchi, Fantasía, Harem, Isekai, Romance</p>
             <p><strong>Fecha de creación:</strong> 2025-11-29</p>
             <p><strong>Traductor:</strong> Tavo</p>
             <p><strong>Otros Títulos:</strong></p>
@@ -302,9 +306,14 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/TEASG.html" class="similar-card">
-            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
-            <span>Guía de Supervivencia del Extra de la Academia</span>
+          <a href="/books/Shimoneta.html" class="similar-card">
+            <img src="/img/Shimoneta/Shimoneta-300w.webp" alt="Shimoneta" loading="lazy" width="140" height="210">
+            <span>Shimoneta</span>
+          </a>
+        
+          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
+            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
+            <span>Mis Esposas son Hermosos Demonios</span>
           </a>
         
           <a href="/books/CDMNQTMHC.html" class="similar-card">
@@ -312,19 +321,14 @@
             <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
           </a>
         
-          <a href="/books/Arifureta.html" class="similar-card">
-            <img src="/img/Arifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
-            <span>Arifureta: De ordinario al más fuerte del mundo</span>
+          <a href="/books/CultivationOnline.html" class="similar-card">
+            <img src="/img/CultivationOnline/CultivationOnline-300w.webp" alt="Cultivation Online" loading="lazy" width="140" height="210">
+            <span>Cultivation Online</span>
           </a>
         
-          <a href="/books/DanmachiArgonauta.html" class="similar-card">
-            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
-            <span>Danmachi - Relato Heroico: Argonauta</span>
-          </a>
-        
-          <a href="/books/MushokuTensei.html" class="similar-card">
-            <img src="/img/MushokuTensei/MushokuTensei01-300w.webp" alt="Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
-            <span>Mushoku Tensei: Jobless Reincarnation</span>
+          <a href="/books/FirstDemonicDragon.html" class="similar-card">
+            <img src="/img/FirstDemonicDragon/FirstDemonicDragon-300w.webp" alt="First Demonic Dragon" loading="lazy" width="140" height="210">
+            <span>First Demonic Dragon</span>
           </a>
         
         </div>

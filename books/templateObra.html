@@ -44,8 +44,8 @@
     "url": "{{url}}",
     "alternateName": [{{titlesAlternativosJson}}],
     "inLanguage": "{{lang}}",
-    "genre": ["{{tipoobra}}", "{{ubicacion}}"],
-    "keywords": {{categoriaJson}},
+    "genre": {{genreJson}},
+    "keywords": {{keywordsJson}},
     "datePublished": "{{fechaCreacion}}"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>{{lbl_autor}}</strong> {{author}}</p>
-            <p><strong>{{lbl_genero}}</strong> {{tipoobra}}</p>
+            <p><strong>{{lbl_tipo}}</strong> {{tipoobra}} ({{ubicacion}})</p>
             <p><strong>{{lbl_categoria}}</strong> {{categoria}}</p>
             <p><strong>{{lbl_fecha}}</strong> {{fechaCreacion}}</p>
             <p><strong>{{lbl_traductor}}</strong> {{traductor}}</p>

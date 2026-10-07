@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/ForSaleFallenLadyCA.html",
     "alternateName": ["En Venda. Dama Caiguda. Mai Usada", "En Venda. Noble Caiguda. Mai Utilitzada.", "En Venda. Noble Caiguda. Mai Usada", "(팝니다. 몰락영애. 한 번도 안 쓴)", "For Sale. Fallen Lady. Never Used", "Oh! I Can Buy This One Easily!", "팝니다. 몰락영애. 한 번도 안 쓴.", "The Fallen Lady is on Sale", "FS:FL:NU", "La Dama Caiguda és en Venda", "Oh! Aquesta la puc comprar fàcilment!"],
     "inLanguage": "ca",
-    "genre": ["Novel·la Web", "Novel·la Coreana"],
-    "keywords": ["Acció", "Adult", "Fantasía", "Harem", "Romanç"],
+    "genre": ["Acció", "Adult", "Fantasía", "Harem", "Romanç"],
+    "keywords": ["Novel·la Web", "Novel·la Coreana", "Acadèmia", "Adaptat a manhwa", "Amor incondicional", "Anal", "Arranjaments d'habitatge forçats", "Artefactes", "Assimilació d'habilitats", "Bèsties màgiques", "Convivència", "Creixement accelerat", "Creixement de personatge", "Criatures fantàstiques", "Cunnilingus", "De forta a més forta", "Nuesa", "Deesses", "Déus", "Déus malvats", "Dracs", "Elfos", "Elements de joc", "Esclaus", "Esclaus sexuals", "Espai màgic", "Fel·lació", "Forçat a una relació", "Formacions màgiques", "Habilitat de transformació", "Habilitats especials", "Habilitats ocultes", "Harem d'esclaus", "Interessos amorosos devots", "Jugadors", "La víctima de violació es converteix en amant", "Loli", "Màgia", "Masturbació manual", "Matrimoni", "Masmorres", "Món alternatiu", "Món de fantasia", "Nobles", "Orgia", "Paizuri", "Personatges adinerats", "Personatges sàdics", "Poders divins", "Poligàmia", "Primera relació sexual", "Protagonista aclaparantment poderós", "Protagonista afectuós", "Protagonista determinat", "Protagonista femenina bella", "Protagonista fort des del principi", "Protagonista geni", "Protagonista intel·ligent", "Protagonista masculí", "Protagonista masculí atractiu", "Protagonista pervertit", "Protagonista que busca un harem", "Protagonista treballador", "Punt de vista múltiple", "R-18", "Relació estimo-servent", "Relació estudiant-professor", "Relació humà-no humà", "Relacions sexuals a l'aire lliure", "Romanç primerenc", "Salvant el món", "Servents", "Sistema de classificació de jocs", "Sistema de nivells", "Treball en equip", "Transportat a un món de videojocs", "Trio", "Trucs", "Vampirs", "Violació"],
     "datePublished": "2026-08-26"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> 오리너구리, Ori Neoguri</p>
-            <p><strong>Gènere:</strong> Novel·la Web</p>
+            <p><strong>Tipus:</strong> Novel·la Web (Novel·la Coreana)</p>
             <p><strong>Categoria:</strong> Acció, Adult, Fantasía, Harem, Romanç</p>
             <p><strong>Data de creació:</strong> 2026-08-26</p>
             <p><strong>Traductor:</strong> Jabracadabra</p>
@@ -309,19 +313,14 @@
         <h2>Suggeriments</h2>
         <div class="similares-grid">
           
+          <a href="/books/ForSaleFallenLady.html" class="similar-card">
+            <img src="/img/ForSaleFallenLady/ForSaleFallenLady01-300w.webp" alt="En Venta. Noble Caída. Nunca Usada" loading="lazy" width="140" height="210">
+            <span>En Venta. Noble Caída. Nunca Usada</span>
+          </a>
+        
           <a href="/books/CityOfWitches.html" class="similar-card">
             <img src="/img/CityOfWitches/CityOfWitches-300w.webp" alt="City of Witches" loading="lazy" width="140" height="210">
             <span>City of Witches</span>
-          </a>
-        
-          <a href="/books/IAmTheFatedVillain.html" class="similar-card">
-            <img src="/img/IAmTheFatedVillain/IAmFatedVillain_1-300w.webp" alt="Yo Soy El Villano Predestinado" loading="lazy" width="140" height="210">
-            <span>Yo Soy El Villano Predestinado</span>
-          </a>
-        
-          <a href="/books/TEASG.html" class="similar-card">
-            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
-            <span>Guía de Supervivencia del Extra de la Academia</span>
           </a>
         
           <a href="/books/MeComiAUnArbolDelMundo.html" class="similar-card">
@@ -329,9 +328,14 @@
             <span>Me comí a un Árbol del Mundo</span>
           </a>
         
-          <a href="/books/Arifureta.html" class="similar-card">
-            <img src="/img/Arifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
-            <span>Arifureta: De ordinario al más fuerte del mundo</span>
+          <a href="/books/MushokuTensei.html" class="similar-card">
+            <img src="/img/MushokuTensei/MushokuTensei01-300w.webp" alt="Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
+            <span>Mushoku Tensei: Jobless Reincarnation</span>
+          </a>
+        
+          <a href="/books/TEASG.html" class="similar-card">
+            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
+            <span>Guía de Supervivencia del Extra de la Academia</span>
           </a>
         
         </div>

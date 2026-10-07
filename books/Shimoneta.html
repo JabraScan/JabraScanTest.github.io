@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/Shimoneta.html",
     "alternateName": [],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Japonesa"],
-    "keywords": ["Acción", "Adulto", "Comedia", "Ecchi", "Maduro", "Harén", "Romance", "Vida Escolar"],
+    "genre": ["Acción", "Adulto", "Comedia", "Ecchi", "Maduro", "Harén", "Romance", "Vida Escolar"],
+    "keywords": ["Novela Web", "Novela Japonesa", "Adaptado a anime", "Adaptado a manga", "Amor obsesivo", "Consejo estudiantil", "Desnudez", "Época actual", "Protagonista masculino", "Terroristas", "Yandere"],
     "datePublished": "2025-10-15"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Akagi Hirotaka</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Acción, Adulto, Comedia, Ecchi, Maduro, Harén, Romance, Vida Escolar</p>
             <p><strong>Fecha de creación:</strong> 2025-10-15</p>
             <p><strong>Traductor:</strong> [MK and Defous123],Gran Maestro</p>
@@ -291,19 +295,19 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
-            <img src="/img/YoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
-            <span>Yo Mate al Jugador de la Academia</span>
+          <a href="/books/MeComiAUnArbolDelMundo.html" class="similar-card">
+            <img src="/img/MeComiAUnArbolDelMundo/MeComiAUnArbolDelMundo-300w.webp" alt="Me comí a un Árbol del Mundo" loading="lazy" width="140" height="210">
+            <span>Me comí a un Árbol del Mundo</span>
           </a>
         
-          <a href="/books/CityOfWitches.html" class="similar-card">
-            <img src="/img/CityOfWitches/CityOfWitches-300w.webp" alt="City of Witches" loading="lazy" width="140" height="210">
-            <span>City of Witches</span>
+          <a href="/books/OtonariNoTenshiSama.html" class="similar-card">
+            <img src="/img/OtonariNoTenshiSama/OtonariNoTenshiSama_v01-300w.webp" alt="Otonari no Tenshi-sama" loading="lazy" width="140" height="210">
+            <span>Otonari no Tenshi-sama</span>
           </a>
         
-          <a href="/books/ForSaleFallenLady.html" class="similar-card">
-            <img src="/img/ForSaleFallenLady/ForSaleFallenLady01-300w.webp" alt="En Venta. Noble Caída. Nunca Usada" loading="lazy" width="140" height="210">
-            <span>En Venta. Noble Caída. Nunca Usada</span>
+          <a href="/books/CultivationOnline.html" class="similar-card">
+            <img src="/img/CultivationOnline/CultivationOnline-300w.webp" alt="Cultivation Online" loading="lazy" width="140" height="210">
+            <span>Cultivation Online</span>
           </a>
         
           <a href="/books/FirstDemonicDragon.html" class="similar-card">
@@ -311,9 +315,9 @@
             <span>First Demonic Dragon</span>
           </a>
         
-          <a href="/books/UnicoHombreUnidadMilitar.html" class="similar-card">
-            <img src="/img/UnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar-300w.webp" alt="El Único Hombre En La Unidad Militar" loading="lazy" width="140" height="210">
-            <span>El Único Hombre En La Unidad Militar</span>
+          <a href="/books/CDREdRSSelMdC.html" class="similar-card">
+            <img src="/img/CDREdRSSelMdC/CDREdRSSelMdC-300w.webp" alt="Cultivo Dual: Reuniendo Esposas de Rango SSS en el Mundo del Cultivo" loading="lazy" width="140" height="210">
+            <span>Cultivo Dual: Reuniendo Esposas de Rango SSS en el Mundo del Cultivo</span>
           </a>
         
         </div>

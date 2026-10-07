@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/Roshidere.html",
     "alternateName": ["Alya Sometimes Hides Her Feelings in Russian", "時々ボソッとロシア語でデレる隣のアーリャさん"],
     "inLanguage": "es",
-    "genre": ["Novela Ligera", "Novela Japonesa"],
-    "keywords": ["Academia", "Comedia", "Recuentos de Vida"],
+    "genre": ["Academia", "Comedia", "Recuentos de Vida"],
+    "keywords": ["Novela Ligera", "Novela Japonesa", "Adaptado a anime", "Adaptado a manga", "Amigos de la infancia", "Amor de infancia", "Complejo de hermano", "Consejo estudiantil", "Crecimiento de personaje", "Época actual", "Hermanas menores", "Hermanos", "Historia tierna", "Interés amoroso que se enamora primero", "Intereses amorosos fríos", "Intereses amorosos populares", "Malentendidos", "Obra premiada", "Padres ausentes", "Protagonista cariñoso", "Protagonista femenina hermosa", "Protagonista inteligente", "Protagonista masculino", "Protagonista masculino atractivo", "Protagonista perezoso", "Protagonista tranquilo", "Punto de vista múltiple", "Relaciones familiares complejas", "Trauma pasado", "Triángulos amorosos", "Tsundere"],
     "datePublished": "2025-10-22"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> SunSunSun</p>
-            <p><strong>Género:</strong> Novela Ligera</p>
+            <p><strong>Tipo:</strong> Novela Ligera (Novela Japonesa)</p>
             <p><strong>Categoría:</strong> Academia, Comedia, Recuentos de Vida</p>
             <p><strong>Fecha de creación:</strong> 2025-10-22</p>
             <p><strong>Traductor:</strong> Tavo</p>
@@ -309,14 +313,14 @@
             <span>Señora, por favor comportese</span>
           </a>
         
+          <a href="/books/Shimoneta.html" class="similar-card">
+            <img src="/img/Shimoneta/Shimoneta-300w.webp" alt="Shimoneta" loading="lazy" width="140" height="210">
+            <span>Shimoneta</span>
+          </a>
+        
           <a href="/books/MyWifeisFromaThousandYearsAgo.html" class="similar-card">
             <img src="/img/MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo-300w.webp" alt="Mi Esposa Es De Hace Mil Años" loading="lazy" width="140" height="210">
             <span>Mi Esposa Es De Hace Mil Años</span>
-          </a>
-        
-          <a href="/books/UnicoHombreUnidadMilitar.html" class="similar-card">
-            <img src="/img/UnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar-300w.webp" alt="El Único Hombre En La Unidad Militar" loading="lazy" width="140" height="210">
-            <span>El Único Hombre En La Unidad Militar</span>
           </a>
         
           <a href="/books/OtonariNoTenshiSama.html" class="similar-card">
@@ -324,9 +328,9 @@
             <span>Otonari no Tenshi-sama</span>
           </a>
         
-          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
-            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
-            <span>Mis Esposas son Hermosos Demonios</span>
+          <a href="/books/TEASG.html" class="similar-card">
+            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
+            <span>Guía de Supervivencia del Extra de la Academia</span>
           </a>
         
         </div>

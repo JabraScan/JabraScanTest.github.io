@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/MLHSB.html",
     "alternateName": ["¡Max Level Hero Strikes Back!", "만렙 영웅님께서 귀환하신다!"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Coreana"],
-    "keywords": ["Acción", "Aventura", "Fantasía", "Harén"],
+    "genre": ["Acción", "Aventura", "Fantasía", "Harén"],
+    "keywords": ["Novela Web", "Novela Coreana", "Adaptado a manhwa", "Apariencia diferente a la edad real", "Buscador de dinero", "Conflicto familiar", "Construcción de reinos", "Crecimiento acelerado", "Crecimiento de personaje", "De fuerte a más fuerte", "Descripciones de crueldad", "Diosas", "Dioses", "Doncellas", "Espada y magia", "Espíritu consejero", "Gemelos", "Golems", "Hermanas menores", "Hermanos", "Hermanos menores", "Héroes", "Intereses amorosos fuertes", "Objetos conscientes", "Pasado trágico", "Poderes divinos", "Poligamia", "Portador de espada", "Protagonista abrumadoramente poderoso", "Protagonista fuerte desde el principio", "Protagonista masculino", "Protagonista tranquilo", "Protagonista trabajador", "Realeza", "Reencarnado en otro mundo", "Reencarnación", "Relación dios-humano", "Rivalidad entre hermanos", "Señor de los demonios", "Subtrama romántica", "Tono cómico", "Transmigración", "Transportado a otro mundo", "Vampiros"],
     "datePublished": "2025-09-28"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> Devil's tail</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Coreana)</p>
             <p><strong>Categoría:</strong> Acción, Aventura, Fantasía, Harén</p>
             <p><strong>Fecha de creación:</strong> 2025-09-28</p>
             <p><strong>Traductor:</strong> Jabracadabra</p>
@@ -292,19 +296,9 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/FirstDemonicDragon.html" class="similar-card">
-            <img src="/img/FirstDemonicDragon/FirstDemonicDragon-300w.webp" alt="First Demonic Dragon" loading="lazy" width="140" height="210">
-            <span>First Demonic Dragon</span>
-          </a>
-        
-          <a href="/books/PathtoDualCultivation.html" class="similar-card">
-            <img src="/img/PathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Path to Dual Cultivation" loading="lazy" width="140" height="210">
-            <span>Path to Dual Cultivation</span>
-          </a>
-        
-          <a href="/books/MeConvertiEnPatronVillanos.html" class="similar-card">
-            <img src="/img/MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos-300w.webp" alt="Me convertí en el patrón de los villanos" loading="lazy" width="140" height="210">
-            <span>Me convertí en el patrón de los villanos</span>
+          <a href="/books/TheDemonKingOverrun.html" class="similar-card">
+            <img src="/img/TheDemonKingOverrun/TheDemonKingOverrun01-300w.webp" alt="Demasiados Héroes para el Rey Demonio" loading="lazy" width="140" height="210">
+            <span>Demasiados Héroes para el Rey Demonio</span>
           </a>
         
           <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
@@ -312,9 +306,19 @@
             <span>Yo Mate al Jugador de la Academia</span>
           </a>
         
-          <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
-            <img src="/img/MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons-300w.webp" alt="Mis Esposas son Hermosos Demonios" loading="lazy" width="140" height="210">
-            <span>Mis Esposas son Hermosos Demonios</span>
+          <a href="/books/PathtoDualCultivation.html" class="similar-card">
+            <img src="/img/PathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Path to Dual Cultivation" loading="lazy" width="140" height="210">
+            <span>Path to Dual Cultivation</span>
+          </a>
+        
+          <a href="/books/AbsoluteSwordSense.html" class="similar-card">
+            <img src="/img/AbsoluteSwordSense/AbsoluteSwordSense01-300w.webp" alt="Sentido Absoluto de la Espada" loading="lazy" width="140" height="210">
+            <span>Sentido Absoluto de la Espada</span>
+          </a>
+        
+          <a href="/books/DanmachiArgonauta.html" class="similar-card">
+            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
+            <span>Danmachi - Relato Heroico: Argonauta</span>
           </a>
         
         </div>

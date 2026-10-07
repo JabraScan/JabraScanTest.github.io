@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/OmniscientReaderViewPoint.html",
     "alternateName": ["Omniscient Reader's Viewpoint", "Omniscient Reader", "ORV", "전지적 독자 시점", "Jeonjijeok Dokja Sijeom", "Zenchiteki na Dokusha no Shiten kara"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela Coreana"],
-    "keywords": ["Aventura", "Acción", "Fantasía", "Comedia", "Drama", "Maduro", "Misterio", "Psicologico", "Sobrenatural", "Tragedia"],
+    "genre": ["Aventura", "Acción", "Fantasía", "Comedia", "Drama", "Maduro", "Misterio", "Psicologico", "Sobrenatural", "Tragedia"],
+    "keywords": ["Novela Web", "Novela Coreana", "Abuso infantil", "Adaptado a anime", "Adaptado a juego", "Adaptado a manhwa", "Adaptado a película", "Amistad", "Ángeles", "Apocalipsis", "Cambios de apariencia", "Chuunibyou", "Crecimiento de personaje", "De débil a fuerte", "Demonios", "Destino", "Dioses", "Distopía", "El pasado juega un papel importante", "Elementos de juego", "Enemigos se convierten en aliados", "Época actual", "Flujo ilimitado", "Folclore", "Goblins", "Guerras cósmicas", "Habilidades especiales", "Habilidades ocultas", "Hermandad", "Huérfanos", "Iluminación", "Invasión de la Tierra", "Juego de supervivencia", "Liderazgo", "Mitología", "Muerte", "Muerte de seres queridos", "Múltiples puntos de vista", "Múltiples reinos", "Mundo alternativo", "Mundos paralelos", "Nacionalismo", "Narrador no fiable", "Obra galardonada", "Ocultar habilidades verdaderas", "Ocultar identidad verdadera", "Paradoja temporal", "Pasado misterioso", "Pasado trágico", "Personajes sádicos", "Poder condicional", "Precognición", "Protagonista afortunado", "Protagonista astuto", "Protagonista cariñoso", "Protagonista carismático", "Protagonista cauto", "Protagonista de aspecto normal", "Protagonista desinteresado", "Protagonista inteligente", "Protagonista masculino", "Protagonista proactivo", "Protagonista reservado", "Protagonista tranquilo", "Puerta a otro mundo", "Reencarnación", "Regreso de otro mundo", "Relación maestro-discípulo", "Resurrección", "Salto temporal", "Señor de los demonios", "Soledad", "Subordinados leales", "Sueños", "Thriller", "Trabajo en equipo", "Trauma pasado", "Viaje en el tiempo", "Viaje por el mundo"],
     "datePublished": "2026-07-23"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> singNsong / sing N song / 싱숑</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela Coreana)</p>
             <p><strong>Categoría:</strong> Aventura, Acción, Fantasía, Comedia, Drama, Maduro, Misterio, Psicologico, Sobrenatural, Tragedia</p>
             <p><strong>Fecha de creación:</strong> 2026-07-23</p>
             <p><strong>Traductor:</strong> Gran Maestro</p>
@@ -299,29 +303,29 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/ThouasMyKnight.html" class="similar-card">
-            <img src="/img/ThouasMyKnight/ThouasMyKnight1-300w.webp" alt="Thou, as My Knight" loading="lazy" width="140" height="210">
-            <span>Thou, as My Knight</span>
-          </a>
-        
           <a href="/books/Arifureta.html" class="similar-card">
             <img src="/img/Arifureta/Arifureta-LN-JP-Cover-v01-300w.webp" alt="Arifureta: De ordinario al más fuerte del mundo" loading="lazy" width="140" height="210">
             <span>Arifureta: De ordinario al más fuerte del mundo</span>
           </a>
         
-          <a href="/books/CDMNQTMHC.html" class="similar-card">
-            <img src="/img/CDMNQTMHC/CallateDragonaMalvada-300w.webp" alt="¡Cállate, dragón malvado! No quiero tener mas hijos contigo." loading="lazy" width="140" height="210">
-            <span>¡Cállate, dragón malvado! No quiero tener mas hijos contigo.</span>
+          <a href="/books/TheEminenceInShadow.html" class="similar-card">
+            <img src="/img/TheEminenceInShadow/TheEminenceInShadow-300w.webp" alt="The Eminence in Shadow" loading="lazy" width="140" height="210">
+            <span>The Eminence in Shadow</span>
           </a>
         
-          <a href="/books/ShadowSlave.html" class="similar-card">
-            <img src="/img/ShadowSlave/ShadowSlave-300w.webp" alt="Shadow Slave" loading="lazy" width="140" height="210">
-            <span>Shadow Slave</span>
+          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
+            <img src="/img/YoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
+            <span>Yo Mate al Jugador de la Academia</span>
           </a>
         
           <a href="/books/MushokuTensei.html" class="similar-card">
             <img src="/img/MushokuTensei/MushokuTensei01-300w.webp" alt="Mushoku Tensei: Jobless Reincarnation" loading="lazy" width="140" height="210">
             <span>Mushoku Tensei: Jobless Reincarnation</span>
+          </a>
+        
+          <a href="/books/TEASG.html" class="similar-card">
+            <img src="/img/TEASG/WebNovel_Cover_1-300w.webp" alt="Guía de Supervivencia del Extra de la Academia" loading="lazy" width="140" height="210">
+            <span>Guía de Supervivencia del Extra de la Academia</span>
           </a>
         
         </div>

@@ -44,8 +44,8 @@
     "url": "https://jabrascan.net/books/FirstDemonicDragon.html",
     "alternateName": ["Primer Dragon Demoniaco"],
     "inLanguage": "es",
-    "genre": ["Novela Web", "Novela USA"],
-    "keywords": ["Acción", "Aventura", "Comedia", "Fantasía", "Harén", "Romance"],
+    "genre": ["Acción", "Aventura", "Comedia", "Fantasía", "Harén", "Romance"],
+    "keywords": ["Novela Web", "Novela USA", "Ángeles", "Dios", "Dragones", "Dragones del fin", "Evolución de monstruo", "Fantasía oscura", "Mitología celta", "Mitología griega", "Mitología nórdica", "Protagonista masculino", "Reencarnación", "Sistema", "Transformación en dragón"],
     "datePublished": "2025-04-03"
   }
   </script>
@@ -222,10 +222,13 @@
       padding: 8px 12px;
       border-radius: 4px;
     }
-
     .breadcrumbs a {
       color: var(--accent);
-      text-decoration: none;
+      text-decoration: underline; /* Añadido para que el enlace sea distinguible sin depender solo del color */
+    }
+
+    .breadcrumbs a:hover {
+      text-decoration: none; /* Opcional */
     }
   </style>
 </head>
@@ -247,12 +250,13 @@
             width="220"
             height="330"
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           >
 
           <div class="meta">
             <p><strong>Autor:</strong> AnathaShesha</p>
-            <p><strong>Género:</strong> Novela Web</p>
+            <p><strong>Tipo:</strong> Novela Web (Novela USA)</p>
             <p><strong>Categoría:</strong> Acción, Aventura, Comedia, Fantasía, Harén, Romance</p>
             <p><strong>Fecha de creación:</strong> 2025-04-03</p>
             <p><strong>Traductor:</strong> Jabracadabra</p>
@@ -356,14 +360,19 @@
         <h2>Recomendaciones</h2>
         <div class="similares-grid">
           
-          <a href="/books/YoMateJugadorAcademia.html" class="similar-card">
-            <img src="/img/YoMateJugadorAcademia/YoMateJugadorAcademia-300w.webp" alt="Yo Mate al Jugador de la Academia" loading="lazy" width="140" height="210">
-            <span>Yo Mate al Jugador de la Academia</span>
+          <a href="/books/WifePleaseBeObedient.html" class="similar-card">
+            <img src="/img/WifePleaseBeObedient/WifePleaseBeObedient-300w.webp" alt="Por favor, compórtate, esposa mía" loading="lazy" width="140" height="210">
+            <span>Por favor, compórtate, esposa mía</span>
           </a>
         
-          <a href="/books/DanmachiArgonauta.html" class="similar-card">
-            <img src="/img/DanmachiArgonauta/DanmachiArgonauta-300w.webp" alt="Danmachi - Relato Heroico: Argonauta" loading="lazy" width="140" height="210">
-            <span>Danmachi - Relato Heroico: Argonauta</span>
+          <a href="/books/CultivationOnline.html" class="similar-card">
+            <img src="/img/CultivationOnline/CultivationOnline-300w.webp" alt="Cultivation Online" loading="lazy" width="140" height="210">
+            <span>Cultivation Online</span>
+          </a>
+        
+          <a href="/books/DualCultivation.html" class="similar-card">
+            <img src="/img/DualCultivation/DualCultivation-300w.webp" alt="Dual Cultivation" loading="lazy" width="140" height="210">
+            <span>Dual Cultivation</span>
           </a>
         
           <a href="/books/MyWivesAreBeautifulDemons.html" class="similar-card">
@@ -371,14 +380,9 @@
             <span>Mis Esposas son Hermosos Demonios</span>
           </a>
         
-          <a href="/books/PathtoDualCultivation.html" class="similar-card">
-            <img src="/img/PathtoDualCultivation/PathtoDualCultivation-300w.webp" alt="Path to Dual Cultivation" loading="lazy" width="140" height="210">
-            <span>Path to Dual Cultivation</span>
-          </a>
-        
-          <a href="/books/MLHSB.html" class="similar-card">
-            <img src="/img/mlhsb/mlhsb-300w.webp" alt="¡El Héroe de Nivel Máximo Ha Regresado!" loading="lazy" width="140" height="210">
-            <span>¡El Héroe de Nivel Máximo Ha Regresado!</span>
+          <a href="/books/SupremeHusbandWifeSystem.html" class="similar-card">
+            <img src="/img/SupremeHusbandWifeSystem/SupremeHusbandWifeSystem1-300w.webp" alt="¡Sistema Supremo del Marido! y Esposas" loading="lazy" width="140" height="210">
+            <span>¡Sistema Supremo del Marido! y Esposas</span>
           </a>
         
         </div>
