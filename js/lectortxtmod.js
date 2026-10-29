@@ -19,13 +19,15 @@ export class TxtReaderEngine {
   /**
    * Diccionario centralizado de estilos (basado en Word)
    */
-  static STYLE_CONFIGS = {
-    'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
-    'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
-    'H3':   { sizePt: 12, bold: true,  align: 'left',   spaceBefore: 8,  spaceAfter: 4,  color: '#0056b3' },
-    'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
-    'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
-  };
+  static STYLE_CONFIGS() {
+    return {
+      'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
+      'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
+      'H3':   { sizePt: 12, bold: true,  align: 'left',   spaceBefore: 8,  spaceAfter: 4,  color: '#0056b3' },
+      'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
+      'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
+    };
+  }
 
   /**
    * @param {Object} options
