@@ -60,7 +60,7 @@ export class TxtReaderEngine {
     this.scale = 1.0; 
     this.pages = [];  
     this.currentPageIndex = 0;
-    this.isInfiniteScroll = true; //Boolean(options.isInfiniteScroll);
+    this.isInfiniteScroll = Boolean(options.isInfiniteScroll);
 
     this.config = null;
     this.resources = {
