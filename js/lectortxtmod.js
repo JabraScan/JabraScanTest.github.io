@@ -35,7 +35,7 @@ export class TxtReaderEngine {
     this.allLines = []; // Almacena todas las líneas para el scroll continuo
     this.currentPageIndex = 0;
     
-    this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : true;
+    this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : false;
 
     this.config = null;
     this.resources = {
