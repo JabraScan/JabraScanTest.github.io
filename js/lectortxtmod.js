@@ -15,8 +15,10 @@
  *    - [SUP]...[/SUP] -> Superíndice (Superscript, tamaño reducido y desplazamiento vertical)
  *    - [EM]...[/EM]   -> Énfasis (Cursiva con color específico #0056b3)
  */
-
 export class TxtReaderEngine {
+  /**
+   * Diccionario centralizado de estilos (basado en Word)
+   */
   static STYLE_CONFIGS = {
     'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
     'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
@@ -25,8 +27,17 @@ export class TxtReaderEngine {
     'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
   };
 
+  /**
+   * @param {Object} options
+   * @param {HTMLCanvasElement} options.canvas - Elemento canvas donde se renderiza
+   * @param {HTMLElement} options.container - Contenedor padre del canvas (para capa de enlaces HTML)
+   * @param {number} [options.dpi=96] - Resolución para la conversión cm -> px (por defecto 96 DPI)
+   * @param {string} options.clave - Clave única de la obra para las URLs
+   * @param {integer} options.capitulo
+   * @param {boolean} [options.isInfiniteScroll=false] - Activar modo de scroll infinito
+   */
   constructor(options) {
-    if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");
+    if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");[cite: 3]
    
     this.canvas = options.canvas;
     this.ctx = this.canvas.getContext('2d');
@@ -40,16 +51,16 @@ export class TxtReaderEngine {
     this._updateResponsiveLayoutMetrics();
     this.MARGIN_CM = 3.0;
 
+    // Tipografía base por defecto
     this.FONT_FAMILY = "Arial, sans-serif";
     this.LINE_HEIGHT_RATIO = 1.45;
 
+    // Estado interno y variables de control de scroll infinito
     this.dpi = options.dpi || 96;
     this.scale = 1.0; 
     this.pages = [];  
     this.currentPageIndex = 0;
-    
-    // Configuración limpia del modo de scroll infinito (por defecto false o lo que se indique)
-    this.isInfiniteScroll = Boolean(options.isInfiniteScroll);
+    this.isInfiniteScroll = true; //Boolean(options.isInfiniteScroll);
 
     this.config = null;
     this.resources = {
@@ -57,9 +68,11 @@ export class TxtReaderEngine {
       footerImg: null
     };
 
+    // Capa de enlaces sobre el canvas
     this.linkOverlay = null;
     this._initLinkOverlay();
 
+    // Ajustar el contenedor según el modo inicial
     if (this.container && this.isInfiniteScroll) {
       this.container.style.overflowY = 'auto';
     }
@@ -78,6 +91,9 @@ export class TxtReaderEngine {
     this.fontScaleFactor = isMobile ? 1.45 : 1.0;
   }
 
+  /**
+   * Getter dinámico para la configuración por defecto basada en la clave de la instancia
+   */
   get DEFAULT_CONFIG() {
     return {
       headerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
@@ -95,6 +111,7 @@ export class TxtReaderEngine {
     };
   }
 
+  // --- Conversores de unidades ---
   cmToPx(cm) {
     return (cm * this.dpi) / 2.54;
   }
@@ -103,6 +120,9 @@ export class TxtReaderEngine {
     return (pt * this.dpi) / 72;
   }
 
+  /**
+   * Inicializa el proceso: carga configuración, imágenes y realiza la paginación.
+   */
   async load(txtContent, configUrl) {
     let fetchedConfig = {};
 
@@ -147,6 +167,9 @@ export class TxtReaderEngine {
     this.render();
   }
 
+  /**
+   * Carga asíncrona de recursos gráficos
+   */
   async _loadResources() {
     const loadImg = (url) => {
       if (!url) return Promise.resolve(null);
@@ -158,7 +181,7 @@ export class TxtReaderEngine {
         img.src = url;
       });
     };
-
+    
     const processBanners = async (baseUrl, bannerUrls, fallbackUrl) => {
       const banners = Array.isArray(bannerUrls) ? bannerUrls : [bannerUrls].filter(Boolean);
       const loadedImgs = [];
@@ -186,6 +209,9 @@ export class TxtReaderEngine {
     );
   }
 
+  /**
+   * Parser de etiquetas de bloque en el TXT
+   */
   _parseBlockTag(rawParagraph) {
     const match = rawParagraph.match(/^\[(H1|H2|H3|CITA)\]([\s\S]*?)\[\/\1\]$/);
     if (match) {
@@ -194,6 +220,9 @@ export class TxtReaderEngine {
     return { type: 'BODY', text: rawParagraph.trim() };
   }
 
+  /**
+   * Algoritmo de paginación A4 adaptado al diccionario de estilos
+   */
   _paginate(text) {
     const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
     const maxContentHeightPx = this.cmToPx(this.CONTENT_HEIGHT_CM);
@@ -294,6 +323,9 @@ export class TxtReaderEngine {
     }
   }
 
+  /**
+   * Renderizador de texto con soporte para etiquetas en línea ([B], [I], [U], [SUP], [EM])
+   */
   _drawInlineText(ctx, text, startX, y, baseFontSize, baseFontFamily, defaultColor, isItalicBlock = false, isBoldBlock = false) {
     const regex = /(\[B\][\s\S]*?\[\/B\]|\[I\][\s\S]*?\[\/I\]|\[U\][\s\S]*?\[\/U\]|\[SUP\][\s\S]*?\[\/SUP\]|\[EM\][\s\S]*?\[\/EM\])/g;
     const parts = text.split(regex);
@@ -343,6 +375,9 @@ export class TxtReaderEngine {
     });
   }
 
+  /**
+   * Método auxiliar para dibujar banners (cabecera o pie)
+   */
   _drawBanner(ctx, img, baseWidthPx, baseHeightPx, marginPx, isHeader) {
     if (!img) return;
     const maxH = marginPx * 0.9; 
@@ -364,9 +399,9 @@ export class TxtReaderEngine {
   }
 
   /**
-   * MÉTODO PRIVADO DRY: Pinta las líneas de texto de una página dentro del contexto actual
+   * Método DRY: Pinta las líneas de texto reutilizando exactamente la misma lógica
    */
-  _drawPageContent(ctx, pageLines) {
+  _drawTextLines(ctx, pageLines) {
     const textStartX = this.cmToPx(this.MARGIN_X_CM);
     const textStartY = this.cmToPx(this.MARGIN_Y_CM);
     const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
@@ -409,7 +444,7 @@ export class TxtReaderEngine {
   }
 
   /**
-   * Método de renderizado unificado y centralizado
+   * Método de renderizado unificado central (gestiona ambos modos según `this.isInfiniteScroll`)
    */
   render(pageNum = this.currentPageIndex + 1, scale = this.scale) {
     if (this.isInfiniteScroll) {
@@ -420,7 +455,7 @@ export class TxtReaderEngine {
   }
 
   /**
-   * Renderizado en Modo Scroll Infinito (Una cabecera arriba, texto continuo, un pie abajo)
+   * Renderizado en Modo Scroll Infinito (Una cabecera arriba, texto continuo en vertical, un pie abajo)
    */
   renderInfiniteScroll(scale = this.scale) {
     this.scale = scale;
@@ -450,11 +485,11 @@ export class TxtReaderEngine {
     const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, this.capitulo);
     this._drawBanner(ctx, activeHeaderImg, baseWidthPx, baseHeightPx, marginPx, true);
 
-    // 2. Dibujar todas las páginas en bloques verticales continuos de forma limpia
+    // 2. Dibujar todas las páginas en bloques verticales continuos usando _drawTextLines
     this.pages.forEach((pageLines, pageIndex) => {
       ctx.save();
       ctx.translate(0, pageIndex * baseHeightPx);
-      this._drawPageContent(ctx, pageLines);
+      this._drawTextLines(ctx, pageLines);
       ctx.restore();
     });
 
@@ -476,7 +511,7 @@ export class TxtReaderEngine {
   }
 
   /**
-   * Renderizado en Modo Paginado clásico (A4 individual)
+   * Renderiza una página específica en el Canvas (Modo Paginado A4 Estricto)
    */
   renderPage(pageNum, scale = this.scale) {
     if (pageNum < 1 || pageNum > this.pages.length) return;
@@ -497,6 +532,7 @@ export class TxtReaderEngine {
     ctx.save();
     ctx.scale(this.scale * dpr, this.scale * dpr);
 
+    // Fondo Blanco A4
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, baseWidthPx, baseHeightPx);
 
@@ -504,14 +540,14 @@ export class TxtReaderEngine {
     const pageLines = this.pages[this.currentPageIndex] || [];
     const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : this.capitulo;
 
-    // Cabecera por página
+    // --- Cabecera filtrada por capítulo ---
     const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, pageChapter);
     this._drawBanner(ctx, activeHeaderImg, baseWidthPx, baseHeightPx, marginPx, true);
 
-    // Contenido reutilizando el método DRY
-    this._drawPageContent(ctx, pageLines);
+    // --- Contenido de texto limpio y modular ---
+    this._drawTextLines(ctx, pageLines);
 
-    // Pie de página por página
+    // --- Pie de página filtrado por capítulo ---
     const footerStartY = baseHeightPx - marginPx;
     const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
     this._drawBanner(ctx, activeFooterImg, baseWidthPx, baseHeightPx, marginPx, false);
@@ -604,10 +640,8 @@ export class TxtReaderEngine {
     return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
   }
 
-  // --- Métodos de compatibilidad y control de modo dinámico ---
-
   /**
-   * Alterna dinámicamente entre el modo paginado y el scroll infinito por código
+   * Método público para conmutar dinámicamente entre scroll infinito y paginado
    */
   setInfiniteScroll(enabled) {
     this.isInfiniteScroll = Boolean(enabled);
@@ -619,6 +653,7 @@ export class TxtReaderEngine {
     this.render();
   }
 
+  // --- Métodos de compatibilidad con SPA ---
   getTotalPages() {
     return this.pages.length;
   }
