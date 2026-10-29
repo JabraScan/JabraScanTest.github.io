@@ -35,7 +35,7 @@ export class TxtReaderEngine {
     this.currentPageIndex = 0;
     
     // NUEVO: Control de Scroll Infinito
-    this.isInfiniteScroll = options.isInfiniteScroll || false;
+    this.isInfiniteScroll = options.isInfiniteScroll || true;
 
     this.config = null;
     this.resources = {
