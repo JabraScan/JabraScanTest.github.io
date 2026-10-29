@@ -22,7 +22,7 @@ export class TxtReaderEngine {
    * @param {number} [options.dpi=96] - Resolución para la conversión cm -> px (por defecto 96 DPI)
    * @param {string} options.clave - Clave única de la obra para las URLs
    * @param {integer} options.capitulo
-   * @param {boolean} [options.isInfiniteScroll=false] - Activar scroll infinito
+   * @param {boolean} [options.isInfiniteScroll=true] - Activar scroll infinito
    */
   constructor(options) {
     if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");
