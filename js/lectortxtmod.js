@@ -47,7 +47,8 @@ export class TxtReaderEngine {
     this._initLinkOverlay();
     
     if (this.container && this.isInfiniteScroll) {
-      this.container.style.overflowY = 'auto';
+      this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
+      this.container.style.height = this.isInfiniteScroll ? '100%' : ''; // Evita que se comprima
     }
   }
 
