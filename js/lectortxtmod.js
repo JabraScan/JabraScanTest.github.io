@@ -19,7 +19,7 @@ export class TxtReaderEngine {
   /**
    * Diccionario centralizado de estilos (basado en Word)
    */
-  static STYLE_CONFIGS() {
+  static get STYLE_CONFIGS() {
     return {
       'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
       'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
