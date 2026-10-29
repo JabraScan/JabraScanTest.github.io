@@ -61,6 +61,10 @@ export class TxtReaderEngine {
     // Capa de enlaces sobre el canvas
     this.linkOverlay = null;
     this._initLinkOverlay();
+
+    if (this.container && this.isInfiniteScroll) {
+      this.container.style.overflowY = 'auto';
+    }
   }
 
   _updateResponsiveLayoutMetrics() {
@@ -710,6 +714,11 @@ export class TxtReaderEngine {
    */
   setInfiniteScroll(enabled) {
     this.isInfiniteScroll = !!enabled;
+
+    if (this.container) {
+      this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
+    }
+    
     this.render();
   }
 }
