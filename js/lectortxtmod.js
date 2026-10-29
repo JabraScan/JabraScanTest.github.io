@@ -1,9 +1,12 @@
 /**
  * TxtReaderEngine.js
  * Motor de lectura de archivos TXT para SPA en Canvas A4
- * Compatible con Modo Paginado y Modo Scroll Infinito
+ * Compatible con la estructura y controles de navegación de PDF.js
  */
 export class TxtReaderEngine {
+  /**
+   * Diccionario centralizado de estilos (basado en Word)
+   */
   static STYLE_CONFIGS = {
     'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
     'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
@@ -12,6 +15,15 @@ export class TxtReaderEngine {
     'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
   };
 
+  /**
+   * @param {Object} options
+   * @param {HTMLCanvasElement} options.canvas - Elemento canvas donde se renderiza
+   * @param {HTMLElement} options.container - Contenedor padre del canvas (para capa de enlaces HTML)
+   * @param {number} [options.dpi=96] - Resolución para la conversión cm -> px (por defecto 96 DPI)
+   * @param {string} options.clave - Clave única de la obra para las URLs
+   * @param {integer} options.capitulo
+   * @param {boolean} [options.isInfiniteScroll=false] - Activar scroll infinito
+   */
   constructor(options) {
     if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");
    
@@ -21,21 +33,24 @@ export class TxtReaderEngine {
     this.clave = options.clave || "";
     this.capitulo = parseInt(options.capitulo, 10) || 1;
 
+    // Configuración A4 fija (en centímetros)
     this.PAGE_WIDTH_CM = 21.0;
     this.PAGE_HEIGHT_CM = 29.7;
     this._updateResponsiveLayoutMetrics();
     this.MARGIN_CM = 3.0;
 
+    // Tipografía base por defecto
     this.FONT_FAMILY = "Arial, sans-serif";
     this.LINE_HEIGHT_RATIO = 1.45;
 
+    // Estado interno
     this.dpi = options.dpi || 96;
     this.scale = 1.0; 
     this.pages = [];  
     this.currentPageIndex = 0;
     
-    // Control de Scroll Infinito (por defecto respetando el parámetro del usuario)
-    this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : false;
+    // Control de scroll infinito (respetando opción de entrada)
+    this.isInfiniteScroll = options.isInfiniteScroll || false;
 
     this.config = null;
     this.resources = {
@@ -43,13 +58,9 @@ export class TxtReaderEngine {
       footerImg: null
     };
 
+    // Capa de enlaces sobre el canvas
     this.linkOverlay = null;
     this._initLinkOverlay();
-    
-    // CONTROL RESTAURADO: Solo altera el CSS si el scroll infinito está explícitamente activo
-    if (this.container && this.isInfiniteScroll) {
-      this.container.style.overflowY = 'auto';
-    }
   }
 
   _updateResponsiveLayoutMetrics() {
@@ -65,6 +76,9 @@ export class TxtReaderEngine {
     this.fontScaleFactor = isMobile ? 1.45 : 1.0;
   }
 
+  /**
+   * Getter dinámico para la configuración por defecto basada en la clave de la instancia
+   */
   get DEFAULT_CONFIG() {
     return {
       headerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
@@ -77,7 +91,7 @@ export class TxtReaderEngine {
       footerChapters: [0],
       footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
       
-      footerLinkUrl: "",
+      footerLinkUrl: "", 
       footerLinkText: "https://jabrascan.net"
     };
   }
@@ -90,8 +104,10 @@ export class TxtReaderEngine {
     return (pt * this.dpi) / 72;
   }
 
+  /**
+   * Inicializa el proceso: carga configuración, imágenes y realiza la paginación.
+   */
   async load(txtContent, configUrl) {
-    this.lastTextContent = txtContent;
     let fetchedConfig = {};
 
     if (configUrl && typeof configUrl === 'string') {
@@ -135,6 +151,9 @@ export class TxtReaderEngine {
     this.render();
   }
 
+  /**
+   * Carga asíncrona de recursos gráficos
+   */
   async _loadResources() {
     const loadImg = (url) => {
       if (!url) return Promise.resolve(null);
@@ -183,7 +202,7 @@ export class TxtReaderEngine {
   }
 
   /**
-   * Paginación A4 original (se usa SIEMPRE para mantener las páginas idénticas en ambos modos)
+   * Algoritmo de paginación A4 original intacto
    */
   _paginate(text) {
     const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
@@ -354,6 +373,9 @@ export class TxtReaderEngine {
     ctx.drawImage(img, drawX, drawY, Math.round(drawW), Math.round(drawH));
   }
 
+  /**
+   * Método selector de renderizado unificado
+   */
   render(pageNum = this.currentPageIndex + 1, scale = this.scale) {
     if (this.isInfiniteScroll) {
       this.renderInfiniteScroll(scale);
@@ -363,15 +385,15 @@ export class TxtReaderEngine {
   }
 
   /**
-   * Renderizado continuo de todas las páginas A4 verticalmente
+   * NUEVO: Renderiza todas las páginas A4 una debajo de otra en un canvas continuo
    */
   renderInfiniteScroll(scale = this.scale) {
     this.scale = scale;
 
     const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-    const singlePageHeightPx = this.cmToPx(this.PAGE_HEIGHT_CM);
+    const baseHeightPx = this.cmToPx(this.PAGE_HEIGHT_CM);
     const totalPages = this.pages.length;
-    const totalHeightPx = singlePageHeightPx * totalPages;
+    const totalHeightPx = baseHeightPx * totalPages;
     const dpr = window.devicePixelRatio || 1;
 
     this.canvas.width = Math.round(baseWidthPx * this.scale * dpr);
@@ -392,20 +414,17 @@ export class TxtReaderEngine {
     const textStartX = this.cmToPx(this.MARGIN_X_CM);
     const textStartY = this.cmToPx(this.MARGIN_Y_CM);
 
+    // Pintar cada página A4 en su respectivo bloque vertical
     this.pages.forEach((pageLines, pageIndex) => {
-      const offsetY = pageIndex * singlePageHeightPx;
+      const offsetY = pageIndex * baseHeightPx;
       const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : this.capitulo;
 
       ctx.save();
       ctx.translate(0, offsetY);
 
-      // Fondo de la página individual
-      ctx.fillStyle = "#FFFFFF";
-      ctx.fillRect(0, 0, baseWidthPx, singlePageHeightPx);
-
-      // Cabecera por página
+      // Cabecera de la página
       const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, pageChapter);
-      this._drawBanner(ctx, activeHeaderImg, baseWidthPx, singlePageHeightPx, marginPx, true);
+      this._drawBanner(ctx, activeHeaderImg, baseWidthPx, baseHeightPx, marginPx, true);
 
       ctx.textBaseline = "top";
       let currentY = textStartY;
@@ -443,9 +462,9 @@ export class TxtReaderEngine {
         currentY += line.height;
       });
 
-      // Pie por página
+      // Pie de la página
       const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
-      this._drawBanner(ctx, activeFooterImg, baseWidthPx, singlePageHeightPx, marginPx, false);
+      this._drawBanner(ctx, activeFooterImg, baseWidthPx, baseHeightPx, marginPx, false);
 
       ctx.restore();
     });
@@ -457,6 +476,9 @@ export class TxtReaderEngine {
     ctx.restore();
   }
 
+  /**
+   * Renderizador de página individual original intacto
+   */
   renderPage(pageNum, scale = this.scale) {
     if (this.isInfiniteScroll) {
       return this.renderInfiniteScroll(scale);
@@ -538,6 +560,7 @@ export class TxtReaderEngine {
     ctx.restore();
   }
 
+  // --- Capa de Hipervínculos interactivos ---
   _initLinkOverlay() {
     this.linkOverlay = document.createElement('div');
     this.linkOverlay.style.position = 'absolute';
@@ -616,6 +639,7 @@ export class TxtReaderEngine {
     return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
   }
 
+  // --- Métodos de compatibilidad con SPA ---
   getTotalPages() {
     return this.pages.length;
   }
@@ -676,7 +700,9 @@ export class TxtReaderEngine {
       this.scale = 1.0; 
     }
 
-    this.render();
+    if (this.pages.length > 0) {
+      this.render();
+    }
   }
 
   /**
@@ -684,15 +710,6 @@ export class TxtReaderEngine {
    */
   setInfiniteScroll(enabled) {
     this.isInfiniteScroll = !!enabled;
-    
-    if (this.container) {
-      if (this.isInfiniteScroll) {
-        this.container.style.overflowY = 'auto';
-      } else {
-        this.container.style.overflowY = 'hidden';
-      }
-    }
-
     this.render();
   }
 }
