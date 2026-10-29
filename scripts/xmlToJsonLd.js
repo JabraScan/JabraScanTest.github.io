@@ -78,7 +78,7 @@ function parseXML(xmlText) {
         const ext = imagenOriginal.substring(punto);
 
         imagenUrl =
-          `https://jabrascan.net/img/${base}-300w${ext}`;
+          `https://img.jabrascan.net/${base}-300w${ext}`;
       }
     }
 

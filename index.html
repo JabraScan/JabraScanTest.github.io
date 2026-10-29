@@ -1,24 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Traducciones de Novelas | JabraScan</title>
-
-    <meta name="description" content="Traduccion de novelas, novelas web y novelas ligeras. Descubre el catálogo completo de obras actualizadas en JabraScan.">
-    
-    <!-- Bloque JSON-LD generado automáticamente -->    
-    <link rel="stylesheet" href="css/style.css">
-
-    <script type="module" src="./js/storage.js"></script>
-    <script type="module" src="./js/general.js"></script>
-    <script type="module" src="./js/leerobras.js"></script>
-    <script type="module" src="./js/libroficha.js"></script>
-    <script src="./js/carousel.js"></script>
-      <!-- Librerías pesadas (pdf.js, Chart.js, Disqus) se cargan dinámicamente cuando se necesitan -->
-      <!-- <script src="./js/fechasespeciales.js"></script> -->
-    <script type="application/ld+json">
+<!doctype html><html lang=es><meta charset=UTF-8><meta content="width=device-width,initial-scale=1" name=viewport><title>Traducciones de Novelas | JabraScan</title><meta content="Traduccion de novelas, novelas web y novelas ligeras. Descubre el catálogo completo de obras actualizadas en JabraScan." name=description><link href=/manifest.json rel=manifest><meta content=#111827 name=theme-color><link href=./css/bootstrap.min.css rel=stylesheet><link href=css/style.css rel=stylesheet><script src=./js/storage.js type=module></script><script src=./js/general.js type=module></script><script src=./js/leerobras.js type=module></script><script src=./js/libroficha.js type=module></script><script src=./js/carousel.js></script><script type=application/ld+json>
     {
       "@context": "https://schema.org",
       "@graph": [
@@ -41,168 +21,18 @@
         }
       ]
     }
-    </script>
-  </head>
-
-  <body>
-    <header>
-      <nav class="navbar navbar-expand-lg navbar-dark navbar-jabrascan">
-        <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center gap-2" href="#" data-target="index.html">
-            <!--<img src="favicon32w.webp" alt="Logo de la comunidad JabraScan" fetchpriority="high" class="navbar-brand-logo">-->
-            <img src="favicon.webp" 
-                  srcset="favicon32w.webp 64w, favicon.webp 256w"
-                  sizes="(max-width: 576px) 36px, 80px"
-                  alt="Logo de la comunidad JabraScan" 
-                  fetchpriority="high" 
-                  class="navbar-brand-logo">
-            <span class="brand-text">JabraScan Traducciones</span>
-          </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar" aria-expanded="false" aria-label="Alternar navegación">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-              <li class="nav-item ms-lg-3 w-100 w-lg-auto">
-                <form class="d-flex" role="search" onsubmit="return false;">
-                  <input id="q-index" class="form-control form-control-sm nav-search" type="search"
-                    placeholder="Buscar obras por titulo o autor" aria-label="Buscar">
-                </form>
-              </li>
-              <li class="nav-separator d-none d-lg-block border-start mx-3" 
-                  style="border-color: rgba(252,163,17,0.25); height:32px;">
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="ucaps-link" href="#" data-target="ultimosCapitulos.html">Últimos capítulos</a>
-              </li>
-              <li class="nav-item position-relative">
-                <a class="nav-link inactive" id="btnSeguir" href="#">Seguir leyendo</a>
-                <div class="main-ultimoCapituloleido d-none d-xl-block"></div>
-              </li>
-              
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="infoDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                  Información del sitio
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="infoDropdown">
-                  <li><a class="dropdown-item" id="counts-link" href="#" data-target="counts.html">Estadísticas</a></li>
-                  <li><a class="dropdown-item" id="disclaimer-link" href="#" data-target="disclaimer.html">Disclaimer</a></li>
-                  <li><a class="dropdown-item" id="acercade-link" href="#" data-target="about.html">Sobre Nosotros</a></li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown d-none" style="display: none;">
-                <a class="nav-link dropdown-toggle" href="#" id="websAmigasDropdown" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  Webs Amigas
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="websAmigasDropdown">
-                  <li class="d-none"><a class="dropdown-item" href="https://northbladetl.com/" target="_blank"
-                      rel="noopener noreferrer">NorthBladeTL</a></li>
-                  <li><a class="dropdown-item" href="https://frizcosas.blogspot.com/" target="_blank"
-                      rel="noopener noreferrer">TurretTranslations</a></li>
-                </ul>
-              </li>
-              <!--
-              <li class="nav-item position-relative">
-                <a class="nav-link btn-login" id="login-link" href="#" data-target="login.html">Login</a>
-              </li>
-              <li class="nav-item position-relative">
-                <a class="nav-link" id="user-nick" href="#" style="display:none;"></a>
-              </li>
-              -->
-              <!-- Botón de login (visible por defecto) -->
-              <li class="nav-item position-relative" id="login-wrapper">
-                <a class="nav-link btn-login" id="login-link" href="#" data-target="login.html">Login</a>
-              </li>
-              
-              <!-- Bloque de usuario con dropdown (oculto por defecto) -->
-              <li class="nav-item dropdown position-relative d-none" id="user-nick-wrapper">
-                <!-- Avatar como botón del dropdown -->
-                <a class="nav-link dropdown-toggle p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="rounded-circle user-avatar" id="user-avatar" alt="avatar">
-                </a>
-                <!-- Menú desplegable -->
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><h6 class="dropdown-header" id="user-nick"></h6></li>
-                  <li><a class="dropdown-item btn-perfil" id="perfil-link" href="#" data-target="usuario.html">Perfil</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item btn-logout" href="#" id="logout-link">Logout</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-  
-    <main class="container py-4">
-      <h1 class="visually-hidden">JabraScan - Traduccion de Novelas, Novelas Web y Novelas Ligeras</h1>
-      <div class="row">
-        <div class="col-12">
-          <!-- Carrusel -->
-          <div class="custom-carousel">
-            <div class="custom-carousel-track">
-              <!-- Item 1: Hardcodeado para carga instantánea y mejorar el LCP -->
-              <div class="custom-carousel-item active">
-                <div class="imagen-contenedor">
-                  <img 
-                    src="img/main/JabraRex01-300w.webp?v=20261006"
-                    alt="JabraRexScan Art"
-                    width="280"
-                    height="280"
-                    decoding="async"
-                    fetchpriority="high"
-                    srcset="img/main/JabraRex01-300w.webp?v=20261006 300w,
-                            img/main/JabraRex01-600w.webp?v=20261006 600w,
-                            img/main/JabraRex01-900w.webp?v=20261006 900w"
-                    sizes="(max-width: 576px) 70vw, (max-width: 992px) 40vw, 280px"
-                  >
-                </div>
-                <div class="carousel-info-overlay">
-                  <h3 class="carousel-info-title">JabraScan</h3>
-                  <p class="carousel-info-sinopsis">Traduccion de Novelas, Novelas Web y Novelas Ligeras</p>
-                </div>
-              </div>
-              <!-- Fin Item 1 -->
-            </div>
-            <div class="custom-carousel-controls">
-              <button class="btn btn-outline-warning custom-carousel-btn prev" type="button" aria-label="Anterior">
-                <!--<i class="fas fa-chevron-left"></i>-->
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-                </svg>
-              </button>
-              <button class="btn btn-outline-warning custom-carousel-btn next" type="button" aria-label="Siguiente">
-                <!--<i class="fas fa-chevron-right"></i>-->
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <!-- Fin Carrusel -->
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <ul class="lista-libros">
-          </ul>
-          <section class="book-list row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
-          </section>
-          <!-- Controles de paginación -->
-          <div id="pagination" class="pagination-container mt-4"></div>
-        </div>
-      </div>
-    </main>
-    <footer>
-      <div id="disqus_thread" style="display:none;"></div>
-      </br>
-      <p id="copyjabra">&copy; 2025 JabraScan. No oficial, sin fines de lucro.</p>
-    </footer>
-    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>-->
-    <script src="./js/bootstrap.bundle.min.js"></script>
-    <script src="./js/login.js" defer></script>
-  </body>
-</html>
+    </script><body><header><nav class="navbar navbar-expand-lg navbar-dark"><div class=container-fluid><a class="navbar-brand d-flex align-items-center gap-2" data-target=index.html href=#>  <img alt="Logo de la comunidad JabraScan" sizes="(max-width: 576px) 36px, 80px" srcset="favicon32w.webp 64w, favicon.webp 256w" class=navbar-brand-logo fetchpriority=high src=favicon.webp width=36px> <span class=brand-text>JabraScan Traducciones</span> </a><button aria-label="Alternar navegación" aria-controls=mainNavbar aria-expanded=false class=navbar-toggler data-bs-target=#mainNavbar data-bs-toggle=collapse type=button><span class=navbar-toggler-icon></span></button><div class="collapse navbar-collapse" id=mainNavbar><ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center"><li class="nav-item ms-lg-3 w-100 w-lg-auto"><form onsubmit="return false;" class=d-flex role=search><input class="form-control form-control-sm nav-search" placeholder="Buscar obras por titulo o autor" aria-label=Buscar id=q-index type=search></form><li class="nav-separator d-none d-lg-block border-start mx-3" style=border-color:#fca31140;height:32px><li class=nav-item><a class=nav-link data-target=ultimosCapitulos.html href=# id=ucaps-link>Últimos capítulos</a><li class="nav-item position-relative"><a class="nav-link inactive" href=# id=btnSeguir>Seguir leyendo</a> <div class="main-ultimoCapituloleido d-none d-xl-block"></div><li class="nav-item dropdown"><a class="nav-link dropdown-toggle" aria-expanded=false data-bs-toggle=dropdown href=# id=infoDropdown role=button> Información del sitio </a> <ul aria-labelledby=infoDropdown class=dropdown-menu><li><a class=dropdown-item data-target=counts.html href=# id=counts-link>Estadísticas</a><li><a class=dropdown-item data-target=disclaimer.html href=# id=disclaimer-link>Disclaimer</a><li><a class=dropdown-item data-target=about.html href=# id=acercade-link>Sobre Nosotros</a></ul><li class="nav-item dropdown d-none" style=display:none><a class="nav-link dropdown-toggle" aria-expanded=false data-bs-toggle=dropdown href=# id=websAmigasDropdown role=button> Webs Amigas </a> <ul aria-labelledby=websAmigasDropdown class=dropdown-menu><li class=d-none><a rel="noopener noreferrer" class=dropdown-item href=https://northbladetl.com/ target=_blank>NorthBladeTL</a><li><a rel="noopener noreferrer" class=dropdown-item href=https://frizcosas.blogspot.com/ target=_blank>TurretTranslations</a></ul><li class="nav-item position-relative" id=login-wrapper><a class="nav-link btn-login" data-target=login.html href=# id=login-link>Login</a><li class="nav-item dropdown position-relative d-none" id=user-nick-wrapper> <a class="nav-link dropdown-toggle p-0" aria-expanded=false data-bs-toggle=dropdown href=# role=button> <img class="rounded-circle user-avatar" alt=avatar id=user-avatar> </a>  <ul class="dropdown-menu dropdown-menu-end"><li><h6 class=dropdown-header id=user-nick></h6><li><a class="dropdown-item btn-perfil" data-target=usuario.html href=# id=perfil-link>Perfil</a><li><hr class=dropdown-divider><li><a class="dropdown-item btn-logout" href=# id=logout-link>Logout</a></ul></ul></div></div></nav></header><main class="container-xxl py-4"><h1 class=visually-hidden>JabraScan - Traduccion de Novelas, Novelas Web y Novelas Ligeras</h1><div class=row><div class=col-12><div class=custom-carousel><div class=custom-carousel-track><div class="custom-carousel-item active"><div class=imagen-contenedor><picture fetchpriority=high><source sizes="(max-width: 220px) 100vw, (max-width: 576px) 70vw, (min-width: 576px) 328px, 220px" srcset="https://img.jabrascan.net/main/JabraRex00-150w.avif?v=20261029 150w,
+                                  https://img.jabrascan.net/main/JabraRex00-225w.avif?v=20261029 225w,
+                                  https://img.jabrascan.net/main/JabraRex00-300w.avif?v=20261029 300w,
+                                  https://img.jabrascan.net/main/JabraRex00-338w.avif?v=20261029 338w,
+                                  https://img.jabrascan.net/main/JabraRex00-450w.avif?v=20261029 450w,
+                                  https://img.jabrascan.net/main/JabraRex00-600w.avif?v=20261029 600w,
+                                  https://img.jabrascan.net/main/JabraRex00-675w.avif?v=20261029 675w,
+                                  https://img.jabrascan.net/main/JabraRex00-900w.avif?v=20261029 900w" type=image/avif><source sizes="(max-width: 220px) 100vw, (max-width: 576px) 70vw, (min-width: 576px) 328px, 220px" srcset="https://img.jabrascan.net/main/JabraRex00-150w.webp?v=20261029 150w,
+                                  https://img.jabrascan.net/main/JabraRex00-225w.webp?v=20261029 225w,
+                                  https://img.jabrascan.net/main/JabraRex00-300w.webp?v=20261029 300w,
+                                  https://img.jabrascan.net/main/JabraRex00-338w.webp?v=20261029 338w,
+                                  https://img.jabrascan.net/main/JabraRex00-450w.webp?v=20261029 450w,
+                                  https://img.jabrascan.net/main/JabraRex00-600w.webp?v=20261029 600w,
+                                  https://img.jabrascan.net/main/JabraRex00-675w.webp?v=20261029 675w,
+                                  https://img.jabrascan.net/main/JabraRex00-900w.webp?v=20261029 900w" type=image/webp><img alt="JabraRexScan Art" src="https://img.jabrascan.net/main/JabraRex00-300w.webp?v=20261029" class=portada decoding=async fetchpriority=high height=280 width=280></picture></div><div class=carousel-info-overlay><h3 class=carousel-info-title>JabraScan</h3><p class=carousel-info-sinopsis>Traduccion de Novelas, Novelas Web y Novelas Ligeras<p class=carousel-info-sinopsis>✨ Regístrate para desbloquear avatares exclusivos animados y sincronizar tu progreso de lectura.</p><button class="btn btn-sm btn-outline-light d-inline-flex align-items-center gap-2 mt-2" id=btnInstalarPWA style=font-size:.8rem;display:none><span class=icon-install></span>Instala la App de JabraScan y carga los capítulos más rápido.</button></div></div></div><div class=custom-carousel-controls><button class="btn btn-outline-warning custom-carousel-btn prev" aria-label=Anterior type=button> <svg viewbox="0 0 16 16" fill=currentColor height=16 width=16><path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" fill-rule=evenodd /></svg></button><button class="btn btn-outline-warning custom-carousel-btn next" aria-label=Siguiente type=button> <svg viewbox="0 0 16 16" fill=currentColor height=16 width=16><path d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" fill-rule=evenodd /></svg></button></div></div></div></div><div class=row><div class=col-12><ul class=lista-libros></ul><section class="book-list row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-cols-xl-6 g-4"></section><div class="pagination-container mt-4" id=pagination></div></div></div></main><footer><div id=disqus_thread style=display:none></div><p id=copyjabra>© 2025 JabraScan. No oficial, sin fines de lucro.</footer><script src=./js/bootstrap.bundle.min.js></script><script defer src=./js/login.js></script>

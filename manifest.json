@@ -1,0 +1,21 @@
+{
+  "name": "JabraScan - Novelas",
+  "short_name": "JabraScan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111827",
+  "description": "Catálogo de novelas y adaptaciones de JabraScan",
+  "icons": [
+    {
+      "src": "/favicon32w.webp",
+      "sizes": "32x32",
+      "type": "image/webp"
+    },
+    {
+      "src": "/favicon.webp",
+      "sizes": "256x256",
+      "type": "image/webp"
+    }
+  ]
+}

@@ -19,12 +19,13 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 
 # Configuración
 RESPONSIVE_SIZES = {
-    '900w': {'width': 900, 'quality': 80},
+    '900w': {'width': 450, 'quality': 80},
     '600w': {'width': 600, 'quality': 75},
+    '450w': {'width': 450, 'quality': 70},
     '300w': {'width': 300, 'quality': 70}
 }
 AVATAR_SIZES = [256, 64, 32]
-IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff', '.bmp'}
+IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.tif', '.tiff', '.bmp', '.avif'}
 
 
 def open_image_safe(path: Path) -> Image.Image:

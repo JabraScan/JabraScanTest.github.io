@@ -14,7 +14,7 @@ Una plataforma web moderna para publicar traducciones de novelas ligeras (light 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **PDF Rendering**: PDF.js
 - **Gráficos**: Chart.js
-- **Íconos**: Font Awesome
+- **Íconos**: Font Awesome convertidos a SVG
 - **Hosting**: GitHub Pages
 - **Analytics**: Google Analytics
 

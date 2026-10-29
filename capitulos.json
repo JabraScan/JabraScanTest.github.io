@@ -15,6 +15,7 @@
   "IBecameMarriedMan"               : "books/IBecameMarriedMan.json",
   "ImperfectGirl"                   : "books/ImperfectGirl.json",
   "LaLeyendaDeLaEspadaDelNorte"     : "books/LaLeyendaDeLaEspadaDelNorte.json",
+  "LycorisRecoilOrdinaryDays"       : "books/LycorisRecoilOrdinaryDays.json",
   "MadamePleaseBehave"              : "books/MadamePleaseBehave.json",
   "MeCaseConLaDragonaQueMate"       : "books/MeCaseConLaDragonaQueMate.json",
   "MeComiAUnArbolDelMundo"          : "books/MeComiAUnArbolDelMundo.json",
@@ -46,5 +47,6 @@
   "YernoNobleQuiereDivorcio"        : "books/YernoNobleQuiereDivorcio.json",
   "YoMateJugadorAcademia"           : "books/YoMateJugadorAcademia.json",
   "WifePleaseBeObedient"            : "books/WifePleaseBeObedient.json",
-  "ZombieClaseSApocalipsis"         : "books/ZombieClaseSApocalipsis.json"
+  "ZombieClaseSApocalipsis"         : "books/ZombieClaseSApocalipsis.json",
+  "Test"                            : "books/test.json"
 }

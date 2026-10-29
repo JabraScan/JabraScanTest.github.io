@@ -1,4 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
 <obras>
+	<obra>	
+		<visible>si</visible>
+		<idioma>es</idioma>
+		<clave>Test</clave>
+		<nombreobra>test</nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<nombreobra></nombreobra>
+		<autor>Yo</autor>
+		<sinopsis>test</sinopsis>
+		<meta></meta>
+		<valoracion>9</valoracion>
+		<tipoobra>test</tipoobra>
+		<categoria>test</categoria>
+		<keywords>Test</keywords>
+		<imagen>default-avatar.png</imagen>
+		<fechaCreacion>11/10/2026</fechaCreacion>
+		<ubicacion>test</ubicacion>
+		<estado>Finalizado</estado>
+		<traductor>test</traductor>
+		<adulto></adulto>
+		<aprobadaAutor>no</aprobadaAutor>
+		<observaciones></observaciones>
+		<discord></discord>
+		<bannerOpcional></bannerOpcional>
+		<wiki></wiki>
+	</obra>	
 	<obra>	
 		<visible>si</visible>
 		<clave>IBecameMarriedMan</clave>
@@ -9,11 +42,11 @@
 		<nombreobra>I Became A Married Man in Another World</nombreobra>
 		<nombreobra>How I Became a Married Man in Another World</nombreobra>
 		<nombreobra>The Otherworldly Family Man</nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
+		<nombreobra />
 		<autor>Berhera (베르헤라)</autor>
-		<sinopsis><![CDATA[Deseé tener una esposa tan adorable como un conejito y una hija tan encantadora como una mangosta.
-			...Y después de contarle ese deseo a Santa Claus, fui transportado a otro mundo.]]>
+		<sinopsis>Deseé tener una esposa tan adorable como un conejito y una hija tan encantadora como una mangosta.
+			...Y después de contarle ese deseo a Santa Claus, fui transportado a otro mundo.
 		</sinopsis>"
 		<meta>Deseé una esposa como un conejito y una hija como una mangosta. Tras contarle ese deseo a Santa Claus, fui transportado a otro mundo.</meta>
 		<valoracion>7.6</valoracion>
@@ -27,16 +60,16 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 
 	<obra>	
-		<visible>no</visible>
+		<visible>si</visible>
 		<clave>SoloSwordMaster</clave>
 		<nombreobra>Solo Swordmaster</nombreobra>
 		<nombreobra>Espadachín Solitario</nombreobra>
@@ -46,12 +79,12 @@
 		<nombreobra>나혼소</nombreobra>
 		<nombreobra>Na-hon-so</nombreobra>
 		<nombreobra>Na Honja Sodeu Maseuteo</nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
 		<autor>Without Shadow (무영자) (Mooyeongja)</autor>
-		<sinopsis><![CDATA[Los dragones y la magia se convirtieron en leyenda, y los héroes se desvanecieron en la historia. Un mundo dominado por los «jugadores» que se vuelven más fuertes pidiendo prestado el poder de las Constelaciones. 
+		<sinopsis>Los dragones y la magia se convirtieron en leyenda, y los héroes se desvanecieron en la historia. Un mundo dominado por los «jugadores» que se vuelven más fuertes pidiendo prestado el poder de las Constelaciones. 
 			Pero, ¿es realmente grandioso ese poder? 
 			El último «swordmaster», que ha luchado durante cientos de años por la humanidad, vuelve a tomar la espada. La era de las Constelaciones. Un hombre que alcanzó la cima únicamente con una espada. 
-			Comienza la historia de Limon Asphelder.]]>
+			Comienza la historia de Limon Asphelder.
 		</sinopsis>
 		<meta>En la era de las Constelaciones, el último swordmaster vuelve a tomar la espada. Comienza la historia de Limon Asphelder.</meta>
 		<valoracion>7.6</valoracion>
@@ -78,12 +111,12 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki/>
 	</obra>
 	<obra>	
 		<visible>si</visible>
@@ -93,12 +126,12 @@
 		<nombreobra>I Married the Dragon I Killed</nombreobra>
 		<nombreobra>Naega Jugin Deuraegon-gwa Gyeolhonhaetda</nombreobra>
 		<nombreobra>내가 죽인 드래곤과 결혼했다</nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
 		<autor>Bonsai Tree (분재나무)</autor>
-		<sinopsis><![CDATA[Impulsado por el odio y el rencor como fuerza motriz, ascendió a la posición de archimago de noveno círculo, pero al final lo único que quedó fue el vacío. Ferda, quien cobró conciencia tarde, regresa al punto de partida de todo…]]>
+		<sinopsis>Impulsado por el odio y el rencor como fuerza motriz, ascendió a la posición de archimago de noveno círculo, pero al final lo único que quedó fue el vacío. Ferda, quien cobró conciencia tarde, regresa al punto de partida de todo…
 		</sinopsis>
 		<meta>Impulsado por el odio, el archimago de noveno círculo Ferda experimenta el vacío y regresa al punto de partida de todo.</meta>
 		<valoracion>9.8</valoracion>
@@ -113,11 +146,11 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
 		<observaciones>Novela Oficial : https://series.naver.com/novel/detail.series?productNo=11791946</observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<discord />
+		<bannerOpcional />
 		<wiki>https://i-married-the-dragon-i-killed.fandom.com/wiki/I_Married_the_Dragon_I_Killed_Wiki</wiki>
 	</obra>
 	<obra>	
@@ -133,7 +166,7 @@
 		<nombreobra>I Was Reincarnated Into an Unknown Manga</nombreobra>
 		<nombreobra>Possessed in an Unknown Manga</nombreobra>
 		<autor>Teach / Tichi (티치)</autor>
-		<sinopsis><![CDATA[«Scramble Love» es un exitoso manga de comedia romántica escolar japonesa que ha superado los 10 millones de copias vendidas. Me vi arrojado dentro del mundo de ese manga... uno que jamás había leído en mi vida. Y lo peor es que no entré como el protagonista principal, sino como un extra prescindible y sin apenas relevancia en la historia.]]>
+		<sinopsis>«Scramble Love» es un exitoso manga de comedia romántica escolar japonesa que ha superado los 10 millones de copias vendidas. Me vi arrojado dentro del mundo de ese manga... uno que jamás había leído en mi vida. Y lo peor es que no entré como el protagonista principal, sino como un extra prescindible y sin apenas relevancia en la historia.
 		</sinopsis>
 		<meta>Reencarnado como un extra en un manga que jamás leyó, un estudiante intenta sobrevivir a los absurdos clichés de comedia romántica escolar.</meta>
 		<valoracion>8.2</valoracion>
@@ -148,11 +181,11 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://en.namu.wiki/w/%EB%AA%A8%EB%A5%B4%EB%8A%94%20%EB%A7%8C%ED%99%94%EC%97%90%20%EB%B9%99%EC%9D%98%ED%96%88%EB%8B%A4</wiki>
 	</obra>	
 
@@ -164,12 +197,12 @@
 		<nombreobra>Absolute Sword Sense</nombreobra>
 		<nombreobra>Sentido de la Espada Absoluta</nombreobra>
 		<nombreobra>Jeoldae Geomgam</nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
 		<autor>Moonlight (한겨울달)</autor>
-		<sinopsis><![CDATA[Viviendo como un soldado de bajo rango, encontró una muerte patética. Justo antes de morir, una voz extraña resonó en su mente: [Sentido Absoluto de la Espada]. Al abrir los ojos, regresa al pasado, obteniendo una segunda oportunidad para desafiar su destino, corregir los errores de su vida anterior y alcanzar la cima a través del dominio absoluto de la espada]]></sinopsis>
+		<sinopsis>Viviendo como un soldado de bajo rango, encontró una muerte patética. Justo antes de morir, una voz extraña resonó en su mente: [Sentido Absoluto de la Espada]. Al abrir los ojos, regresa al pasado, obteniendo una segunda oportunidad para desafiar su destino, corregir los errores de su vida anterior y alcanzar la cima a través del dominio absoluto de la espada</sinopsis>
 		<meta>Tras morir como soldado de bajo rango, regresa al pasado con el Sentido Absoluto de la Espada para cambiar su destino y alcanzar la cima.</meta>
 		<valoracion>8.8</valoracion>
 		<tipoobra>Novela Web</tipoobra>
@@ -190,11 +223,11 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://absolute-sword-sense.fandom.com/wiki/Novel</wiki>
 	</obra>	
 
@@ -208,11 +241,11 @@
 		<nombreobra>고귀한 가문의 데릴사위는 이혼하고 싶다</nombreobra>
 		<nombreobra>The Son-In-Law Of A Noble Family Wants A Divorce.</nombreobra>
 		<nombreobra>The Prestigious Family's Son-in-Law Wants a Divorce.</nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
 		<autor>_172</autor>
-		<sinopsis><![CDATA[El acoso por parte de mis familiares políticos que me menospreciaban por ser un plebeyo. Una esposa que me observaba con indiferencia. Han pasado 10 años desde que huí de ellos. Una familia arruinada. Pero mi esposa, incluso en su muerte, todavía llevaba puesta su alianza de boda.]]>
+		<sinopsis>El acoso por parte de mis familiares políticos que me menospreciaban por ser un plebeyo. Una esposa que me observaba con indiferencia. Han pasado 10 años desde que huí de ellos. Una familia arruinada. Pero mi esposa, incluso en su muerte, todavía llevaba puesta su alianza de boda.
 		</sinopsis>
 		<meta>Diez años tras huir del desprecio de su familia política y su fría esposa, la tragedia golpea. Descubre esta intensa historia de drama y redención.</meta>
 		<valoracion>3</valoracion>
@@ -226,12 +259,12 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 
 	<obra>	
@@ -245,9 +278,9 @@
 		<nombreobra>El Rey Demonio Superado por los Héroes</nombreobra>
 		<nombreobra>El Rey Demonio Invadido por Héroes</nombreobra>
 		<nombreobra>El Rey Demonio Arrasado por los Héroes</nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
 		<autor>Mirip (미립)</autor>
-		<sinopsis><![CDATA[¡Siguiendo las reglas del Rey Demonio, me preparé para gobernar secuestrando princesas y criando héroes... pero las cosas salieron mal! En un mundo donde los héroes superan en número y fuerza a cualquier amenaza, este aspirante a monarca demoníaco solo quiere sobrevivir al asedio constante.]]>
+		<sinopsis>¡Siguiendo las reglas del Rey Demonio, me preparé para gobernar secuestrando princesas y criando héroes... pero las cosas salieron mal! En un mundo donde los héroes superan en número y fuerza a cualquier amenaza, este aspirante a monarca demoníaco solo quiere sobrevivir al asedio constante.
 		</sinopsis>
 		<meta>Secuestrar princesas parecía fácil hasta que los héroes superaron en número al Rey Demonio. Una hilarante historia de supervivencia y fantasía.</meta>
 		<valoracion>9.2</valoracion>
@@ -261,12 +294,12 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 	<obra>	
 		<visible>si</visible>
@@ -277,11 +310,11 @@
 		<nombreobra>El Héroe de la Espada Exterminadora del Cielo</nombreobra>
 		<nombreobra>The Heaven-Slaying Sword</nombreobra>
 		<nombreobra>天放劍俠</nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
 		<autor>Papapa</autor>
-		<sinopsis><![CDATA[Nacido con el destino de un masacrador y destinado a convertirse en un asesino sediento de sangre, todo lo que él realmente deseaba era la rectitud y ayudar a los demás. Criado por maestros marciales para caminar por el sendero de la justicia, su inocencia y naturaleza pura chocan constantemente con la dura y cínica realidad del mundo de las artes marciales (Murim).]]></sinopsis>
+		<sinopsis>Nacido con el destino de un masacrador y destinado a convertirse en un asesino sediento de sangre, todo lo que él realmente deseaba era la rectitud y ayudar a los demás. Criado por maestros marciales para caminar por el sendero de la justicia, su inocencia y naturaleza pura chocan constantemente con la dura y cínica realidad del mundo de las artes marciales (Murim).</sinopsis>
 		<meta>Destinado a ser un asesino, solo deseaba la rectitud, chocando su pureza con la cínica realidad del mundo Murim.</meta>
 		<valoracion>9.1</valoracion>
 		<tipoobra>Novela Web</tipoobra>
@@ -290,16 +323,19 @@
 		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword1.webp</imagen>
 		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword2.webp</imagen>
 		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword3.webp</imagen>
+		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword_Extra1.webp</imagen>
+		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword_Extra2.webp</imagen>
+		<imagen>TheHeroofHeavenSlayingSword/TheHeroOfSlayingSword_Extra3.webp</imagen>
 		<fechaCreacion>24/09/2026</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 
 	<obra>	
@@ -316,7 +352,7 @@
 		<nombreobra>I Am the Heavenly Destined Villain</nombreobra>
 		<nombreobra>Me, The Heavenly Destined Villain</nombreobra>
 		<autor>Lian Xi You Yu (恋悉语)</autor>
-		<sinopsis><![CDATA[Inmediatamente después de que Gu Changge se diera cuenta de que había reencarnado en un mundo de fantasía, el protagonista del mundo y elegido de la fortuna juró vengarse de él. Envidiado por todos, no solo tiene a la protagonista femenina enamorada de él, sino que también es tratado como un invitado distinguido dondequiera que va. Afortunadamente, el prestigio y el poder de Gu Changge son superiores a los de todos los demás, por lo que aplastar a un simple elegido de la fortuna debería ser fácil, ¿o no? Espera... ¿Hay un sistema dedicado a ordeñar y cosechar al protagonista? Gu Changge sonrió con suficiencia.]]>
+		<sinopsis>Inmediatamente después de que Gu Changge se diera cuenta de que había reencarnado en un mundo de fantasía, el protagonista del mundo y elegido de la fortuna juró vengarse de él. Envidiado por todos, no solo tiene a la protagonista femenina enamorada de él, sino que también es tratado como un invitado distinguido dondequiera que va. Afortunadamente, el prestigio y el poder de Gu Changge son superiores a los de todos los demás, por lo que aplastar a un simple elegido de la fortuna debería ser fácil, ¿o no? Espera... ¿Hay un sistema dedicado a ordeñar y cosechar al protagonista? Gu Changge sonrió con suficiencia.
 		</sinopsis>
 		<meta>Reencarnado como villano, Gu Changge usará su gran poder y un sistema para aplastar al protagonista elegido y cosechar su fortuna.</meta>
 		<valoracion>9.3</valoracion>
@@ -333,11 +369,11 @@
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://iamthefatedvillain.com</wiki>
 	</obra>	
 
@@ -350,7 +386,7 @@
 		<nombreobra>The Academy Extra's Survival Guide</nombreobra>
 		<nombreobra>Oh! I Can Buy It in the Academy! / The Academy Extra's Survival Guide</nombreobra>
 		<autor>Plutoe (플루토)</autor>
-		<sinopsis><![CDATA[Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.]]>
+		<sinopsis>Un estudiante universitario normal posee el cuerpo de Ed Rothloristor, un villano extra de baja categoría en un juego de la compañía Sylvania Academy. Para sobrevivir en esta academia de élite llena de peligros, magia y personajes principales hostiles, debe utilizar su conocimiento del juego, su ingenio y habilidades de supervivencia para cambiar su destino trágico.
 		</sinopsis>
 		<meta>Un estudiante posee el cuerpo de un villano extra en Sylvania Academy y debe usar su ingenio para sobrevivir a este peligroso mundo.</meta>
 		<valoracion>9.5</valoracion>
@@ -370,12 +406,13 @@
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://academysurvival.fandom.com/wiki/The_Extra%E2%80%99s_Academy_Survival_Guide_Wiki</wiki>
+		<pendejos>https://manhwacenter.net/manwhas/guia-de-supervivencia-del-extra-de-la-academia</pendejos>
 	</obra>
 	<obra>	
 		<visible>si</visible>
@@ -385,10 +422,10 @@
 		<nombreobra>ありふれた職業で世界最強?</nombreobra>
 		<nombreobra>Arifureta: From Commonplace to World's Strongest</nombreobra>
 		<autor>Ryo Shirakome</autor>
-		<sinopsis><![CDATA[Hajime Nagumo, estudiante de secundaria, es víctima del acoso de sus compañeros por su relación con la idol de la clase, Kaori.
+		<sinopsis>Hajime Nagumo, estudiante de secundaria, es víctima del acoso de sus compañeros por su relación con la idol de la clase, Kaori.
 			Cierto día, toda su clase fue transportada a un nuevo y desconocido mundo de fantasía, cuando tomaron conciencia, todos sus compañeros habían obtenido poderosas habilidades mágicas, mientras que Hajime lo único que obtiene es la magia de alquimia básica, la cual sirve para transmutar materiales sólidos, una habilidad común y corriente que mayormente la suelen usar los artesanos y herreros.
 			Durante una incursión en una mazmorra, Hajime es traicionado por uno de sus compañeros en medio de una feroz batalla y por desgracia cae al fondo de la mazmorra. Milagrosamente sobrevive a la caída, y ante la desesperación, el peligro que lo rodea, y la falta de habilidad de supervivencia, crea armas para sobrevivir y escapar de la mazmorra y hacerse más fuerte para vivir sin molestias.
-			      ]]>
+			      
 		</sinopsis>
 		<meta>Traicionado y arrojado al fondo de una mazmorra, el débil Hajime crea armas con alquimia para sobrevivir y volverse el más fuerte.</meta>
 		<valoracion>9.0</valoracion>
@@ -396,15 +433,31 @@
 		<categoria>Acción, Aventura, Drama, Ecchi, Fantasía, Harem, Isekai, Maduro, Misterio, Sobrenatural</categoria>
 		<keywords>Acoso escolar, Adaptado a anime, Adaptado a CD de drama, Adaptado a manga, Ángeles, Apariencia diferente a la edad real, Armas de fuego, Armas únicas, Artefactos, Asesinos, Asimilación de habilidades, Aventureros, Cambios de apariencia, Cambios de personalidad, Características de animales, Chuunibyou, Conocimiento moderno, Crecimiento de personaje, De débil a fuerte, Demonios, Diosas, Dioses, Discriminación, Dragones, El interés amoroso se enamora primero, Elfos, Elementos de juego, Esclavos, Evolución, Experiencia cercana a la muerte, Fabricación de artefactos, Ganancia repentina de fuerza, Gremios, Habilidades especiales, Héroes, Hijos adoptados, Hombres bestia, Inteligencia artificial, Intereses amorosos fuertes, Intereses amorosos mayores, Liderazgo, Loli, Magia, Mangaka, Mazmorras, Muerte, Múltiples individuos transportados, Mundo de fantasía, Niños lindos, Personajes masoquistas, Personajes sádicos, Pistoleros, Poderes divinos, Poligamia, Primera relación sexual, Protagonista abrumadoramente poderoso, Protagonista antihéroe, Protagonista femenina hermosa, Protagonista frío, Protagonista implacable, Protagonista inteligente, Protagonista masculino, Protagonista masculino atractivo, Protagonista subestimado, Protagonista tranquilo, R-15, Regreso de otro mundo, Relación estudiante-profesor, Relación humano-no humano, Representaciones de crueldad, Salvando el mundo, Semihumanos, Señor de los demonios, Sirvientas, Sistema de niveles, Subordinados leales, Traición, Transportado a otro mundo, Tsundere, Vampiros, Viaje por el mundo, Yandere</keywords>
 		<imagen>Arifureta/Arifureta-LN-JP-Cover-v01.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v02.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v03.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v04.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v05.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v06.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v07.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v08.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v09.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v10.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v11.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v12.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v13.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-v14.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-SS.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-BRSS.webp</imagen>
+		<imagen>Arifureta/Arifureta-LN-JP-Cover-S2BRSS.webp</imagen>
 		<fechaCreacion>28/12/2025</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Morlan</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://arifureta.fandom.com/wiki/Arifureta_(Main_Series)</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -415,7 +468,7 @@
 		<nombreobra>Dual Cultivation: Gathering SSS-Rank Wives in the Cultivation World</nombreobra>
 		<autor>Idiocrat</autor>
 		<sinopsis>
-			<![CDATA[« ATENCIÓN : CONTENIDO PARA ADULTOS »
+			« ATENCIÓN : CONTENIDO PARA ADULTOS »
         Se suponía que debía revisar mis estadísticas. En cambio, revisé mis pecados.
         Un desplazamiento a través de las notificaciones del sistema y me di cuenta de que había cometido el error más tonto, más caliente y más catastrófico en la historia del cultivo:
         [Concepción del heredero confirmada: Las tres esposas bendecidas han sido impregnadas.]
@@ -423,7 +476,7 @@
         Se pusieron a mi lado, izquierda, derecha y medio paso por delante. Sin darse cuenta de que su contoneo de caderas y el menear de sus melones me distraían demasiado.
         '...' Solo pude mirar a tres de mis bellezas, pensando en lo diferentes que eran anoche, pero de nuevo parece que tendré que corromperlas aún más.
         'Entonces, ¿comenzamos el viaje del Cultivo Dual?'
-      ]]>
+      
 		</sinopsis>
 		<meta>Tras un error catastrófico en el cultivo, tres esposas bendecidas quedan embarazadas, dando inicio al viaje del Cultivo Dual.</meta>
 		<valoracion>9.0</valoracion>
@@ -431,18 +484,55 @@
 		<categoria>Acción,Adultos,Fantasía, Harén, Romance</categoria>
 		<keywords>Cultivo dual, Descendencia divina, Embarazos múltiples, Harén, Linaje y sangre divina, Protagonista masculino, Sistema de progresión, Tribulaciones celestiales</keywords>
 		<imagen>CDREdRSSelMdC/CDREdRSSelMdC.webp</imagen>
-			<imagen>CDREdRSSelMdC/CDREdRSSelMdC_1.webp</imagen>
+		<imagen>CDREdRSSelMdC/CDREdRSSelMdC_1.webp</imagen>
+		<imagen>CDREdRSSelMdC/CDREdRSSelMdC_2.webp</imagen>
 		<fechaCreacion>12/10/2025</fechaCreacion>
 		<ubicacion>Novela Inglesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
+	</obra>
+	<obra>	
+		<visible>si</visible>
+		<idioma>es</idioma>
+		<clave>LycorisRecoilOrdinaryDays</clave>
+		<nombreobra>Lycoris Recoil: Días Ordinarios</nombreobra>
+		<nombreobra>リコリス・リコイル Ordinary days</nombreobra>
+		<nombreobra>Rikorisu Rikoiru Ōdinarī Deizu</nombreobra>
+		<nombreobra>LycoReco: Ordinary Days</nombreobra>
+		<nombreobra>RikoRiko Ordinary Days</nombreobra>
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
+		<nombreobra />
+		<autor>Asaura (アサウラ)</autor>
+		<sinopsis>¡Bienvenido al Café LycoReco!»
+			Ubicado en la zona este de Tokio, con vistas a la antigua e icónica torre de radio destruida, se encuentra el Café LycoReco: un establecimiento elegante y acogedor donde se sirven cafés exquisitos y deliciosos dulces tradicionales y occidentales.
+			Sin embargo, detrás de su fachada pacífica, el café acepta cualquier tipo de petición de sus clientes: desde cuidar a niños en guarderías, negociaciones comerciales o consejos de amor, hasta patrullas contra monstruos o lidiar con situaciones de zombis...
+			Esta historia recopila los cuentos y la extraordinaria vida cotidiana de las chicas del cartel, Chisato Nishikigi y Takina Inoue, junto al resto del equipo del café. Aspectos jamás mostrados en la serie de televisión: momentos cómicos, escenas de acción con armas de fuego, dramas entrañables y los profundos lazos que surgen día a día entre tazas de café y un toque de dulzura.
+		</sinopsis>
+		<meta>Café LycoReco: dulces, café y misiones secretas. Chisato y Takina resuelven cualquier problema en historias inéditas llenas de acción y comedia.</meta>
+		<valoracion>8.6</valoracion>
+		<tipoobra>Novela Ligera</tipoobra>
+		<categoria>Acción, Comedia, Drama, Recuentos de Vida</categoria>
+		<keywords>Acción, Acción con armas, Armas de fuego, Vínculos, Cafetería, Comedia, Doble personalidad, Drama, No romance, Peleas con armas, Personaje principal femenino, Protagonistas múltiples, Recuentos de la vida, Relaciones interpersonales, Slice of Life, Trabajo en cafetería, Vida cotidiana</keywords>
+		<imagen>LycorisRecoilOrdinaryDays/LycorisRecoilOrdinaryDays01.webp</imagen>
+		<fechaCreacion>11/10/2026</fechaCreacion>
+		<ubicacion>Novela Japonesa</ubicacion>
+		<estado>Finalizado</estado>
+		<traductor>Morlan</traductor>
+		<adulto />
+		<aprobadaAutor>no</aprobadaAutor>
+		<observaciones>https://www.kadokawa.co.jp/product/322205000797/</observaciones>
+		<discord />
+		<bannerOpcional />
+		<wiki>https://lycoris-recoil.fandom.com/es/wiki/Lycoris_Recoil</wiki>
 	</obra>
 	<obra>	
 		<visible>si</visible>
@@ -454,10 +544,10 @@
 		<nombreobra>Jobless Reincarnation</nombreobra>
 		<nombreobra>Mushoku Tensei: Reencarnación de un desempleado</nombreobra>
 		<nombreobra>Jobless Reincarnation: I Will Seriously Try If I Go to Another World</nombreobra>
-		<nombreobra></nombreobra>
+		<nombreobra />
 		<nombreobra>Mushoku Tensei</nombreobra>
 		<autor>Rifujin na Magonote</autor>
-		<sinopsis><![CDATA[Un desempleado de 34 años es atropellado por un camión y muere. Su último pensamiento es que en realidad ha desperdiciado toda su vida. Pero, de repente, se despierta en un mundo mágico: ¡ha renacido como Rudeus Greyrat! ¿Sabrá aprovechar esta segunda oportunidad y hacerlo todo mejor esta vez? ¿Y qué aventuras le depara su nueva y mágica vida?]]>
+		<sinopsis>Un desempleado de 34 años es atropellado por un camión y muere. Su último pensamiento es que en realidad ha desperdiciado toda su vida. Pero, de repente, se despierta en un mundo mágico: ¡ha renacido como Rudeus Greyrat! ¿Sabrá aprovechar esta segunda oportunidad y hacerlo todo mejor esta vez? ¿Y qué aventuras le depara su nueva y mágica vida?
 		</sinopsis>
 		<meta>Un desempleado de 34 años muere atropellado y reencarna como Rudeus en un mundo mágico dispuesto a aprovechar esta segunda oportunidad.</meta>
 		<valoracion>9.1</valoracion>
@@ -494,13 +584,14 @@
 		<fechaCreacion>26/09/2026</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Activo</estado>
-		<traductor></traductor>
-		<adulto></adulto>
+		<traductor>Varios</traductor>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
+		<pendejos>https://manhwacenter.net/manwhas/mushoku-tensei-isekai-ittara-honki-dasu</pendejos>
 	</obra>	
 	<obra>	
 		<visible>si</visible>
@@ -509,11 +600,11 @@
 		<nombreobra>Ciudad de Brujas</nombreobra>
 		<nombreobra>마녀의 도시</nombreobra>
 		<autor>Wilted Flower (섦게지는꽃)</autor>
-		<sinopsis><![CDATA[Tras permanecer cinco años secuestrado y esclavizado en la Ciudad de Brujas.
+		<sinopsis>Tras permanecer cinco años secuestrado y esclavizado en la Ciudad de Brujas.
             Se convirtió en el único Brujo del mundo.
 
             «Un genio matemático hasta que un día sufrió un accidente y de pronto apareció secuestrado en Gehenna, la Ciudad de Brujas, un mundo dentro del mundo actual.»
-                ]]>
+                
         </sinopsis>
 		<meta>Tras cinco años esclavizado en Gehenna, la Ciudad de Brujas, un genio matemático se convierte en el único Brujo del mundo.</meta>
 		<valoracion>9.0</valoracion>
@@ -523,17 +614,23 @@
 		<imagen>CityOfWitches/CityOfWitches.webp</imagen>
 		<imagen>CityOfWitches/CityOfWitches_2.webp</imagen>
 		<imagen>CityOfWitches/CityOfWitches_3.webp</imagen>
-		<imagen>CityOfWitches/CityOfWitches_4.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_6.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_extra1.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_extra2.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_extra3.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_extra4.webp</imagen>
+		<imagen>CityOfWitches/CityOfWitches_extra5.webp</imagen>
 		<fechaCreacion>28/12/2025</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Gran Maestro</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://city-of-witches.fandom.com/wiki/City_Of_Witches_Wiki</wiki>
+		<urlautor>https://novelpia.com/novel/23</urlautor>
 		<server>io-pdfs</server>
 	</obra>	
 	<obra>
@@ -547,12 +644,12 @@
 		<nombreobra>Is It Wrong to Try to Pick Up Girls in a Dungeon? Familia Chronicle: Episode Argonaut</nombreobra>
 		<autor>Fujino Ōmori</autor>
 		<sinopsis>
-			<![CDATA[Una historia ambientada en la antigüedad temprana, cuando no existía la "Bendición de los Dioses".
+			Una historia ambientada en la antigüedad temprana, cuando no existía la "Bendición de los Dioses".
               El romance heroico de un hombre, transmitido hasta el día de hoy en innumerables relatos. Un héroe extremadamente débil y deslucido en comparación con otros héroes de la historia. Sin embargo, algunos lo llaman el "Héroe del Comienzo".
               Pero, ¿por qué se le llama así?
               Esta es la historia de un hombre ridículo.
               Un bufón que tenía deseos desproporcionados, fue manipulado por innumerables intrigas, y aún así se mantuvo como un tonto hasta el final.
-              Ahora, comencemos la «Comedia».]]>
+              Ahora, comencemos la «Comedia».
 		</sinopsis>
 		<meta>Ambientada antes de los dioses, relata la historia de un héroe débil y bufón que protagoniza un romance heroico inolvidable.</meta>
 		<valoracion>9.0</valoracion>
@@ -560,16 +657,18 @@
 		<categoria>Acción, Aventura, Comedia, Fantasía, Romance</categoria>
 		<keywords>Adaptado a CD de drama, Adaptado a juego, Adaptado a manga, Amor a primera vista, Compañeros bestia, Crecimiento acelerado, De débil a fuerte, Diosas, Dioses, Elfos, Enanos, Espada y magia, Herrero, Intereses amorosos devotos, Intereses amorosos fuertes, Kuudere, Mazmorras, Monstruos, Mundo de fantasía, Obra premiada, Personajes estoicos, Protagonista afortunado, Protagonista denso, Protagonista determinado, Protagonista encantador, Protagonista femenina hermosa, Protagonista indeciso, Protagonista ingenuo, Protagonista masculino, Protagonista masculino atractivo, Protagonista se enamora primero, Protagonista trabajador, Relación dios-humano, Semihumanos, Sistema de niveles</keywords>
 		<imagen>DanmachiArgonauta/DanmachiArgonauta.webp</imagen>
+		<imagen>DanmachiArgonauta/DanmachiArgonauta01.webp</imagen>
+		<imagen>DanmachiArgonauta/DanmachiArgonauta02.webp</imagen>
 		<fechaCreacion>31/04/2024</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Finalizado</estado>
 		<traductor>Turret Translations</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones>Traductor Japonés-Español: Frizcop <![CDATA[<a href="https://frizcosas.blogspot.com/2024/05/argonauta-novela-ligera-espanol.html" target="_blank">Turret Translations</a>]]></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones>Traductor Japonés-Español: Frizcop &lt;a href="https://frizcosas.blogspot.com/2024/05/argonauta-novela-ligera-espanol.html" target="_blank"&gt;Turret Translations&lt;/a&gt;</observaciones>
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -588,19 +687,27 @@
 		<imagen>DualCultivation/DualCultivation_1.webp</imagen>
 		<imagen>DualCultivation/DualCultivation_2.webp</imagen>
 		<imagen>DualCultivation/DualCultivation_3.webp</imagen>
+		<imagen>DualCultivation/DualCultivation_4.webp</imagen>
+		<imagen>DualCultivation/DualCultivation_5.webp</imagen>
+		<imagen>DualCultivation/DualCultivation_6.webp</imagen>
+		<imagen>PathtoDualCultivation/PathtoDualCultivation.webp</imagen>
+		<imagen>PathtoDualCultivation/PathtoDualCultivation02.webp</imagen>
+		<imagen>PathtoDualCultivation/PathtoDualCultivation03.webp</imagen>
 		<fechaCreacion>24/08/2025</fechaCreacion>
 		<ubicacion>Novela China</ubicacion>
 		<estado>Pausado</estado>
 		<traductor>Jabracadabra</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://dual-cultivation-novel.fandom.com/wiki/Dual_Cultivation_Wiki</wiki>
 		<server>local</server>
 	</obra>
-	<obra>	
+	<obra>
+		<idioma>es</idioma>
+		<alternate>ca,ForSaleFallenLadyCA</alternate>
 		<visible>si</visible>
 		<clave>ForSaleFallenLady</clave>
 		<nombreobra>En Venta. Noble Caída. Nunca Usada</nombreobra>
@@ -611,34 +718,36 @@
 		<nombreobra>The Fallen Lady is on Sale</nombreobra>
 		<nombreobra>FS:FL:NU</nombreobra>
 		<autor>오리너구리, Ori Neoguri</autor>
-		<sinopsis><![CDATA[Subastada como mercancía tras la caída de su casa, la dama caída espera su final… hasta que el mundo descubre que la verdadera amenaza no es su desgracia, sino el poder que estaba a punto de despertar.]]></sinopsis>
+		<sinopsis>Subastada como mercancía tras la caída de su casa, la dama caída espera su final… hasta que el mundo descubre que la verdadera amenaza no es su desgracia, sino el poder que estaba a punto de despertar.</sinopsis>
 		<meta>Subastada tras la caída de su casa, una dama espera su final hasta que el mundo descubre el tremendo poder que va a despertar.</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Acción, Adulto, Fantasía, Harén, Romance</categoria>
 		<keywords>Academia, Adaptado a manhwa, Amor incondicional, Anal, Arreglos de vivienda forzados, Artefactos, Asimilación de habilidades, Bestias mágicas, Convivencia, Crecimiento acelerado, Crecimiento de personaje, Criaturas fantásticas, Cunnilingus, De fuerte a más fuerte, Desnudez, Diosas, Dioses, Dioses malvados, Dragones, Elfos, Elementos de juego, Esclavos, Esclavos sexuales, Espacio mágico, Felación, Forzado a una relación, Formaciones mágicas, Habilidad de transformación, Habilidades especiales, Habilidades ocultas, Harén de esclavos, Intereses amorosos devotos, Jugadores, La víctima de violación se convierte en amante, Loli, Magia, Masturbación manual, Matrimonio, Mazmorras, Mundo alternativo, Mundo de fantasía, Nobles, Orgia, Paizuri, Personajes adinerados, Personajes sádicos, Poderes divinos, Poligamia, Primera relación sexual, Protagonista abrumadoramente poderoso, Protagonista cariñoso, Protagonista determinado, Protagonista femenina hermosa, Protagonista fuerte desde el principio, Protagonista genio, Protagonista inteligente, Protagonista masculino, Protagonista masculino atractivo, Protagonista pervertido, Protagonista que busca un harén, Protagonista trabajador, Punto de vista múltiple, R-18, Relación amo-sirviente, Relación estudiante-profesor, Relación humano-no humano, Relaciones sexuales al aire libre, Romance temprano, Salvando el mundo, Sirvientes, Sistema de clasificación de juegos, Sistema de niveles, Trabajo en equipo, Transportado a un mundo de videojuegos, Trío, Trucos, Vampiros, Violación</keywords>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady01.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady02.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady03.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady04.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady05.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady06.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady07.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady08.webp</imagen>
-		<imagen>ForSaleFallenLady/ForSaleFallenLady09.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady01.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady02.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady03.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady04.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady05.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady06.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady07.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady08.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady09.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady10.webp</imagen>
 		<fechaCreacion>14/08/2026</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Jabracadabra</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 	<obra>
 		<idioma>ca</idioma>
+		<alternate>es,ForSaleFallenLady</alternate>
 		<visible>si</visible>
 		<clave>ForSaleFallenLadyCA</clave>
 		<nombreobra>(CATALÀ) En Venda. Dama Caiguda. Mai Utilitzada.</nombreobra>
@@ -654,7 +763,7 @@
 		<nombreobra>La Dama Caiguda és en Venda</nombreobra>
 		<nombreobra>Oh! Aquesta la puc comprar fàcilment!</nombreobra>
 		<autor>오리너구리, Ori Neoguri</autor>
-		<sinopsis><![CDATA[Subhastada com a mercaderia arran de la caiguda de la seva família, la noble caiguda espera el seu final... fins que el món descobreix que la veritable amenaça no és la seva desgràcia, sinó el poder que estava a punt de despertar.]]></sinopsis>
+		<sinopsis>Subhastada com a mercaderia arran de la caiguda de la seva família, la noble caiguda espera el seu final... fins que el món descobreix que la veritable amenaça no és la seva desgràcia, sinó el poder que estava a punt de despertar.</sinopsis>
 		<meta>Subhastada arran de la caiguda de la seva família, una noble espera el seu final fins que el món descobreix el poder que despertarà.</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novel·la Web</tipoobra>
@@ -669,16 +778,17 @@
 		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady07.webp</imagen>
 		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady08.webp</imagen>
 		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady09.webp</imagen>
+		<imagen>ForSaleFallenLadyCA/ForSaleFallenLady10.webp</imagen>
 		<fechaCreacion>26/08/2026</fechaCreacion>
 		<ubicacion>Novel·la Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Jabracadabra</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 	</obra>	
 	<obra>	
 		<visible>si</visible>
@@ -696,12 +806,12 @@
 		<nombreobra>Sweet slice-of-life love story: Wife, Let's love again</nombreobra>
 		<nombreobra>Una dulce historia de amor cotidiana: Esposa, volvamos a amarnos.</nombreobra>
 		<autor>Flowers Haven't Bloomed 之画文化</autor>
-		<sinopsis><![CDATA[Si pudieras volver atrás en el tiempo, ¿qué harías?
+		<sinopsis>Si pudieras volver atrás en el tiempo, ¿qué harías?
 	
 	        Iría a la entrada de la escuela y te esperaría todos los días para perseguirte sin vergüenza hasta que fueras mi novia. ¿Y tú?
 	
 	        Hmm... Definitivamente esperaré con cuidado hasta los veinticuatro para volver a conocerte, luego me enamoraré poco a poco, me casaré y luego te haré esta pregunta. Vivo con cautela porque temo que el efecto mariposa me haga perderte.
-	        ]]>
+	        
 	    </sinopsis>
 		<meta>Iría a la entrada de la escuela a esperarte cada día para perseguirte sin vergüenza. Vivo con cautela temiendo que el efecto mariposa te pierda.</meta>
 		<valoracion>9.0</valoracion>
@@ -714,12 +824,12 @@
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
 		<observaciones>Original : https://m.qidian.com/book/1019263100/</observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>	
 	<obra>
@@ -729,10 +839,10 @@
 		<nombreobra>Primer Dragon Demoniaco</nombreobra>
 		<autor>AnathaShesha</autor>
 		<sinopsis>
-			<![CDATA[Carter Williams era el típico perdedor de veinte años. 
+			Carter Williams era el típico perdedor de veinte años. 
         Después de una pelea en la calle que lo deja inconsciente, se despierta en el cuerpo de un joven dragón en un mundo completamente nuevo.
         Armado con un sistema que lo ayuda y dos hermosas esposas que lo apoyan, Carter jura no volver a vivir su vida escondido en la oscuridad mientras busca el título de rey dragón. 
-      ]]>
+      
 		</sinopsis>
 		<meta>Tras una pelea callejera, Carter Williams despierta en el cuerpo de un joven dragón con un sistema y dos esposas, buscando el título de rey.</meta>
 		<valoracion>9.0</valoracion>
@@ -811,9 +921,9 @@
 		<traductor>Jabracadabra</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://first-demonic-dragon.fandom.com/wiki/First_Demonic_Dragon_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -824,12 +934,12 @@
 		<nombreobra>少女不十分 (Shōjo Fujūbun)</nombreobra>
 		<autor>Nisio Isin (西尾維新)</autor>
 		<sinopsis>
-			<![CDATA[Lo siento, pero aquí no encontrará un resumen de la trama. Esto no es una novela. Si busca un giro argumental, un giro inesperado o un chiste, no lo encontrará. Se trata de una vieja historia de un acontecimiento pasado que terminó hace tiempo. 
+			Lo siento, pero aquí no encontrará un resumen de la trama. Esto no es una novela. Si busca un giro argumental, un giro inesperado o un chiste, no lo encontrará. Se trata de una vieja historia de un acontecimiento pasado que terminó hace tiempo. 
 
 Ocurrió hace 10 años, y mi recuerdo de todo ello es ciertamente bastante vago, y tampoco vamos a especular sobre el futuro. Desde luego, no puedo recomendarlo por su valor como entretenimiento, pero hay algo que sí puedo afirmar con rotundidad.
 
 He tardado diez años en escribir este libro.
-      ]]>
+      
 		</sinopsis>
 		<meta>No encontrarás un resumen de la trama ni es una novela, sino una vieja historia de un acontecimiento pasado de hace 10 años. Tardé diez años.</meta>
 		<valoracion>9.0</valoracion>
@@ -837,16 +947,18 @@ He tardado diez años en escribir este libro.
 		<categoria>Drama, Maduro, Misterio, Psicológico</categoria>
 		<keywords>Adaptado a manga, Confinamiento, Época actual, Filosófico, Flashbacks, Oscuro, Personajes abusivos, Personajes agresivos, Personajes arrogantes, Protagonista apático, Protagonista introvertido, Protagonista masculino, Protagonista tranquilo, Secuestros</keywords>
 		<imagen>ImperfectGirl/ImperfectGirl.webp</imagen>
+		<imagen>ImperfectGirl/ImperfectGirl02.webp</imagen>
+		<imagen>ImperfectGirl/ImperfectGirl03.webp</imagen>
 		<fechaCreacion>18/10/2025</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Finalizado</estado>
 		<traductor>Gran Maestro</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
 		<observaciones>Traductor Inglés: ShwampBam</observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -866,15 +978,18 @@ He tardado diez años en escribir este libro.
 		<categoria>Acción, Artes Marciales, Aventura, Fantasía, Recuentos de Vida, Romance, Wuxia</categoria>
 		<keywords>Adaptado a manhwa, China antigua, De débil a fuerte, Herrero, Muerte de seres queridos, Organizaciones malvadas, Organizaciones secretas, Portador de espada, Protagonista determinado, Protagonista femenina hermosa, Protagonista masculino, Protagonista tranquilo, Romance tardío, Subordinados leales, Subtrama romántica, Tortura, Traición, Venganza</keywords>
 		<imagen>LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte.webp</imagen>
+		<imagen>LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte01.webp</imagen>
+		<imagen>LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte02.webp</imagen>
+		<imagen>LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte03.webp</imagen>
 		<fechaCreacion>24/08/2025</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Jabracadabra</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://legend-of-the-northern-blade.fandom.com/wiki/Main_Page</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -886,27 +1001,34 @@ He tardado diez años en escribir este libro.
 		<nombreobra>만렙 영웅님께서 귀환하신다!</nombreobra>
 		<autor>Devil's tail</autor>
 		<sinopsis>
-			<![CDATA[Davey, el débil príncipe de un país insignificante. Tras entrar en coma, su alma escapó a un templo donde se reunían las almas de los héroes.
+			Davey, el débil príncipe de un país insignificante. Tras entrar en coma, su alma escapó a un templo donde se reunían las almas de los héroes.
               ¡Se entrenó durante mil años y ahora ha regresado como un héroe de nivel máximo!
               “¡Solo esperen, chicos, los enfrentaré a todos cara a cara!”
               La refrescante historia de la vida real y la venganza de Davey acaba de comenzar.
-      ]]>
+      
 		</sinopsis>
 		<meta>Davey, el débil príncipe, entró en coma y su alma escapó a un templo de héroes. ¡Se entrenó mil años y ha regresado como héroe de nivel máximo!</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Acción, Aventura, Fantasía, Harén</categoria>
 		<keywords>Adaptado a manhwa, Apariencia diferente a la edad real, Buscador de dinero, Conflicto familiar, Construcción de reinos, Crecimiento acelerado, Crecimiento de personaje, De fuerte a más fuerte, Descripciones de crueldad, Diosas, Dioses, Doncellas, Espada y magia, Espíritu consejero, Gemelos, Golems, Hermanas menores, Hermanos, Hermanos menores, Héroes, Intereses amorosos fuertes, Objetos conscientes, Pasado trágico, Poderes divinos, Poligamia, Portador de espada, Protagonista abrumadoramente poderoso, Protagonista fuerte desde el principio, Protagonista masculino, Protagonista tranquilo, Protagonista trabajador, Realeza, Reencarnado en otro mundo, Reencarnación, Relación dios-humano, Rivalidad entre hermanos, Señor de los demonios, Subtrama romántica, Tono cómico, Transmigración, Transportado a otro mundo, Vampiros</keywords>
-		<imagen>mlhsb/mlhsb.webp</imagen>
+		<imagen>MLHSB/mlhsb.webp</imagen>
+		<imagen>MLHSB/mlhsb01.webp</imagen>
+		<imagen>MLHSB/mlhsb02.webp</imagen>
+		<imagen>MLHSB/mlhsb03.webp</imagen>
+		<imagen>MLHSB/mlhsb04.webp</imagen>
+		<imagen>MLHSB/mlhsb05.webp</imagen>
+		<imagen>MLHSB/mlhsb06.webp</imagen>
+		<imagen>MLHSB/mlhsb07.webp</imagen>
 		<fechaCreacion>28/09/2025</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Jabracadabra</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://the-max-level-hero-strikes-back.fandom.com/wiki/The_Max_Level_Hero_Strikes_Back_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -924,8 +1046,8 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Devouring the World Tree</nombreobra>
 		<nombreobra>Fked the World Tree</nombreobra>
 		<autor>Mang Moong Ming, Yam Yeong</autor>
-		<sinopsis><![CDATA[Al amanecer, subí a la montaña de atrás y me comí un increible árbol … ¡Resultó que el árbol era un Árbol del Mundo de otro mundo! Así fue como fui secuestrado a otro mundo. ¡¿Y ahora tengo que calificar para ser el novio del árbol?!
-	      ]]>
+		<sinopsis>Al amanecer, subí a la montaña de atrás y me comí un increible árbol … ¡Resultó que el árbol era un Árbol del Mundo de otro mundo! Así fue como fui secuestrado a otro mundo. ¡¿Y ahora tengo que calificar para ser el novio del árbol?!
+	      
 		</sinopsis>
 		<meta>Al amanecer subí a la montaña y me comí un increíble árbol... ¡Era un Árbol del Mundo! Así fui secuestrado y debo calificar para ser su novio.</meta>
 		<valoracion>9.0</valoracion>
@@ -933,20 +1055,21 @@ He tardado diez años en escribir este libro.
 		<categoria>Acción, Aventura, Comedia, Drama, Ecchi, Fantasía, Harem, Isekai, Romance</categoria>
 		<keywords>Academia, Adaptado a manhwa, Adulto, Anal, Cuidado de niños, Cunnilingus, De gordo a en forma, Diferente estatus social, Ecchi, Fantasía, Harén, Maduro, Mazmorras, Niños lindos, Padres amorosos, Protagonista encantador, Protagonista gordo, Romance, Romance temprano, Vida escolar</keywords>
 		<imagen>MeComiAUnArbolDelMundo/MeComiAUnArbolDelMundo.webp</imagen>
-			<imagen>MeComiAUnArbolDelMundo/Potential_Husband_of_The_World_Tree.webp</imagen>
-			<imagen>MeComiAUnArbolDelMundo/fucked-the-world-treem.webp</imagen>
-			<imagen>MeComiAUnArbolDelMundo/Fucked_the_World_Tree.webp</imagen>
+		<imagen>MeComiAUnArbolDelMundo/Potential_Husband_of_The_World_Tree.webp</imagen>
+		<imagen>MeComiAUnArbolDelMundo/fucked-the-world-treem.webp</imagen>
+		<imagen>MeComiAUnArbolDelMundo/Fucked_the_World_Tree.webp</imagen>
 		<fechaCreacion>29/11/2025</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
+		<pendejos>https://manhwacenter.net/manwhas/comer-del-arbol-del-mundo</pendejos>
 	</obra>	
 
 	<obra>
@@ -956,18 +1079,838 @@ He tardado diez años en escribir este libro.
 		<nombreobra>My Three Wives Are Beautiful Vampires</nombreobra>
 		<autor>Victor Weismann</autor>
 		<sinopsis>
-			<![CDATA[
             Víctor era un hombre normal de 21 años, creció en una familia amorosa que lo ayudó a cuidarse sabiendo que tenía una enfermedad prácticamente incurable, la sangre RH nula, era dueño de un tipo de sangre raro…
             Pero lo que Víctor no sabía, es que ese tipo de sangre era un manjar en el mundo sobrenatural, las criaturas que se alimentaban de sangre amaban su tipo de sangre…
             Y esa sangre que odiaba sería el factor que haría de Víctor el mayor vampiro de todos los tiempos.
-    ]]>
 		</sinopsis>
 		<meta>Víctor tenía un tipo de sangre raro, un manjar en el mundo sobrenatural. Esa sangre odiada lo convertiría en el mayor vampiro de todos los tiempos.</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Acción, Comedia, Fantasía, Gore, Harén, Magia, Romance, Sobrenatural, Superpoderes, Vampiros</categoria>
 		<keywords>Amnesia inicial, Atractivo de sangre, Brujas y Hechiceras, Condes Vampiro, Demonios de alto rango, Despertar de habilidades, Dioses mitológicos, Dragones ancestrales, Esposas leales, Evolución biológica, Evolución constante, Guerra de facciones, Harem cooperativo, Inmunidad al sol, Juicio de los Dioses, Licántropos alfa, Linajes de sangre, Loup-garou, Lunas de sangre, Manipulación elemental, Matriarcado vampírico, Pacto de sangre, Personalidad dominante, Progenie, Protagonista proactivo, Realeza vampírica, Sangre adictiva, Sangre RH-negativa dorada, Ser supremo, Sociedad de vampiros, Vampiros diurnos, Vampiros nobles, Vínculos matrimoniales</keywords>
-		<imagen>Mis3EsposasSonHermosasVampiros/Mis3EsposasSonHermosasVampiros.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/001-Victor Violet Sasha Ruby Art Done/victorweismann 8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/002-Violet Art/victorweismann 4-1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/003-Victor Art/victorweismann 2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/004-Scathach art/victorweismann text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/005-Sasha art/victorweismann 6 - text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/006-Ruby art/victorweismann 5 -text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/007-Natashia mother Sasha art/victorweismann 3 black text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/008-Kaguya Head Maid Art/victorweismann 4 -2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/009-Eve Alucard Maid Art/victorweismann 7 - text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/010-Ophis art/victorweismann 9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/011-Otsuki Haruna Sketch/victorweismann 10.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/012-Eleonor Adrasteia Sketch/victorweismann 11.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/013-Aphrodite sketch/victorweismann 12.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/014-Nero Alucard First Sketch/victorweismann 13.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/016-The art is done/victorweismann 15_text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/017-Mavis Reference And Dante/00029-1484804545.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/017-Mavis Reference And Dante/00034-4156538098.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/017-Mavis Reference And Dante/00128-390526202.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/018-Leona Elizabeth Lykos/victorweismann 16_text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/019-Anna Mommy/victorweismann 17_text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/022-Jeanne Alucard Remake/Version 2 covered text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/022-Jeanne Alucard Remake/Version 2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/022-Jeanne Alucard Remake/Version 3 covered text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/023-Victor Dragon Form/image.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/023-Victor Dragon Form/minha edicao_remake.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/023-Victor Dragon Form/white_upsclae_1_text_remake.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/024-Roxanne Art Illustration/Roxanne 1 Text low quality.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/024-Roxanne Art Illustration/Roxanne 2 Text low quality.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/025-Velnorah/Version 1 bis original text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/025-Velnorah/Version 1 original text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/025-Velnorah/Version 2 original text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/025-Velnorah/Version 3 original text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/026-Bruna Elderblood/V1 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/026-Bruna Elderblood/V2 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/026-Bruna Elderblood/V3 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/026-Bruna Elderblood/V4 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/026-Bruna Elderblood/V5 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/027-Lilith Progenitor Demon Goddess/Lilith1.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/027-Lilith Progenitor Demon Goddess/Lilith2.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/027-Lilith Progenitor Demon Goddess/Lilith29.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Cover Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/028-Tasha Elderblood/Version 7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/029-Gaia Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/029-Gaia Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/029-Gaia Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/030-Gaia-attempt/00250-1306197827 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/030-Gaia-attempt/00266-2242114051-1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/030-Gaia-attempt/00346-29822324 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/030-Gaia-attempt/V1 bis text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/031-Zaladrac/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/031-Zaladrac/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/031-Zaladrac/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/031-Zaladrac/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/032-Mizuki Elderblood/Mizuki.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/032-Mizuki Elderblood/Mizuki1.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/032-Mizuki Elderblood/Mizuki2.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/032-Mizuki Elderblood/Mizuki_Elderblood.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose1.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose2.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose_29.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose_Adrasteia.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/033-Rose Adrasteia Elderblood/Rose_Adrasteia_Elderblood.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/034-Morgana Elderblood/Morgana.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/034-Morgana Elderblood/Morgana29.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/034-Morgana Elderblood/Morgana_Alucard.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/034-Morgana Elderblood/Morgana_Elderblood.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/035-Ariel The Angel/V1 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/035-Ariel The Angel/V2 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/035-Ariel The Angel/V3 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/035-Ariel The Angel/V4 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/036-Nyx Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/037-Kali-Goddess of Destruction/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/039-Persephone Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/040-Albedo Moriarthy/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/040-Albedo Moriarthy/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/040-Albedo Moriarthy/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/040-Albedo Moriarthy/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/040-Albedo Moriarthy/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V1 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V2 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V3 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V4 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V5 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/041-Pepper Scarlett/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/043-Maria Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/043-Maria Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/043-Maria Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/043-Maria Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/043-Maria Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/044-Siena Scarlett/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/045-Lacus Scarlett/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/046-Scathach Scarlett/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V8 text (1).webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/047-Violet Snow/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/048-Sasha Elderblood Mommy/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/049-Ophis Tepes Adult/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/050-Nero Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/051-Azathoth Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/052-June The Greed Witch/June.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/052-June The Greed Witch/June1.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/052-June The Greed Witch/June_.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/052-June The Greed Witch/June_official.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/052-June The Greed Witch/June_the_greedy_witch.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/053-Valeria Alekerth/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V1 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V16 Text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/054-Maya Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/055-Carmila Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/056-Roberta Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/057-Hestia Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/058-Kaguya Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/059-Dun Scaith/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/060-Hela Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/061-Victoria Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/062-Aline Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V22 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V23 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V24 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V25 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V26 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/063-Helena Elderblood Gremory/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V23 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V25 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V27 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V29 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V31 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V33 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V35 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V37 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V39 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/064-Agnes Snow Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V22 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V23 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V24 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V25 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V26 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V27 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V28 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/065-Otsuki Elderblood Haruna/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/066-Leona Elizabeth Elderblood Lykos/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/067-Aphrodite Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/068-Jeanne Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/069-Anna Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V22 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V23 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V24 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V25 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V26 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/070-Evie Moriarthy/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V22 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/071-Ruby Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V20 text small.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/072-Vine Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/073-Vaper Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/074-Lily Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/075-Natashia red eyes - Naty blue ones/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V21 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V22 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/076-Natalia Alioth/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/077-Yuki Snow/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/078-Hilda Snow/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/079-Scathach Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/080-Roxanne Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/081-Amaterasu Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/082-Eve Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/083-Amara Elderblood/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/085-Lacus Pepper and Siena/V9 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V1 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V10 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V11 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V12 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V13 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V14 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V15 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V16 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V17 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V18 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V19 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V2 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V20 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V3 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V4 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V5 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V6 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V7 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V8 text.webp</imagen>
+		<imagen>Mis3EsposasSonHermosasVampiros/086-Lilith Elderblood/V9 text.webp</imagen>
 		<fechaCreacion>12/10/2025</fechaCreacion>
 		<ubicacion>Novela Inglesa</ubicacion>
 		<estado>Activo</estado>
@@ -975,8 +1918,9 @@ He tardado diez años en escribir este libro.
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
 		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<discord />
+		<patreon>https://www.patreon.com/VictorWeismann/</patreon>
+		<bannerOpcional />
 		<wiki>https://mtwabv.fandom.com/wiki/My_Three_Wives_Are_Beautiful_Vampires_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -992,8 +1936,8 @@ He tardado diez años en escribir este libro.
 	        <nombreobra>我家老婆来自一千年前</nombreobra>
 	        <nombreobra>雨の日に拾ったのは野良猫系女剣士！？</nombreobra>
 		<autor>Flowers Haven't Bloomed 之画文化</autor>
-	    <sinopsis><![CDATA[Jiang Ho, una doncella de la dinastía Tang, viajó a través del tiempo y se apareció ante Xu Qing. Así, las manos del destino tejieron un amor que trascendió miles de años. Todo lo que una vez le fue familiar se convirtió en mera historia; sus seres queridos, amigos y enemigos de doce siglos atrás se habían convertido en cenizas silenciosas. Por suerte, el chico la ayudó con todo su corazón y la llevó a un nuevo viaje. Este mundo sería testigo de su dolor, confusión y alegría.
-	        ]]>
+	    <sinopsis>Jiang Ho, una doncella de la dinastía Tang, viajó a través del tiempo y se apareció ante Xu Qing. Así, las manos del destino tejieron un amor que trascendió miles de años. Todo lo que una vez le fue familiar se convirtió en mera historia; sus seres queridos, amigos y enemigos de doce siglos atrás se habían convertido en cenizas silenciosas. Por suerte, el chico la ayudó con todo su corazón y la llevó a un nuevo viaje. Este mundo sería testigo de su dolor, confusión y alegría.
+	        
 	    </sinopsis>
 		<meta>Jiang Ho, una doncella de la dinastía Tang, viajó en el tiempo ante Xu Qing. El amor trascendió mil años mientras el chico la ayudó con el corazón.</meta>
 		<valoracion>9.0</valoracion>
@@ -1001,21 +1945,22 @@ He tardado diez años en escribir este libro.
 		<categoria>Artes Marciales, Comedia, Drama, Fantasía, Romance, Shounen, Recuentos de Vida</categoria>
 		<keywords>Adaptado a manhua, Amantes predestinados, Barrera idiomática, Convivencia, Crecimiento de pareja, Crecimiento de personaje, Época actual, Intereses amorosos fuertes, Malentendidos, Mascotas, Matrimonio, Muerte de seres queridos, Pareja que discute, Pasado misterioso, Progresión de edad, Protagonista cariñoso, Protagonista femenina hermosa, Protagonista femenina marimacho, Protagonista maduro, Protagonista masculino, Protagonista que se enamora primero, Protagonista servicial, Romance lento, Romance tardío, Viaje en el tiempo, Vida en apartamento, Vida relajada</keywords>
 		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo.webp</imagen>
-	        <imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo1.webp</imagen>
-	        <imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo2.webp</imagen>
-	        <imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo4.webp</imagen>
-	        <imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo5.webp</imagen>
-	        <imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo6.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo1.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo2.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo4.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo5.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo6.webp</imagen>
+		<imagen>MyWifeisFromaThousandYearsAgo/MyWifeisFromaThousandYearsAgo7.webp</imagen>
 		<fechaCreacion>29/11/2025</fechaCreacion>
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones>Patreon Autor: https://www.patreon.com/VictorWeismann</observaciones>
+		<discord>https://discord.gg/4FETZAf</discord>
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1031,15 +1976,17 @@ He tardado diez años en escribir este libro.
 		<categoria>Acción, Aventura, Cultivo, Fantasía, Harén, Romance</categoria>
 		<keywords>Crecimiento de personaje, De débil a fuerte, Portador de espada, Protagonista determinado, Protagonista femenina hermosa, Protagonista genio, Protagonista masculino, Protagonista masculino atractivo, Protagonista tranquilo, Protagonista trabajador, Romance lento</keywords>
 		<imagen>PathtoDualCultivation/PathtoDualCultivation.webp</imagen>
+		<imagen>PathtoDualCultivation/PathtoDualCultivation02.webp</imagen>
+		<imagen>PathtoDualCultivation/PathtoDualCultivation03.webp</imagen>
 		<fechaCreacion>24/05/2025</fechaCreacion>
 		<ubicacion>Novela China</ubicacion>
 		<estado>Pausado</estado>
 		<traductor>Jabracadabra</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://dual-cultivation-novel.fandom.com/wiki/Path_to_Dual_Cultivation_(Prequel)</wiki>
 		<server>local</server>
 	</obra>
@@ -1061,12 +2008,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1077,8 +2024,8 @@ He tardado diez años en escribir este libro.
 		<nombreobra>악당들의 후원자가 되었다</nombreobra>
 		<autor>봄한방울 (Bom Hanbangul)</autor>
 		<sinopsis>
-			<![CDATA[Durante diez años apoyé a los villanos con la intención de reformarlos. Pero ahora me descubro a mí mismo como el gran artífice detrás de la oscuridad del reino…
-         ]]>
+			Durante diez años apoyé a los villanos con la intención de reformarlos. Pero ahora me descubro a mí mismo como el gran artífice detrás de la oscuridad del reino…
+         
 		</sinopsis>
 		<meta>Durante diez años apoyé a los villanos para reformarlos. Pero ahora me descubro a mí mismo como el gran artífice detrás de la oscuridad del reino.</meta>
 		<valoracion>9.0</valoracion>
@@ -1092,12 +2039,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1107,7 +2054,7 @@ He tardado diez años en escribir este libro.
 		<nombreobra>My College Teacher Is My Children's Mom</nombreobra>
 		<autor>J.K. luosen</autor>
 		<sinopsis>
-			<![CDATA[Después de que terminó el Gaokao, Lin Feng comenzó a trabajar en un bar para ganar dinero para la matrícula.
+			Después de que terminó el Gaokao, Lin Feng comenzó a trabajar en un bar para ganar dinero para la matrícula.
 
 			Inesperadamente, se encontró con una hermosa mujer que estaba ahogando sus penas, insistiendo en que Lin Feng bebiera con ella.
 
@@ -1124,7 +2071,7 @@ He tardado diez años en escribir este libro.
 			Lin Feng:???
 
 			Cuando Lin Feng vio a los cuatro bebés adorablemente despistados en la casa de Zhang Yuxi, supo que ya no podía huir más...
-		  ]]>
+		  
 		</sinopsis>
 		<meta>Tras una noche ebria después del Gaokao, Lin Feng descubre dos años después que su nueva tutora universitaria es la madre de sus cuatro bebés.</meta>
 		<valoracion>9.0</valoracion>
@@ -1136,12 +2083,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1152,38 +2099,41 @@ He tardado diez años en escribir este libro.
 		<nombreobra>時々ボソッとロシア語でデレる隣のアーリャさん</nombreobra>
 		<autor>SunSunSun</autor>
 		<sinopsis>
-			<![CDATA[Alya Mikhailovna Kujo, que asiste a una escuela privada, Seirei Gakuen, es una chica de secundaria con cabello plateado que se ve tan hermosa que cualquiera puede darse la vuelta si ella camina.
+			Alya Mikhailovna Kujo, que asiste a una escuela privada, Seirei Gakuen, es una chica de secundaria con cabello plateado que se ve tan hermosa que cualquiera puede darse la vuelta si ella camina.
 				El personaje principal, Masachika Kuze, que se sienta junto a Alya, es un estudiante desmotivado que solo duerme en la escuela y siempre se queja.
 				Por alguna razón, Alya a veces habla ruso. Sin embargo, Alyano sabía que Masachika también podía entender el ruso en su nivel nativo.
-		  ]]>
+		  
 		</sinopsis>
 		<meta>Alya es una chica de secundaria de cabello plateado que a veces le habla en ruso a Masachika, sin saber que él entiende perfectamente su idioma.</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novela Ligera</tipoobra>
 		<categoria>Academia, Comedia, Recuentos de Vida</categoria>
 		<keywords>Adaptado a anime, Adaptado a manga, Amigos de la infancia, Amor de infancia, Complejo de hermano, Consejo estudiantil, Crecimiento de personaje, Época actual, Hermanas menores, Hermanos, Historia tierna, Interés amoroso que se enamora primero, Intereses amorosos fríos, Intereses amorosos populares, Malentendidos, Obra premiada, Padres ausentes, Protagonista cariñoso, Protagonista femenina hermosa, Protagonista inteligente, Protagonista masculino, Protagonista masculino atractivo, Protagonista perezoso, Protagonista tranquilo, Punto de vista múltiple, Relaciones familiares complejas, Trauma pasado, Triángulos amorosos, Tsundere</keywords>
+		<imagen>Roshidere/Roshidere.webp</imagen>
+		<imagen>Roshidere/Roshidere_Behind_The_Scenes_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_10_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_11_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_1_Cover.webp</imagen>
 		<imagen>Roshidere/Roshidere_Light_Novel_Volume_1_Inner_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_1_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_2_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_3_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_4.0_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_4.5_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_5_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_6_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_7_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_8_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_9_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_10_Cover.webp</imagen>
-			<imagen>Roshidere/Roshidere_Light_Novel_Volume_11_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_2_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_3_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_3_Inner_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_4.0_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_4.5_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_5_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_6_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_7_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_8_Cover.webp</imagen>
+		<imagen>Roshidere/Roshidere_Light_Novel_Volume_9_Cover.webp</imagen>
 		<fechaCreacion>22/10/2025</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
 		<observaciones>Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san</observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<discord />
+		<bannerOpcional />
 		<wiki>https://roshidere.fandom.com/wiki/Alya_Sometimes_Hides_Her_Feelings_in_Russian_(Light_Novel)#Japanese</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1202,16 +2152,30 @@ He tardado diez años en escribir este libro.
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Acción, Aventura, Drama, Fantasía, Romance, Sobrenatural</categoria>
 		<keywords>Aspectos divinos, Atributos y defectos, Criaturas de pesadilla, Dioses y demonios, Hechizo de la pesadilla, Hilos del destino, Memorias y ecos, Mundo de los sueños, Núcleos de alma, Protagonista astuto, Supervivencia extrema, Verdaderos nombres</keywords>
-		<imagen>ShadowSlave/ShadowSlave.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave01.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave02.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave03.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave04.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave05.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave06.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave07.webp</imagen>
+		<imagen>ShadowSlave/ShadowSlave99.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-3obbtvzijptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-emqqvrxijptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-id4r2myijptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-jwvjgrxijptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-klyrpdxijptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-v1fpda0jjptf1.webp</imagen>
+		<imagen>ShadowSlave/fanart-covers-for-every-volume-v0-vfps9sxijptf1.webp</imagen>
 		<fechaCreacion>05/03/2025</fechaCreacion>
 		<ubicacion>Novela Inglesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Morlan</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://shadowslave.fandom.com/wiki/Shadow_Slave_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1224,12 +2188,12 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Best teacher Baek</nombreobra>
 		<nombreobra>Instructor Estrella, Maestro Baek</nombreobra>
 		<autor>Ganjjajang 간짜장</autor>
-		<sinopsis><![CDATA[Después de que su centro de qi es destruido, un instructor de artes marciales del Culto del Demonio de Sangre es asignado para aprender e investigar las artes marciales de cuatro maestros murim capturados. Sin embargo, cuando el Culto lo traiciona y decide matarlo, él contraataca y todos los miembros del Culto mueren, incluido él mismo
+		<sinopsis>Después de que su centro de qi es destruido, un instructor de artes marciales del Culto del Demonio de Sangre es asignado para aprender e investigar las artes marciales de cuatro maestros murim capturados. Sin embargo, cuando el Culto lo traiciona y decide matarlo, él contraataca y todos los miembros del Culto mueren, incluido él mismo
 	
 	Entonces, misteriosamente, despierta en el cuerpo de Baek Suryong, un joven instructor de artes marciales en una zona rural con una enfermedad que lo matará en tres años. Se da cuenta de que las artes marciales que aprendió son la clave para curar la enfermedad de su nuevo cuerpo, pero para lograrlo, necesitaba dinero. Mucho dinero.
 	
 	Baek Suryong se embarca así en un viaje para convertirse en el Instructor Estrella de la Academia de Artes Marciales Dragón Azur y ganar suficiente dinero para salvar su vida. Quizás incluso logre educar a algunos niños en el camino...
-	      ]]>
+	      
 		</sinopsis>
 		<meta>Tras la traición y muerte de su secta, un instructor reencarna en Baek Suryong con una enfermedad mortal y debe volverse instructor para ganar dinero y salvarse.</meta>
 		<valoracion>9.0</valoracion>
@@ -1243,11 +2207,11 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Koko / Silver_shadow</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://webtoon.fandom.com/wiki/Best_Teacher_Baek</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1257,9 +2221,9 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Shimoneta</nombreobra>
 		<autor>Akagi Hirotaka</autor>
 		<sinopsis>
-			<![CDATA[Hace dieciséis años, con la aprobación de la Ley de Orden Público y Moral, el lenguaje soez fue objeto de luto por parte del público. El protagonista, Okuma Tanukichi, se matricula en una de las mejores escuelas de moral pública de Japón, pero nada más entrar en la escuela es reclutado por Ayame Kajou, la fundadora de la organización antisocial «SOX». 
+			Hace dieciséis años, con la aprobación de la Ley de Orden Público y Moral, el lenguaje soez fue objeto de luto por parte del público. El protagonista, Okuma Tanukichi, se matricula en una de las mejores escuelas de moral pública de Japón, pero nada más entrar en la escuela es reclutado por Ayame Kajou, la fundadora de la organización antisocial «SOX». 
 	  Tanukichi que se ha convertido en miembro de «SOX» después de que se le hayan extirpado sus debilidades, cooperará en un atentado terrorista para conseguir respaldar a Anna, la presidenta del consejo estudiantil que siente un gran deseo por él, pero… ¿Es una prisión? ¿O es un Harén?
-  ]]>
+  
 		</sinopsis>
 		<meta>Tras la aprobación de la Ley de Orden Público y Moral, Tanukichi es reclutado por la fundadora de la organización antisocial SOX para un inusual atentado terrorista.</meta>
 		<valoracion>9.0</valoracion>
@@ -1267,16 +2231,27 @@ He tardado diez años en escribir este libro.
 		<categoria>Acción, Adulto, Comedia, Ecchi, Maduro, Harén, Romance, Vida Escolar</categoria>
 		<keywords>Adaptado a anime, Adaptado a manga, Amor obsesivo, Consejo estudiantil, Desnudez, Época actual, Protagonista masculino, Terroristas, Yandere</keywords>
 		<imagen>Shimoneta/Shimoneta.webp</imagen>
+		<imagen>Shimoneta/Shimoneta02.webp</imagen>
+		<imagen>Shimoneta/Shimoneta03.webp</imagen>
+		<imagen>Shimoneta/Shimoneta04.webp</imagen>
+		<imagen>Shimoneta/Shimoneta05.webp</imagen>
+		<imagen>Shimoneta/Shimoneta06.webp</imagen>
+		<imagen>Shimoneta/Shimoneta07.webp</imagen>
+		<imagen>Shimoneta/Shimoneta08.webp</imagen>
+		<imagen>Shimoneta/Shimoneta09.webp</imagen>
+		<imagen>Shimoneta/Shimoneta10.webp</imagen>
+		<imagen>Shimoneta/Shimoneta11.webp</imagen>
+		<imagen>Shimoneta/Shimoneta12.webp</imagen>
 		<fechaCreacion>15/10/2025</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Finalizado</estado>
 		<traductor>[MK and Defous123],Gran Maestro</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>	
@@ -1286,8 +2261,8 @@ He tardado diez años en escribir este libro.
 	        <nombreobra>Supreme Husband System! and Supreme Wife System!</nombreobra>
 	        <nombreobra>원래 언어:</nombreobra>
 		<autor>Ongoing_Expert</autor>
-		<sinopsis><![CDATA[Tras una catástrofe que asoló el mundo, aparecen revelaciones sobre desastres futuros y la posibilidad de salvación en otro mundo; la trama sigue a personajes que despiertan con poderes, enfrentan diez calamidades profetizadas y buscan formas de salvar su mundo mientras se desarrollan relaciones personales y conflictos sociales
-	        ]]>
+		<sinopsis>Tras una catástrofe que asoló el mundo, aparecen revelaciones sobre desastres futuros y la posibilidad de salvación en otro mundo; la trama sigue a personajes que despiertan con poderes, enfrentan diez calamidades profetizadas y buscan formas de salvar su mundo mientras se desarrollan relaciones personales y conflictos sociales
+	        
 	    </sinopsis>
 		<meta>Tras una catástrofe mundial, personajes con nuevos poderes enfrentan diez calamidades profetizadas para buscar la salvación de su mundo.</meta>
 		<valoracion>9.0</valoracion>
@@ -1300,12 +2275,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Inglesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>	
 	<obra>
@@ -1328,11 +2303,11 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Finalizado</estado>
 		<traductor>Jabracadabra</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://doblaje-espana.fandom.com/es/wiki/Suzume</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1364,11 +2339,11 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://the-eminence-in-shadow.fandom.com/wiki/The_Eminence_in_Shadow_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1381,12 +2356,12 @@ He tardado diez años en escribir este libro.
 		<nombreobra>I Am the Only Male Soldier in the Unit</nombreobra>
 		<autor>TwoJ</autor>
 		<sinopsis>
-			<![CDATA[«¿Te enviaré a una unidad femenina?»
+			«¿Te enviaré a una unidad femenina?»
 			Jaejoon se ve obligado a unirse a un programa de prueba de unidades mixtas en el que es el único hombre en una unidad compuesta únicamente por mujeres.
 			¿Podrá completar su servicio militar en este ambiente lleno de tentaciones y desafíos?
 	  
 			Una mezcla de humor, drama y situaciones complicadas que surgen cuando un hombre se encuentra en medio de un entorno inesperado y dinámico.
-		]]>
+		
 		</sinopsis>
 		<meta>Jaejoon es el único hombre en una unidad militar compuesta por mujeres tras unirse a un programa de prueba de unidades mixtas.</meta>
 		<valoracion>9.0</valoracion>
@@ -1400,10 +2375,10 @@ He tardado diez años en escribir este libro.
 		<traductor>Leo</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1414,7 +2389,7 @@ He tardado diez años en escribir este libro.
 		<nombreobra>아카데미 플레이어를 죽였다</nombreobra>
 		<autor>사람살려</autor>
 		<sinopsis>
-			<![CDATA[Hace tres años, me desperté como un personaje de juego; como un personaje secundario, por cierto.
+			Hace tres años, me desperté como un personaje de juego; como un personaje secundario, por cierto.
 
 				Leyendas heroicas de Arhan.
 				El protagonista también era un reencarnador como yo, así que decidimos seguir juntos y llevar la historia hasta el final. Pero algo no iba bien... Dijo que no sabía nada del juego, pero esto...
@@ -1426,7 +2401,7 @@ He tardado diez años en escribir este libro.
 				Regresé al pasado; a hace tres años.
 				Ahora es mi oportunidad. Debo matar al jugador.
 				Regresé al pasado; a hace 3 años. Ahora es mi oportunidad. Debo matar al jugador.
-		  ]]>
+		  
 		</sinopsis>
 		<meta>Reencarnado como secundario en un juego, un personaje regresa al pasado tras la muerte del jugador con la única misión de matarlo.</meta>
 		<valoracion>9.0</valoracion>
@@ -1438,11 +2413,11 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://i-killed-the-player-of-the-academy.fandom.com/wiki/I_Killed_the_Player_of_the_Academy_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1453,13 +2428,13 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Apocalypse’s S-Class Zombie</nombreobra>
 		<autor>Gaetol[개톨]</autor>
 		<sinopsis>
-			<![CDATA[Al ser mordida por un zombi, también me convertí en una especie de zombi. Pero entonces,
+			Al ser mordida por un zombi, también me convertí en una especie de zombi. Pero entonces,
   [Regeneración de Zombie (Pasivo)]
   Clase S
   Una habilidad de recuperación inusual que solo tienen los zombis. El usuario de la habilidad recupera naturalmente todo el daño infligido en el cuerpo.
   Esto es totalmente como ganar la lotería, ¿verdad?
   ...... eso es lo que pensé, hasta hace una hora..
-  ]]>
+  
 		</sinopsis>
 		<meta>Tras ser mordida por un zombi y adquirir la pasiva de regeneración Clase S para curar todo daño, cree que ganó la lotería hasta que ocurren sorpresas.</meta>
 		<valoracion>9.0</valoracion>
@@ -1471,12 +2446,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Finalizado</estado>
 		<traductor>Gran Maestro</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>
@@ -1486,10 +2461,10 @@ He tardado diez años en escribir este libro.
 		<nombreobra>My Wives Are Beautiful Demons</nombreobra>
 		<autor>Gaetol[개톨]</autor>
 		<sinopsis>
-			<![CDATA[Vergil, un joven de 21 años, lleva una vida aparentemente sencilla en un mundo un tanto conflictivo. Su familia también es sencilla: aunque su padre ya no está vivo, su madre siempre ha estado a su lado, a pesar de ser un poco... agresiva. Pero eso ya no es tan raro hoy en día, ¿verdad?
+			Vergil, un joven de 21 años, lleva una vida aparentemente sencilla en un mundo un tanto conflictivo. Su familia también es sencilla: aunque su padre ya no está vivo, su madre siempre ha estado a su lado, a pesar de ser un poco... agresiva. Pero eso ya no es tan raro hoy en día, ¿verdad?
 	Todo cambia drásticamente cuando Vergil, tras una muerte inesperada, despierta convertido en demonio. Para su sorpresa, descubre que se ha casado accidentalmente con hermosas demonios de sangre pura.
 	Ahora, descubrirá cómo funciona realmente el mundo desde la perspectiva de un demonio.
-  ]]>
+  
 		</sinopsis>
 		<meta>ras una muerte inesperada, Vergil despierta convertido en demonio y descubre que se ha casado accidentalmente con hermosas demonios de sangre pura.</meta>
 		<valoracion>9.0</valoracion>
@@ -1507,9 +2482,9 @@ He tardado diez años en escribir este libro.
 		<traductor>Leo</traductor>
 		<adulto>adulto</adulto>
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://my-wives-are-beautiful-demons.fandom.com/wiki/My_Wives_are_Beautiful_Demons_Wiki</wiki>
 		<server>io-pdfs</server>
 	</obra>
@@ -1519,9 +2494,9 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Bad Born Blood</nombreobra>
 		<nombreobra>배드 본 블러드</nombreobra>
 		<autor>백수귀족 (Baeksu Noble)</autor>
-		<sinopsis><![CDATA[El hogar de la humanidad ya no es la Tierra. Los viajes interestelares son ahora comunes, y la tecnología ha reemplazado a la sangre y la carne.
+		<sinopsis>El hogar de la humanidad ya no es la Tierra. Los viajes interestelares son ahora comunes, y la tecnología ha reemplazado a la sangre y la carne.
 			Luka, quien creció en los barrios bajos, cumplió quince años y se presentó a los exámenes de selección, donde descubre que su aptitud es la de la «Guardia Imperial».
-		      ]]>
+		      
 		</sinopsis>
 		<meta>En un futuro interestelar, Luka crece en los barrios bajos y descubre que su aptitud en los exámenes de selección es la de la Guardia Imperial.</meta>
 		<valoracion>9.0</valoracion>
@@ -1530,16 +2505,18 @@ He tardado diez años en escribir este libro.
 		<keywords>Adaptado a manhwa, Ambientación futurista, Distopía, Experiencia cercana a la muerte, Imperios, Interés amoroso se enamora, Lealtades conflictivas, Lucha por el poder, Militar, Muerte de seres queridos, Nobles, Oscuro, Personajes crueles, Política, Primer protagonista masculino, Protagonista adoptado, Protagonista apático, Protagonista astuto, Protagonista trabajador, Romance lento, Subtrama romántica, Traición</keywords>
 		<imagen>BadBornBlood/Bad-Born-Blood.webp</imagen>
 		<imagen>BadBornBlood/Bad-Born-Blood2.webp</imagen>
+		<imagen>BadBornBlood/Bad-Born-Blood3.webp</imagen>
+		<imagen>BadBornBlood/Bad-Born-Blood4.webp</imagen>
 		<fechaCreacion>15/01/2026</fechaCreacion>
 		<ubicacion>Novela Coreana</ubicacion>
-		<estado>Activo</estado>
+		<estado>Finalizado</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
 	<obra>	
@@ -1551,12 +2528,12 @@ He tardado diez años en escribir este libro.
 		<nombreobra>El Prodigio Marcial Que Crece Mediante La Depredación</nombreobra>
 		<nombreobra>A Martial Arts Genius Who Grows Through Foraging</nombreobra>
 		<autor>글가회</autor>
-		<sinopsis><![CDATA[Aunque mi dantian había sido destruido y me habían llevado hasta las puertas de la muerte, estaba bien.
+		<sinopsis>Aunque mi dantian había sido destruido y me habían llevado hasta las puertas de la muerte, estaba bien.
 			Porque tarde o temprano tenía que aparecer una oportunidad.
 			
 			[¿Deseas depredar?]
 			Sí, mientras no me rinda.
-			      ]]>
+			      
 		</sinopsis>
 		<meta>Tras la destrucción de su dantian y estar al borde de la muerte, recibe una oportunidad al aceptar la opción de depredar para sobrevivir.</meta>
 		<valoracion>9.0</valoracion>
@@ -1568,12 +2545,12 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
-		<wiki></wiki>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
+		<wiki />
 		<server>io-pdfs</server>
 	</obra>
     <obra>	
@@ -1587,12 +2564,12 @@ He tardado diez años en escribir este libro.
         <nombreobra>Tú, como mi caballero</nombreobra>
         <nombreobra>Mi caballero eres tú</nombreobra>
         <autor>Rintaro Hatake</autor>
-        <sinopsis><![CDATA[En este mundo, las personas conocidas como informadores venden sus habilidades sobrenaturales para utilizarlas en conflictos armados. 
+        <sinopsis>En este mundo, las personas conocidas como informadores venden sus habilidades sobrenaturales para utilizarlas en conflictos armados. 
 
             Cuando Tsuhima Rindou, un informático corriente, acepta ayudar a una noble caída en desgracia llamada Holly a desertar del Imperio Balga, no espera nada más que una típica misión de escolta. Pero su cliente es mucho más de lo que dice, y Balga está decidido a mantenerla dentro de sus fronteras, enviando a su ejército y a varios informadores de élite para atrapar al dúo por todos los medios. 
 
             ¿Podrán estas dos almas, unidas únicamente por un acuerdo comercial, sobrevivir al agotador viaje y a la red de conspiraciones que les espera?
-            ]]>
+            
         </sinopsis>
 		<meta>Un informático corriente acepta escoltar a una noble que huye del Imperio Balga, desencadenando una peligrosa persecución contra élites y ejércitos.</meta>
         <valoracion>9.0</valoracion>
@@ -1605,11 +2582,11 @@ He tardado diez años en escribir este libro.
         <ubicacion>Novela Japonesa</ubicacion>
         <estado>Activo</estado>
         <traductor>Gran Maestro</traductor>
-        <adulto></adulto>
+        <adulto />
         <aprobadaAutor>no</aprobadaAutor>
-        <observaciones></observaciones>
-        <discord></discord>
-        <bannerOpcional></bannerOpcional>
+        <observaciones />
+        <discord />
+        <bannerOpcional />
         <wiki>https://drama-radio-fanon.fandom.com/wiki/Thou,_as_my_knight</wiki>
 		<server>io-pdfs</server>
     </obra>	
@@ -1622,37 +2599,37 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Otonari no Tenshi-sama ni Itsu no Ma ni ka Dame Ningen ni Sareteita Ken</nombreobra>
 		<nombreobra>La enviada por el ángel de al lado me ha convertido en un caso perdido</nombreobra>
 		<autor>佐伯さん (Saekisan)</autor>
-		<sinopsis><![CDATA[Mahiru es una chica preciosa a la que sus compañeros llaman 'ángel'. Además de ser una alumna ejemplar con calificaciones perfectas, es una atleta excepcional. Amane, un chico promedio y bastante desordenado, nunca le había prestado mucha atención a su vecina, a pesar de ir a la misma escuela. Sin embargo, todo cambia cuando ve a Mahiru sentada sola en un parque bajo la lluvia y decide prestarle su paraguas. Para devolverle el favor, ella se ofrece a ayudarlo con las tareas del hogar, y así comienza a florecer una relación lenta y dulce entre dos vecinos que antes eran extraños.
-      		]]>
+		<sinopsis>Mahiru es una chica preciosa a la que sus compañeros llaman 'ángel'. Además de ser una alumna ejemplar con calificaciones perfectas, es una atleta excepcional. Amane, un chico promedio y bastante desordenado, nunca le había prestado mucha atención a su vecina, a pesar de ir a la misma escuela. Sin embargo, todo cambia cuando ve a Mahiru sentada sola en un parque bajo la lluvia y decide prestarle su paraguas. Para devolverle el favor, ella se ofrece a ayudarlo con las tareas del hogar, y así comienza a florecer una relación lenta y dulce entre dos vecinos que antes eran extraños.
+      		
 		</sinopsis>
 		<meta>Cuando el desordenado Amane le presta su paraguas a Mahiru, la chica perfecta de la escuela, ella comienza a ayudarle con las tareas del hogar.</meta>
 		<valoracion>9.0</valoracion>
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Comedia, Iyashikei, Rom-Com, Romance, Romance Escolar, Recuentos de Vida, Vida Escolar</categoria>
 		<keywords>Adaptado a anime, Adaptado a manga, Convivencia, Protagonista de fondo, Protagonista femenina hermosa, Romance lento, Vecinos</keywords>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v01.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v02.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v03.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v04.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v05.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v05_5.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v06.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v07.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v08.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v08_5.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v09.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v10.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v11.webp</imagen>
-		<imagen>OtonariNoTenshiSama/OtonariNoTenshiSama_v11_5.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img010.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img011.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img020.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img030.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img040.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img050.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img055.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img060.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img070.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img080.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img085.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img090.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img100.webp</imagen>
+		<imagen>OtonariNoTenshiSama/book_img115.webp</imagen>
 		<fechaCreacion>22/01/2026</fechaCreacion>
 		<ubicacion>Novela Japonesa</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Leo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
+		<observaciones />
 		<discord>https://discord.com/invite/otonari</discord>
-		<bannerOpcional></bannerOpcional>
+		<bannerOpcional />
 		<wiki>https://otonari-no-tenshi.fandom.com/es/wiki/Wiki_otonari_no_tenshi</wiki>
 		<server>io-pdfs</server>
 	</obra>	
@@ -1667,9 +2644,9 @@ He tardado diez años en escribir este libro.
 		<nombreobra>Jeonjijeok Dokja Sijeom</nombreobra>
 		<nombreobra>Zenchiteki na Dokusha no Shiten kara</nombreobra>
 		<autor>singNsong / sing N song / 싱숑</autor>
-		<sinopsis><![CDATA[Mátense dentro del tiempo límite o mueran. Es sólo otro viaje nocturno en tren, hasta que los pasajeros reciben una orden que no pueden desobedecer. Se desata un caos total, pero el oficinista Dokja Kim sólo siente una inquietante calma. ¡Él sabe exactamente cómo se desarrollará esto! 
+		<sinopsis>Mátense dentro del tiempo límite o mueran. Es sólo otro viaje nocturno en tren, hasta que los pasajeros reciben una orden que no pueden desobedecer. Se desata un caos total, pero el oficinista Dokja Kim sólo siente una inquietante calma. ¡Él sabe exactamente cómo se desarrollará esto! 
 	El vagón de metro, las reacciones de los pasajeros, incluso la extraña criatura que aparece de repente para supervisar este sádico escenario... todo está sacado directamente de su historia favorita, una novela online tan oscura que él es su único lector. Como el único que sabe hacia dónde se dirige la trama, Dokja deberá utilizar sus conocimientos para sobrevivir al apocalipsis que se avecina.
-		]]>
+		
 		</sinopsis>
 		<meta>Tras recibir una orden letal en el tren, el único lector de una novela oscura usa su conocimiento de la trama para sobrevivir al apocalipsis.</meta>
 		<valoracion>9.0</valoracion>
@@ -1684,11 +2661,11 @@ He tardado diez años en escribir este libro.
 		<ubicacion>Novela Coreana</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Gran Maestro</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://omniscient-readers-viewpoint.fandom.com/wiki/Omniscient_Reader%E2%80%99s_Viewpoint_Wiki</wiki>
 	</obra>
 	<obra>
@@ -1708,20 +2685,25 @@ He tardado diez años en escribir este libro.
 		<tipoobra>Novela Web</tipoobra>
 		<categoria>Drama, Romance, Acción, Comedia, Fantasía, Aventura, Ecchi, Sobrenatural, Magia</categoria>
 		<keywords>Adaptado a manhua, Ambiente europeo, Amor familiar, Caballeros, Cazadores de dragones, Cuidado de niños, Dragones, Embarazo, Enemigos se convierten en amantes, Gemelos, Intereses amorosos fuertes, Intereses amorosos mayores, Matrimonio, Niños lindos, Ocultar identidad verdadera, Padres cariñosos, Pareja poderosa, Pareja que discute, Primera relación sexual, Protagonista femenina hermosa, Protagonista masculino, Protagonista masculino atractivo, Realeza, Relación humano-no humano, Tsundere, Viaje en el tiempo, Violación, Violación inversa</keywords>
-		<imagen>CDMNQTMHC/CallateDragonaMalvada.webp</imagen>
-		<imagen>CDMNQTMHC/shut-up-evil-dragon-i-dont-want-to-raise-a-child-with-v0_1.webp</imagen>
-		<imagen>CDMNQTMHC/shut-up-evil-dragon-i-dont-want-to-raise-a-child-with-v0_2.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon01.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon02.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon03.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon04.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon05.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon06.webp</imagen>
+		<imagen>CDMNQTMHC/ShutUpMalevolentDragon07.webp</imagen>
 		<fechaCreacion>24/08/2025</fechaCreacion>
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Tavo</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>si</aprobadaAutor>
-		<observaciones></observaciones>
+		<observaciones />
 		<discord>https://discord.gg/Mk2qb65AxA</discord>
-		<bannerOpcional>discord_oficial_jabrascan.jpg</bannerOpcional>
+		<bannerOpcional>discord_oficial_jabrascan.webp</bannerOpcional>
 		<wiki>https://shut-up-evil-dragon-i-dont-want-to-raise-a-child.fandom.com/wiki/Shut_up_Evil_Dragon_I_don%27t_want_to_have_any_more_kids_with_you!_Wiki</wiki>
 		<server>local</server>
+		<pendejos>https://manhwacenter.net/manwhas/callate-dragona-malvada-ya-no-quiero-criar-hijos-contigo</pendejos>
 	</obra>
 	<obra>
 		<visible>si</visible>
@@ -1740,15 +2722,16 @@ He tardado diez años en escribir este libro.
 		<categoria>Acción, Aventura, Comedia, Cultivo, Fantasía, Harén, Realidad Virtual, Videojuegos (VRMMORPG)</categoria>
 		<keywords>Cultivo, De débil a fuerte, De fuerte a muy fuerte, Dragones y bestias mitológicas, Enfermedad crónica, Harén, Juego de realidad virtual (VRMMORPG), Multiples dimensiones, Música, Protagonista masculino, Reencarnaciones, Romance</keywords>
 		<imagen>CultivationOnline/CultivationOnline.webp</imagen>
+		<imagen>CultivationOnline/CultivationOnline01.webp</imagen>
 		<fechaCreacion>24/08/2025</fechaCreacion>
 		<ubicacion>Novela China</ubicacion>
 		<estado>Activo</estado>
 		<traductor>Jabracadabra</traductor>
-		<adulto></adulto>
+		<adulto />
 		<aprobadaAutor>no</aprobadaAutor>
-		<observaciones></observaciones>
-		<discord></discord>
-		<bannerOpcional></bannerOpcional>
+		<observaciones />
+		<discord />
+		<bannerOpcional />
 		<wiki>https://cultivation-online.fandom.com/wiki/Cultivation_Online_Wiki</wiki>
 		<server>local</server>
 	</obra>

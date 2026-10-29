@@ -57,9 +57,9 @@ function parseObras(xmlText) {
       const imgPath = imagenes[0];
       const lastDotIndex = imgPath.lastIndexOf('.');
       if (lastDotIndex !== -1) {
-        image = `/img/${imgPath.substring(0, lastDotIndex)}-300w${imgPath.substring(lastDotIndex)}`;
+        image = `https://img.jabrascan.net/${imgPath.substring(0, lastDotIndex)}-300w${imgPath.substring(lastDotIndex)}`;
       } else {
-        image = `/img/${imgPath}`;
+        image = `https://img.jabrascan.net/${imgPath}`;
       }
     }
 
@@ -69,7 +69,7 @@ function parseObras(xmlText) {
       if (lastDotIndex !== -1) {
         imgOptimizada = `${imgPath.substring(0, lastDotIndex)}-300w${imgPath.substring(lastDotIndex)}`;
       }
-      return `          <img src="/img/${imgOptimizada}" alt="${titlePrincipal} ilustración ${i+1}" loading="lazy" decoding="async" width="140" height="210">`;
+      return `          <img src="https://img.jabrascan.net/${imgOptimizada}" alt="${titlePrincipal} ilustración ${i+1}" loading="lazy" decoding="async" width="140" height="210">`;
     }).join("\n");
 
     // Categories i Keywords JSON
