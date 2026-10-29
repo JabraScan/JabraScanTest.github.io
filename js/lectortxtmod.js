@@ -15,6 +15,7 @@
  *    - [SUP]...[/SUP] -> Superíndice (Superscript, tamaño reducido y desplazamiento vertical)
  *    - [EM]...[/EM]   -> Énfasis (Cursiva con color específico #0056b3)
  */
+export class TxtReaderEngine {
   /**
    * Diccionario centralizado de estilos (basado en Word)
    */
@@ -25,8 +26,6 @@
     'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
     'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
   };
-
-export class TxtReaderEngine {
 
   /**
    * @param {Object} options
