@@ -194,17 +194,60 @@ export class TxtReaderEngine {
     return { type: 'BODY', text: rawParagraph.trim() };
   }
 
+/**
+   * Parsea el texto extrayendo bloques multilínea (H1, H2, H3, CITA) antes de trocear por saltos de línea
+   */
+  _parseRawParagraphs(text) {
+    const normalized = text.replace(/\r\n/g, '\n');
+    const paragraphs = [];
+    const blockRegex = /\[(H1|H2|H3|CITA)\]([\s\S]*?)\[\/\1\]/g;
+    
+    let lastIndex = 0;
+    let match;
+
+    while ((match = blockRegex.exec(normalized)) !== null) {
+      // Texto previo fuera de etiquetas (procesado por líneas normales)
+      const textBefore = normalized.slice(lastIndex, match.index);
+      if (textBefore) {
+        textBefore.split('\n').forEach(line => {
+          paragraphs.push({ type: 'BODY', text: line });
+        });
+      }
+
+      // Bloque encontrado (mantiene su tipo y unifica los saltos internos para el word-wrap)
+      paragraphs.push({ 
+        type: match[1], 
+        text: match[2].trim().replace(/\n/g, ' ') 
+      });
+
+      lastIndex = blockRegex.lastIndex;
+    }
+
+    // Texto restante tras el último bloque
+    const textAfter = normalized.slice(lastIndex);
+    if (textAfter) {
+      textAfter.split('\n').forEach(line => {
+        paragraphs.push({ type: 'BODY', text: line });
+      });
+    }
+
+    return paragraphs;
+  }
+
+  /**
+   * Algoritmo de paginación A4 adaptado para soportar bloques multilínea
+   */
   _paginate(text) {
     const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
     const maxContentHeightPx = this.cmToPx(this.CONTENT_HEIGHT_CM);
 
     const lines = [];
-    const rawParagraphs = text.replace(/\r\n/g, '\n').split('\n');
+    const rawParagraphs = this._parseRawParagraphs(text);
 
     for (let pIndex = 0; pIndex < rawParagraphs.length; pIndex++) {
-      const rawP = rawParagraphs[pIndex];
+      const { type, text: cleanParagraph } = rawParagraphs[pIndex];
       
-      if (rawP.trim() === '') {
+      if (cleanParagraph.trim() === '') {
         const bodyCfg = TxtReaderEngine.STYLE_CONFIGS['BODY'];
         const effectiveSizePt = bodyCfg.sizePt * (this.fontScaleFactor || 1.0);
         const hPx = this.ptToPx(effectiveSizePt) * this.LINE_HEIGHT_RATIO;
@@ -212,7 +255,6 @@ export class TxtReaderEngine {
         continue;
       }
 
-      const { type, text: cleanParagraph } = this._parseBlockTag(rawP);      
       const style = TxtReaderEngine.STYLE_CONFIGS[type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
       const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
       const fontSizePx = this.ptToPx(effectiveSizePt);
