@@ -19,15 +19,13 @@ export class TxtReaderEngine {
   /**
    * Diccionario centralizado de estilos (basado en Word)
    */
-  static get STYLE_CONFIGS() {
-    return {
-      'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
-      'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
-      'H3':   { sizePt: 12, bold: true,  align: 'left',   spaceBefore: 8,  spaceAfter: 4,  color: '#0056b3' },
-      'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
-      'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
-    };
-  }
+  static STYLE_CONFIGS = {
+    'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
+    'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
+    'H3':   { sizePt: 12, bold: true,  align: 'left',   spaceBefore: 8,  spaceAfter: 4,  color: '#0056b3' },
+    'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
+    'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
+  };
 
   /**
    * @param {Object} options
@@ -36,7 +34,6 @@ export class TxtReaderEngine {
    * @param {number} [options.dpi=96] - Resolución para la conversión cm -> px (por defecto 96 DPI)
    * @param {string} options.clave - Clave única de la obra para las URLs
    * @param {integer} options.capitulo
-   * @param {boolean} [options.isInfiniteScroll=false] - Activar modo de scroll infinito
    */
   constructor(options) {
     if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");[cite: 3]
