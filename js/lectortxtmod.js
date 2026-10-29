@@ -1,7 +1,7 @@
 /**
  * TxtReaderEngine.js
  * Motor de lectura de archivos TXT para SPA en Canvas A4
- * Compatible con la estructura y controles de navegación de PDF.js + Scroll Infinito
+ * Compatible con Modo Paginado y Modo Scroll Infinito (Flujo Continuo Real)
  */
 export class TxtReaderEngine {
   static STYLE_CONFIGS = {
@@ -32,10 +32,10 @@ export class TxtReaderEngine {
     this.dpi = options.dpi || 96;
     this.scale = 1.0; 
     this.pages = [];  
+    this.allLines = []; // Almacena todas las líneas para el scroll continuo
     this.currentPageIndex = 0;
     
-    // NUEVO: Control de Scroll Infinito
-    this.isInfiniteScroll = options.isInfiniteScroll || true;
+    this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : true;
 
     this.config = null;
     this.resources = {
@@ -45,6 +45,10 @@ export class TxtReaderEngine {
 
     this.linkOverlay = null;
     this._initLinkOverlay();
+    
+    if (this.container && this.isInfiniteScroll) {
+      this.container.style.overflowY = 'auto';
+    }
   }
 
   _updateResponsiveLayoutMetrics() {
@@ -86,6 +90,7 @@ export class TxtReaderEngine {
   }
 
   async load(txtContent, configUrl) {
+    this.lastTextContent = txtContent;
     let fetchedConfig = {};
 
     if (configUrl && typeof configUrl === 'string') {
@@ -108,7 +113,7 @@ export class TxtReaderEngine {
     };
 
     await this._loadResources();
-    this._paginate(txtContent);
+    this._processText(txtContent);
     this.currentPageIndex = 0;
 
     this.fitToContainer();
@@ -121,7 +126,7 @@ export class TxtReaderEngine {
       if (currentWidth !== lastWidth && !isZoomed) {
         lastWidth = currentWidth;
         this._updateResponsiveLayoutMetrics();
-        this._paginate(txtContent);
+        this._processText(txtContent);
         this.fitToContainer();
       }
     });
@@ -176,7 +181,10 @@ export class TxtReaderEngine {
     return { type: 'BODY', text: rawParagraph.trim() };
   }
 
-  _paginate(text) {
+  /**
+   * Procesa el texto generando las líneas y decidiendo si pagina o genera flujo continuo
+   */
+  _processText(text) {
     const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
     const maxContentHeightPx = this.cmToPx(this.CONTENT_HEIGHT_CM);
 
@@ -251,28 +259,33 @@ export class TxtReaderEngine {
       }
     }
 
+    this.allLines = lines;
+
+    // Si es modo paginado, separamos en páginas A4 estrictas
     this.pages = [];
-    let currentLinesPage = [];
-    let currentPageHeight = 0;
+    if (!this.isInfiniteScroll) {
+      let currentLinesPage = [];
+      let currentPageHeight = 0;
 
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      if (currentPageHeight + line.height > maxContentHeightPx && currentLinesPage.length > 0) {
-        this.pages.push(currentLinesPage);
-        currentLinesPage = [line];
-        currentPageHeight = line.height;
-      } else {
-        currentLinesPage.push(line);
-        currentPageHeight += line.height;
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (currentPageHeight + line.height > maxContentHeightPx && currentLinesPage.length > 0) {
+          this.pages.push(currentLinesPage);
+          currentLinesPage = [line];
+          currentPageHeight = line.height;
+        } else {
+          currentLinesPage.push(line);
+          currentPageHeight += line.height;
+        }
       }
-    }
 
-    if (currentLinesPage.length > 0) {
-      this.pages.push(currentLinesPage);
-    }
+      if (currentLinesPage.length > 0) {
+        this.pages.push(currentLinesPage);
+      }
 
-    if (this.pages.length === 0) {
-      this.pages.push([]);
+      if (this.pages.length === 0) {
+        this.pages.push([]);
+      }
     }
   }
 
@@ -345,9 +358,6 @@ export class TxtReaderEngine {
     ctx.drawImage(img, drawX, drawY, Math.round(drawW), Math.round(drawH));
   }
 
-  /**
-   * Método selector de renderizado (Paginado vs Scroll Infinito)
-   */
   render(pageNum = 1, scale = this.scale) {
     if (this.isInfiniteScroll) {
       this.renderInfiniteScroll(scale);
@@ -357,19 +367,26 @@ export class TxtReaderEngine {
   }
 
   /**
-   * NUEVO: Renderiza todas las páginas de forma consecutiva verticalmente en un solo canvas largo
+   * Renderizado continuo real: un solo lienzo vertical con una cabecera arriba, todo el texto en flujo, y pie al final.
    */
   renderInfiniteScroll(scale = this.scale) {
     this.scale = scale;
-    this.currentPageIndex = 0; // Se puede ajustar con un detector de scroll si se desea
 
     const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-    const singlePageHeightPx = this.cmToPx(this.PAGE_HEIGHT_CM);
-    const totalPages = this.pages.length;
-    const totalHeightPx = singlePageHeightPx * totalPages;
+    const marginPx = this.cmToPx(this.MARGIN_CM);
+    const textStartX = this.cmToPx(this.MARGIN_X_CM);
+    const textStartY = this.cmToPx(this.MARGIN_Y_CM);
+
+    // Calcular altura total del contenido de todas las líneas combinadas
+    let totalTextHeight = 0;
+    this.allLines.forEach(line => {
+      totalTextHeight += line.height;
+    });
+
+    // Altura total del canvas = márgenes superior e inferior + altura total del texto
+    const totalHeightPx = textStartY + totalTextHeight + marginPx;
     const dpr = window.devicePixelRatio || 1;
 
-    // Redimensionar el canvas para que quepan todas las páginas hacia abajo
     this.canvas.width = Math.round(baseWidthPx * this.scale * dpr);
     this.canvas.height = Math.round(totalHeightPx * this.scale * dpr);
 
@@ -380,70 +397,68 @@ export class TxtReaderEngine {
     ctx.save();
     ctx.scale(this.scale * dpr, this.scale * dpr);
 
-    // Fondo general blanco para todo el scroll
+    // Fondo blanco general
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, baseWidthPx, totalHeightPx);
 
-    const marginPx = this.cmToPx(this.MARGIN_CM);
-    const textStartX = this.cmToPx(this.MARGIN_X_CM);
-    const textStartY = this.cmToPx(this.MARGIN_Y_CM);
+    // Cabecera única al inicio del documento
+    const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, this.capitulo);
+    this._drawBanner(ctx, activeHeaderImg, baseWidthPx, totalHeightPx, marginPx, true);
 
-    // Iterar y dibujar cada página desplazada en el eje Y
-    this.pages.forEach((pageLines, pageIndex) => {
-      const offsetY = pageIndex * singlePageHeightPx;
-      const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : this.capitulo;
+    ctx.textBaseline = "top";
+    let currentY = textStartY;
 
-      // Cabecera por página
-      const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, pageChapter);
-      ctx.save();
-      ctx.translate(0, offsetY);
-      this._drawBanner(ctx, activeHeaderImg, baseWidthPx, singlePageHeightPx, marginPx, true);
-
-      ctx.textBaseline = "top";
-      let currentY = textStartY;
-
-      pageLines.forEach((line) => {
-        if (line.type === 'SPACER') {
-          currentY += line.height;
-          return;
-        }
-
-        const style = TxtReaderEngine.STYLE_CONFIGS[line.type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
-        const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
-        const fontSizePx = this.ptToPx(effectiveSizePt);
-
-        let drawX = textStartX + (line.indent || 0);
-        if (line.align === 'center') {
-          const cleanStr = line.text.replace(/\[\/?(B|I|U|SUP|EM)\]/g, '');
-          ctx.font = `${style.italic ? 'italic' : 'normal'} ${style.bold ? 'bold' : 'normal'} ${fontSizePx}px ${this.FONT_FAMILY}`;
-          const totalW = ctx.measureText(cleanStr).width;
-          drawX = textStartX + ((this.cmToPx(this.CONTENT_WIDTH_CM) - totalW) / 2);
-        }
-
-        this._drawInlineText(
-          ctx, 
-          line.text, 
-          drawX, 
-          currentY, 
-          fontSizePx, 
-          this.FONT_FAMILY, 
-          line.color || style.color, 
-          !!style.italic, 
-          !!style.bold
-        );
-
+    // Dibujar cada línea de manera continua
+    this.allLines.forEach((line) => {
+      if (line.type === 'SPACER') {
         currentY += line.height;
-      });
+        return;
+      }
 
-      // Pie de página por página en scroll infinito
-      const footerStartY = singlePageHeightPx - marginPx;
-      const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
-      this._drawBanner(ctx, activeFooterImg, baseWidthPx, singlePageHeightPx, marginPx, false);
-      
-      ctx.restore();
+      const style = TxtReaderEngine.STYLE_CONFIGS[line.type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
+      const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
+      const fontSizePx = this.ptToPx(effectiveSizePt);
+
+      let drawX = textStartX + (line.indent || 0);
+      if (line.align === 'center') {
+        const cleanStr = line.text.replace(/\[\/?(B|I|U|SUP|EM)\]/g, '');
+        ctx.font = `${style.italic ? 'italic' : 'normal'} ${style.bold ? 'bold' : 'normal'} ${fontSizePx}px ${this.FONT_FAMILY}`;
+        const totalW = ctx.measureText(cleanStr).width;
+        drawX = textStartX + ((this.cmToPx(this.CONTENT_WIDTH_CM) - totalW) / 2);
+      }
+
+      this._drawInlineText(
+        ctx, 
+        line.text, 
+        drawX, 
+        currentY, 
+        fontSizePx, 
+        this.FONT_FAMILY, 
+        line.color || style.color, 
+        !!style.italic, 
+        !!style.bold
+      );
+
+      currentY += line.height;
     });
 
-    // Ocultar o adaptar el overlay de enlaces en modo continuo si es necesario
+    // Pie de página único al final del documento continuo
+    const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, this.capitulo);
+    if (activeFooterImg) {
+      // Dibujar el banner de pie al final del documento
+      const maxH = marginPx * 0.9;
+      const aspect = activeFooterImg.width / activeFooterImg.height;
+      let drawH = maxH;
+      let drawW = drawH * aspect;
+      if (drawW > baseWidthPx) {
+        drawW = baseWidthPx;
+        drawH = drawW / aspect;
+      }
+      const drawX = Math.round((baseWidthPx - drawW) / 2);
+      const drawY = Math.round(totalHeightPx - marginPx);
+      ctx.drawImage(activeFooterImg, drawX, drawY, Math.round(drawW), Math.round(drawH));
+    }
+
     if (this.linkOverlay) {
       this.linkOverlay.innerHTML = '';
     }
@@ -543,7 +558,7 @@ export class TxtReaderEngine {
   }
 
   _updateLinkOverlay(baseWidthPx, baseHeightPx, footerStartY, marginPx) {
-    if (this.isInfiniteScroll) return; // Opcional: manejar overlays múltiples si se requiere
+    if (this.isInfiniteScroll) return;
     this.linkOverlay.innerHTML = '';
     
     const pageLines = this.pages[this.currentPageIndex] || [];
@@ -611,7 +626,7 @@ export class TxtReaderEngine {
   }
 
   getTotalPages() {
-    return this.pages.length;
+    return this.isInfiniteScroll ? 1 : this.pages.length;
   }
 
   getCurrentPage() {
@@ -631,22 +646,18 @@ export class TxtReaderEngine {
   }
 
   get numPages() {
-    return this.pages.length;
+    return this.isInfiniteScroll ? 1 : this.pages.length;
   }
 
   async getPage(pageNum) {
-    const pageIndex = pageNum - 1;
-    const pageLines = this.pages[pageIndex] || [];
-    
     return {
       num: pageNum,
       getViewport: (params) => {
         const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-        const baseHeightPx = this.cmToPx(this.PAGE_HEIGHT_CM);
         const scale = params.scale || 1.0;
         return {
           width: baseWidthPx * scale,
-          height: baseHeightPx * scale
+          height: this.canvas.height / (window.devicePixelRatio || 1)
         };
       },
       render: (renderContext) => {
@@ -654,7 +665,7 @@ export class TxtReaderEngine {
       },
       getTextContent: async () => {
         return {
-          items: pageLines.map(line => ({ str: line.text }))
+          items: this.allLines.map(line => ({ str: line.text }))
         };
       }
     };
@@ -670,19 +681,17 @@ export class TxtReaderEngine {
       this.scale = 1.0; 
     }
 
-    if (this.pages.length > 0) {
-      this.render(this.currentPageIndex + 1, this.scale);
-    }
+    this.render();
   }
 
-  /**
-   * NUEVO: Método público para alternar dinámicamente entre modo paginado y scroll infinito
-   */
   setInfiniteScroll(enabled) {
     this.isInfiniteScroll = !!enabled;
-    // Asegurar que el contenedor permita scroll vertical si está activo
     if (this.container) {
       this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
+    }
+    // Reprocesar texto para activar/desactivar la partición por páginas
+    if (this.lastTextContent) {
+      this._processText(this.lastTextContent);
     }
     this.render();
   }
