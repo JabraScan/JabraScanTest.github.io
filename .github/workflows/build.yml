@@ -6,18 +6,32 @@ on:
   workflow_dispatch:     # Permite lanzarlo manualmente desde la interfaz de GitHub
 
 permissions:
-  contents: write        # 🔑 Permite al workflow hacer commit y push de cambios
+  contents: write        # 🔑 Permite hacer commit y push de cambios
+  pages: write           # 🔑 Permite desplegar en GitHub Pages
+  id-token: write        # 🔑 Necesario para la autenticación de GitHub Pages
+
+# Evita despliegues simultáneos
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout del repositorio con historial completo
+      # 🔑 Forzar a Git a autenticarse usando el token en las URLs de los submódulos
+      - name: Configurar credenciales para submódulos
+        run: |
+          git config --global url."https://${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/".insteadOf "https://github.com/"
+
+      # 1️⃣ Checkout del repositorio con historial completo y submódulos privados
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # Necesario para poder hacer pull/rebase
+          fetch-depth: 1
+          submodules: recursive
+          token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
 
       # 2️⃣ Configurar Node.js
       - name: Configurar Node.js
@@ -34,8 +48,8 @@ jobs:
       #  run: node scripts/xmlToJsonLd.js
 
       # 5️⃣ Bloque B: Generar HTML de obras y sitemap
-      - name: Generar HTML de obras y sitemap
-        run: node scripts/buildPages.js
+      #- name: Generar HTML de obras y sitemap
+      #  run: node scripts/buildPages.js
 
       # --------------------------
       # 6️⃣ Set up Python, instalar dependencias Python y ejecutar el script de imágenes
@@ -44,19 +58,41 @@ jobs:
         with:
           python-version: '3.x'
 
+      # 7️⃣ Instalar dependencias Python
       - name: Instalar dependencias Python
         run: python -m pip install --upgrade pip Pillow
 
+      # 8️⃣ Ejecutar generador de imágenes responsivas
       - name: Ejecutar generador de imágenes responsivas
         run: python scripts/generate_responsive_images.py -d .
 
-      # 7️⃣ Commit y push de todos los cambios generados
+      # 9️⃣ Commit y push de todos los cambios generados
       - name: Commit y push cambios
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          # Añadir todos los posibles cambios generados por los pasos anteriores (index, obras, sitemap, imágenes)
           git add -A
           git diff --cached --quiet || git commit -m "Build: actualizar index y obras y/o imágenes generadas"
-          git pull origin main --rebase   # 🔑 Trae cambios remotos antes de empujar
+          git pull origin main --rebase
           git push
+
+      # 🔟 Configurar GitHub Pages y empaquetar los archivos para el deploy
+# Eliminar metadatos .git para reducir el tamaño del artefacto de Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'   # Sube la raíz del repositorio como contenido de la web
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
