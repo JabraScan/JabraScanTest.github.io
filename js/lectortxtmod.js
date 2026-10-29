@@ -50,7 +50,7 @@ export class TxtReaderEngine {
     this.currentPageIndex = 0;
     
     // Control de scroll infinito (respetando opción de entrada)
-    this.isInfiniteScroll = options.isInfiniteScroll || false;
+    this.isInfiniteScroll = options.isInfiniteScroll || true;
 
     this.config = null;
     this.resources = {
@@ -718,7 +718,7 @@ export class TxtReaderEngine {
     if (this.container) {
       this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
     }
-    
+
     this.render();
   }
 }
