@@ -1,6 +1,6 @@
 /**
- * TxtReaderEngine.js - VERSION EMERGENCIA
- * Objetivo: Solo renderizar el texto correctamente.
+ * TxtReaderEngine.js - VERSION ESTABLE Y LOGICA
+ * Objetivo: Renderizar el texto sin redundancias y sin errores de parseo.
  */
 export class TxtReaderEngine {
   constructor(options) {
@@ -9,110 +9,104 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    
-    // Valores básicos para evitar crashes
-    this.resources = {};
-    this.config = {};
     this.allLines = [];
+    this.pages = [];
   }
 
   ptToPx(pt) { return (pt * this.dpi) / 72; }
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
-    // Omitimos carga de banners por ahora para asegurar que el texto funcione
     this._processText(txtContent);
     this.render();
   }
 
   _parsePythonArray(text) {
     try {
-      // Convertimos True/False a true/false y evaluamos
-      const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
+      // Conversión directa y única de booleanos de Python a JS
+      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+      // Evaluamos el string como un literal de objeto JS
       return new Function(`return ${formatted}`)();
     } catch (e) {
-      console.error("ERROR CRÍTICO PARSEANDO ARRAY:", e);
+      console.error("ERROR FATAL PARSEANDO ARRAY:", e);
       return null;
     }
   }
 
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const maxContentWidth = availableWidth - 40; // Margen simple de 20px
+    const maxContentWidth = availableWidth - 40;
 
     const data = this._parsePythonArray(text);
     if (!data || !Array.isArray(data)) {
-      console.error("El texto no es un array válido");
+      this.allLines = [];
       return;
     }
 
     const lines = [];
     let currentLineFragments = [];
     let currentX = 0;
+    let currentLineH = 0;
 
     for (const frag of data) {
-      const text = frag.texto || "";
-      const size = this.ptToPx(frag.tamano || 12);
+      const sizePx = this.ptToPx(frag.tamano || 12);
+      this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
       
-      // Dividimos por saltos de línea explícitos
+      const text = frag.texto || "";
       const parts = text.split('\\n');
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
         if (part === '' && i > 0) {
-          // Salto de línea vacío
           if (currentLineFragments.length > 0) {
-            lines.push({ fragments: currentLineFragments, height: size * 1.4 });
+            lines.push({ fragments: currentLineFragments, height: currentLineH });
             currentLineFragments = [];
             currentX = 0;
+            currentLineH = 0;
           }
-          lines.push({ fragments: [], height: size * 1.4, isSpacer: true });
+          lines.push({ fragments: [], height: sizePx * 1.5, isSpacer: true });
           continue;
         }
 
-        // Dividimos en palabras para el wrapping
         const words = part.split(' ');
         for (let w = 0; w < words.length; w++) {
           const word = words[w] + (w < words.length - 1 ? ' ' : '');
-          this.ctx.font = `${size}px ${this.FONT_FAMILY}`;
           const wordWidth = this.ctx.measureText(word).width;
 
           if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            lines.push({ fragments: currentLineFragments, height: size * 1.4 });
+            lines.push({ fragments: currentLineFragments, height: currentLineH });
             currentLineFragments = [];
             currentX = 0;
+            currentLineH = 0;
           }
 
           currentLineFragments.push({ ...frag, texto: word });
           currentX += wordWidth;
+          currentLineH = Math.max(currentLineH, sizePx * 1.4);
         }
       }
     }
 
     if (currentLineFragments.length > 0) {
-      lines.push({ fragments: currentLineFragments, height: 20 });
+      lines.push({ fragments: currentLineFragments, height: currentLineH });
     }
 
     this.allLines = lines;
+    this.pages = [lines]; 
   }
 
   render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const dpr = window.devicePixelRatio || 1;
-
-    // Calculamos altura total
-    let totalH = 40; 
+    let totalH = 40;
     this.allLines.forEach(l => totalH += l.height || 20);
     totalH += 40;
 
-    this.canvas.width = Math.round(availableWidth * dpr);
-    this.canvas.height = Math.round(totalH * dpr);
+    this.canvas.width = availableWidth;
+    this.canvas.height = totalH;
     this.canvas.style.width = `${availableWidth}px`;
     this.canvas.style.height = `${totalH}px`;
 
     const ctx = this.ctx;
-    ctx.save();
-    ctx.scale(dpr, dpr);
     ctx.fillStyle = "#FFFFFF";
     ctx.fillRect(0, 0, availableWidth, totalH);
     ctx.textBaseline = "top";
@@ -135,10 +129,20 @@ export class TxtReaderEngine {
       }
       y += line.height || 20;
     });
-    ctx.restore();
+  }
+
+  async getPage(pageNum) {
+    return {
+      num: pageNum,
+      getViewport: () => ({
+        width: this.canvas.width,
+        height: this.canvas.height
+      }),
+      render: () => this.render(),
+      getTextContent: async () => ({ items: [] })
+    };
   }
 
   fitToContainer() { this.render(); }
-  get numPages() { return 1; }
-  async getPage(pageNum) { return { num: pageNum, render: () => this.render() }; }
+  get numPages() { return this.pages.length; }
 }
