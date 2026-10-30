@@ -55,10 +55,11 @@ export class TxtReaderEngine {
     const data = this._parsePythonArray(text);
     if (!data || !Array.isArray(data)) {
       this.allLines = [];
+      this.pages = [];
       return;
     }
 
-    const lines = [];
+    const allLines = [];
     let currentLineFragments = [];
     let currentX = 0;
     let currentLineH = 0;
@@ -66,22 +67,22 @@ export class TxtReaderEngine {
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || 12);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      
+
       this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-      
-      const text = frag.texto || "";
-      const parts = text.split(/\\n/);
+
+      const textStr = frag.texto || "";
+      const parts = textStr.split(/\\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
         if (part === '' && i > 0) {
           if (currentLineFragments.length > 0) {
-            lines.push({ fragments: currentLineFragments, height: currentLineH });
+            allLines.push({ fragments: currentLineFragments, height: currentLineH });
             currentLineFragments = [];
             currentX = 0;
             currentLineH = 0;
           }
-          lines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
+          allLines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
           continue;
         }
 
@@ -91,7 +92,7 @@ export class TxtReaderEngine {
           const wordWidth = this.ctx.measureText(word).width;
 
           if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            lines.push({ fragments: currentLineFragments, height: currentLineH });
+            allLines.push({ fragments: currentLineFragments, height: currentLineH });
             currentLineFragments = [];
             currentX = 0;
             currentLineH = 0;
@@ -105,17 +106,46 @@ export class TxtReaderEngine {
     }
 
     if (currentLineFragments.length > 0) {
-      lines.push({ fragments: currentLineFragments, height: currentLineH });
+      allLines.push({ fragments: currentLineFragments, height: currentLineH });
     }
 
-    this.allLines = lines;
-    this.pages = [lines]; 
+    this.allLines = allLines;
+    
+    // PAGINACIÓN PARA SCROLL INFINITO
+    const PAGE_HEIGHT_LIMIT = 2500; 
+    const pages = [];
+    let currentPageLines = [];
+    let currentH = 40; // margen superior
+
+    this.allLines.forEach(line => {
+      const h = line.height || 20;
+      if (currentH + h > PAGE_HEIGHT_LIMIT) {
+        pages.push(currentPageLines);
+        currentPageLines = [];
+        currentH = 40;
+      }
+      currentPageLines.push(line);
+      currentH += h;
+    });
+
+    if (currentPageLines.length > 0) {
+      pages.push(currentPageLines);
+    }
+
+    this.pages = pages;
   }
 
   render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    let totalH = 40;
-    this.allLines.forEach(l => totalH += l.height || 20);
+    
+    // Para el scroll infinito, renderizamos la primera página o la página solicitada
+    // Nota: El orchestrator lectorpdfmod.js maneja la vista, aquí preparamos el canvas base
+    const activePageLines = this.pages[0] || [];
+    
+    let totalH = 40; 
+    activePageLines.forEach(l => {
+      totalH += (l.height || 20);
+    });
     totalH += 40;
 
     this.canvas.width = availableWidth;
@@ -129,11 +159,14 @@ export class TxtReaderEngine {
     ctx.textBaseline = "top";
 
     let y = 20;
-    this.allLines.forEach(line => {
+    activePageLines.forEach(line => {
+      if (y > totalH) return;
+
       if (line.isSpacer) {
         y += line.height;
         return;
       }
+      
       let x = 20;
       if (line.fragments) {
         line.fragments.forEach(frag => {
