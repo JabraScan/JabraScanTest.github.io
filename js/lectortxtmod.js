@@ -1,9 +1,10 @@
 // lectortxtmod.js
-const TAMANO_BASE       = 11;
-const INTERLINEADO_EXTRA= 9;
+const TAMANO_BASE         = 11;
+const INTERLINEADO_EXTRA  = 9;
 const FACTOR_INTERLINEADO = 1.3;
-const MARGEN_CM         = 3.0;
-const MARGEN_CM_MOBILE  = 1.2;
+const MARGEN_CM           = 3.0;
+const MARGEN_CM_MOBILE    = 1.2;
+const ALTO_MAX_CANVAS     = 1500; // Límite seguro aproximado para trocear los canvas
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -33,21 +34,23 @@ function obtenerUrlBanner(baseUrl, bannerArray, chaptersArray, fallbackUrl, capi
 }
 
 /**
- * Motor para leer y renderizar texto optimizado en canvas con interfaz compatible con PDF.js.
+ * Motor para leer y renderizar texto mediante scroll infinito con múltiples canvas dinámicos.
  */
 export function TxtReaderEngine(options) {
   const {
-    canvas,
+    container, // Contenedor HTML donde se inyectarán los canvas de forma dinámica
     clave = "",
     configuracion = {},
     capitulo = 0
   } = options;
 
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
+  const targetContainer = container || (options.canvas ? options.canvas.parentElement : null);
+
+  if (!targetContainer) {
+    throw new Error('Se requiere un contenedor HTML válido para inyectar los canvas.');
   }
 
-  // --- Ocultar controles de PDF al inicializar el motor ---
+  // Ocultar controles de PDF al inicializar
   const controlesPdf = document.querySelector('.pdf-controls');
   if (controlesPdf) {
     controlesPdf.style.setProperty('display', 'none', 'important');
@@ -57,13 +60,10 @@ export function TxtReaderEngine(options) {
   let config = {};
 
   return {
-    numPages: 1,
-
     async load(txtContent, configPath = "") {
       try {
         let contenidoLimpio = txtContent;
         if (typeof txtContent === 'string') {
-          // Reemplaza los booleanos de Python por los de JavaScript para que eval() no falle
           contenidoLimpio = txtContent.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
           cachedBloques = eval(contenidoLimpio);
         } else {
@@ -89,182 +89,201 @@ export function TxtReaderEngine(options) {
         footerLinkText: "https://jabrascan.net",
         ...configuracion
       };
-    },
 
-    async getPage(num) {
-      return {
-        numPages: 1,
-
-        getViewport({ scale = 1.0 } = {}) {
-          const container = canvas.parentElement;
-          const width = container ? container.clientWidth || 800 : 800;
-          
-          const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-          const anchoMaximo = width - (margenPx * 2);
-          
-          let tamanoBase = TAMANO_BASE;
-          const interlineadoExtra = INTERLINEADO_EXTRA;
-          let alturaEstimadaTexto = 0;
-
-          cachedBloques.forEach(bloque => {
-            if (bloque.tamano) tamanoBase = bloque.tamano;
-            const lineas = bloque.texto.split('\n');
-            lineas.forEach(() => {
-              alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
-            });
-          });
-
-          const alturaTotal = 250 + alturaEstimadaTexto + 200;
-
-          return {
-            width: width,
-            height: Math.max(800, alturaTotal),
-            scale: scale
-          };
-        },
-
-        async render(params) {
-          const { canvasContext: ctx, viewport } = params;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
-          const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
-
-          const [imgHeader, imgFooter] = await Promise.all([
-            cargarImagen(urlHeader),
-            cargarImagen(urlFooter)
-          ]);
-
-          let altoHeader = 0;
-          if (imgHeader) {
-            const proporcion = canvas.width / imgHeader.width;
-            altoHeader = imgHeader.height * proporcion;
-            ctx.drawImage(imgHeader, 0, 0, canvas.width, altoHeader);
-          }
-
-          let fuenteBase = 'Arial';
-          let tamanoBase = TAMANO_BASE;
-          const interlineadoExtra = INTERLINEADO_EXTRA;
-
-          const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-          
-          const anchoMaximo = canvas.width - (margenPx * 2);
-
-          let posX = margenPx;
-          let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
-
-          cachedBloques.forEach(bloque => {
-            if (bloque.fuente) fuenteBase = bloque.fuente;
-            if (bloque.tamano) tamanoBase = bloque.tamano;
-
-            let tamanoRender = tamanoBase;
-            let desfasadorY = 0;
-
-            // Ajuste para superíndices y subíndices
-            if (bloque.superindice) {
-              tamanoRender = tamanoBase * 0.7;
-              desfasadorY = -(tamanoBase * 0.35);
-            } else if (bloque.subindice) {
-              tamanoRender = tamanoBase * 0.7;
-              desfasadorY = tamanoBase * 0.2;
-            }
-
-            let estiloStr = '';
-            if (bloque.negrita) estiloStr += 'bold ';
-            if (bloque.cursiva) estiloStr += 'italic ';
-
-            ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
-
-            // Control de color: si no se especifica o es 000000, se aplica el negro por defecto
-            if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
-              ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
-            } else {
-              ctx.fillStyle = '#000000';
-            }
-
-            const lineas = bloque.texto.split('\n');
-
-            lineas.forEach((linea, indexLinea) => {
-              // Si proviene de un salto de línea explícito ('\n')
-              if (indexLinea > 0) {
-                posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
-                posX = margenPx;
-              }
-
-              if (linea.length === 0) return;
-
-              const palabras = linea.split(' ');
-
-              palabras.forEach((palabra, indexPalabra) => {
-                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
-                const anchoTexto = ctx.measureText(textoAEscribir).width;
-
-                // Verificación de ajuste de línea si excede el margen derecho
-                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
-                  posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
-                  posX = margenPx;
-                  const palabraSinEspacio = palabra;
-                  const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
-                  
-                  ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
-
-                  if (bloque.subrayado) {
-                    const grosor = Math.max(1, tamanoRender / 12);
-                    ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
-                  }
-
-                  posX += nuevoAncho;
-                } else {
-                  ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
-
-                  if (bloque.subrayado) {
-                    const grosor = Math.max(1, tamanoRender / 12);
-                    ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
-                  }
-
-                  posX += anchoTexto;
-                }
-              });
-            });
-          });
-
-          // Renderizado del footer
-          const separacionFooter = INTERLINEADO_EXTRA * 2;
-          let posYActual = posY + separacionFooter;
-
-          if (imgFooter) {
-            let anchoFooter, altoFooter, xPos;
-            //si la proporcion es 1/4
-            if ( (imgFooter.width / imgFooter.height) <= 0.40 ) {
-              let proporcion = margenPx / imgFooter.height;
-              anchoFooter = imgFooter.width * proporcion
-              alfoFooter = margenPx;
-              xPos = (canvas.width - anchoFooter) / 2; // Centrado para imágenes estrechas
-            } else {
-              let proporcion = canvas.width / imgFooter.width;
-              anchoFooter = canvas.width
-              altoFooter = imgFooter.height * proporcion;
-              xPos = 0;
-            }
-
-            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
-          } else if (config.footerLinkText) {
-            ctx.font = (TAMANO_BASE-2) + 'pt Arial';
-            ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
-            ctx.textAlign = 'center';
-            
-            ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
-            ctx.textAlign = 'left';
-          }
-        },
-
-        async getTextContent() {
-          const items = cachedBloques.map(bloque => ({ str: bloque.texto }));
-          return { items };
-        }
-      };
+      await ActionRender();
     }
   };
+
+  async function ActionRender() {
+    targetContainer.innerHTML = ''; // Limpieza previa del contenedor
+
+    const width = targetContainer.clientWidth || 800;
+    const esMovil = esPantallaPequena();
+    const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+    const anchoMaximo = width - (margenPx * 2);
+
+    const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
+    const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
+
+    const [imgHeader, imgFooter] = await Promise.all([
+      cargarImagen(urlHeader),
+      cargarImagen(urlFooter)
+    ]);
+
+    let altoHeader = 0;
+    if (imgHeader) {
+      const proporcion = width / imgHeader.width;
+      altoHeader = imgHeader.height * proporcion;
+    }
+
+    // Dividir los bloques en fragmentos (chunks) lógicos para respetar el límite seguro por canvas
+    const fragmentos = [];
+    let bloquesActuales = [];
+    let alturaEstimada = altoHeader + margenPx;
+
+    cachedBloques.forEach(bloque => {
+      let tamanoBase = bloque.tamano || TAMANO_BASE;
+      const lineas = bloque.texto.split('\n');
+      let altoBloqueEstimado = lineas.length * ((tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA);
+
+      if (alturaEstimada + altoBloqueEstimado > ALTO_MAX_CANVAS && bloquesActuales.length > 0) {
+        fragmentos.push(bloquesActuales);
+        bloquesActuales = [];
+        alturaEstimada = margenPx;
+      }
+
+      bloquesActuales.push(bloque);
+      alturaEstimada += altoBloqueEstimado;
+    });
+
+    if (bloquesActuales.length > 0) {
+      fragmentos.push(bloquesActuales);
+    }
+
+    // Renderizar cada fragmento en un elemento <canvas> independiente e inyectarlo en orden
+    for (let index = 0; index < fragmentos.length; index++) {
+      const bloquesFragmento = fragmentos[index];
+      const esPrimera = (index === 0);
+      const esUltima = (index === fragmentos.length - 1);
+
+      // Creamos un canvas temporal con un alto generoso holgado para pintar y calcular la posición real final de posY
+      const cvs = document.createElement('canvas');
+      cvs.width = width;
+      cvs.height = ALTO_MAX_CANVAS * 2; 
+      cvs.style.display = 'block';
+      targetContainer.appendChild(cvs);
+
+      const ctx = cvs.getContext('2d');
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+      let posY = margenPx;
+
+      // Dibujar Header si es la primera página del capítulo
+      if (esPrimera && imgHeader) {
+        ctx.drawImage(imgHeader, 0, 0, width, altoHeader);
+        posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2);
+      }
+
+      let fuenteBase = 'Arial';
+      let tamanoBase = TAMANO_BASE;
+
+      // Renderizado del contenido bloque a bloque con cálculo de posición en tiempo real
+      bloquesFragmento.forEach(bloque => {
+        if (bloque.fuente) fuenteBase = bloque.fuente;
+        if (bloque.tamano) tamanoBase = bloque.tamano;
+
+        let tamanoRender = tamanoBase;
+        let desfasadorY = 0;
+
+        if (bloque.superindice) {
+          tamanoRender = tamanoBase * 0.7;
+          desfasadorY = -(tamanoBase * 0.35);
+        } else if (bloque.subindice) {
+          tamanoRender = tamanoBase * 0.7;
+          desfasadorY = tamanoBase * 0.2;
+        }
+
+        let estiloStr = '';
+        if (bloque.negrita) estiloStr += 'bold ';
+        if (bloque.cursiva) estiloStr += 'italic ';
+
+        ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
+
+        if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
+          ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
+        } else {
+          ctx.fillStyle = '#000000';
+        }
+
+        let posX = margenPx;
+        const lineas = bloque.texto.split('\n');
+
+        lineas.forEach((linea, indexLinea) => {
+          if (indexLinea > 0) {
+            posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+            posX = margenPx;
+          }
+
+          if (linea.length === 0) return;
+
+          const palabras = linea.split(' ');
+
+          palabras.forEach((palabra, indexPalabra) => {
+            const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+            const anchoTexto = ctx.measureText(textoAEscribir).width;
+
+            if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+              posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+              posX = margenPx;
+              const palabraSinEspacio = palabra;
+              const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
+              
+              ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
+
+              if (bloque.subrayado) {
+                const grosor = Math.max(1, tamanoRender / 12);
+                ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
+              }
+
+              posX += nuevoAncho;
+            } else {
+              ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
+
+              if (bloque.subrayado) {
+                const grosor = Math.max(1, tamanoRender / 12);
+                ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
+              }
+
+              posX += anchoTexto;
+            }
+          });
+        });
+
+        posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+        posX = margenPx;
+      });
+
+      // Renderizado del Footer si es el último lienzo del capítulo
+      if (esUltima) {
+        const separacionFooter = INTERLINEADO_EXTRA * 2;
+        let posYActual = posY + separacionFooter;
+
+        if (imgFooter) {
+          let anchoFooter, altoFooterCalculado, xPos;
+          if ((imgFooter.width / imgFooter.height) <= 0.40) {
+            let proporcion = margenPx / imgFooter.height;
+            anchoFooter = imgFooter.width * proporcion;
+            altoFooterCalculado = margenPx;
+            xPos = (width - anchoFooter) / 2;
+          } else {
+            let proporcion = width / imgFooter.width;
+            anchoFooter = width;
+            altoFooterCalculado = imgFooter.height * proporcion;
+            xPos = 0;
+          }
+          ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooterCalculado);
+          posY = posYActual + altoFooterCalculado;
+        } else if (config.footerLinkText) {
+          ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
+          ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
+          ctx.textAlign = 'center';
+          ctx.fillText(config.footerLinkText, width / 2, posYActual);
+          ctx.textAlign = 'left';
+          posY = posYActual + 20;
+        }
+      }
+
+      // REDIMENSIÓN EXACTA: El alto real final del canvas viene dictado por la última posY trazada
+      const altoCanvasReal = Math.ceil(posY + margenPx);
+      
+      // Capturamos la imagen actual del canvas provisional
+      const imgDataTemp = ctx.getImageData(0, 0, width, altoCanvasReal);
+      
+      // Ajustamos el alto real del canvas (esto limpia el contenido pero redimensiona la matriz)
+      cvs.height = altoCanvasReal;
+      
+      // Devolvemos los píxeles renderizados a su sitio exacto con la nueva altura ajustada
+      ctx.putImageData(imgDataTemp, 0, 0);
+    }
+  }
 }
