@@ -1,4 +1,4 @@
-// canvas-reader.js
+// lectortxtmod.js
 const TAMANO_BASE       = 11;
 const INTERLINEADO_EXTRA= 9;
 const FACTOR_INTERLINEADO = 1.3;
@@ -44,18 +44,17 @@ export function TxtReaderEngine(options) {
   if (!(canvas instanceof HTMLCanvasElement)) {
     throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
   }
+
   // --- Ocultar controles de PDF al inicializar el motor ---
   const controlesPdf = document.querySelector('.pdf-controls');
   if (controlesPdf) {
     controlesPdf.style.setProperty('display', 'none', 'important');
   }
-  // --------------------------------------------------------
 
   let cachedBloques = [];
   let config = {};
 
   return {
-    // Definimos una única página continua para que la SPA maneje los capítulos
     numPages: 1,
 
     async load(txtContent, configPath = "") {
@@ -142,63 +141,93 @@ export function TxtReaderEngine(options) {
           const esMovil = esPantallaPequena();
           const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
           
-          // ANCHO MÁXIMO REAL: Ancho total menos margen izquierdo Y margen derecho
           const anchoMaximo = canvas.width - (margenPx * 2);
 
           let posX = margenPx;
           let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
 
-          // Renderizado del texto respetando estrictamente ambos márgenes
           cachedBloques.forEach(bloque => {
             if (bloque.fuente) fuenteBase = bloque.fuente;
             if (bloque.tamano) tamanoBase = bloque.tamano;
+
+            let tamanoRender = tamanoBase;
+            let desfasadorY = 0;
+
+            // Ajuste para superíndices y subíndices
+            if (bloque.superindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = -(tamanoBase * 0.35);
+            } else if (bloque.subindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = tamanoBase * 0.2;
+            }
 
             let estiloStr = '';
             if (bloque.negrita) estiloStr += 'bold ';
             if (bloque.cursiva) estiloStr += 'italic ';
 
-            ctx.font = `${estiloStr}${tamanoBase}pt ${fuenteBase}`;
-            ctx.fillStyle = '#000000';
+            ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
+
+            // Control de color: si no se especifica o es 000000, se aplica el negro por defecto
+            if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
+              ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
+            } else {
+              ctx.fillStyle = '#000000';
+            }
 
             const lineas = bloque.texto.split('\n');
-            lineas.forEach((linea) => {
-              posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
-              posX = margenPx;
+
+            lineas.forEach((linea, indexLinea) => {
+              // Si proviene de un salto de línea explícito ('\n')
+              if (indexLinea > 0) {
+                posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+                posX = margenPx;
+              }
 
               if (linea.length === 0) return;
 
-              // Algoritmo de ajuste de línea (Word Wrap) limitado por anchoMaximo
               const palabras = linea.split(' ');
-              let lineaActual = '';
 
-              palabras.forEach((palabra, index) => {
-                const prueba = lineaActual + (index === 0 ? '' : ' ') + palabra;
-                const anchoPrueba = ctx.measureText(prueba).width;
+              palabras.forEach((palabra, indexPalabra) => {
+                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+                const anchoTexto = ctx.measureText(textoAEscribir).width;
 
-                if (anchoPrueba > anchoMaximo && lineaActual.length > 0) {
-                  ctx.fillText(lineaActual, posX, posY);
-                  lineaActual = palabra;
+                // Verificación de ajuste de línea si excede el margen derecho
+                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
                   posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+                  posX = margenPx;
+                  const palabraSinEspacio = palabra;
+                  const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
+                  
+                  ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
+                  }
+
+                  posX += nuevoAncho;
                 } else {
-                  lineaActual = prueba;
+                  ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
+                  }
+
+                  posX += anchoTexto;
                 }
               });
-
-              if (lineaActual.length > 0) {
-                ctx.fillText(lineaActual, posX, posY);
-              }
             });
           });
 
-          // Renderizado del footer justo después de terminar el texto
-          const separacionFooter = INTERLINEADO_EXTRA * 2; // Espacio de separación tras el texto (1.5 cm)
+          // Renderizado del footer
+          const separacionFooter = INTERLINEADO_EXTRA * 2;
           let posYActual = posY + separacionFooter;
 
           if (imgFooter) {
             const proporcion = canvas.width / imgFooter.width;
             const altoFooter = imgFooter.height * proporcion;
-            
-            // Dibujar la imagen exactamente donde terminó el texto
             ctx.drawImage(imgFooter, 0, posYActual, canvas.width, altoFooter);
           } else if (config.footerLinkText) {
             ctx.font = (TAMANO_BASE-2) + 'pt Arial';
