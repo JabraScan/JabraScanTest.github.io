@@ -1,4 +1,6 @@
 // canvas-reader.js
+TAMANO_BASE       = 11;
+INTERLINEADO_EXTRA= 6;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -86,8 +88,8 @@ export function TxtReaderEngine(options) {
           const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
           const anchoMaximo = width - (margenPx * 2);
           
-          let tamanoBase = 11;
-          const interlineadoExtra = 6;
+          let tamanoBase = TAMANO_BASE;
+          const interlineadoExtra = INTERLINEADO_EXTRA;
           let alturaEstimadaTexto = 0;
 
           cachedBloques.forEach(bloque => {
@@ -127,17 +129,19 @@ export function TxtReaderEngine(options) {
           }
 
           let fuenteBase = 'Arial';
-          let tamanoBase = 11;
-          const interlineadoExtra = 6;
+          let tamanoBase = TAMANO_BASE;
+          const interlineadoExtra = INTERLINEADO_EXTRA;
 
           const esMovil = esPantallaPequena();
           const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
+          
+          // ANCHO MÁXIMO REAL: Ancho total menos margen izquierdo Y margen derecho
           const anchoMaximo = canvas.width - (margenPx * 2);
 
           let posX = margenPx;
           let posY = altoHeader + (tamanoBase * 1.3 * 2); 
 
-          // Renderizado del texto respetando el troceado inline y los saltos
+          // Renderizado del texto respetando estrictamente ambos márgenes
           cachedBloques.forEach(bloque => {
             if (bloque.fuente) fuenteBase = bloque.fuente;
             if (bloque.tamano) tamanoBase = bloque.tamano;
@@ -156,7 +160,7 @@ export function TxtReaderEngine(options) {
 
               if (linea.length === 0) return;
 
-              // Algoritmo de ajuste de línea (Word Wrap) para respetar el margen derecho
+              // Algoritmo de ajuste de línea (Word Wrap) limitado por anchoMaximo
               const palabras = linea.split(' ');
               let lineaActual = '';
 
