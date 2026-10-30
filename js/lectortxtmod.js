@@ -2,6 +2,8 @@
 const TAMANO_BASE       = 11;
 const INTERLINEADO_EXTRA= 9;
 const FACTOR_INTERLINEADO = 1.3;
+const MARGEN_CM         = 3.0;
+const MARGEN_CM_MOBILE  = 1.2;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -98,7 +100,7 @@ export function TxtReaderEngine(options) {
           const width = container ? container.clientWidth || 800 : 800;
           
           const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
           const anchoMaximo = width - (margenPx * 2);
           
           let tamanoBase = TAMANO_BASE;
@@ -146,12 +148,12 @@ export function TxtReaderEngine(options) {
           const interlineadoExtra = INTERLINEADO_EXTRA;
 
           const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
           
           const anchoMaximo = canvas.width - (margenPx * 2);
 
           let posX = margenPx;
-          let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
+          let posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2); 
 
           cachedBloques.forEach(bloque => {
             if (bloque.fuente) fuenteBase = bloque.fuente;
@@ -233,9 +235,21 @@ export function TxtReaderEngine(options) {
           let posYActual = posY + separacionFooter;
 
           if (imgFooter) {
-            const proporcion = canvas.width / imgFooter.width;
-            const altoFooter = imgFooter.height * proporcion;
-            ctx.drawImage(imgFooter, 0, posYActual, canvas.width, altoFooter);
+            let anchoFooter, altoFooter, xPos;
+            //si la proporcion es 1/4
+            if ( (imgFooter.width / imgFooter.height) <= 0.40 ) {
+              let proporcion = margenPx / imgFooter.height;
+              anchoFooter = imgFooter.width * proporcion
+              alfoFooter = margenPx;
+              xPos = (canvas.width - anchoFooter) / 2; // Centrado para imágenes estrechas
+            } else {
+              let proporcion = canvas.width / imgFooter.width;
+              anchoFooter = canvas.width
+              altoFooter = imgFooter.height * proporcion;
+              xPos = 0;
+            }
+
+            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
           } else if (config.footerLinkText) {
             ctx.font = (TAMANO_BASE-2) + 'pt Arial';
             ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
