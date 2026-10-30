@@ -1,0 +1,54 @@
+
+const { TxtReaderEngine } = require('./lectortxtmod_test.js');
+
+// Mock de Canvas y Contexto para Node.js
+const mockCtx = {
+    measureText: (text) => ({ width: text.length * 10 }), // Simula 10px por carácter
+    font: '',
+    fillStyle: '',
+    fillRect: () => {},
+    fillText: () => {},
+    textBaseline: ''
+};
+
+const mockCanvas = {
+    getContext: () => mockCtx,
+    width: 0,
+    height: 0,
+    style: {}
+};
+
+const mockContainer = {
+    clientWidth: 500 // Ancho del contenedor: 500px
+};
+
+const options = {
+    canvas: mockCanvas,
+    container: mockContainer,
+    settings: {
+        marginLeft: 20,
+        marginTop: 40,
+        paragraphSpacingRatio: 1.8,
+        pageHeightLimit: 2500,
+        defaultFontSize: 12,
+        lineHeightDefault: 20
+    }
+};
+
+const engine = new TxtReaderEngine(options);
+
+// Caso de prueba: 
+// 1. Línea corta
+// 2. Salto simple \n
+// 3. Línea muy larga (debe hacer wrap)
+// 4. Salto doble \n\n (párrafo)
+// 5. Texto final
+const testData = "[{'tamano': 12, 'texto': 'Línea corta\\nLínea muy larga que definitivamente debe superar los 400 pixeles de ancho para forzar el wrap del motor de renderizado\\n\\nTexto final'}]";
+
+console.log('--- Iniciando Prueba de Procesamiento ---');
+engine._processText(testData);
+
+console.log('Total de líneas generadas:', engine.allLines.length);
+engine.allLines.forEach((l, i) => {
+    console.log(`Línea ${i}: ${l.isSpacer ? '[SPACER]' : 'Frag count: ' + l.fragments.length} - Height: ${l.height}`);
+});

@@ -63,6 +63,9 @@ export class TxtReaderEngine {
   }
 
   _processText(text) {
+    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
+    const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
+
     const data = this._parsePythonArray(text);
     if (!data || !Array.isArray(data)) {
       this.allLines = [];
@@ -75,17 +78,17 @@ export class TxtReaderEngine {
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      const textStr = frag.texto || "";
-
-      const parts = textStr.split(/(\\n|\r?\n)/);
+      
+      let textStr = (frag.texto || "").replace(/\\n/g, '\n');
+      const parts = textStr.split(/\r?\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
 
-        if (part === '\\n' || part === '\n' || part === '\r\n') {
-          if (i + 1 < parts.length && (parts[i+1] === '\\n' || parts[i+1] === '\n' || parts[i+1] === '\r\n')) {
+        if (part === '' && i > 0) {
+          if (i + 1 < parts.length && parts[i+1] === '') {
             allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
-            i++;
+            i++; 
           } else {
             allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
@@ -93,23 +96,48 @@ export class TxtReaderEngine {
         }
 
         if (part.length > 0) {
-          allLines.push({
-            fragments: [{ ...frag, texto: part }],
-            height: lineHeightPx
-          });
+          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+          
+          if (this.ctx.measureText(part).width > maxContentWidth) {
+            const words = part.split(' ');
+            let currentLineFragments = [];
+            let currentX = 0;
+
+            for (let w = 0; w < words.length; w++) {
+              const word = words[w] + (w < words.length - 1 ? ' ' : '');
+              const wordWidth = this.ctx.measureText(word).width;
+
+              if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+                currentLineFragments = [];
+                currentX = 0;
+              }
+              currentLineFragments.push({ ...frag, texto: word });
+              currentX += wordWidth;
+            }
+            if (currentLineFragments.length > 0) {
+              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+            }
+          } else {
+            allLines.push({ 
+              fragments: [{ ...frag, texto: part }], 
+              height: lineHeightPx 
+            });
+          }
         }
       }
     }
 
     this.allLines = allLines;
-
+    
+    const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
     let currentH = this.settings.marginTop;
 
     this.allLines.forEach(line => {
       const h = line.height || this.settings.lineHeightDefault;
-      if (currentH + h > this.settings.pageHeightLimit) {
+      if (currentH + h > PAGE_HEIGHT_LIMIT) {
         pages.push(currentPageLines);
         currentPageLines = [];
         currentH = this.settings.marginTop;

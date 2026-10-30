@@ -1,0 +1,124 @@
+
+const fs = require('fs');
+const path = require('path');
+
+// Mock de Canvas y Contexto para Node.js
+const mockCtx = {
+    measureText: (text) => ({ width: text.length * 10 }), // Simula 10px por carácter
+    font: '',
+    fillStyle: '',
+    fillRect: () => {},
+    fillText: () => {},
+    textBaseline: ''
+};
+
+const mockCanvas = {
+    getContext: () => mockCtx,
+    width: 0,
+    height: 0,
+    style: {}
+};
+
+const mockContainer = {
+    clientWidth: 500 // Ancho del contenedor: 500px
+};
+
+// Implementación simplificada de TxtReaderEngine basada en el archivo actual para probar la lógica de _processText
+class TxtReaderEngine {
+    constructor(options) {
+        this.canvas = options.canvas;
+        this.ctx = this.canvas.getContext('2d');
+        this.container = options.container;
+        this.dpi = 96;
+        this.FONT_FAMILY = "Arial";
+        this.LINE_HEIGHT_RATIO = 1.3;
+        this.settings = {
+            marginTop: 40,
+            marginLeft: 20,
+            paragraphSpacingRatio: 1.8,
+            pageHeightLimit: 2500,
+            defaultFontSize: 12,
+            lineHeightDefault: 20
+        };
+        this.allLines = [];
+        this.pages = [];
+    }
+
+    ptToPx(pt) { return (pt * this.dpi) / 72; }
+
+    _parsePythonArray(text) {
+        const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
+        // Para la prueba, simulamos la salida del Function() ya que no queremos evaluar strings complejos aquí
+        return JSON.parse(text.replace(/'/g, '"'));
+    }
+
+    _processText(text) {
+        const availableWidth = this.container ? this.container.clientWidth : 1000;
+        const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
+        const data = this._parsePythonArray(text);
+        const allLines = [];
+
+        for (const frag of data) {
+            const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+            const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
+            let textStr = (frag.texto || "").replace(/\\n/g, '\n');
+            const parts = textStr.split(/\r?\n/);
+
+            for (let i = 0; i < parts.length; i++) {
+                const part = parts[i];
+                if (part === '' && i > 0) {
+                    if (i + 1 < parts.length && parts[i+1] === '') {
+                        allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
+                        i++; 
+                    } else {
+                        allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
+                    }
+                    continue;
+                }
+                if (part.length > 0) {
+                    this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+                    if (this.ctx.measureText(part).width > maxContentWidth) {
+                        const words = part.split(' ');
+                        let currentLineFragments = [];
+                        let currentX = 0;
+                        for (let w = 0; w < words.length; w++) {
+                            const word = words[w] + (w < words.length - 1 ? ' ' : '');
+                            const wordWidth = this.ctx.measureText(word).width;
+                            if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+                                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+                                currentLineFragments = [];
+                                currentX = 0;
+                            }
+                            currentLineFragments.push({ ...frag, texto: word });
+                            currentX += wordWidth;
+                        }
+                        if (currentLineFragments.length > 0) {
+                            allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+                        }
+                    } else {
+                        allLines.push({ fragments: [{ ...frag, texto: part }], height: lineHeightPx });
+                    }
+                }
+            }
+        }
+        this.allLines = allLines;
+    }
+}
+
+const options = { canvas: mockCanvas, container: mockContainer };
+const engine = new TxtReaderEngine(options);
+
+// Texto de prueba:
+// 1. Línea corta -> 1 línea
+// 2. \n -> Salto simple
+// 3. Texto largo -> Debe hacer Wrap (más de 460px)
+// 4. \n\n -> Spacer de párrafo
+// 5. Texto final -> 1 línea
+const testData = '[{"tamano": 12, "texto": "Línea corta\\nLínea muy larga que definitivamente debe superar los 460 pixeles de ancho para forzar el wrap del motor de renderizado\\n\\nTexto final"}]';
+
+console.log('--- Iniciando Prueba de Procesamiento ---');
+engine._processText(testData);
+console.log('Total de líneas generadas:', engine.allLines.length);
+engine.allLines.forEach((l, i) => {
+    console.log(`Línea ${i}: ${l.isSpacer ? '[SPACER]' : 'Frag count: ' + l.fragments.length} - Height: ${l.height.toFixed(2)}`);
+});
