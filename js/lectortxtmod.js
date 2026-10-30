@@ -210,5 +210,5 @@ export class TxtReaderEngine {
   }
 
   fitToContainer() { this.render(); }
-  get numPages() { return this.pages.length; }
+  get numPages() { return 1; }
 }
