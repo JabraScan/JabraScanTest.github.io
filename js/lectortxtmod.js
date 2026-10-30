@@ -1,6 +1,6 @@
 /**
- * TxtReaderEngine.js - VERSION ESTABLE Y LOGICA
- * Objetivo: Renderizar el texto sin redundancias y sin errores de parseo.
+ * TxtReaderEngine.js - VERSION FINAL ROBUSTA
+ * Diseñado para procesar el formato repr() de Python sin usar eval/JSON.parse.
  */
 export class TxtReaderEngine {
   constructor(options) {
@@ -11,6 +11,7 @@ export class TxtReaderEngine {
     this.FONT_FAMILY = "Arial";
     this.allLines = [];
     this.pages = [];
+    this.isInfiniteScroll = options.isInfiniteScroll || false;
   }
 
   ptToPx(pt) { return (pt * this.dpi) / 72; }
@@ -23,12 +24,42 @@ export class TxtReaderEngine {
 
   _parsePythonArray(text) {
     try {
-      // Conversión directa y única de booleanos de Python a JS
-      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
-      // Evaluamos el string como un literal de objeto JS
-      return new Function(`return ${formatted}`)();
+      const fragments = [];
+      // Buscamos cada diccionario { ... }
+      const regex = /\{(.*?)\}/g;
+      let match;
+
+      while ((match = regex.exec(text)) !== null) {
+        const content = match[1];
+        const frag = {};
+        
+        // Dividimos por comas que no estén dentro de comillas
+        const pairs = content.split(/, (?=[^']*'|[^"]*")/);
+        
+        pairs.forEach(pair => {
+          const splitIdx = pair.indexOf(':');
+          if (splitIdx === -1) return;
+
+          const key = pair.substring(0, splitIdx).trim().replace(/['"]/g, '');
+          let val = pair.substring(splitIdx + 1).trim();
+
+          // Limpiamos comillas del valor
+          if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
+            val = val.substring(1, val.length - 1);
+          }
+
+          // Conversión manual de tipos de Python
+          if (val === 'True') val = true;
+          else if (val === 'False') val = false;
+          else if (!isNaN(val) && val !== '') val = parseFloat(val);
+
+          frag[key] = val;
+        });
+        fragments.push(frag);
+      }
+      return fragments;
     } catch (e) {
-      console.error("ERROR FATAL PARSEANDO ARRAY:", e);
+      console.error("Error en parseo manual:", e);
       return null;
     }
   }
@@ -134,10 +165,7 @@ export class TxtReaderEngine {
   async getPage(pageNum) {
     return {
       num: pageNum,
-      getViewport: () => ({
-        width: this.canvas.width,
-        height: this.canvas.height
-      }),
+      getViewport: () => ({ width: this.canvas.width, height: this.canvas.height }),
       render: () => this.render(),
       getTextContent: async () => ({ items: [] })
     };
