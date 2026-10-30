@@ -49,9 +49,6 @@ export class TxtReaderEngine {
   }
 
   _processText(text) {
-    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const maxContentWidth = availableWidth - 60;
-
     const data = this._parsePythonArray(text);
     if (!data || !Array.isArray(data)) {
       this.allLines = [];
@@ -60,71 +57,38 @@ export class TxtReaderEngine {
     }
 
     const allLines = [];
-    let currentLineFragments = [];
-    let currentX = 0;
-    let currentLineH = 0;
 
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || 12);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-
-      this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-
       const textStr = frag.texto || "";
-      // Dividimos por \n respetando que pueden venir como caracteres literales o escapados
-      const parts = textStr.split(/\r?\n/);
+
+      // Dividimos el texto estrictamente por saltos de línea (reales o literales \n)
+      const parts = textStr.split(/(\\n|\r?\n)/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
 
-        // Si la parte está vacía y no es la primera, es un salto de línea explícito
-        if (part === '' && i > 0) {
-          if (currentLineFragments.length > 0) {
-            allLines.push({ fragments: currentLineFragments, height: currentLineH });
-            currentLineFragments = [];
-            currentX = 0;
-            currentLineH = 0;
+        if (part === '\\n' || part === '\n' || part === '\r\n') {
+          // Si hay dos saltos seguidos, creamos un espacio de párrafo
+          if (i + 1 < parts.length && (parts[i+1] === '\\n' || parts[i+1] === '\n' || parts[i+1] === '\r\n')) {
+            allLines.push({ fragments: [], height: lineHeightPx * 1.8, isSpacer: true });
+            i++; 
+          } else {
+            // Salto simple: solo añadimos una línea vacía con la altura estándar
+            allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
-          // Un salto vacío genera un espacio de párrafo
-          allLines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
           continue;
         }
 
-        // Si el fragmento tiene texto, procesamos el Word Wrap
         if (part.length > 0) {
-          const words = part.split(' ');
-          for (let w = 0; w < words.length; w++) {
-            const word = words[w] + (w < words.length - 1 ? ' ' : '');
-            const wordWidth = this.ctx.measureText(word).width;
-
-            if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-              allLines.push({ fragments: currentLineFragments, height: currentLineH });
-              currentLineFragments = [];
-              currentX = 0;
-              currentLineH = 0;
-            }
-
-            currentLineFragments.push({ ...frag, texto: word });
-            currentX += wordWidth;
-            currentLineH = Math.max(currentLineH, lineHeightPx);
-          }
+          // AÑADIMOS LA LÍNEA TAL CUAL, SIN RECONSTRUIR PALABRAS
+          allLines.push({ 
+            fragments: [{ ...frag, texto: part }], 
+            height: lineHeightPx 
+          });
         }
       }
-      
-      // Al finalizar cada fragmento de datos, si el fragmento original terminaba en \n, 
-      // debemos forzar el salto a la siguiente línea para el siguiente fragmento
-      if (textStr.endsWith('\n') || textStr.endsWith('\\n')) {
-        if (currentLineFragments.length > 0) {
-          allLines.push({ fragments: currentLineFragments, height: currentLineH });
-          currentLineFragments = [];
-          currentX = 0;
-          currentLineH = 0;
-        }
-      }
-    }
-
-    if (currentLineFragments.length > 0) {
-      allLines.push({ fragments: currentLineFragments, height: currentLineH });
     }
 
     this.allLines = allLines;
