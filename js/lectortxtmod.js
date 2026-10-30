@@ -1,11 +1,11 @@
-// canvas-reader.js
+// canvas-reader.js[cite: 1]
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
 }
 
 function cmAPx(cm) {
-  return cm * 37.7952755906; // 1 cm ≈ 37.8 px
+  return cm * 37.7952755906; // 1 cm ≈ 37.8 px[cite: 1]
 }
 
 function cargarImagen(src) {
@@ -28,7 +28,7 @@ function obtenerUrlBanner(baseUrl, bannerArray, chaptersArray, fallbackUrl, capi
 }
 
 /**
- * Motor para leer y renderizar texto optimizado en canvas.
+ * Motor para leer y renderizar texto optimizado en canvas.[cite: 1]
  */
 export function TxtReaderEngine(options) {
   const {
@@ -47,19 +47,14 @@ export function TxtReaderEngine(options) {
       const ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Parsear el contenido (si viene en formato Python repr con comillas simples, 
-      // idealmente en Python deberías usar json.dumps(), pero si es repr de lista JS puedes evaluarlo o parsearlo)
       let datosBloques = [];
       try {
-        // Si el txtContent viene como string tipo Python repr, podemos adaptarlo o usar eval controlado 
-        // (Nota: Si guardaste con json.dumps en Python, esto funcionará directamente con JSON.parse)
         datosBloques = typeof txtContent === 'string' ? eval(txtContent) : txtContent;
       } catch (e) {
         console.error("Error al parsear el contenido del capítulo:", e);
         datosBloques = [];
       }
 
-      // Configuración por defecto fusionada con la que pasas por parámetro
       const config = {
         headerbaseUrl: `https://img.jabrascan.net/${clave}/`,
         headerBannerUrl: [`header.webp`],
@@ -76,7 +71,6 @@ export function TxtReaderEngine(options) {
         ...configuracion
       };
 
-      // Carga de Banners
       const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
       const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
 
@@ -92,18 +86,19 @@ export function TxtReaderEngine(options) {
         ctx.drawImage(imgHeader, 0, 0, canvas.width, altoHeader);
       }
 
-      // Márgenes adaptativos automáticos (3cm PC / 1.2cm Móvil)
-      const esMovil = esPantallaPequena();
-      const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
-
-      let posX = margenPx;
-      let posY = altoHeader + (tamanoBase * 1.3 * 2);
-
+      // --- VARIABLES DECLARADAS ANTES DE USARSE ---
       let fuenteBase = 'Arial';
       let tamanoBase = 11;
       const interlineadoExtra = 6;
 
-      // Renderizado del texto
+      const esMovil = esPantallaPequena();
+      const margenPx = cmAPx(esMovil ? 1.2 : 3.0);
+
+      let posX = margenPx;
+      // Ahora tamanoBase ya existe y no dará error de referencia
+      let posY = altoHeader + (tamanoBase * 1.3 * 2); 
+      // -------------------------------------------
+
       datosBloques.forEach(bloque => {
         if (bloque.fuente) fuenteBase = bloque.fuente;
         if (bloque.tamano) tamanoBase = bloque.tamano;
@@ -122,7 +117,6 @@ export function TxtReaderEngine(options) {
         });
       });
 
-      // Renderizado del footer
       if (imgFooter) {
         const proporcion = canvas.width / imgFooter.width;
         const altoFooter = imgFooter.height * proporcion;
