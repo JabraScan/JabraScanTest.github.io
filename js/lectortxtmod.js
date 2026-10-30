@@ -1,7 +1,18 @@
 /**
- * TxtReaderEngine.js - VERSION DEFINITIVA Y ESTABLE
- * Soluciona: TypeError (LINE_HEIGHT_RATIO), ReferenceError (True/False), WordWrap y saltos \n.
+ * Configuración predeterminada del motor de renderizado.
+ * Permite ajustar la apariencia visual sin modificar la lógica interna.
  */
+const DEFAULT_SETTINGS = {
+  marginTop: 40,               // Espacio en px arriba y abajo del contenido total
+  marginLeft: 20,               // Margen izquierdo y derecho del texto en px
+  paragraphSpacingRatio: 1.8,   // Multiplicador de altura para saltos de párrafo (\n\n)
+  pageHeightLimit: 2500,        // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
+  defaultFontSize: 12,          // Tamaño de fuente base en puntos (pt)
+  bgColor: "#FFFFFF",           // Color de fondo del canvas
+  defaultTextColor: "#000000",  // Color de texto cuando no se especifica uno en el fragmento
+  lineHeightDefault: 20         // Altura mínima de línea en px para evitar valores NaN o 0
+};
+
 export class TxtReaderEngine {
   constructor(options) {
     this.canvas = options.canvas;
@@ -9,7 +20,11 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.3; // DEFINICIÓN CRÍTICA PARA EVITAR NaN
+    this.LINE_HEIGHT_RATIO = 1.3; 
+
+    // Fusión de ajustes por defecto con opciones personalizadas del usuario
+    this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
+
     this.allLines = [];
     this.pages = [];
     this.isInfiniteScroll = options.isInfiniteScroll || false;
@@ -32,14 +47,13 @@ export class TxtReaderEngine {
         }
       }
     } catch (e) {}
-    
+
     this._processText(txtContent);
     this.render();
   }
 
   _parsePythonArray(text) {
     try {
-      // Conversión segura de booleanos de Python a JS antes de evaluar
       const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
@@ -59,52 +73,46 @@ export class TxtReaderEngine {
     const allLines = [];
 
     for (const frag of data) {
-      const sizePx = this.ptToPx(frag.tamano || 12);
+      const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
       const textStr = frag.texto || "";
 
-      // Dividimos el texto estrictamente por saltos de línea (reales o literales \n)
       const parts = textStr.split(/(\\n|\r?\n)/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
 
         if (part === '\\n' || part === '\n' || part === '\r\n') {
-          // Si hay dos saltos seguidos, creamos un espacio de párrafo
           if (i + 1 < parts.length && (parts[i+1] === '\\n' || parts[i+1] === '\n' || parts[i+1] === '\r\n')) {
-            allLines.push({ fragments: [], height: lineHeightPx * 1.8, isSpacer: true });
-            i++; 
+            allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
+            i++;
           } else {
-            // Salto simple: solo añadimos una línea vacía con la altura estándar
             allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
           continue;
         }
 
         if (part.length > 0) {
-          // AÑADIMOS LA LÍNEA TAL CUAL, SIN RECONSTRUIR PALABRAS
-          allLines.push({ 
-            fragments: [{ ...frag, texto: part }], 
-            height: lineHeightPx 
+          allLines.push({
+            fragments: [{ ...frag, texto: part }],
+            height: lineHeightPx
           });
         }
       }
     }
 
     this.allLines = allLines;
-    
-    // PAGINACIÓN PARA SCROLL INFINITO
-    const PAGE_HEIGHT_LIMIT = 2500; 
+
     const pages = [];
     let currentPageLines = [];
-    let currentH = 40;
+    let currentH = this.settings.marginTop;
 
     this.allLines.forEach(line => {
-      const h = line.height || 20;
-      if (currentH + h > PAGE_HEIGHT_LIMIT) {
+      const h = line.height || this.settings.lineHeightDefault;
+      if (currentH + h > this.settings.pageHeightLimit) {
         pages.push(currentPageLines);
         currentPageLines = [];
-        currentH = 40;
+        currentH = this.settings.marginTop;
       }
       currentPageLines.push(line);
       currentH += h;
@@ -119,16 +127,13 @@ export class TxtReaderEngine {
 
   render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    
-    // Para el scroll infinito, renderizamos la primera página o la página solicitada
-    // Nota: El orchestrator lectorpdfmod.js maneja la vista, aquí preparamos el canvas base
     const activePageLines = this.pages[0] || [];
-    
-    let totalH = 40; 
+
+    let totalH = this.settings.marginTop;
     activePageLines.forEach(l => {
-      totalH += (l.height || 20);
+      totalH += (l.height || this.settings.lineHeightDefault);
     });
-    totalH += 40;
+    totalH += this.settings.marginTop;
 
     this.canvas.width = availableWidth;
     this.canvas.height = totalH;
@@ -136,11 +141,11 @@ export class TxtReaderEngine {
     this.canvas.style.height = `${totalH}px`;
 
     const ctx = this.ctx;
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = this.settings.bgColor;
     ctx.fillRect(0, 0, availableWidth, totalH);
     ctx.textBaseline = "top";
 
-    let y = 20;
+    let y = this.settings.marginTop / 2; // Centrado aproximado del margen superior
     activePageLines.forEach(line => {
       if (y > totalH) return;
 
@@ -148,18 +153,18 @@ export class TxtReaderEngine {
         y += line.height;
         return;
       }
-      
-      let x = 20;
+
+      let x = this.settings.marginLeft;
       if (line.fragments) {
         line.fragments.forEach(frag => {
-          const size = this.ptToPx(frag.tamano || 12);
+          const size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
           ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${size}px ${this.FONT_FAMILY}`;
-          ctx.fillStyle = frag.color ? `#${frag.color}` : "#000000";
+          ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
           ctx.fillText(frag.texto, x, y);
           x += ctx.measureText(frag.texto).width;
         });
       }
-      y += line.height || 20;
+      y += line.height || this.settings.lineHeightDefault;
     });
   }
 
