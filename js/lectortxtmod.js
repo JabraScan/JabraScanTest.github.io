@@ -155,14 +155,13 @@ export function TxtReaderEngine(options) {
           let posX = margenPx;
           let posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2); 
 
-          cachedBloques.forEach(bloque => {
+                    cachedBloques.forEach((bloque) => {
             if (bloque.fuente) fuenteBase = bloque.fuente;
             if (bloque.tamano) tamanoBase = bloque.tamano;
 
             let tamanoRender = tamanoBase;
             let desfasadorY = 0;
 
-            // Ajuste para superíndices y subíndices
             if (bloque.superindice) {
               tamanoRender = tamanoBase * 0.7;
               desfasadorY = -(tamanoBase * 0.35);
@@ -177,17 +176,17 @@ export function TxtReaderEngine(options) {
 
             ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
 
-            // Control de color: si no se especifica o es 000000, se aplica el negro por defecto
             if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
               ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
             } else {
               ctx.fillStyle = '#000000';
             }
 
+            // Dividimos el texto del bloque por sus saltos de línea internos \n
             const lineas = bloque.texto.split('\n');
 
             lineas.forEach((linea, indexLinea) => {
-              // Si proviene de un salto de línea explícito ('\n')
+              // Si no es la primera línea del bloque, aplicamos salto de línea interno
               if (indexLinea > 0) {
                 posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
                 posX = margenPx;
@@ -201,10 +200,11 @@ export function TxtReaderEngine(options) {
                 const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
                 const anchoTexto = ctx.measureText(textoAEscribir).width;
 
-                // Verificación de ajuste de línea si excede el margen derecho
+                // Salto de línea automático si choca con el margen derecho
                 if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
                   posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
                   posX = margenPx;
+                  
                   const palabraSinEspacio = palabra;
                   const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
                   
@@ -228,6 +228,10 @@ export function TxtReaderEngine(options) {
                 }
               });
             });
+
+            // SALTO REAL ENTRE PÁRRAFOS (Al terminar cada bloque de JSON)
+            posY += (tamanoBase * FACTOR_INTERLINEADO) + (interlineadoExtra * 1.5);
+            posX = margenPx;
           });
 
           // Renderizado del footer
