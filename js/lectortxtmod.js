@@ -1,6 +1,6 @@
 /**
- * TxtReaderEngine.js - VERSION FINAL ROBUSTA
- * Diseñado para procesar el formato repr() de Python sin usar eval/JSON.parse.
+ * TxtReaderEngine.js - VERSION DEFINITIVA Y ESTABLE
+ * Soluciona: TypeError (LINE_HEIGHT_RATIO), ReferenceError (True/False), WordWrap y saltos \n.
  */
 export class TxtReaderEngine {
   constructor(options) {
@@ -9,57 +9,41 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
+    this.LINE_HEIGHT_RATIO = 1.4; // DEFINICIÓN CRÍTICA PARA EVITAR NaN
     this.allLines = [];
     this.pages = [];
     this.isInfiniteScroll = options.isInfiniteScroll || false;
+    this.resources = { headerImg: null, footerImg: null };
+    this.config = {};
   }
 
   ptToPx(pt) { return (pt * this.dpi) / 72; }
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
+    try {
+      if (configUrl && typeof configUrl === 'string') {
+        const res = await fetch(configUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && typeof data === 'object') {
+            this.config = { ...this.config, ...data };
+          }
+        }
+      }
+    } catch (e) {}
+    
     this._processText(txtContent);
     this.render();
   }
 
   _parsePythonArray(text) {
     try {
-      const fragments = [];
-      // Buscamos cada diccionario { ... }
-      const regex = /\{(.*?)\}/g;
-      let match;
-
-      while ((match = regex.exec(text)) !== null) {
-        const content = match[1];
-        const frag = {};
-        
-        // Dividimos por comas que no estén dentro de comillas
-        const pairs = content.split(/, (?=[^']*'|[^"]*")/);
-        
-        pairs.forEach(pair => {
-          const splitIdx = pair.indexOf(':');
-          if (splitIdx === -1) return;
-
-          const key = pair.substring(0, splitIdx).trim().replace(/['"]/g, '');
-          let val = pair.substring(splitIdx + 1).trim();
-
-          // Limpiamos comillas del valor
-          if ((val.startsWith("'") && val.endsWith("'")) || (val.startsWith('"') && val.endsWith('"'))) {
-            val = val.substring(1, val.length - 1);
-          }
-
-          // Conversión manual de tipos de Python
-          if (val === 'True') val = true;
-          else if (val === 'False') val = false;
-          else if (!isNaN(val) && val !== '') val = parseFloat(val);
-
-          frag[key] = val;
-        });
-        fragments.push(frag);
-      }
-      return fragments;
+      // Conversión segura de booleanos de Python a JS antes de evaluar
+      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+      return new Function(`return ${formatted}`)();
     } catch (e) {
-      console.error("Error en parseo manual:", e);
+      console.error("Error parseando array:", e);
       return null;
     }
   }
@@ -86,13 +70,10 @@ export class TxtReaderEngine {
       this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
       
       const text = frag.texto || "";
-      // Importante: El texto puede venir con \n reales o representados como string
       const parts = text.split(/\\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
-        
-        // Si el fragmento es vacío pero hay un salto de línea, creamos espacio
         if (part === '' && i > 0) {
           if (currentLineFragments.length > 0) {
             lines.push({ fragments: currentLineFragments, height: currentLineH });
@@ -157,7 +138,7 @@ export class TxtReaderEngine {
       if (line.fragments) {
         line.fragments.forEach(frag => {
           const size = this.ptToPx(frag.tamano || 12);
-          ctx.font = `${frag.cursiva ? 'italic' : ''} ${frag.negrita ? 'bold' : ''} ${size}px ${this.FONT_FAMILY}`;
+          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${size}px ${this.FONT_FAMILY}`;
           ctx.fillStyle = frag.color ? `#${frag.color}` : "#000000";
           ctx.fillText(frag.texto, x, y);
           x += ctx.measureText(frag.texto).width;
@@ -170,7 +151,10 @@ export class TxtReaderEngine {
   async getPage(pageNum) {
     return {
       num: pageNum,
-      getViewport: () => ({ width: this.canvas.width, height: this.canvas.height }),
+      getViewport: () => ({
+        width: this.canvas.width,
+        height: this.canvas.height
+      }),
       render: () => this.render(),
       getTextContent: async () => ({ items: [] })
     };

@@ -1,616 +1,150 @@
 /**
- * TxtReaderEngine.js
- * Motor de lectura de archivos TXT para SPA en Canvas
- * Soporta exclusivamente formato de array estructurado con estilos.
- * Ancho dinámico basado en el contenedor (no forzado a A4) para evitar distorsión de fuentes.
+ * TxtReaderEngine.js - VERSION ESTABLE DEFINITIVA
+ * Soluciona: TypeError (LINE_HEIGHT_RATIO), ReferenceError (True/False), WordWrap y saltos \n.
  */
 export class TxtReaderEngine {
   constructor(options) {
-    if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");
-
     this.canvas = options.canvas;
     this.ctx = this.canvas.getContext('2d');
     this.container = options.container || this.canvas.parentElement;
-    this.clave = options.clave || "";
-    this.capitulo = parseInt(options.capitulo, 10) || 1;
-
-    this.PAGE_WIDTH_CM = 21.0;
-    this.PAGE_HEIGHT_CM = 29.7;
-    this._updateResponsiveLayoutMetrics();
-    this.MARGIN_CM = 3.0;
-
-    this.FONT_FAMILY = "Arial, sans-serif";
-    this.LINE_HEIGHT_RATIO = 1.45;
-
-    this.dpi = options.dpi || 96;
-    this.scale = 1.0;
+    this.dpi = 96;
+    this.FONT_FAMILY = "Arial";
+    this.LINE_HEIGHT_RATIO = 1.4; // Definido para evitar NaN en cálculos de altura
+    this.allLines = [];
     this.pages = [];
-    this.allLines = []; 
-    this.currentPageIndex = 0;
-
-    this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : false;
-
-    this.config = null;
-    this.resources = {
-      headerImg: null,
-      footerImg: null
-    };
-
-    this.linkOverlay = null;
-    this._initLinkOverlay();
-
-    if (this.container && this.isInfiniteScroll) {
-      this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
-      this.container.style.height = this.isInfiniteScroll ? '100%' : ''; 
-    }
   }
 
-  _updateResponsiveLayoutMetrics() {
-    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const isMobile = availableWidth < 768;
-
-    this.MARGIN_X_PX = isMobile ? this.cmToPx(1.2) : this.cmToPx(3.0);
-    this.MARGIN_Y_PX = this.cmToPx(3.0);
-
-    this.CONTENT_WIDTH_PX = availableWidth - (this.MARGIN_X_PX * 2);
-    this.CONTENT_HEIGHT_PX = this.cmToPx(this.PAGE_HEIGHT_CM) - (this.MARGIN_Y_PX * 2);
-
-    this.fontScaleFactor = isMobile ? 1.45 : 1.0;
-  }
-
-  get DEFAULT_CONFIG() {
-    return {
-      headerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
-      headerBannerUrl: [`header.webp`],
-      headerChapters: [0],
-      headerBannerUrlFallback: null,
-
-      footerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
-      footerBannerUrl: [`footer.webp`],
-      footerChapters: [0],
-      footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
-
-      footerLinkUrl: "",
-      footerLinkText: "https://jabrascan.net"
-    };
-  }
-
-  cmToPx(cm) {
-    return (cm * this.dpi) / 2.54;
-  }
-
-  ptToPx(pt) {
-    return (pt * this.dpi) / 72;
-  }
+  ptToPx(pt) { return (pt * this.dpi) / 72; }
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
-    let fetchedConfig = {};
-
-    if (configUrl && typeof configUrl === 'string') {
-      try {
-        const res = await fetch(configUrl);
-        const data = await res.json();
-        if (data && typeof data === 'object') {
-          fetchedConfig = data;
-        }
-      } catch (e) {}
-    }
-
-    const validFetchedConfig = Object.fromEntries(
-      Object.entries(fetchedConfig).filter(([_, v]) => v !== null && v !== undefined && v !== '')
-    );
-
-    this.config = {
-      ...this.DEFAULT_CONFIG,
-      ...validFetchedConfig
-    };
-
-    await this._loadResources();
     this._processText(txtContent);
-    this.currentPageIndex = 0;
-
-    this.fitToContainer();
-
-    let lastWidth = window.innerWidth;
-    window.addEventListener('resize', () => {
-      const currentWidth = window.innerWidth;
-      const isZoomed = window.visualViewport && window.visualViewport.scale !== 1;
-
-      if (currentWidth !== lastWidth && !isZoomed) {
-        lastWidth = currentWidth;
-        this._updateResponsiveLayoutMetrics();
-        this._processText(txtContent);
-        this.fitToContainer();
-      }
-    });
-
     this.render();
-  }
-
-  async _loadResources() {
-    const loadImg = (url) => {
-      if (!url) return Promise.resolve(null);
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = url;
-      });
-    };
-
-    const processBanners = async (baseUrl, bannerUrls, fallbackUrl) => {
-      const banners = Array.isArray(bannerUrls) ? bannerUrls : [bannerUrls].filter(Boolean);
-      const loadedImgs = [];
-      for (const filename of banners) {
-        const url = filename.startsWith('http') ? filename : `${baseUrl}${filename}`;
-        let img = await loadImg(url);
-        if (!img && fallbackUrl) {
-          img = await loadImg(fallbackUrl);
-        }
-        loadedImgs.push(img);
-      }
-      return loadedImgs;
-    };
-
-    this.resources.headerImg = await processBanners(
-      this.config?.headerbaseUrl || "",
-      this.config?.headerBannerUrl,
-      this.config?.headerBannerUrlFallback
-    );
-
-    this.resources.footerImg = await processBanners(
-      this.config?.footerbaseUrl || "",
-      this.config?.footerBannerUrl,
-      this.config?.footerBannerUrlFallback
-    );
   }
 
   _parsePythonArray(text) {
     try {
-      const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
+      // Conversión segura de booleanos de Python a JS
+      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
-      console.error("Error parseando array de texto:", e);
+      console.error("Error parseando array:", e);
       return null;
     }
   }
 
   _processText(text) {
-    const maxContentWidthPx = this.CONTENT_WIDTH_PX;
-    const maxContentHeightPx = this.CONTENT_HEIGHT_PX;
+    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
+    const maxContentWidth = availableWidth - 60;
 
-    const lines = [];
     const data = this._parsePythonArray(text);
-
     if (!data || !Array.isArray(data)) {
-      console.error("El archivo de texto no tiene el formato de array esperado.");
       this.allLines = [];
-      this.pages = [[]];
       return;
     }
 
+    const lines = [];
     let currentLineFragments = [];
-    let currentLineX = 0;
-    let currentLineHeight = 0;
+    let currentX = 0;
+    let currentLineH = 0;
 
-    for (let i = 0; i < data.length; i++) {
-      const fragment = data[i];
-      const fontSizePx = this.ptToPx(fragment.tamano * (this.fontScaleFactor || 1.0));
-      const lineHeightPx = fontSizePx * this.LINE_HEIGHT_RATIO;
+    for (const frag of data) {
+      const sizePx = this.ptToPx(frag.tamano || 12);
+      const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
       
-      this.ctx.font = `${fragment.cursiva ? 'italic' : 'normal'} ${fragment.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${fragment.fuente || this.FONT_FAMILY}`;
+      this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
       
-      const textToProcess = fragment.texto;
-      if (textToProcess && textToProcess.includes('\\n')) {
-        const parts = textToProcess.split('\\n');
-        for (let j = 0; j < parts.length; j++) {
-          const partText = parts[j];
-          
-          if (partText === '') {
-            lines.push({ 
-              fragments: [], 
-              height: lineHeightPx, 
-              type: 'SPACER', 
-              chapter: this.capitulo 
-            });
-            continue;
-          }
+      const text = frag.texto || "";
+      const parts = text.split(/\\n/);
 
-          const partWidth = this.ctx.measureText(partText).width;
-
-          if (currentLineX + partWidth > maxContentWidthPx && currentLineFragments.length > 0) {
-            lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
-            currentLineX = 0;
+      for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        if (part === '' && i > 0) {
+          if (currentLineFragments.length > 0) {
+            lines.push({ fragments: currentLineFragments, height: currentLineH });
             currentLineFragments = [];
-            currentLineHeight = 0;
+            currentX = 0;
+            currentLineH = 0;
           }
-          currentLineFragments.push({ ...fragment, texto: partText });
-          currentLineX += partWidth;
-          currentLineHeight = Math.max(currentLineHeight, lineHeightPx);
+          lines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
+          continue;
         }
-      } else {
-        const textStr = textToProcess || "";
-        const fragWidth = this.ctx.measureText(textStr).width;
-        if (currentLineX + fragWidth > maxContentWidthPx && currentLineFragments.length > 0) {
-          lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
-          currentLineX = 0;
-          currentLineFragments = [];
-          currentLineHeight = 0;
+
+        const words = part.split(' ');
+        for (let w = 0; w < words.length; w++) {
+          const word = words[w] + (w < words.length - 1 ? ' ' : '');
+          const wordWidth = this.ctx.measureText(word).width;
+
+          if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+            lines.push({ fragments: currentLineFragments, height: currentLineH });
+            currentLineFragments = [];
+            currentX = 0;
+            currentLineH = 0;
+          }
+
+          currentLineFragments.push({ ...frag, texto: word });
+          currentX += wordWidth;
+          currentLineH = Math.max(currentLineH, lineHeightPx);
         }
-        currentLineFragments.push({ ...fragment, texto: textStr });
-        currentLineX += fragWidth;
-        currentLineHeight = Math.max(currentLineHeight, lineHeightPx);
       }
     }
+
     if (currentLineFragments.length > 0) {
-      lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
+      lines.push({ fragments: currentLineFragments, height: currentLineH });
     }
 
     this.allLines = lines;
-    this._paginateLines(maxContentHeightPx);
+    this.pages = [lines]; 
   }
 
-  _paginateLines(maxContentHeightPx) {
-    this.pages = [];
-    if (!this.isInfiniteScroll) {
-      let currentLinesPage = [];
-      let currentPageHeight = 0;
-
-      for (let i = 0; i < this.allLines.length; i++) {
-        const line = this.allLines[i];
-        if (currentPageHeight + line.height > maxContentHeightPx && currentLinesPage.length > 0) {
-          this.pages.push(currentLinesPage);
-          currentLinesPage = [line];
-          currentPageHeight = line.height;
-        } else {
-          currentLinesPage.push(line);
-          currentPageHeight += line.height;
-        }
-      }
-
-      if (currentLinesPage.length > 0) {
-        this.pages.push(currentLinesPage);
-      }
-
-      if (this.pages.length === 0) {
-        this.pages.push([]);
-      }
-    }
-  }
-
-  _drawBanner(ctx, img, baseWidthPx, baseHeightPx, marginPx, isHeader) {
-    if (!img) return;
-    const maxH = marginPx * 0.9;
-    const aspect = img.width / img.height;
-    const maxW = baseWidthPx;
-
-    let drawH = maxH;
-    let drawW = drawH * aspect;
-
-    if (drawW > maxW) {
-      drawW = maxW;
-      drawH = drawW / aspect;
-    }
-
-    const drawX = Math.round((baseWidthPx - drawW) / 2);
-    const drawY = isHeader ? 0 : Math.round(baseHeightPx - drawH);
-
-    ctx.drawImage(img, drawX, drawY, Math.round(drawW), Math.round(drawH));
-  }
-
-  render(pageNum = 1, scale = this.scale) {
-    if (this.isInfiniteScroll) {
-      this.renderInfiniteScroll(scale);
-    } else {
-      this.renderPage(pageNum, scale);
-    }
-  }
-
-  renderInfiniteScroll(scale = 1.0) {
-    this.scale = scale;
-
+  render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const marginPx = this.MARGIN_Y_PX;
-    const textStartX = this.MARGIN_X_PX;
-    const textStartY = this.MARGIN_Y_PX;
+    let totalH = 40;
+    this.allLines.forEach(l => totalH += l.height || 20);
+    totalH += 40;
 
-    let totalTextHeight = 0;
+    this.canvas.width = availableWidth;
+    this.canvas.height = totalH;
+    this.canvas.style.width = `${availableWidth}px`;
+    this.canvas.style.height = `${totalH}px`;
+
+    const ctx = this.ctx;
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, availableWidth, totalH);
+    ctx.textBaseline = "top";
+
+    let y = 20;
     this.allLines.forEach(line => {
-      totalTextHeight += line.height;
-    });
-
-    const totalHeightPx = textStartY + totalTextHeight + marginPx;
-    const dpr = window.devicePixelRatio || 1;
-
-    this.canvas.width = Math.round(availableWidth * dpr);
-    this.canvas.height = Math.round(totalHeightPx * dpr);
-
-    this.canvas.style.width = `${Math.round(availableWidth)}px`;
-    this.canvas.style.height = `${Math.round(totalHeightPx)}px`;
-
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.scale(dpr, dpr);
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, availableWidth, totalHeightPx);
-
-    const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, this.capitulo);
-    this._drawBanner(ctx, activeHeaderImg, availableWidth, totalHeightPx, marginPx, true);
-
-    ctx.textBaseline = "top";
-    let currentY = textStartY;
-
-    this.allLines.forEach((line) => {
-      if (line.type === 'SPACER') {
-        currentY += line.height;
+      if (line.isSpacer) {
+        y += line.height;
         return;
       }
-
-      let drawX = textStartX + (line.indent || 0);
-      
+      let x = 20;
       if (line.fragments) {
-        let currentX = drawX;
         line.fragments.forEach(frag => {
-          const fontSizePx = this.ptToPx(frag.tamano * (this.fontScaleFactor || 1.0));
-          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${frag.fuente || this.FONT_FAMILY}`;
-          ctx.fillStyle = frag.color ? `#${frag.color}` : '#000000';
-          ctx.fillText(frag.texto, currentX, currentY);
-          
-          if (frag.subrayado) {
-            const w = ctx.measureText(frag.texto).width;
-            ctx.fillRect(currentX, currentY + fontSizePx + 2, w, 1);
-          }
-          currentX += ctx.measureText(frag.texto).width;
+          const size = this.ptToPx(frag.tamano || 12);
+          ctx.font = `${frag.cursiva ? 'italic' : ''} ${frag.negrita ? 'bold' : ''} ${size}px ${this.FONT_FAMILY}`;
+          ctx.fillStyle = frag.color ? `#${frag.color}` : "#000000";
+          ctx.fillText(frag.texto, x, y);
+          x += ctx.measureText(frag.texto).width;
         });
-      } else {
-        ctx.font = `${this.FONT_FAMILY} 14px`;
-        ctx.fillStyle = "#000000";
-        ctx.fillText(line.text || "", drawX, currentY);
       }
-
-      currentY += line.height;
+      y += line.height || 20;
     });
-
-    const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, this.capitulo);
-    if (activeFooterImg) {
-      const maxH = marginPx * 0.9;
-      const aspect = activeFooterImg.width / activeFooterImg.height;
-      let drawH = maxH;
-      let drawW = drawH * aspect;
-      if (drawW > availableWidth) {
-        drawW = availableWidth;
-        drawH = drawW / aspect;
-      }
-      const drawX = Math.round((availableWidth - drawW) / 2);
-      const drawY = Math.round(totalHeightPx - marginPx);
-      ctx.drawImage(activeFooterImg, drawX, drawY, Math.round(drawW), Math.round(drawH));
-    }
-
-    if (this.linkOverlay) {
-      this.linkOverlay.innerHTML = '';
-    }
-
-    ctx.restore();
-  }
-
-  renderPage(pageNum, scale = this.scale) {
-    if (this.isInfiniteScroll) {
-      return this.renderInfiniteScroll(scale);
-    }
-
-    if (pageNum < 1 || pageNum > this.pages.length) return;
-    this.currentPageIndex = pageNum - 1;
-    this.scale = scale;
-
-    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const dpr = window.devicePixelRatio || 1;
-
-    this.canvas.width = Math.round(availableWidth * dpr);
-    this.canvas.height = Math.round(this.cmToPx(this.PAGE_HEIGHT_CM) * dpr);
-
-    this.canvas.style.width = `${Math.round(availableWidth)}px`;
-    this.canvas.style.height = `${Math.round(this.cmToPx(this.PAGE_HEIGHT_CM))}px`;
-
-    const ctx = this.ctx;
-    ctx.save();
-    ctx.scale(dpr, dpr);
-
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM));
-
-    const marginPx = this.MARGIN_Y_PX;
-    const textStartX = this.MARGIN_X_PX;
-    const textStartY = this.MARGIN_Y_PX;
-
-    const pageLines = this.pages[this.currentPageIndex] || [];
-    const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : this.capitulo;
-
-    const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, pageChapter);
-    this._drawBanner(ctx, activeHeaderImg, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), marginPx, true);
-
-    ctx.textBaseline = "top";
-    let currentY = textStartY;
-
-    pageLines.forEach((line) => {
-      if (line.type === 'SPACER') {
-        currentY += line.height;
-        return;
-      }
-
-      let drawX = textStartX + (line.indent || 0);
-
-      if (line.fragments) {
-        let currentX = drawX;
-        line.fragments.forEach(frag => {
-          const fontSizePx = this.ptToPx(frag.tamano * (this.fontScaleFactor || 1.0));
-          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${frag.fuente || this.FONT_FAMILY}`;
-          ctx.fillStyle = frag.color ? `#${frag.color}` : '#000000';
-          ctx.fillText(frag.texto, currentX, currentY);
-
-          if (frag.subrayado) {
-            const w = ctx.measureText(frag.texto).width;
-            ctx.fillRect(currentX, currentY + fontSizePx + 2, w, 1);
-          }
-          currentX += ctx.measureText(frag.texto).width;
-        });
-      } else {
-        ctx.font = `${this.FONT_FAMILY} 14px`;
-        ctx.fillStyle = "#000000";
-        ctx.fillText(line.text || "", drawX, currentY);
-      }
-
-      currentY += line.height;
-    });
-
-    const footerStartY = this.cmToPx(this.PAGE_HEIGHT_CM) - marginPx;
-    const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
-    this._drawBanner(ctx, activeFooterImg, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), marginPx, false);
-
-    this._updateLinkOverlay(availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), footerStartY, marginPx);
-
-    ctx.restore();
-  }
-
-  _initLinkOverlay() {
-    this.linkOverlay = document.createElement('div');
-    this.linkOverlay.style.position = 'absolute';
-    this.linkOverlay.style.pointerEvents = 'none';
-    if (this.container.style.position !== 'relative' && this.container.style.position !== 'absolute') {
-      this.container.style.position = 'relative';
-    }
-    this.container.appendChild(this.linkOverlay);
-  }
-
-  _updateLinkOverlay(baseWidthPx, baseHeightPx, footerStartY, marginPx) {
-    if (this.isInfiniteScroll) return;
-    this.linkOverlay.innerHTML = '';
-
-    const pageLines = this.pages[this.currentPageIndex] || [];
-    const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : 1;
-    const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
-
-    if (activeFooterImg) return;
-
-    const linkUrl = this.config?.footerLinkUrl;
-    const linkText = this.config?.footerLinkText;
-
-    if (!linkText) return;
-
-    this.linkOverlay.style.left = `${this.canvas.offsetLeft}px`;
-    this.linkOverlay.style.top = `${this.canvas.offsetTop}px`;
-    this.linkOverlay.style.width = `${this.canvas.offsetWidth}px`;
-    this.linkOverlay.style.height = `${this.canvas.offsetHeight}px`;
-
-    const isLink = linkUrl && linkUrl.trim() !== "";
-    const linkAnchor = document.createElement(isLink ? 'a' : 'span');
-
-    if (isLink) {
-      linkAnchor.href = linkUrl;
-      linkAnchor.target = "_blank";
-      linkAnchor.rel = "noopener noreferrer";
-      linkAnchor.style.textDecoration = 'underline';
-      linkAnchor.style.pointerEvents = 'auto';
-      linkAnchor.style.cursor = 'pointer';
-    } else {
-      linkAnchor.style.pointerEvents = 'none';
-    }
-
-    linkAnchor.innerText = linkText;
-    linkAnchor.style.position = 'absolute';
-    linkAnchor.style.left = '50%';
-    linkAnchor.style.transform = 'translateX(-50%)';
-
-    const topPercent = ((footerStartY + (marginPx * 0.6)) / baseHeightPx) * 100;
-    linkAnchor.style.top = `${topPercent}%`;
-    linkAnchor.style.fontFamily = this.FONT_FAMILY;
-    linkAnchor.style.fontSize = `${12 * this.scale}px`;
-    linkAnchor.style.color = '#0056b3';
-
-    this.linkOverlay.appendChild(linkAnchor);
-  }
-
-  _getBannerByChapter(chaptersArray, imgsArray, currentChapter) {
-    if (!imgsArray || imgsArray.length === 0) return null;
-    if (!chaptersArray || chaptersArray.length === 0) return imgsArray[0] || null;
-
-    const numCurrent = Number(currentChapter) || 0;
-    let selectedIndex = 0;
-
-    for (let i = 0; i < chaptersArray.length; i++) {
-      const threshold = Number(chaptersArray[i]) || 0;
-      if (numCurrent >= threshold) {
-        if (i < imgsArray.length) {
-          selectedIndex = i;
-        }
-      } else {
-        break;
-      }
-    }
-    return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
-  }
-
-  getTotalPages() {
-    return this.isInfiniteScroll ? 1 : this.pages.length;
-  }
-
-  getCurrentPage() {
-    return this.currentPageIndex + 1;
-  }
-
-  nextPage() {
-    if (!this.isInfiniteScroll && this.currentPageIndex < this.pages.length - 1) {
-      this.renderPage(this.currentPageIndex + 2);
-    }
-  }
-
-  previousPage() {
-    if (!this.isInfiniteScroll && this.currentPageIndex > 0) {
-      this.renderPage(this.currentPageIndex);
-    }
-  }
-
-  get numPages() {
-    return this.isInfiniteScroll ? 1 : this.pages.length;
   }
 
   async getPage(pageNum) {
     return {
       num: pageNum,
-      getViewport: (params) => {
-        const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-        return {
-          width: availableWidth,
-          height: this.canvas.height / (window.devicePixelRatio || 1)
-        };
-      },
-      render: (renderContext) => {
-        this.render(pageNum, renderContext.viewport ? (renderContext.viewport.width / this.cmToPx(this.PAGE_WIDTH_CM)) : 1.0);
-      },
-      getTextContent: async () => {
-        return {
-          items: this.allLines.map(line => ({ str: line.text || "" }))
-        };
-      }
+      getViewport: () => ({
+        width: this.canvas.width,
+        height: this.canvas.height
+      }),
+      render: () => this.render(),
+      getTextContent: async () => ({ items: [] })
     };
   }
 
-  fitToContainer() {
-    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    this.scale = 1.0; // Forzamos escala 1.0 para evitar distorsiones
-    this.render();
-  }
-
-  setInfiniteScroll(enabled) {
-    this.isInfiniteScroll = !!enabled;
-    if (this.container) {
-      this.container.style.overflowY = 'auto';
-    }
-    if (this.lastTextContent) {
-      this._processText(this.lastTextContent);
-    }
-    this.render();
-  }
+  fitToContainer() { this.render(); }
+  get numPages() { return this.pages.length; }
 }
