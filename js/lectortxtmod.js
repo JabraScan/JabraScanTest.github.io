@@ -163,6 +163,7 @@ export class TxtReaderEngine {
     });
     totalH += this.settings.marginTop;
 
+    // Forzamos que el canvas ocupe el ancho real del contenedor sin restricciones
     this.canvas.width = availableWidth;
     this.canvas.height = totalH;
     this.canvas.style.width = `${availableWidth}px`;
@@ -173,7 +174,7 @@ export class TxtReaderEngine {
     ctx.fillRect(0, 0, availableWidth, totalH);
     ctx.textBaseline = "top";
 
-    let y = this.settings.marginTop / 2; // Centrado aproximado del margen superior
+    let y = this.settings.marginTop; // Posicionamos el inicio del texto exactamente en el margen superior
     activePageLines.forEach(line => {
       if (y > totalH) return;
 
@@ -182,7 +183,7 @@ export class TxtReaderEngine {
         return;
       }
 
-      let x = this.settings.marginLeft;
+      let x = this.settings.marginLeft; // Posicionamos la X exactamente en el margen izquierdo
       if (line.fragments) {
         line.fragments.forEach(frag => {
           const size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
