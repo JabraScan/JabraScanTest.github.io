@@ -49,7 +49,8 @@ export class TxtReaderEngine {
     this.currentPageIndex = 0;
     
     // Configuración limpia del modo de scroll infinito (por defecto false o lo que se indique)
-    this.isInfiniteScroll = Boolean(options.isInfiniteScroll);
+    this.isInfiniteScroll = Boolean(true);
+    //this.isInfiniteScroll = Boolean(options.isInfiniteScroll);
 
     this.config = null;
     this.resources = {
