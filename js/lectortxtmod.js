@@ -1,20 +1,13 @@
 /**
  * TxtReaderEngine.js
- * Motor de lectura de archivos TXT para SPA en Canvas A4
- * Compatible con Modo Paginado y Modo Scroll Infinito (Flujo Continuo Real)
+ * Motor de lectura de archivos TXT para SPA en Canvas
+ * Soporta exclusivamente formato de array estructurado con estilos.
+ * Ancho dinámico basado en el contenedor (no forzado a A4) para evitar distorsión de fuentes.
  */
 export class TxtReaderEngine {
-  static STYLE_CONFIGS = {
-    'H1':   { sizePt: 20, bold: true,  align: 'center', spaceBefore: 18, spaceAfter: 4,  color: '#111111' },
-    'H2':   { sizePt: 16, bold: true,  align: 'center', spaceBefore: 8,  spaceAfter: 4,  color: '#111111' },
-    'H3':   { sizePt: 12, bold: true,  align: 'left',   spaceBefore: 8,  spaceAfter: 4,  color: '#0056b3' },
-    'CITA': { sizePt: 11, italic: true, align: 'center', spaceBefore: 18, spaceAfter: 18, color: '#0056b3', indentCm: 1.52 },
-    'BODY': { sizePt: 11, bold: false, align: 'left',   spaceBefore: 0,  spaceAfter: 0,  color: '#111111' }
-  };
-
   constructor(options) {
     if (!options.canvas) throw new Error("Se requiere un elemento Canvas.");
-   
+
     this.canvas = options.canvas;
     this.ctx = this.canvas.getContext('2d');
     this.container = options.container || this.canvas.parentElement;
@@ -30,11 +23,11 @@ export class TxtReaderEngine {
     this.LINE_HEIGHT_RATIO = 1.45;
 
     this.dpi = options.dpi || 96;
-    this.scale = 1.0; 
-    this.pages = [];  
-    this.allLines = []; // Almacena todas las líneas para el scroll continuo
+    this.scale = 1.0;
+    this.pages = [];
+    this.allLines = []; 
     this.currentPageIndex = 0;
-    
+
     this.isInfiniteScroll = options.isInfiniteScroll !== undefined ? options.isInfiniteScroll : false;
 
     this.config = null;
@@ -45,23 +38,23 @@ export class TxtReaderEngine {
 
     this.linkOverlay = null;
     this._initLinkOverlay();
-    
+
     if (this.container && this.isInfiniteScroll) {
       this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
-      this.container.style.height = this.isInfiniteScroll ? '100%' : ''; // Evita que se comprima
+      this.container.style.height = this.isInfiniteScroll ? '100%' : ''; 
     }
   }
 
   _updateResponsiveLayoutMetrics() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const isMobile = availableWidth < 768;
-    
-    this.MARGIN_X_CM = isMobile ? 1.2 : 3.0;
-    this.MARGIN_Y_CM = 3.0; 
 
-    this.CONTENT_WIDTH_CM = this.PAGE_WIDTH_CM - (this.MARGIN_X_CM * 2);
-    this.CONTENT_HEIGHT_CM = this.PAGE_HEIGHT_CM - (this.MARGIN_Y_CM * 2);
-    
+    this.MARGIN_X_PX = isMobile ? this.cmToPx(1.2) : this.cmToPx(3.0);
+    this.MARGIN_Y_PX = this.cmToPx(3.0);
+
+    this.CONTENT_WIDTH_PX = availableWidth - (this.MARGIN_X_PX * 2);
+    this.CONTENT_HEIGHT_PX = this.cmToPx(this.PAGE_HEIGHT_CM) - (this.MARGIN_Y_PX * 2);
+
     this.fontScaleFactor = isMobile ? 1.45 : 1.0;
   }
 
@@ -76,7 +69,7 @@ export class TxtReaderEngine {
       footerBannerUrl: [`footer.webp`],
       footerChapters: [0],
       footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
-      
+
       footerLinkUrl: "",
       footerLinkText: "https://jabrascan.net"
     };
@@ -174,102 +167,99 @@ export class TxtReaderEngine {
     );
   }
 
-  _parseBlockTag(rawParagraph) {
-    const match = rawParagraph.match(/^\[(H1|H2|H3|CITA)\]([\s\S]*?)\[\/\1\]$/);
-    if (match) {
-      return { type: match[1], text: match[2].trim() };
+  _parsePythonArray(text) {
+    try {
+      const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
+      return new Function(`return ${formatted}`)();
+    } catch (e) {
+      console.error("Error parseando array de texto:", e);
+      return null;
     }
-    return { type: 'BODY', text: rawParagraph.trim() };
   }
 
-  /**
-   * Procesa el texto generando las líneas y decidiendo si pagina o genera flujo continuo
-   */
   _processText(text) {
-    const maxContentWidthPx = this.cmToPx(this.CONTENT_WIDTH_CM);
-    const maxContentHeightPx = this.cmToPx(this.CONTENT_HEIGHT_CM);
+    const maxContentWidthPx = this.CONTENT_WIDTH_PX;
+    const maxContentHeightPx = this.CONTENT_HEIGHT_PX;
 
     const lines = [];
-    const rawParagraphs = text.replace(/\r\n/g, '\n').split('\n');
+    const data = this._parsePythonArray(text);
 
-    for (let pIndex = 0; pIndex < rawParagraphs.length; pIndex++) {
-      const rawP = rawParagraphs[pIndex];
-      
-      if (rawP.trim() === '') {
-        const bodyCfg = TxtReaderEngine.STYLE_CONFIGS['BODY'];
-        const effectiveSizePt = bodyCfg.sizePt * (this.fontScaleFactor || 1.0);
-        const hPx = this.ptToPx(effectiveSizePt) * this.LINE_HEIGHT_RATIO;
-        lines.push({ text: '', height: hPx, type: 'BODY', spaceBefore: 0, spaceAfter: 0, chapter: this.capitulo });
-        continue;
-      }
+    if (!data || !Array.isArray(data)) {
+      console.error("El archivo de texto no tiene el formato de array esperado.");
+      this.allLines = [];
+      this.pages = [[]];
+      return;
+    }
 
-      const { type, text: cleanParagraph } = this._parseBlockTag(rawP);      
-      const style = TxtReaderEngine.STYLE_CONFIGS[type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
-      const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
-      const fontSizePx = this.ptToPx(effectiveSizePt);
+    let currentLineFragments = [];
+    let currentLineX = 0;
+    let currentLineHeight = 0;
+
+    for (let i = 0; i < data.length; i++) {
+      const fragment = data[i];
+      const fontSizePx = this.ptToPx(fragment.tamano * (this.fontScaleFactor || 1.0));
       const lineHeightPx = fontSizePx * this.LINE_HEIGHT_RATIO;
-      const spaceBeforePx = this.ptToPx(style.spaceBefore || 0);
-      const spaceAfterPx = this.ptToPx(style.spaceAfter || 0);
-      const indentPx = style.indentCm ? this.cmToPx(style.indentCm) : 0;
-      const effectiveWidth = maxContentWidthPx - (indentPx * 2);
+      
+      this.ctx.font = `${fragment.cursiva ? 'italic' : 'normal'} ${fragment.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${fragment.fuente || this.FONT_FAMILY}`;
+      
+      const textToProcess = fragment.texto;
+      if (textToProcess && textToProcess.includes('\\n')) {
+        const parts = textToProcess.split('\\n');
+        for (let j = 0; j < parts.length; j++) {
+          const partText = parts[j];
+          
+          if (partText === '') {
+            lines.push({ 
+              fragments: [], 
+              height: lineHeightPx, 
+              type: 'SPACER', 
+              chapter: this.capitulo 
+            });
+            continue;
+          }
 
-      if (spaceBeforePx > 0) {
-        lines.push({ text: '', height: spaceBeforePx, type: 'SPACER' });
-      }
+          const partWidth = this.ctx.measureText(partText).width;
 
-      const fontStyleStr = `${style.italic ? 'italic' : 'normal'} ${style.bold ? 'bold' : 'normal'} ${fontSizePx}px ${this.FONT_FAMILY}`;
-      this.ctx.font = fontStyleStr;
-
-      const words = cleanParagraph.split(' ');
-      let currentLineWords = [];
-
-      for (let w = 0; w < words.length; w++) {
-        const testWords = [...currentLineWords, words[w]];
-        const metrics = this.ctx.measureText(testWords.join(' '));
-
-        if (metrics.width > effectiveWidth && currentLineWords.length > 0) {
-          lines.push({ 
-            text: currentLineWords.join(' '), 
-            height: lineHeightPx, 
-            type: type,
-            align: style.align,
-            indent: indentPx,
-            color: style.color,
-            chapter: this.capitulo
-          });
-          currentLineWords = [words[w]];
-        } else {
-          currentLineWords = testWords;
+          if (currentLineX + partWidth > maxContentWidthPx && currentLineFragments.length > 0) {
+            lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
+            currentLineX = 0;
+            currentLineFragments = [];
+            currentLineHeight = 0;
+          }
+          currentLineFragments.push({ ...fragment, texto: partText });
+          currentLineX += partWidth;
+          currentLineHeight = Math.max(currentLineHeight, lineHeightPx);
         }
+      } else {
+        const textStr = textToProcess || "";
+        const fragWidth = this.ctx.measureText(textStr).width;
+        if (currentLineX + fragWidth > maxContentWidthPx && currentLineFragments.length > 0) {
+          lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
+          currentLineX = 0;
+          currentLineFragments = [];
+          currentLineHeight = 0;
+        }
+        currentLineFragments.push({ ...fragment, texto: textStr });
+        currentLineX += fragWidth;
+        currentLineHeight = Math.max(currentLineHeight, lineHeightPx);
       }
-
-      if (currentLineWords.length > 0) {
-        lines.push({ 
-          text: currentLineWords.join(' '), 
-          height: lineHeightPx, 
-          type: type,
-          align: style.align,
-          indent: indentPx,
-          color: style.color,
-          chapter: this.capitulo
-        });
-      }
-
-      if (spaceAfterPx > 0) {
-        lines.push({ text: '', height: spaceAfterPx, type: 'SPACER' });
-      }
+    }
+    if (currentLineFragments.length > 0) {
+      lines.push({ fragments: currentLineFragments, height: currentLineHeight, type: 'BODY', chapter: this.capitulo });
     }
 
     this.allLines = lines;
+    this._paginateLines(maxContentHeightPx);
+  }
 
-    // Si es modo paginado, separamos en páginas A4 estrictas
+  _paginateLines(maxContentHeightPx) {
     this.pages = [];
     if (!this.isInfiniteScroll) {
       let currentLinesPage = [];
       let currentPageHeight = 0;
 
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
+      for (let i = 0; i < this.allLines.length; i++) {
+        const line = this.allLines[i];
         if (currentPageHeight + line.height > maxContentHeightPx && currentLinesPage.length > 0) {
           this.pages.push(currentLinesPage);
           currentLinesPage = [line];
@@ -290,61 +280,12 @@ export class TxtReaderEngine {
     }
   }
 
-  _drawInlineText(ctx, text, startX, y, baseFontSize, baseFontFamily, defaultColor, isItalicBlock = false, isBoldBlock = false) {
-    const regex = /(\[B\][\s\S]*?\[\/B\]|\[I\][\s\S]*?\[\/I\]|\[U\][\s\S]*?\[\/U\]|\[SUP\][\s\S]*?\[\/SUP\]|\[EM\][\s\S]*?\[\/EM\])/g;
-    const parts = text.split(regex);
-    let currentX = startX;
-
-    parts.forEach(part => {
-      if (!part) return;
-
-      let style = isItalicBlock ? 'italic' : 'normal';
-      let weight = isBoldBlock ? 'bold' : 'normal';
-      let color = defaultColor;
-      let isUnderline = false;
-      let isSup = false;
-      let cleanText = part;
-
-      if (part.startsWith('[B]') && part.endsWith('[/B]')) {
-        weight = 'bold';
-        cleanText = part.slice(3, -4);
-      } else if (part.startsWith('[I]') && part.endsWith('[/I]')) {
-        style = 'italic';
-        cleanText = part.slice(3, -4);
-      } else if (part.startsWith('[U]') && part.endsWith('[/U]')) {
-        isUnderline = true;
-        cleanText = part.slice(3, -4);
-      } else if (part.startsWith('[SUP]') && part.endsWith('[/SUP]')) {
-        isSup = true;
-        cleanText = part.slice(3, -4);
-      } else if (part.startsWith('[EM]') && part.endsWith('[/EM]')) {
-        style = 'italic';
-        color = TxtReaderEngine.STYLE_CONFIGS['H3'].color;
-        cleanText = part.slice(4, -5);
-      }
-
-      const fontSize = isSup ? baseFontSize * 0.65 : baseFontSize;
-      const offsetY = isSup ? fontSize * 0.4 : 0;
-
-      ctx.font = `${style} ${weight} ${fontSize}px ${baseFontFamily}`;
-      ctx.fillStyle = color;
-      ctx.fillText(cleanText, currentX, y - offsetY);
-
-      if (isUnderline) {
-        const metrics = ctx.measureText(cleanText);
-        ctx.fillRect(currentX, y + baseFontSize + 2, metrics.width, 1);
-      }
-
-      currentX += ctx.measureText(cleanText).width;
-    });
-  }
-
   _drawBanner(ctx, img, baseWidthPx, baseHeightPx, marginPx, isHeader) {
     if (!img) return;
-    const maxH = marginPx * 0.9; 
+    const maxH = marginPx * 0.9;
     const aspect = img.width / img.height;
-    const maxW = baseWidthPx; 
-    
+    const maxW = baseWidthPx;
+
     let drawH = maxH;
     let drawW = drawH * aspect;
 
@@ -355,7 +296,7 @@ export class TxtReaderEngine {
 
     const drawX = Math.round((baseWidthPx - drawW) / 2);
     const drawY = isHeader ? 0 : Math.round(baseHeightPx - drawH);
-    
+
     ctx.drawImage(img, drawX, drawY, Math.round(drawW), Math.round(drawH));
   }
 
@@ -367,95 +308,83 @@ export class TxtReaderEngine {
     }
   }
 
-  /**
-   * Renderizado continuo real: un solo lienzo vertical con una cabecera arriba, todo el texto en flujo, y pie al final.
-   */
-  renderInfiniteScroll(scale = this.scale) {
+  renderInfiniteScroll(scale = 1.0) {
     this.scale = scale;
 
-    const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-    const marginPx = this.cmToPx(this.MARGIN_CM);
-    const textStartX = this.cmToPx(this.MARGIN_X_CM);
-    const textStartY = this.cmToPx(this.MARGIN_Y_CM);
+    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
+    const marginPx = this.MARGIN_Y_PX;
+    const textStartX = this.MARGIN_X_PX;
+    const textStartY = this.MARGIN_Y_PX;
 
-    // Calcular altura total del contenido de todas las líneas combinadas
     let totalTextHeight = 0;
     this.allLines.forEach(line => {
       totalTextHeight += line.height;
     });
 
-    // Altura total del canvas = márgenes superior e inferior + altura total del texto
     const totalHeightPx = textStartY + totalTextHeight + marginPx;
     const dpr = window.devicePixelRatio || 1;
 
-    this.canvas.width = Math.round(baseWidthPx * this.scale * dpr);
-    this.canvas.height = Math.round(totalHeightPx * this.scale * dpr);
+    this.canvas.width = Math.round(availableWidth * dpr);
+    this.canvas.height = Math.round(totalHeightPx * dpr);
 
-    this.canvas.style.width = `${Math.round(baseWidthPx * this.scale)}px`;
-    this.canvas.style.height = `${Math.round(totalHeightPx * this.scale)}px`;
+    this.canvas.style.width = `${Math.round(availableWidth)}px`;
+    this.canvas.style.height = `${Math.round(totalHeightPx)}px`;
 
     const ctx = this.ctx;
     ctx.save();
-    ctx.scale(this.scale * dpr, this.scale * dpr);
+    ctx.scale(dpr, dpr);
 
-    // Fondo blanco general
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, baseWidthPx, totalHeightPx);
+    ctx.fillRect(0, 0, availableWidth, totalHeightPx);
 
-    // Cabecera única al inicio del documento
     const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, this.capitulo);
-    this._drawBanner(ctx, activeHeaderImg, baseWidthPx, totalHeightPx, marginPx, true);
+    this._drawBanner(ctx, activeHeaderImg, availableWidth, totalHeightPx, marginPx, true);
 
     ctx.textBaseline = "top";
     let currentY = textStartY;
 
-    // Dibujar cada línea de manera continua
     this.allLines.forEach((line) => {
       if (line.type === 'SPACER') {
         currentY += line.height;
         return;
       }
 
-      const style = TxtReaderEngine.STYLE_CONFIGS[line.type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
-      const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
-      const fontSizePx = this.ptToPx(effectiveSizePt);
-
       let drawX = textStartX + (line.indent || 0);
-      if (line.align === 'center') {
-        const cleanStr = line.text.replace(/\[\/?(B|I|U|SUP|EM)\]/g, '');
-        ctx.font = `${style.italic ? 'italic' : 'normal'} ${style.bold ? 'bold' : 'normal'} ${fontSizePx}px ${this.FONT_FAMILY}`;
-        const totalW = ctx.measureText(cleanStr).width;
-        drawX = textStartX + ((this.cmToPx(this.CONTENT_WIDTH_CM) - totalW) / 2);
+      
+      if (line.fragments) {
+        let currentX = drawX;
+        line.fragments.forEach(frag => {
+          const fontSizePx = this.ptToPx(frag.tamano * (this.fontScaleFactor || 1.0));
+          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${frag.fuente || this.FONT_FAMILY}`;
+          ctx.fillStyle = frag.color ? `#${frag.color}` : '#000000';
+          ctx.fillText(frag.texto, currentX, currentY);
+          
+          if (frag.subrayado) {
+            const w = ctx.measureText(frag.texto).width;
+            ctx.fillRect(currentX, currentY + fontSizePx + 2, w, 1);
+          }
+          currentX += ctx.measureText(frag.texto).width;
+        });
+      } else {
+        ctx.font = `${this.FONT_FAMILY} 14px`;
+        ctx.fillStyle = "#000000";
+        ctx.fillText(line.text || "", drawX, currentY);
       }
-
-      this._drawInlineText(
-        ctx, 
-        line.text, 
-        drawX, 
-        currentY, 
-        fontSizePx, 
-        this.FONT_FAMILY, 
-        line.color || style.color, 
-        !!style.italic, 
-        !!style.bold
-      );
 
       currentY += line.height;
     });
 
-    // Pie de página único al final del documento continuo
     const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, this.capitulo);
     if (activeFooterImg) {
-      // Dibujar el banner de pie al final del documento
       const maxH = marginPx * 0.9;
       const aspect = activeFooterImg.width / activeFooterImg.height;
       let drawH = maxH;
       let drawW = drawH * aspect;
-      if (drawW > baseWidthPx) {
-        drawW = baseWidthPx;
+      if (drawW > availableWidth) {
+        drawW = availableWidth;
         drawH = drawW / aspect;
       }
-      const drawX = Math.round((baseWidthPx - drawW) / 2);
+      const drawX = Math.round((availableWidth - drawW) / 2);
       const drawY = Math.round(totalHeightPx - marginPx);
       ctx.drawImage(activeFooterImg, drawX, drawY, Math.round(drawW), Math.round(drawH));
     }
@@ -476,32 +405,31 @@ export class TxtReaderEngine {
     this.currentPageIndex = pageNum - 1;
     this.scale = scale;
 
-    const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-    const baseHeightPx = this.cmToPx(this.PAGE_HEIGHT_CM);
+    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const dpr = window.devicePixelRatio || 1;
 
-    this.canvas.width = Math.round(baseWidthPx * this.scale * dpr);
-    this.canvas.height = Math.round(baseHeightPx * this.scale * dpr);
+    this.canvas.width = Math.round(availableWidth * dpr);
+    this.canvas.height = Math.round(this.cmToPx(this.PAGE_HEIGHT_CM) * dpr);
 
-    this.canvas.style.width = `${Math.round(baseWidthPx * this.scale)}px`;
-    this.canvas.style.height = `${Math.round(baseHeightPx * this.scale)}px`;
+    this.canvas.style.width = `${Math.round(availableWidth)}px`;
+    this.canvas.style.height = `${Math.round(this.cmToPx(this.PAGE_HEIGHT_CM))}px`;
 
     const ctx = this.ctx;
     ctx.save();
-    ctx.scale(this.scale * dpr, this.scale * dpr);
+    ctx.scale(dpr, dpr);
 
     ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, baseWidthPx, baseHeightPx);
+    ctx.fillRect(0, 0, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM));
 
-    const marginPx = this.cmToPx(this.MARGIN_CM);
-    const textStartX = this.cmToPx(this.MARGIN_X_CM);
-    const textStartY = this.cmToPx(this.MARGIN_Y_CM);
+    const marginPx = this.MARGIN_Y_PX;
+    const textStartX = this.MARGIN_X_PX;
+    const textStartY = this.MARGIN_Y_PX;
 
     const pageLines = this.pages[this.currentPageIndex] || [];
     const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : this.capitulo;
 
     const activeHeaderImg = this._getBannerByChapter(this.config?.headerChapters, this.resources.headerImg, pageChapter);
-    this._drawBanner(ctx, activeHeaderImg, baseWidthPx, baseHeightPx, marginPx, true);
+    this._drawBanner(ctx, activeHeaderImg, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), marginPx, true);
 
     ctx.textBaseline = "top";
     let currentY = textStartY;
@@ -512,38 +440,36 @@ export class TxtReaderEngine {
         return;
       }
 
-      const style = TxtReaderEngine.STYLE_CONFIGS[line.type] || TxtReaderEngine.STYLE_CONFIGS['BODY'];
-      const effectiveSizePt = style.sizePt * (this.fontScaleFactor || 1.0);
-      const fontSizePx = this.ptToPx(effectiveSizePt);
-
       let drawX = textStartX + (line.indent || 0);
-      if (line.align === 'center') {
-        const cleanStr = line.text.replace(/\[\/?(B|I|U|SUP|EM)\]/g, '');
-        ctx.font = `${style.italic ? 'italic' : 'normal'} ${style.bold ? 'bold' : 'normal'} ${fontSizePx}px ${this.FONT_FAMILY}`;
-        const totalW = ctx.measureText(cleanStr).width;
-        drawX = textStartX + ((this.cmToPx(this.CONTENT_WIDTH_CM) - totalW) / 2);
-      }
 
-      this._drawInlineText(
-        ctx, 
-        line.text, 
-        drawX, 
-        currentY, 
-        fontSizePx, 
-        this.FONT_FAMILY, 
-        line.color || style.color, 
-        !!style.italic, 
-        !!style.bold
-      );
+      if (line.fragments) {
+        let currentX = drawX;
+        line.fragments.forEach(frag => {
+          const fontSizePx = this.ptToPx(frag.tamano * (this.fontScaleFactor || 1.0));
+          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${fontSizePx}px ${frag.fuente || this.FONT_FAMILY}`;
+          ctx.fillStyle = frag.color ? `#${frag.color}` : '#000000';
+          ctx.fillText(frag.texto, currentX, currentY);
+
+          if (frag.subrayado) {
+            const w = ctx.measureText(frag.texto).width;
+            ctx.fillRect(currentX, currentY + fontSizePx + 2, w, 1);
+          }
+          currentX += ctx.measureText(frag.texto).width;
+        });
+      } else {
+        ctx.font = `${this.FONT_FAMILY} 14px`;
+        ctx.fillStyle = "#000000";
+        ctx.fillText(line.text || "", drawX, currentY);
+      }
 
       currentY += line.height;
     });
 
-    const footerStartY = baseHeightPx - marginPx;
+    const footerStartY = this.cmToPx(this.PAGE_HEIGHT_CM) - marginPx;
     const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
-    this._drawBanner(ctx, activeFooterImg, baseWidthPx, baseHeightPx, marginPx, false);
+    this._drawBanner(ctx, activeFooterImg, availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), marginPx, false);
 
-    this._updateLinkOverlay(baseWidthPx, baseHeightPx, footerStartY, marginPx);
+    this._updateLinkOverlay(availableWidth, this.cmToPx(this.PAGE_HEIGHT_CM), footerStartY, marginPx);
 
     ctx.restore();
   }
@@ -551,7 +477,7 @@ export class TxtReaderEngine {
   _initLinkOverlay() {
     this.linkOverlay = document.createElement('div');
     this.linkOverlay.style.position = 'absolute';
-    this.linkOverlay.style.pointerEvents = 'none'; 
+    this.linkOverlay.style.pointerEvents = 'none';
     if (this.container.style.position !== 'relative' && this.container.style.position !== 'absolute') {
       this.container.style.position = 'relative';
     }
@@ -561,7 +487,7 @@ export class TxtReaderEngine {
   _updateLinkOverlay(baseWidthPx, baseHeightPx, footerStartY, marginPx) {
     if (this.isInfiniteScroll) return;
     this.linkOverlay.innerHTML = '';
-    
+
     const pageLines = this.pages[this.currentPageIndex] || [];
     const pageChapter = pageLines.length > 0 && pageLines[0].chapter ? pageLines[0].chapter : 1;
     const activeFooterImg = this._getBannerByChapter(this.config?.footerChapters, this.resources.footerImg, pageChapter);
@@ -580,7 +506,7 @@ export class TxtReaderEngine {
 
     const isLink = linkUrl && linkUrl.trim() !== "";
     const linkAnchor = document.createElement(isLink ? 'a' : 'span');
-    
+
     if (isLink) {
       linkAnchor.href = linkUrl;
       linkAnchor.target = "_blank";
@@ -596,7 +522,7 @@ export class TxtReaderEngine {
     linkAnchor.style.position = 'absolute';
     linkAnchor.style.left = '50%';
     linkAnchor.style.transform = 'translateX(-50%)';
-    
+
     const topPercent = ((footerStartY + (marginPx * 0.6)) / baseHeightPx) * 100;
     linkAnchor.style.top = `${topPercent}%`;
     linkAnchor.style.fontFamily = this.FONT_FAMILY;
@@ -654,10 +580,9 @@ export class TxtReaderEngine {
     return {
       num: pageNum,
       getViewport: (params) => {
-        const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-        const scale = params.scale || 1.0;
+        const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
         return {
-          width: baseWidthPx * scale,
+          width: availableWidth,
           height: this.canvas.height / (window.devicePixelRatio || 1)
         };
       },
@@ -666,7 +591,7 @@ export class TxtReaderEngine {
       },
       getTextContent: async () => {
         return {
-          items: this.allLines.map(line => ({ str: line.text }))
+          items: this.allLines.map(line => ({ str: line.text || "" }))
         };
       }
     };
@@ -674,23 +599,15 @@ export class TxtReaderEngine {
 
   fitToContainer() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const baseWidthPx = this.cmToPx(this.PAGE_WIDTH_CM);
-
-    if (availableWidth > 0 && availableWidth < baseWidthPx) {
-      this.scale = availableWidth / baseWidthPx;
-    } else {
-      this.scale = 1.0; 
-    }
-
+    this.scale = 1.0; 
     this.render();
   }
 
   setInfiniteScroll(enabled) {
     this.isInfiniteScroll = !!enabled;
     if (this.container) {
-      this.container.style.overflowY = this.isInfiniteScroll ? 'auto' : 'hidden';
+      this.container.style.overflowY = 'auto';
     }
-    // Reprocesar texto para activar/desactivar la partición por páginas
     if (this.lastTextContent) {
       this._processText(this.lastTextContent);
     }
