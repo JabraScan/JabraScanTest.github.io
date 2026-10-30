@@ -1,9 +1,9 @@
 // lectortxtmod.js
-const TAMANO_BASE         = 11;
-const INTERLINEADO_EXTRA  = 9;
+const TAMANO_BASE       = 11;
+const INTERLINEADO_EXTRA= 9;
 const FACTOR_INTERLINEADO = 1.3;
-const MARGEN_CM           = 3.0;
-const MARGEN_CM_MOBILE    = 1.2;
+const MARGEN_CM         = 3.0;
+const MARGEN_CM_MOBILE  = 1.2;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -32,6 +32,9 @@ function obtenerUrlBanner(baseUrl, bannerArray, chaptersArray, fallbackUrl, capi
   return fallbackUrl || null;
 }
 
+/**
+ * Motor para leer y renderizar texto optimizado en canvas con interfaz compatible con PDF.js.
+ */
 export function TxtReaderEngine(options) {
   const {
     canvas,
@@ -44,6 +47,7 @@ export function TxtReaderEngine(options) {
     throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
   }
 
+  // --- Ocultar controles de PDF al inicializar el motor ---
   const controlesPdf = document.querySelector('.pdf-controls');
   if (controlesPdf) {
     controlesPdf.style.setProperty('display', 'none', 'important');
@@ -51,113 +55,6 @@ export function TxtReaderEngine(options) {
 
   let cachedBloques = [];
   let config = {};
-  
-  // Guardará la maquetación calculada (líneas formateadas y posiciones Y)
-  let lineasProcesadas = [];
-  let altoContenidoCalculado = 0;
-
-  /**
-   * PROCESADO / MAQUETACIÓN EN UNA SOLA PASADA
-   * Procesa el texto crudo, divide líneas/palabras y guarda coordenadas de dibujado.
-   */
-  function maquetarTexto(anchoCanvas) {
-    lineasProcesadas = [];
-    
-    let fuenteBase = 'Arial';
-    let tamanoBase = TAMANO_BASE;
-
-    const esMovil = esPantallaPequena();
-    const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-    const anchoMaximo = anchoCanvas - (margenPx * 2);
-
-    const canvasTemp = document.createElement('canvas');
-    const ctxTemp = canvasTemp.getContext('2d');
-
-    let posX = margenPx;
-    let posY = margenPx + (tamanoBase * FACTOR_INTERLINEADO);
-
-    cachedBloques.forEach(bloque => {
-      if (bloque.fuente) fuenteBase = bloque.fuente;
-      if (bloque.tamano) tamanoBase = bloque.tamano;
-
-      let tamanoRender = tamanoBase;
-      let desfasadorY = 0;
-
-      if (bloque.superindice) {
-        tamanoRender = tamanoBase * 0.7;
-        desfasadorY = -(tamanoBase * 0.35);
-      } else if (bloque.subindice) {
-        tamanoRender = tamanoBase * 0.7;
-        desfasadorY = tamanoBase * 0.2;
-      }
-
-      let estiloStr = '';
-      if (bloque.negrita) estiloStr += 'bold ';
-      if (bloque.cursiva) estiloStr += 'italic ';
-
-      ctxTemp.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
-
-      let colorHex = '#000000';
-      if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
-        colorHex = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
-      }
-
-      const lineas = bloque.texto.split('\n');
-
-      lineas.forEach((linea, indexLinea) => {
-        if (indexLinea > 0) {
-          posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-          posX = margenPx;
-        }
-
-        if (linea.length === 0) return;
-
-        const palabras = linea.split(' ');
-
-        palabras.forEach((palabra, indexPalabra) => {
-          const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
-          const anchoTexto = ctxTemp.measureText(textoAEscribir).width;
-
-          if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
-            posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-            posX = margenPx;
-            const nuevoAncho = ctxTemp.measureText(palabra).width;
-
-            lineasProcesadas.push({
-              texto: palabra,
-              x: posX,
-              y: posY + desfasadorY,
-              font: `${estiloStr}${tamanoRender}pt ${fuenteBase}`,
-              color: colorHex,
-              subrayado: !!bloque.subrayado,
-              ancho: nuevoAncho,
-              grosorSubrayado: Math.max(1, tamanoRender / 12)
-            });
-
-            posX += nuevoAncho;
-          } else {
-            lineasProcesadas.push({
-              texto: textoAEscribir,
-              x: posX,
-              y: posY + desfasadorY,
-              font: `${estiloStr}${tamanoRender}pt ${fuenteBase}`,
-              color: colorHex,
-              subrayado: !!bloque.subrayado,
-              ancho: anchoTexto,
-              grosorSubrayado: Math.max(1, tamanoRender / 12)
-            });
-
-            posX += anchoTexto;
-          }
-        });
-      });
-
-      posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-      posX = margenPx;
-    });
-
-    altoContenidoCalculado = posY;
-  }
 
   return {
     numPages: 1,
@@ -166,6 +63,7 @@ export function TxtReaderEngine(options) {
       try {
         let contenidoLimpio = txtContent;
         if (typeof txtContent === 'string') {
+          // Reemplaza los booleanos de Python por los de JavaScript para que eval() no falle
           contenidoLimpio = txtContent.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
           cachedBloques = eval(contenidoLimpio);
         } else {
@@ -200,26 +98,34 @@ export function TxtReaderEngine(options) {
         getViewport({ scale = 1.0 } = {}) {
           const container = canvas.parentElement;
           const width = container ? container.clientWidth || 800 : 800;
+          
+          const esMovil = esPantallaPequena();
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+          const anchoMaximo = width - (margenPx * 2);
+          
+          let tamanoBase = TAMANO_BASE;
+          const interlineadoExtra = INTERLINEADO_EXTRA;
+          let alturaEstimadaTexto = 0;
 
-          // 1. Procesa y calcula las coordenadas una sola vez según el ancho actual
-          maquetarTexto(width);
+          cachedBloques.forEach(bloque => {
+            if (bloque.tamano) tamanoBase = bloque.tamano;
+            const lineas = bloque.texto.split('\n');
+            lineas.forEach(() => {
+              alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+            });
+          });
 
-          // 2. Calcula la altura real sumando márgenes/banners
-          const altoTotalReal = Math.ceil(300 + altoContenidoCalculado + 200);
+          const alturaTotal = 250 + alturaEstimadaTexto + 200;
 
           return {
             width: width,
-            height: Math.max(800, altoTotalReal),
+            height: Math.max(800, alturaTotal),
             scale: scale
           };
         },
 
         async render(params) {
           const { canvasContext: ctx, viewport } = params;
-
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
           const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
@@ -237,49 +143,122 @@ export function TxtReaderEngine(options) {
             ctx.drawImage(imgHeader, 0, 0, canvas.width, altoHeader);
           }
 
-          const desfasajeHeader = altoHeader > 0 ? altoHeader : 0;
+          let fuenteBase = 'Arial';
+          let tamanoBase = TAMANO_BASE;
+          const interlineadoExtra = INTERLINEADO_EXTRA;
 
-          // DIBUJADO DIRECTO: Solo recorre los elementos procesados en la fase de maquetación
-          lineasProcesadas.forEach(elem => {
-            const yFinal = elem.y + desfasajeHeader;
+          const esMovil = esPantallaPequena();
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+          
+          const anchoMaximo = canvas.width - (margenPx * 2);
 
-            ctx.font = elem.font;
-            ctx.fillStyle = elem.color;
-            ctx.fillText(elem.texto, elem.x, yFinal);
+          let posX = margenPx;
+          let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
 
-            if (elem.subrayado) {
-              ctx.fillRect(elem.x, yFinal + 2, elem.ancho, elem.grosorSubrayado);
+          cachedBloques.forEach(bloque => {
+            if (bloque.fuente) fuenteBase = bloque.fuente;
+            if (bloque.tamano) tamanoBase = bloque.tamano;
+
+            let tamanoRender = tamanoBase;
+            let desfasadorY = 0;
+
+            // Ajuste para superíndices y subíndices
+            if (bloque.superindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = -(tamanoBase * 0.35);
+            } else if (bloque.subindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = tamanoBase * 0.2;
             }
+
+            let estiloStr = '';
+            if (bloque.negrita) estiloStr += 'bold ';
+            if (bloque.cursiva) estiloStr += 'italic ';
+
+            ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
+
+            // Control de color: si no se especifica o es 000000, se aplica el negro por defecto
+            if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
+              ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
+            } else {
+              ctx.fillStyle = '#000000';
+            }
+
+            const lineas = bloque.texto.split('\n');
+
+            lineas.forEach((linea, indexLinea) => {
+              // Si proviene de un salto de línea explícito ('\n')
+              if (indexLinea > 0) {
+                posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+                posX = margenPx;
+              }
+
+              if (linea.length === 0) return;
+
+              const palabras = linea.split(' ');
+
+              palabras.forEach((palabra, indexPalabra) => {
+                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+                const anchoTexto = ctx.measureText(textoAEscribir).width;
+
+                // Verificación de ajuste de línea si excede el margen derecho
+                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+                  posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+                  posX = margenPx;
+                  const palabraSinEspacio = palabra;
+                  const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
+                  
+                  ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
+                  }
+
+                  posX += nuevoAncho;
+                } else {
+                  ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
+                  }
+
+                  posX += anchoTexto;
+                }
+              });
+            });
           });
 
-          // Render del footer en el punto Y final del contenido medido
-          const posYFooter = altoContenidoCalculado + desfasajeHeader + (INTERLINEADO_EXTRA * 2);
+          // Renderizado del footer
+          const separacionFooter = INTERLINEADO_EXTRA * 2;
+          let posYActual = posY + separacionFooter;
 
           if (imgFooter) {
             let anchoFooter, altoFooter, xPos;
-            const esMovil = esPantallaPequena();
-            const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-
-            if ((imgFooter.width / imgFooter.height) <= 0.40) {
+            //si la proporcion es 1/4
+            if ( (imgFooter.width / imgFooter.height) <= 0.40 ) {
               let proporcion = margenPx / imgFooter.height;
-              anchoFooter = imgFooter.width * proporcion;
-              altoFooter = margenPx;
-              xPos = (canvas.width - anchoFooter) / 2;
+              anchoFooter = imgFooter.width * proporcion
+              alfoFooter = margenPx;
+              xPos = (canvas.width - anchoFooter) / 2; // Centrado para imágenes estrechas
             } else {
               let proporcion = canvas.width / imgFooter.width;
-              anchoFooter = canvas.width;
+              anchoFooter = canvas.width
               altoFooter = imgFooter.height * proporcion;
               xPos = 0;
             }
 
-            ctx.drawImage(imgFooter, xPos, posYFooter, anchoFooter, altoFooter);
+            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
           } else if (config.footerLinkText) {
-            ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
+            ctx.font = (TAMANO_BASE-2) + 'pt Arial';
             ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
             ctx.textAlign = 'center';
-            ctx.fillText(config.footerLinkText, canvas.width / 2, posYFooter);
+            
+            ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
             ctx.textAlign = 'left';
           }
+          const altoRealFinal = posY + margenPx;
         },
 
         async getTextContent() {
