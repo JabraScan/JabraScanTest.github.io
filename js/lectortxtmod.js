@@ -9,7 +9,7 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.4; // DEFINICIÓN CRÍTICA PARA EVITAR NaN
+    this.LINE_HEIGHT_RATIO = 1.3; // DEFINICIÓN CRÍTICA PARA EVITAR NaN
     this.allLines = [];
     this.pages = [];
     this.isInfiniteScroll = options.isInfiniteScroll || false;
