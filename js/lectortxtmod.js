@@ -76,6 +76,8 @@ export function TxtReaderEngine(options) {
 
     async getPage(num) {
       return {
+        numPages: 1,
+        
         getViewport({ scale = 1.0 } = {}) {
           const container = canvas.parentElement;
           const width = container ? container.clientWidth || 800 : 800;
