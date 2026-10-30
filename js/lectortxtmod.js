@@ -54,6 +54,7 @@ export class TxtReaderEngine {
 
   _parsePythonArray(text) {
     try {
+      // Conversión segura de booleanos de Python a JS antes de evaluar
       const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
@@ -79,17 +80,21 @@ export class TxtReaderEngine {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
       
+      // Normalización de saltos de línea: convertimos literales \n en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
       const parts = textStr.split(/\r?\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
 
+        // MANEJO DE SALTOS DE LÍNEA
         if (part === '' && i > 0) {
+          // Salto doble = Párrafo (espacio extra)
           if (i + 1 < parts.length && parts[i+1] === '') {
             allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
             i++; 
           } else {
+            // Salto simple = Nueva línea vacía (ocupa altura estándar)
             allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
           continue;
@@ -98,6 +103,7 @@ export class TxtReaderEngine {
         if (part.length > 0) {
           this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
           
+          // Word Wrap: Solo si la línea excede el ancho máximo permitido
           if (this.ctx.measureText(part).width > maxContentWidth) {
             const words = part.split(' ');
             let currentLineFragments = [];
@@ -119,6 +125,7 @@ export class TxtReaderEngine {
               allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
             }
           } else {
+            // La línea cabe entera: se añade directamente sin fragmentar palabras
             allLines.push({ 
               fragments: [{ ...frag, texto: part }], 
               height: lineHeightPx 
@@ -130,6 +137,7 @@ export class TxtReaderEngine {
 
     this.allLines = allLines;
     
+    // PAGINACIÓN INTERNA (Para evitar colapsos de memoria en canvas gigantes)
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
@@ -155,15 +163,16 @@ export class TxtReaderEngine {
 
   render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const activePageLines = this.pages[0] || [];
+    
+    // Para el scroll infinito, dibujamos TODAS las líneas procesadas en un único canvas largo
+    const allLinesToRender = this.allLines || [];
 
     let totalH = this.settings.marginTop;
-    activePageLines.forEach(l => {
+    allLinesToRender.forEach(l => {
       totalH += (l.height || this.settings.lineHeightDefault);
     });
     totalH += this.settings.marginTop;
 
-    // Forzamos que el canvas ocupe el ancho real del contenedor sin restricciones
     this.canvas.width = availableWidth;
     this.canvas.height = totalH;
     this.canvas.style.width = `${availableWidth}px`;
@@ -174,8 +183,8 @@ export class TxtReaderEngine {
     ctx.fillRect(0, 0, availableWidth, totalH);
     ctx.textBaseline = "top";
 
-    let y = this.settings.marginTop; // Posicionamos el inicio del texto exactamente en el margen superior
-    activePageLines.forEach(line => {
+    let y = this.settings.marginTop;
+    allLinesToRender.forEach(line => {
       if (y > totalH) return;
 
       if (line.isSpacer) {
@@ -183,13 +192,40 @@ export class TxtReaderEngine {
         return;
       }
 
-      let x = this.settings.marginLeft; // Posicionamos la X exactamente en el margen izquierdo
+      let x = this.settings.marginLeft;
       if (line.fragments) {
         line.fragments.forEach(frag => {
-          const size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-          ctx.font = `${frag.cursiva ? 'italic' : 'normal'} ${frag.negrita ? 'bold' : 'normal'} ${size}px ${this.FONT_FAMILY}`;
+          let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+          let offsetY = 0;
+
+          // Soporte para Superíndices y Subíndices
+          if (frag.superindice) {
+            size *= 0.65;
+            offsetY = -size * 0.2;
+          } else if (frag.subindice) {
+            size *= 0.65;
+            offsetY = size * 0.2;
+          }
+
+          const weight = frag.negrita ? 'bold' : 'normal';
+          const style = frag.cursiva ? 'italic' : 'normal';
+          ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
           ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
-          ctx.fillText(frag.texto, x, y);
+
+          // Dibujar texto con desplazamiento vertical si es índice
+          ctx.fillText(frag.texto, x, y + offsetY);
+
+          // Soporte para Subrayado
+          if (frag.subrayado) {
+            const textWidth = ctx.measureText(frag.texto).width;
+            ctx.beginPath();
+            ctx.strokeStyle = ctx.fillStyle;
+            ctx.lineWidth = 1;
+            ctx.moveTo(x, y + size * 0.9);
+            ctx.lineTo(x + textWidth, y + size * 0.9);
+            ctx.stroke();
+          }
+
           x += ctx.measureText(frag.texto).width;
         });
       }
@@ -210,5 +246,5 @@ export class TxtReaderEngine {
   }
 
   fitToContainer() { this.render(); }
-  get numPages() { return 1; }
+  get numPages() { return 1; } // Retorna 1 para mantener la ilusión de scroll infinito
 }
