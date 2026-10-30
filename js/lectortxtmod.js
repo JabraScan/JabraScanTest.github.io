@@ -4,7 +4,6 @@ const INTERLINEADO_EXTRA  = 9;
 const FACTOR_INTERLINEADO = 1.3;
 const MARGEN_CM           = 3.0;
 const MARGEN_CM_MOBILE    = 1.2;
-const ALTO_MAX_CANVAS     = 1500; // Límite seguro aproximado para trocear los canvas
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -34,20 +33,18 @@ function obtenerUrlBanner(baseUrl, bannerArray, chaptersArray, fallbackUrl, capi
 }
 
 /**
- * Motor para leer y renderizar texto mediante scroll infinito con múltiples canvas dinámicos.
+ * Motor limpio para renderizar texto en un canvas vertical con altura calculada de forma exacta.
  */
 export function TxtReaderEngine(options) {
   const {
-    container, // Contenedor HTML donde se inyectarán los canvas de forma dinámica
+    canvas,
     clave = "",
     configuracion = {},
     capitulo = 0
   } = options;
 
-  const targetContainer = container || (options.canvas ? options.canvas.parentElement : null);
-
-  if (!targetContainer) {
-    throw new Error('Se requiere un contenedor HTML válido para inyectar los canvas.');
+  if (!(canvas instanceof HTMLCanvasElement)) {
+    throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
   }
 
   // Ocultar controles de PDF al inicializar
@@ -60,6 +57,8 @@ export function TxtReaderEngine(options) {
   let config = {};
 
   return {
+    numPages: 1,
+
     async load(txtContent, configPath = "") {
       try {
         let contenidoLimpio = txtContent;
@@ -89,201 +88,209 @@ export function TxtReaderEngine(options) {
         footerLinkText: "https://jabrascan.net",
         ...configuracion
       };
+    },
 
-      await ActionRender();
-    }
-  };
+    async getPage(num) {
+      return {
+        numPages: 1,
 
-  async function ActionRender() {
-    targetContainer.innerHTML = ''; // Limpieza previa del contenedor
+        getViewport({ scale = 1.0 } = {}) {
+          const container = canvas.parentElement;
+          const width = container ? container.clientWidth || 800 : 800;
+          
+          const esMovil = esPantallaPequena();
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+          const anchoMaximo = width - (margenPx * 2);
+          
+          let tamanoBase = TAMANO_BASE;
+          let alturaEstimadaTexto = 0;
 
-    const width = targetContainer.clientWidth || 800;
-    const esMovil = esPantallaPequena();
-    const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-    const anchoMaximo = width - (margenPx * 2);
+          // Medición matemática exacta previa para dimensionar el canvas vertical sin deformaciones
+          cachedBloques.forEach(bloque => {
+            if (bloque.tamano) tamanoBase = bloque.tamano;
+            let fuenteBase = bloque.fuente || 'Arial';
+            let tamanoRender = bloque.superindice || bloque.subindice ? tamanoBase * 0.7 : tamanoBase;
+            
+            // Creamos un canvas temporal solo para medir anchos de texto con precisión de contexto
+            const canvasTemp = document.createElement('canvas');
+            const ctxTemp = canvasTemp.getContext('2d');
+            let estiloStr = '';
+            if (bloque.negrita) estiloStr += 'bold ';
+            if (bloque.cursiva) estiloStr += 'italic ';
+            ctxTemp.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
 
-    const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
-    const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
+            const lineas = bloque.texto.split('\n');
+            lineas.forEach((linea, indexLinea) => {
+              if (indexLinea > 0) {
+                alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+              }
+              if (linea.length === 0) return;
 
-    const [imgHeader, imgFooter] = await Promise.all([
-      cargarImagen(urlHeader),
-      cargarImagen(urlFooter)
-    ]);
+              let posX = margenPx;
+              const palabras = linea.split(' ');
+              palabras.forEach((palabra, indexPalabra) => {
+                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+                const anchoTexto = ctxTemp.measureText(textoAEscribir).width;
 
-    let altoHeader = 0;
-    if (imgHeader) {
-      const proporcion = width / imgHeader.width;
-      altoHeader = imgHeader.height * proporcion;
-    }
+                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+                  alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+                  posX = margenPx + ctxTemp.measureText(palabra).width;
+                } else {
+                  posX += anchoTexto;
+                }
+              });
+            });
+            alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+          });
 
-    // Dividir los bloques en fragmentos (chunks) lógicos para respetar el límite seguro por canvas
-    const fragmentos = [];
-    let bloquesActuales = [];
-    let alturaEstimada = altoHeader + margenPx;
+          const alturaTotal = 300 + alturaEstimadaTexto + 200;
 
-    cachedBloques.forEach(bloque => {
-      let tamanoBase = bloque.tamano || TAMANO_BASE;
-      const lineas = bloque.texto.split('\n');
-      let altoBloqueEstimado = lineas.length * ((tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA);
+          return {
+            width: width,
+            height: Math.max(800, alturaTotal),
+            scale: scale
+          };
+        },
 
-      if (alturaEstimada + altoBloqueEstimado > ALTO_MAX_CANVAS && bloquesActuales.length > 0) {
-        fragmentos.push(bloquesActuales);
-        bloquesActuales = [];
-        alturaEstimada = margenPx;
-      }
+        async render(params) {
+          const { canvasContext: ctx, viewport } = params;
+          
+          // Sincronizar el tamaño físico del canvas con el viewport calculado
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
 
-      bloquesActuales.push(bloque);
-      alturaEstimada += altoBloqueEstimado;
-    });
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (bloquesActuales.length > 0) {
-      fragmentos.push(bloquesActuales);
-    }
+          const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
+          const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
 
-    // Renderizar cada fragmento en un elemento <canvas> independiente e inyectarlo en orden
-    for (let index = 0; index < fragmentos.length; index++) {
-      const bloquesFragmento = fragmentos[index];
-      const esPrimera = (index === 0);
-      const esUltima = (index === fragmentos.length - 1);
+          const [imgHeader, imgFooter] = await Promise.all([
+            cargarImagen(urlHeader),
+            cargarImagen(urlFooter)
+          ]);
 
-      // Creamos un canvas temporal con un alto generoso holgado para pintar y calcular la posición real final de posY
-      const cvs = document.createElement('canvas');
-      cvs.width = width;
-      cvs.height = ALTO_MAX_CANVAS * 2; 
-      cvs.style.display = 'block';
-      targetContainer.appendChild(cvs);
+          let altoHeader = 0;
+          if (imgHeader) {
+            const proporcion = canvas.width / imgHeader.width;
+            altoHeader = imgHeader.height * proporcion;
+            ctx.drawImage(imgHeader, 0, 0, canvas.width, altoHeader);
+          }
 
-      const ctx = cvs.getContext('2d');
-      ctx.clearRect(0, 0, cvs.width, cvs.height);
+          let fuenteBase = 'Arial';
+          let tamanoBase = TAMANO_BASE;
+          const esMovil = esPantallaPequena();
+          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+          const anchoMaximo = canvas.width - (margenPx * 2);
 
-      let posY = margenPx;
+          let posX = margenPx;
+          let posY = altoHeader > 0 ? altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2) : margenPx + (tamanoBase * FACTOR_INTERLINEADO);
 
-      // Dibujar Header si es la primera página del capítulo
-      if (esPrimera && imgHeader) {
-        ctx.drawImage(imgHeader, 0, 0, width, altoHeader);
-        posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2);
-      }
+          cachedBloques.forEach(bloque => {
+            if (bloque.fuente) fuenteBase = bloque.fuente;
+            if (bloque.tamano) tamanoBase = bloque.tamano;
 
-      let fuenteBase = 'Arial';
-      let tamanoBase = TAMANO_BASE;
+            let tamanoRender = tamanoBase;
+            let desfasadorY = 0;
 
-      // Renderizado del contenido bloque a bloque con cálculo de posición en tiempo real
-      bloquesFragmento.forEach(bloque => {
-        if (bloque.fuente) fuenteBase = bloque.fuente;
-        if (bloque.tamano) tamanoBase = bloque.tamano;
+            if (bloque.superindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = -(tamanoBase * 0.35);
+            } else if (bloque.subindice) {
+              tamanoRender = tamanoBase * 0.7;
+              desfasadorY = tamanoBase * 0.2;
+            }
 
-        let tamanoRender = tamanoBase;
-        let desfasadorY = 0;
+            let estiloStr = '';
+            if (bloque.negrita) estiloStr += 'bold ';
+            if (bloque.cursiva) estiloStr += 'italic ';
 
-        if (bloque.superindice) {
-          tamanoRender = tamanoBase * 0.7;
-          desfasadorY = -(tamanoBase * 0.35);
-        } else if (bloque.subindice) {
-          tamanoRender = tamanoBase * 0.7;
-          desfasadorY = tamanoBase * 0.2;
-        }
+            ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
 
-        let estiloStr = '';
-        if (bloque.negrita) estiloStr += 'bold ';
-        if (bloque.cursiva) estiloStr += 'italic ';
+            if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
+              ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
+            } else {
+              ctx.fillStyle = '#000000';
+            }
 
-        ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
+            const lineas = bloque.texto.split('\n');
 
-        if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
-          ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
-        } else {
-          ctx.fillStyle = '#000000';
-        }
+            lineas.forEach((linea, indexLinea) => {
+              if (indexLinea > 0) {
+                posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+                posX = margenPx;
+              }
 
-        let posX = margenPx;
-        const lineas = bloque.texto.split('\n');
+              if (linea.length === 0) return;
 
-        lineas.forEach((linea, indexLinea) => {
-          if (indexLinea > 0) {
+              const palabras = linea.split(' ');
+
+              palabras.forEach((palabra, indexPalabra) => {
+                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+                const anchoTexto = ctx.measureText(textoAEscribir).width;
+
+                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+                  posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+                  posX = margenPx;
+                  const nuevoAncho = ctx.measureText(palabra).width;
+                  
+                  ctx.fillText(palabra, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
+                  }
+
+                  posX += nuevoAncho;
+                } else {
+                  ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
+
+                  if (bloque.subrayado) {
+                    const grosor = Math.max(1, tamanoRender / 12);
+                    ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
+                  }
+
+                  posX += anchoTexto;
+                }
+              });
+            });
+
             posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
             posX = margenPx;
-          }
-
-          if (linea.length === 0) return;
-
-          const palabras = linea.split(' ');
-
-          palabras.forEach((palabra, indexPalabra) => {
-            const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
-            const anchoTexto = ctx.measureText(textoAEscribir).width;
-
-            if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
-              posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-              posX = margenPx;
-              const palabraSinEspacio = palabra;
-              const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
-              
-              ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
-
-              if (bloque.subrayado) {
-                const grosor = Math.max(1, tamanoRender / 12);
-                ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
-              }
-
-              posX += nuevoAncho;
-            } else {
-              ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
-
-              if (bloque.subrayado) {
-                const grosor = Math.max(1, tamanoRender / 12);
-                ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
-              }
-
-              posX += anchoTexto;
-            }
           });
-        });
 
-        posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-        posX = margenPx;
-      });
+          // Renderizado del footer al final del texto
+          const separacionFooter = INTERLINEADO_EXTRA * 2;
+          let posYActual = posY + separacionFooter;
 
-      // Renderizado del Footer si es el último lienzo del capítulo
-      if (esUltima) {
-        const separacionFooter = INTERLINEADO_EXTRA * 2;
-        let posYActual = posY + separacionFooter;
+          if (imgFooter) {
+            let anchoFooter, altoFooter, xPos;
+            if ((imgFooter.width / imgFooter.height) <= 0.40) {
+              let proporcion = margenPx / imgFooter.height;
+              anchoFooter = imgFooter.width * proporcion;
+              altoFooter = margenPx;
+              xPos = (canvas.width - anchoFooter) / 2;
+            } else {
+              let proporcion = canvas.width / imgFooter.width;
+              anchoFooter = canvas.width;
+              altoFooter = imgFooter.height * proporcion;
+              xPos = 0;
+            }
 
-        if (imgFooter) {
-          let anchoFooter, altoFooterCalculado, xPos;
-          if ((imgFooter.width / imgFooter.height) <= 0.40) {
-            let proporcion = margenPx / imgFooter.height;
-            anchoFooter = imgFooter.width * proporcion;
-            altoFooterCalculado = margenPx;
-            xPos = (width - anchoFooter) / 2;
-          } else {
-            let proporcion = width / imgFooter.width;
-            anchoFooter = width;
-            altoFooterCalculado = imgFooter.height * proporcion;
-            xPos = 0;
+            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
+          } else if (config.footerLinkText) {
+            ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
+            ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
+            ctx.textAlign = 'center';
+            ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
+            ctx.textAlign = 'left';
           }
-          ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooterCalculado);
-          posY = posYActual + altoFooterCalculado;
-        } else if (config.footerLinkText) {
-          ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
-          ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
-          ctx.textAlign = 'center';
-          ctx.fillText(config.footerLinkText, width / 2, posYActual);
-          ctx.textAlign = 'left';
-          posY = posYActual + 20;
-        }
-      }
+        },
 
-      // REDIMENSIÓN EXACTA: El alto real final del canvas viene dictado por la última posY trazada
-      const altoCanvasReal = Math.ceil(posY + margenPx);
-      
-      // Capturamos la imagen actual del canvas provisional
-      const imgDataTemp = ctx.getImageData(0, 0, width, altoCanvasReal);
-      
-      // Ajustamos el alto real del canvas (esto limpia el contenido pero redimensiona la matriz)
-      cvs.height = altoCanvasReal;
-      
-      // Devolvemos los píxeles renderizados a su sitio exacto con la nueva altura ajustada
-      ctx.putImageData(imgDataTemp, 0, 0);
+        async getTextContent() {
+          const items = cachedBloques.map(bloque => ({ str: bloque.texto }));
+          return { items };
+        }
+      };
     }
-  }
+  };
 }
