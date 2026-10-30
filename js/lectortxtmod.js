@@ -1,16 +1,17 @@
 // lectortxtmod.js
-const TAMANO_BASE         = 11;
-const INTERLINEADO_EXTRA  = 9;
-const FACTOR_INTERLINEADO = 1.3;
-const MARGEN_CM           = 3.0;
-const MARGEN_CM_MOBILE    = 1.2;
+const TAMANO_BASE        = 11;
+const INTERLINEADO_EXTRA = 9;
+const FACTOR_INTERLINEADO= 1.3;
+const MARGEN_CM          = 3.0;
+const MARGEN_CM_MOBILE   = 1.2;
+const ALTO_MAX_CANVAS    = 1500; // Límite seguro por canvas para evitar reventar el navegador
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
 }
 
 function cmAPx(cm) {
-  return cm * 37.7952755906; // 1 cm ≈ 37.8 px
+  return cm * 37.7952755906;
 }
 
 function cargarImagen(src) {
@@ -32,22 +33,20 @@ function obtenerUrlBanner(baseUrl, bannerArray, chaptersArray, fallbackUrl, capi
   return fallbackUrl || null;
 }
 
-/**
- * Motor limpio para renderizar texto en un canvas vertical con altura calculada de forma exacta.
- */
 export function TxtReaderEngine(options) {
   const {
-    canvas,
+    container, // Contenedor HTML donde se inyectarán los canvas
     clave = "",
     configuracion = {},
     capitulo = 0
   } = options;
 
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
+  const targetContainer = container || (options.canvas ? options.canvas.parentElement : null);
+
+  if (!targetContainer) {
+    throw new Error('Se requiere un contenedor HTML válido para inyectar los canvas.');
   }
 
-  // Ocultar controles de PDF al inicializar
   const controlesPdf = document.querySelector('.pdf-controls');
   if (controlesPdf) {
     controlesPdf.style.setProperty('display', 'none', 'important');
@@ -57,8 +56,6 @@ export function TxtReaderEngine(options) {
   let config = {};
 
   return {
-    numPages: 1,
-
     async load(txtContent, configPath = "") {
       try {
         let contenidoLimpio = txtContent;
@@ -88,209 +85,231 @@ export function TxtReaderEngine(options) {
         footerLinkText: "https://jabrascan.net",
         ...configuracion
       };
-    },
 
-    async getPage(num) {
-      return {
-        numPages: 1,
-
-        getViewport({ scale = 1.0 } = {}) {
-          const container = canvas.parentElement;
-          const width = container ? container.clientWidth || 800 : 800;
-          
-          const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-          const anchoMaximo = width - (margenPx * 2);
-          
-          let tamanoBase = TAMANO_BASE;
-          let alturaEstimadaTexto = 0;
-
-          // Medición matemática exacta previa para dimensionar el canvas vertical sin deformaciones
-          cachedBloques.forEach(bloque => {
-            if (bloque.tamano) tamanoBase = bloque.tamano;
-            let fuenteBase = bloque.fuente || 'Arial';
-            let tamanoRender = bloque.superindice || bloque.subindice ? tamanoBase * 0.7 : tamanoBase;
-            
-            // Creamos un canvas temporal solo para medir anchos de texto con precisión de contexto
-            const canvasTemp = document.createElement('canvas');
-            const ctxTemp = canvasTemp.getContext('2d');
-            let estiloStr = '';
-            if (bloque.negrita) estiloStr += 'bold ';
-            if (bloque.cursiva) estiloStr += 'italic ';
-            ctxTemp.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
-
-            const lineas = bloque.texto.split('\n');
-            lineas.forEach((linea, indexLinea) => {
-              if (indexLinea > 0) {
-                alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-              }
-              if (linea.length === 0) return;
-
-              let posX = margenPx;
-              const palabras = linea.split(' ');
-              palabras.forEach((palabra, indexPalabra) => {
-                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
-                const anchoTexto = ctxTemp.measureText(textoAEscribir).width;
-
-                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
-                  alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-                  posX = margenPx + ctxTemp.measureText(palabra).width;
-                } else {
-                  posX += anchoTexto;
-                }
-              });
-            });
-            alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-          });
-
-          const alturaTotal = 300 + alturaEstimadaTexto + 200;
-
-          return {
-            width: width,
-            height: Math.max(800, alturaTotal),
-            scale: scale
-          };
-        },
-
-        async render(params) {
-          const { canvasContext: ctx, viewport } = params;
-          
-          // Sincronizar el tamaño físico del canvas con el viewport calculado
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-          const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
-          const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
-
-          const [imgHeader, imgFooter] = await Promise.all([
-            cargarImagen(urlHeader),
-            cargarImagen(urlFooter)
-          ]);
-
-          let altoHeader = 0;
-          if (imgHeader) {
-            const proporcion = canvas.width / imgHeader.width;
-            altoHeader = imgHeader.height * proporcion;
-            ctx.drawImage(imgHeader, 0, 0, canvas.width, altoHeader);
-          }
-
-          let fuenteBase = 'Arial';
-          let tamanoBase = TAMANO_BASE;
-          const esMovil = esPantallaPequena();
-          const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
-          const anchoMaximo = canvas.width - (margenPx * 2);
-
-          let posX = margenPx;
-          let posY = altoHeader > 0 ? altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2) : margenPx + (tamanoBase * FACTOR_INTERLINEADO);
-
-          cachedBloques.forEach(bloque => {
-            if (bloque.fuente) fuenteBase = bloque.fuente;
-            if (bloque.tamano) tamanoBase = bloque.tamano;
-
-            let tamanoRender = tamanoBase;
-            let desfasadorY = 0;
-
-            if (bloque.superindice) {
-              tamanoRender = tamanoBase * 0.7;
-              desfasadorY = -(tamanoBase * 0.35);
-            } else if (bloque.subindice) {
-              tamanoRender = tamanoBase * 0.7;
-              desfasadorY = tamanoBase * 0.2;
-            }
-
-            let estiloStr = '';
-            if (bloque.negrita) estiloStr += 'bold ';
-            if (bloque.cursiva) estiloStr += 'italic ';
-
-            ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
-
-            if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
-              ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
-            } else {
-              ctx.fillStyle = '#000000';
-            }
-
-            const lineas = bloque.texto.split('\n');
-
-            lineas.forEach((linea, indexLinea) => {
-              if (indexLinea > 0) {
-                posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-                posX = margenPx;
-              }
-
-              if (linea.length === 0) return;
-
-              const palabras = linea.split(' ');
-
-              palabras.forEach((palabra, indexPalabra) => {
-                const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
-                const anchoTexto = ctx.measureText(textoAEscribir).width;
-
-                if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
-                  posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-                  posX = margenPx;
-                  const nuevoAncho = ctx.measureText(palabra).width;
-                  
-                  ctx.fillText(palabra, posX, posY + desfasadorY);
-
-                  if (bloque.subrayado) {
-                    const grosor = Math.max(1, tamanoRender / 12);
-                    ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
-                  }
-
-                  posX += nuevoAncho;
-                } else {
-                  ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
-
-                  if (bloque.subrayado) {
-                    const grosor = Math.max(1, tamanoRender / 12);
-                    ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
-                  }
-
-                  posX += anchoTexto;
-                }
-              });
-            });
-
-            posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
-            posX = margenPx;
-          });
-
-          // Renderizado del footer al final del texto
-          const separacionFooter = INTERLINEADO_EXTRA * 2;
-          let posYActual = posY + separacionFooter;
-
-          if (imgFooter) {
-            let anchoFooter, altoFooter, xPos;
-            if ((imgFooter.width / imgFooter.height) <= 0.40) {
-              let proporcion = margenPx / imgFooter.height;
-              anchoFooter = imgFooter.width * proporcion;
-              altoFooter = margenPx;
-              xPos = (canvas.width - anchoFooter) / 2;
-            } else {
-              let proporcion = canvas.width / imgFooter.width;
-              anchoFooter = canvas.width;
-              altoFooter = imgFooter.height * proporcion;
-              xPos = 0;
-            }
-
-            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
-          } else if (config.footerLinkText) {
-            ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
-            ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
-            ctx.textAlign = 'center';
-            ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
-            ctx.textAlign = 'left';
-          }
-        },
-
-        async getTextContent() {
-          const items = cachedBloques.map(bloque => ({ str: bloque.texto }));
-          return { items };
-        }
-      };
+      await ActionRender();
     }
   };
+
+  async function ActionRender() {
+    targetContainer.innerHTML = ''; // Limpieza previa del contenedor
+
+    const width = targetContainer.clientWidth || 800;
+    const esMovil = esPantallaPequena();
+    const margenPx = cmAPx(esMovil ? MARGEN_CM_MOBILE : MARGEN_CM);
+    const anchoMaximo = width - (margenPx * 2);
+
+    const urlHeader = obtenerUrlBanner(config.headerbaseUrl, config.headerBannerUrl, config.headerChapters, config.headerBannerUrlFallback, capitulo);
+    const urlFooter = obtenerUrlBanner(config.footerbaseUrl, config.footerBannerUrl, config.footerChapters, config.footerBannerUrlFallback, capitulo);
+
+    const [imgHeader, imgFooter] = await Promise.all([
+      cargarImagen(urlHeader),
+      cargarImagen(urlFooter)
+    ]);
+
+    // Canvas auxiliar invisible para medir fuentes con precisión
+    const canvasMedicion = document.createElement('canvas');
+    const ctxMedicion = canvasMedicion.getContext('2d');
+    canvasMedicion.width = width;
+
+    let altoHeader = 0;
+    if (imgHeader) {
+      const proporcion = width / imgHeader.width;
+      altoHeader = imgHeader.height * proporcion;
+    }
+
+    // PASO 1: Troceado previo (Procesamiento y fragmentación de bloques)
+    const paginasBloques = [];
+    let bloquesActuales = [];
+    let alturaAcumulada = (paginasBloques.length === 0) ? (altoHeader + margenPx + (FACTOR_INTERLINEADO * 2)) : margenPx;
+
+    let fuenteBase = 'Arial';
+    let tamanoBase = TAMANO_BASE;
+
+    cachedBloques.forEach(bloque => {
+      if (bloque.fuente) fuenteBase = bloque.fuente;
+      if (bloque.tamano) tamanoBase = bloque.tamano;
+
+      let estiloStr = '';
+      if (bloque.negrita) estiloStr += 'bold ';
+      if (bloque.cursiva) estiloStr += 'italic ';
+      ctxMedicion.font = `${estiloStr}${tamanoBase}pt ${fuenteBase}`;
+
+      const lineas = bloque.texto.split('\n');
+      let alturaBloque = 0;
+      let posX = margenPx;
+
+      lineas.forEach((linea, indexLinea) => {
+        if (indexLinea > 0) {
+          alturaBloque += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+          posX = margenPx;
+        }
+
+        if (linea.length === 0) return;
+
+        const palabras = linea.split(' ');
+        palabras.forEach((palabra, indexPalabra) => {
+          const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+          const anchoTexto = ctxMedicion.measureText(textoAEscribir).width;
+
+          if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+            alturaBloque += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+            posX = margenPx + ctxMedicion.measureText(palabra).width;
+          } else {
+            posX += anchoTexto;
+          }
+        });
+      });
+
+      alturaBloque += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+
+      // Si supera el límite de 1500px, cerramos página y abrimos un nuevo lienzo
+      if (alturaAcumulada + alturaBloque > ALTO_MAX_CANVAS && bloquesActuales.length > 0) {
+        paginasBloques.push({ bloques: bloquesActuales, altoTotal: alturaAcumulada });
+        bloquesActuales = [];
+        alturaAcumulada = margenPx;
+      }
+
+      bloquesActuales.push(bloque);
+      alturaAcumulada += alturaBloque;
+    });
+
+    if (bloquesActuales.length > 0) {
+      paginasBloques.push({ bloques: bloquesActuales, altoTotal: alturaAcumulada });
+    }
+
+    // PASO 2: Generación, re-cálculo de altura exacta y renderizado directo sobre cada Canvas
+    paginasBloques.forEach((pagina, index) => {
+      const esPrimera = (index === 0);
+      const esUltima = (index === paginasBloques.length - 1);
+
+      let altoFooter = 0;
+      if (esUltima) {
+        altoFooter = INTERLINEADO_EXTRA * 2 + 150; // Margen reservado para banner/link final
+      }
+
+      // PASO 2 - RECALCULAR LA ALTURA DEL CANVAS SEGUN LOS AJUSTES DEL CONTENIDO
+      const altoCanvasAjustado = Math.ceil(pagina.altoTotal + altoFooter);
+
+      const cvs = document.createElement('canvas');
+      cvs.width = width;
+      cvs.height = altoCanvasAjustado;
+      cvs.style.display = 'block';
+      targetContainer.appendChild(cvs);
+
+      const ctx = cvs.getContext('2d');
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+      let posY = margenPx;
+
+      // Dibujar Header si es la primera sección
+      if (esPrimera) {
+        if (imgHeader) {
+          ctx.drawImage(imgHeader, 0, 0, width, altoHeader);
+        }
+        posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2);
+      }
+
+      // Renderizado del contenido del bloque
+      pagina.bloques.forEach(bloque => {
+        if (bloque.fuente) fuenteBase = bloque.fuente;
+        if (bloque.tamano) tamanoBase = bloque.tamano;
+
+        let tamanoRender = tamanoBase;
+        let desfasadorY = 0;
+
+        if (bloque.superindice) {
+          tamanoRender = tamanoBase * 0.7;
+          desfasadorY = -(tamanoBase * 0.35);
+        } else if (bloque.subindice) {
+          tamanoRender = tamanoBase * 0.7;
+          desfasadorY = tamanoBase * 0.2;
+        }
+
+        let estiloStr = '';
+        if (bloque.negrita) estiloStr += 'bold ';
+        if (bloque.cursiva) estiloStr += 'italic ';
+
+        ctx.font = `${estiloStr}${tamanoRender}pt ${fuenteBase}`;
+
+        if (bloque.color && bloque.color !== "000000" && bloque.color !== "#000000") {
+          ctx.fillStyle = bloque.color.startsWith('#') ? bloque.color : `#${bloque.color}`;
+        } else {
+          ctx.fillStyle = '#000000';
+        }
+
+        let posX = margenPx;
+        const lineas = bloque.texto.split('\n');
+
+        lineas.forEach((linea, indexLinea) => {
+          if (indexLinea > 0) {
+            posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+            posX = margenPx;
+          }
+
+          if (linea.length === 0) return;
+
+          const palabras = linea.split(' ');
+
+          palabras.forEach((palabra, indexPalabra) => {
+            const textoAEscribir = (indexPalabra === 0 && posX === margenPx) ? palabra : ' ' + palabra;
+            const anchoTexto = ctx.measureText(textoAEscribir).width;
+
+            if (posX + anchoTexto > margenPx + anchoMaximo && posX > margenPx) {
+              posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+              posX = margenPx;
+              const palabraSinEspacio = palabra;
+              const nuevoAncho = ctx.measureText(palabraSinEspacio).width;
+              
+              ctx.fillText(palabraSinEspacio, posX, posY + desfasadorY);
+
+              if (bloque.subrayado) {
+                const grosor = Math.max(1, tamanoRender / 12);
+                ctx.fillRect(posX, posY + desfasadorY + 2, nuevoAncho, grosor);
+              }
+
+              posX += nuevoAncho;
+            } else {
+              ctx.fillText(textoAEscribir, posX, posY + desfasadorY);
+
+              if (bloque.subrayado) {
+                const grosor = Math.max(1, tamanoRender / 12);
+                ctx.fillRect(posX, posY + desfasadorY + 2, anchoTexto, grosor);
+              }
+
+              posX += anchoTexto;
+            }
+          });
+        });
+
+        posY += (tamanoBase * FACTOR_INTERLINEADO) + INTERLINEADO_EXTRA;
+        posX = margenPx;
+      });
+
+      // Renderizado del Footer si es el último lienzo
+      if (esUltima) {
+        const posYActual = posY + (INTERLINEADO_EXTRA * 2);
+        if (imgFooter) {
+          let anchoFooter, altoFooterCalculado, xPos;
+          if ((imgFooter.width / imgFooter.height) <= 0.40) {
+            let proporcion = margenPx / imgFooter.height;
+            anchoFooter = imgFooter.width * proporcion;
+            altoFooterCalculado = margenPx;
+            xPos = (width - anchoFooter) / 2;
+          } else {
+            let proporcion = width / imgFooter.width;
+            anchoFooter = width;
+            altoFooterCalculado = imgFooter.height * proporcion;
+            xPos = 0;
+          }
+          ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooterCalculado);
+        } else if (config.footerLinkText) {
+          ctx.font = (TAMANO_BASE - 2) + 'pt Arial';
+          ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
+          ctx.textAlign = 'center';
+          ctx.fillText(config.footerLinkText, width / 2, posYActual);
+          ctx.textAlign = 'left';
+        }
+      }
+    });
+  }
 }
