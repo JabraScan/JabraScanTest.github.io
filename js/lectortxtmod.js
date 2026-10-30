@@ -1,6 +1,6 @@
 // canvas-reader.js
 const TAMANO_BASE       = 11;
-const INTERLINEADO_EXTRA= 6;
+const INTERLINEADO_EXTRA= 9;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
