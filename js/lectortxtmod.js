@@ -1,6 +1,6 @@
 // canvas-reader.js
-TAMANO_BASE       = 11;
-INTERLINEADO_EXTRA= 6;
+const TAMANO_BASE       = 11;
+const INTERLINEADO_EXTRA= 6;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -68,7 +68,7 @@ export function TxtReaderEngine(options) {
         footerbaseUrl: `https://img.jabrascan.net/${clave}/`,
         footerBannerUrl: [`footer.webp`],
         footerChapters: [0],
-        footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
+        footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-3w.webp`,
         
         footerLinkUrl: "", 
         footerLinkText: "https://jabrascan.net",
