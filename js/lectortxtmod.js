@@ -151,12 +151,30 @@ export function TxtReaderEngine(options) {
 
             const lineas = bloque.texto.split('\n');
             lineas.forEach((linea) => {
-              // Salto de línea explícito por cada \n del texto
-              posX = margenPx;
               posY += (tamanoBase * 1.3) + interlineadoExtra;
-              
-              if (linea.length > 0) {
-                ctx.fillText(linea, posX, posY);
+              posX = margenPx;
+
+              if (linea.length === 0) return;
+
+              // Algoritmo de ajuste de línea (Word Wrap) para respetar el margen derecho
+              const palabras = linea.split(' ');
+              let lineaActual = '';
+
+              palabras.forEach((palabra, index) => {
+                const prueba = lineaActual + (index === 0 ? '' : ' ') + palabra;
+                const anchoPrueba = ctx.measureText(prueba).width;
+
+                if (anchoPrueba > anchoMaximo && lineaActual.length > 0) {
+                  ctx.fillText(lineaActual, posX, posY);
+                  lineaActual = palabra;
+                  posY += (tamanoBase * 1.3) + interlineadoExtra;
+                } else {
+                  lineaActual = prueba;
+                }
+              });
+
+              if (lineaActual.length > 0) {
+                ctx.fillText(lineaActual, posX, posY);
               }
             });
           });
