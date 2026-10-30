@@ -1,7 +1,7 @@
 // lectortxtmod.js
 const TAMANO_BASE       = 11;
 const INTERLINEADO_EXTRA= 9;
-const FACTOR_INTERLINEADO = 11.3;
+const FACTOR_INTERLINEADO = 1.3;
 const MARGEN_CM         = 3.0;
 const MARGEN_CM_MOBILE  = 1.2;
 
@@ -228,6 +228,10 @@ export function TxtReaderEngine(options) {
                 }
               });
             });
+
+            // Separación entre bloques/párrafos
+            posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
+            posX = margenPx;
           });
 
           // Renderizado del footer
