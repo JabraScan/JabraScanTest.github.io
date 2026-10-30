@@ -59,7 +59,14 @@ export function TxtReaderEngine(options) {
 
     async load(txtContent, configPath = "") {
       try {
-        cachedBloques = typeof txtContent === 'string' ? eval(txtContent) : txtContent;
+        let contenidoLimpio = txtContent;
+        if (typeof txtContent === 'string') {
+          // Reemplaza los booleanos de Python por los de JavaScript para que eval() no falle
+          contenidoLimpio = txtContent.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+          cachedBloques = eval(contenidoLimpio);
+        } else {
+          cachedBloques = txtContent;
+        }
       } catch (e) {
         console.error("Error al parsear el contenido del capítulo:", e);
         cachedBloques = [];
