@@ -77,7 +77,7 @@ export function TxtReaderEngine(options) {
     async getPage(num) {
       return {
         numPages: 1,
-        
+
         getViewport({ scale = 1.0 } = {}) {
           const container = canvas.parentElement;
           const width = container ? container.clientWidth || 800 : 800;
@@ -150,14 +150,13 @@ export function TxtReaderEngine(options) {
             ctx.fillStyle = '#000000';
 
             const lineas = bloque.texto.split('\n');
-            lineas.forEach((linea, indexLinea) => {
-              if (indexLinea > 0 || posX >= anchoMaximo) {
-                posX = margenPx;
-                posY += (tamanoBase * 1.3) + interlineadoExtra;
-              }
+            lineas.forEach((linea) => {
+              // Salto de línea explícito por cada \n del texto
+              posX = margenPx;
+              posY += (tamanoBase * 1.3) + interlineadoExtra;
+              
               if (linea.length > 0) {
                 ctx.fillText(linea, posX, posY);
-                posX += ctx.measureText(linea).width;
               }
             });
           });
