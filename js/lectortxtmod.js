@@ -153,7 +153,7 @@ export function TxtReaderEngine(options) {
           const anchoMaximo = canvas.width - (margenPx * 2);
 
           let posX = margenPx;
-          let posY = altoHeader + margenPx + (FACTOR_INTERLINEADO * 2); 
+          let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
 
           cachedBloques.forEach(bloque => {
             if (bloque.fuente) fuenteBase = bloque.fuente;
@@ -228,10 +228,6 @@ export function TxtReaderEngine(options) {
                 }
               });
             });
-
-            // Separación entre bloques/párrafos
-            posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
-            posX = margenPx;
           });
 
           // Renderizado del footer
