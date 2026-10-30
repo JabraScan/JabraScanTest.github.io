@@ -235,21 +235,9 @@ export function TxtReaderEngine(options) {
           let posYActual = posY + separacionFooter;
 
           if (imgFooter) {
-            let anchoFooter, altoFooter, xPos;
-            //si la proporcion es 1/4
-            if ( (imgFooter.width / imgFooter.height) <= 0.40 ) {
-              let proporcion = margenPx / imgFooter.height;
-              anchoFooter = imgFooter.width * proporcion
-              alfoFooter = margenPx;
-              xPos = (canvas.width - anchoFooter) / 2; // Centrado para imágenes estrechas
-            } else {
-              let proporcion = canvas.width / imgFooter.width;
-              anchoFooter = canvas.width
-              altoFooter = imgFooter.height * proporcion;
-              xPos = 0;
-            }
-
-            ctx.drawImage(imgFooter, xPos, posYActual, anchoFooter, altoFooter);
+            const proporcion = canvas.width / imgFooter.width;
+            const altoFooter = imgFooter.height * proporcion;
+            ctx.drawImage(imgFooter, 0, posYActual, canvas.width, altoFooter);
           } else if (config.footerLinkText) {
             ctx.font = (TAMANO_BASE-2) + 'pt Arial';
             ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
