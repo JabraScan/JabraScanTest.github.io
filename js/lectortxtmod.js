@@ -1,6 +1,7 @@
 // canvas-reader.js
 const TAMANO_BASE       = 11;
 const INTERLINEADO_EXTRA= 9;
+const FACTOR_INTERLINEADO = 1.3;
 
 function esPantallaPequena() {
   return window.innerWidth < 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent);
@@ -43,6 +44,12 @@ export function TxtReaderEngine(options) {
   if (!(canvas instanceof HTMLCanvasElement)) {
     throw new Error('Se requiere un elemento HTMLCanvasElement válido.');
   }
+  // --- Ocultar controles de PDF al inicializar el motor ---
+  const controlesPdf = document.querySelector('.pdf-controls');
+  if (controlesPdf) {
+    controlesPdf.style.setProperty('display', 'none', 'important');
+  }
+  // --------------------------------------------------------
 
   let cachedBloques = [];
   let config = {};
@@ -96,7 +103,7 @@ export function TxtReaderEngine(options) {
             if (bloque.tamano) tamanoBase = bloque.tamano;
             const lineas = bloque.texto.split('\n');
             lineas.forEach(() => {
-              alturaEstimadaTexto += (tamanoBase * 1.3) + interlineadoExtra;
+              alturaEstimadaTexto += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
             });
           });
 
@@ -139,7 +146,7 @@ export function TxtReaderEngine(options) {
           const anchoMaximo = canvas.width - (margenPx * 2);
 
           let posX = margenPx;
-          let posY = altoHeader + (tamanoBase * 1.3 * 2); 
+          let posY = altoHeader + (tamanoBase * FACTOR_INTERLINEADO * 2); 
 
           // Renderizado del texto respetando estrictamente ambos márgenes
           cachedBloques.forEach(bloque => {
@@ -155,7 +162,7 @@ export function TxtReaderEngine(options) {
 
             const lineas = bloque.texto.split('\n');
             lineas.forEach((linea) => {
-              posY += (tamanoBase * 1.3) + interlineadoExtra;
+              posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
               posX = margenPx;
 
               if (linea.length === 0) return;
@@ -171,7 +178,7 @@ export function TxtReaderEngine(options) {
                 if (anchoPrueba > anchoMaximo && lineaActual.length > 0) {
                   ctx.fillText(lineaActual, posX, posY);
                   lineaActual = palabra;
-                  posY += (tamanoBase * 1.3) + interlineadoExtra;
+                  posY += (tamanoBase * FACTOR_INTERLINEADO) + interlineadoExtra;
                 } else {
                   lineaActual = prueba;
                 }
@@ -183,18 +190,22 @@ export function TxtReaderEngine(options) {
             });
           });
 
-          // Renderizado del footer
+          // Renderizado del footer justo después de terminar el texto
+          const separacionFooter = INTERLINEADO_EXTRA * 2; // Espacio de separación tras el texto (1.5 cm)
+          let posYActual = posY + separacionFooter;
+
           if (imgFooter) {
             const proporcion = canvas.width / imgFooter.width;
             const altoFooter = imgFooter.height * proporcion;
-            const yFooter = Math.max(posY + margenPx, canvas.height - altoFooter);
-            ctx.drawImage(imgFooter, 0, yFooter, canvas.width, altoFooter);
+            
+            // Dibujar la imagen exactamente donde terminó el texto
+            ctx.drawImage(imgFooter, 0, posYActual, canvas.width, altoFooter);
           } else if (config.footerLinkText) {
-            ctx.font = '10pt Arial';
+            ctx.font = (TAMANO_BASE-2) + 'pt Arial';
             ctx.fillStyle = config.footerLinkUrl ? '#0000FF' : '#555555';
             ctx.textAlign = 'center';
-            const yTextoFooter = Math.max(posY + margenPx, canvas.height - 20);
-            ctx.fillText(config.footerLinkText, canvas.width / 2, yTextoFooter);
+            
+            ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
             ctx.textAlign = 'left';
           }
         },
