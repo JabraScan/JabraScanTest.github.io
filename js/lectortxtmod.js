@@ -66,7 +66,7 @@ export class TxtReaderEngine {
 
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const maxContentWidth = availableWidth - 40;
+    const maxContentWidth = availableWidth - 60;
 
     const data = this._parsePythonArray(text);
     if (!data || !Array.isArray(data)) {
@@ -81,13 +81,18 @@ export class TxtReaderEngine {
 
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || 12);
+      const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
+      
       this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
       
       const text = frag.texto || "";
-      const parts = text.split('\\n');
+      // Importante: El texto puede venir con \n reales o representados como string
+      const parts = text.split(/\\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
+        
+        // Si el fragmento es vacío pero hay un salto de línea, creamos espacio
         if (part === '' && i > 0) {
           if (currentLineFragments.length > 0) {
             lines.push({ fragments: currentLineFragments, height: currentLineH });
@@ -95,7 +100,7 @@ export class TxtReaderEngine {
             currentX = 0;
             currentLineH = 0;
           }
-          lines.push({ fragments: [], height: sizePx * 1.5, isSpacer: true });
+          lines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
           continue;
         }
 
@@ -113,7 +118,7 @@ export class TxtReaderEngine {
 
           currentLineFragments.push({ ...frag, texto: word });
           currentX += wordWidth;
-          currentLineH = Math.max(currentLineH, sizePx * 1.4);
+          currentLineH = Math.max(currentLineH, lineHeightPx);
         }
       }
     }
