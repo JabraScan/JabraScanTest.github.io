@@ -258,6 +258,7 @@ export function TxtReaderEngine(options) {
             ctx.fillText(config.footerLinkText, canvas.width / 2, posYActual);
             ctx.textAlign = 'left';
           }
+          const altoRealFinal = posY + margenPx;
         },
 
         async getTextContent() {
