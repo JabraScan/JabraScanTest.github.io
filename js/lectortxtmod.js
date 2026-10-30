@@ -71,10 +71,13 @@ export class TxtReaderEngine {
       this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
 
       const textStr = frag.texto || "";
-      const parts = textStr.split(/\\n/);
+      // Dividimos por \n respetando que pueden venir como caracteres literales o escapados
+      const parts = textStr.split(/\r?\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
+
+        // Si la parte está vacía y no es la primera, es un salto de línea explícito
         if (part === '' && i > 0) {
           if (currentLineFragments.length > 0) {
             allLines.push({ fragments: currentLineFragments, height: currentLineH });
@@ -82,25 +85,40 @@ export class TxtReaderEngine {
             currentX = 0;
             currentLineH = 0;
           }
+          // Un salto vacío genera un espacio de párrafo
           allLines.push({ fragments: [], height: lineHeightPx * 1.5, isSpacer: true });
           continue;
         }
 
-        const words = part.split(' ');
-        for (let w = 0; w < words.length; w++) {
-          const word = words[w] + (w < words.length - 1 ? ' ' : '');
-          const wordWidth = this.ctx.measureText(word).width;
+        // Si el fragmento tiene texto, procesamos el Word Wrap
+        if (part.length > 0) {
+          const words = part.split(' ');
+          for (let w = 0; w < words.length; w++) {
+            const word = words[w] + (w < words.length - 1 ? ' ' : '');
+            const wordWidth = this.ctx.measureText(word).width;
 
-          if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            allLines.push({ fragments: currentLineFragments, height: currentLineH });
-            currentLineFragments = [];
-            currentX = 0;
-            currentLineH = 0;
+            if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+              allLines.push({ fragments: currentLineFragments, height: currentLineH });
+              currentLineFragments = [];
+              currentX = 0;
+              currentLineH = 0;
+            }
+
+            currentLineFragments.push({ ...frag, texto: word });
+            currentX += wordWidth;
+            currentLineH = Math.max(currentLineH, lineHeightPx);
           }
-
-          currentLineFragments.push({ ...frag, texto: word });
-          currentX += wordWidth;
-          currentLineH = Math.max(currentLineH, lineHeightPx);
+        }
+      }
+      
+      // Al finalizar cada fragmento de datos, si el fragmento original terminaba en \n, 
+      // debemos forzar el salto a la siguiente línea para el siguiente fragmento
+      if (textStr.endsWith('\n') || textStr.endsWith('\\n')) {
+        if (currentLineFragments.length > 0) {
+          allLines.push({ fragments: currentLineFragments, height: currentLineH });
+          currentLineFragments = [];
+          currentX = 0;
+          currentLineH = 0;
         }
       }
     }
@@ -115,7 +133,7 @@ export class TxtReaderEngine {
     const PAGE_HEIGHT_LIMIT = 2500; 
     const pages = [];
     let currentPageLines = [];
-    let currentH = 40; // margen superior
+    let currentH = 40;
 
     this.allLines.forEach(line => {
       const h = line.height || 20;
