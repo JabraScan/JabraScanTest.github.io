@@ -286,19 +286,35 @@ export class TxtReaderEngine {
 
   _drawBanner(ctx, img, baseWidthPx, baseHeightPx, marginPx, isHeader) {
     if (!img) return;
-    const maxH = marginPx * 0.9;
-    const aspect = img.width / img.height;
-    const maxW = baseWidthPx;
+    
+    const dpr = window.devicePixelRatio || 1;
+    const availableWidth = baseWidthPx;
+    const bannerWidth = img.width;
+    const bannerHeight = img.height;
+    const aspect = bannerWidth / bannerHeight;
 
-    let drawH = maxH;
-    let drawW = drawH * aspect;
+    let drawW, drawH;
 
-    if (drawW > maxW) {
-      drawW = maxW;
+    // REGLA: Si la imagen mide menos de 3/4 del ancho del canvas, ajustarla a aprox 3cm (estilo logo)
+    if (bannerWidth < availableWidth * 0.75) {
+      drawW = this.cmToPx(3.0);
+      drawH = drawW / aspect;
+    } else {
+      // Si es ancha, ajustarla al ancho total disponible
+      drawW = availableWidth;
       drawH = drawW / aspect;
     }
 
-    const drawX = Math.round((baseWidthPx - drawW) / 2);
+    // Limitar la altura del banner para que no ocupe demasiado espacio vertical
+    const maxH = marginPx * 0.9;
+    if (drawH > maxH) {
+      drawH = maxH;
+      drawW = drawH * aspect;
+    }
+
+    const drawX = Math.round((availableWidth - drawW) / 2);
+    
+    // Posicionamiento: Header arriba (0), Footer abajo (baseHeightPx - drawH)
     const drawY = isHeader ? 0 : Math.round(baseHeightPx - drawH);
 
     ctx.drawImage(img, drawX, drawY, Math.round(drawW), Math.round(drawH));
