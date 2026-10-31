@@ -22,7 +22,6 @@ export class TxtReaderEngine {
     this.FONT_FAMILY = "Arial";
     this.LINE_HEIGHT_RATIO = 1.3; 
 
-    // Fusión de ajustes por defecto con opciones personalizadas del usuario
     this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
 
     this.allLines = [];
@@ -54,8 +53,7 @@ export class TxtReaderEngine {
 
   _parsePythonArray(text) {
     try {
-      // Conversión segura de booleanos de Python a JS antes de evaluar
-      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+      const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
       console.error("Error parseando array:", e);
@@ -74,70 +72,80 @@ export class TxtReaderEngine {
       return;
     }
 
-    const allLines = [];
-
+    // PASO 1: Segmentación Estricta por saltos de línea
+    const rawLines = [];
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      
-      // Normalización de saltos de línea: convertimos literales \n en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
+      
       const parts = textStr.split(/\r?\n/);
-
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
-
-        // MANEJO DE SALTOS DE LÍNEA
         if (part === '' && i > 0) {
-          // Salto doble = Párrafo (espacio extra)
+          // Detectar salto doble para párrafo
           if (i + 1 < parts.length && parts[i+1] === '') {
-            allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
-            i++; 
+            rawLines.push({ isSpacer: true, height: lineHeightPx * this.settings.paragraphSpacingRatio });
+            i++;
           } else {
-            // Salto simple = Nueva línea vacía (ocupa altura estándar)
-            allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
+            // Salto simple: línea vacía obligatoria
+            rawLines.push({ isSpacer: false, height: lineHeightPx, fragments: [] });
           }
-          continue;
-        }
-
-        if (part.length > 0) {
-          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-          
-          // Word Wrap: Solo si la línea excede el ancho máximo permitido
-          if (this.ctx.measureText(part).width > maxContentWidth) {
-            const words = part.split(' ');
-            let currentLineFragments = [];
-            let currentX = 0;
-
-            for (let w = 0; w < words.length; w++) {
-              const word = words[w] + (w < words.length - 1 ? ' ' : '');
-              const wordWidth = this.ctx.measureText(word).width;
-
-              if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-                currentLineFragments = [];
-                currentX = 0;
-              }
-              currentLineFragments.push({ ...frag, texto: word });
-              currentX += wordWidth;
-            }
-            if (currentLineFragments.length > 0) {
-              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-            }
-          } else {
-            // La línea cabe entera: se añade directamente sin fragmentar palabras
-            allLines.push({ 
-              fragments: [{ ...frag, texto: part }], 
-              height: lineHeightPx 
-            });
-          }
+        } else {
+          rawLines.push({ isSpacer: false, height: lineHeightPx, fragments: [{ ...frag, texto: part }] });
         }
       }
     }
 
-    this.allLines = allLines;
+    // PASO 2: Expansión por Word Wrap (Ajuste al ancho)
+    const finalLines = [];
+    rawLines.forEach(line => {
+      if (line.isSpacer) {
+        finalLines.push(line);
+        return;
+      }
+
+      const fragments = line.fragments;
+      if (!fragments || fragments.length === 0) {
+        finalLines.push(line);
+        return;
+      }
+
+      // Simulamos la medida del texto completo de la línea
+      this.ctx.font = `${this.ptToPx(fragments[0].tamano || this.settings.defaultFontSize)}px ${this.FONT_FAMILY}`;
+      let fullText = fragments.map(f => f.texto).join('');
+      
+      if (this.ctx.measureText(fullText).width > maxContentWidth) {
+        // Dividimos en palabras solo si excede el ancho
+        let currentLineFragments = [];
+        let currentX = 0;
+        const sizePx = this.ptToPx(fragments[0].tamano || this.settings.defaultFontSize);
+
+        // Simplificamos: usamos el primer fragmento como base para el wrap de la línea
+        const words = fullText.split(' ');
+        for (let w = 0; w < words.length; w++) {
+          const word = words[w] + (w < words.length - 1 ? ' ' : '');
+          const wordWidth = this.ctx.measureText(word).width;
+
+          if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+            finalLines.push({ fragments: currentLineFragments, height: sizePx * this.LINE_HEIGHT_RATIO });
+            currentLineFragments = [];
+            currentX = 0;
+          }
+          currentLineFragments.push({ ...fragments[0], texto: word });
+          currentX += wordWidth;
+        }
+        if (currentLineFragments.length > 0) {
+          finalLines.push({ fragments: currentLineFragments, height: sizePx * this.LINE_HEIGHT_RATIO });
+        }
+      } else {
+        finalLines.push(line);
+      }
+    });
+
+    this.allLines = finalLines;
     
-    // PAGINACIÓN INTERNA (Para evitar colapsos de memoria en canvas gigantes)
+    // PAGINACIÓN (Interna para memoria)
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
@@ -153,20 +161,15 @@ export class TxtReaderEngine {
       currentPageLines.push(line);
       currentH += h;
     });
-
-    if (currentPageLines.length > 0) {
-      pages.push(currentPageLines);
-    }
-
+    if (currentPageLines.length > 0) pages.push(currentPageLines);
     this.pages = pages;
   }
 
   render() {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    
-    // Para el scroll infinito, dibujamos TODAS las líneas procesadas en un único canvas largo
     const allLinesToRender = this.allLines || [];
 
+    // Cálculo de altura exacto basado en la simulación final
     let totalH = this.settings.marginTop;
     allLinesToRender.forEach(l => {
       totalH += (l.height || this.settings.lineHeightDefault);
@@ -186,7 +189,6 @@ export class TxtReaderEngine {
     let y = this.settings.marginTop;
     allLinesToRender.forEach(line => {
       if (y > totalH) return;
-
       if (line.isSpacer) {
         y += line.height;
         return;
@@ -198,7 +200,6 @@ export class TxtReaderEngine {
           let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
           let offsetY = 0;
 
-          // Soporte para Superíndices y Subíndices
           if (frag.superindice) {
             size *= 0.65;
             offsetY = -size * 0.2;
@@ -212,10 +213,8 @@ export class TxtReaderEngine {
           ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
           ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
 
-          // Dibujar texto con desplazamiento vertical si es índice
           ctx.fillText(frag.texto, x, y + offsetY);
 
-          // Soporte para Subrayado
           if (frag.subrayado) {
             const textWidth = ctx.measureText(frag.texto).width;
             ctx.beginPath();
@@ -225,7 +224,6 @@ export class TxtReaderEngine {
             ctx.lineTo(x + textWidth, y + size * 0.9);
             ctx.stroke();
           }
-
           x += ctx.measureText(frag.texto).width;
         });
       }
@@ -236,15 +234,12 @@ export class TxtReaderEngine {
   async getPage(pageNum) {
     return {
       num: pageNum,
-      getViewport: () => ({
-        width: this.canvas.width,
-        height: this.canvas.height
-      }),
+      getViewport: () => ({ width: this.canvas.width, height: this.canvas.height }),
       render: () => this.render(),
       getTextContent: async () => ({ items: [] })
     };
   }
 
   fitToContainer() { this.render(); }
-  get numPages() { return 1; } // Retorna 1 para mantener la ilusión de scroll infinito
+  get numPages() { return 1; }
 }
