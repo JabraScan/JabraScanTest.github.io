@@ -20,7 +20,7 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.3; 
+    this.LINE_HEIGHT_RATIO = 1.3;
 
     this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
 
@@ -29,6 +29,21 @@ export class TxtReaderEngine {
     this.isInfiniteScroll = options.isInfiniteScroll || false;
     this.resources = { headerImg: null, footerImg: null };
     this.config = {};
+
+    this._setupResizeListener();
+  }
+
+  _setupResizeListener() {
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (this.lastTextContent) {
+          this._processText(this.lastTextContent);
+          this.render();
+        }
+      }, 200);
+    });
   }
 
   ptToPx(pt) { return (pt * this.dpi) / 72; }
