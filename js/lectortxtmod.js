@@ -20,8 +20,9 @@ export class TxtReaderEngine {
     this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.3;
+    this.LINE_HEIGHT_RATIO = 1.3; 
 
+    // Fusión de ajustes por defecto con opciones personalizadas del usuario
     this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
 
     this.allLines = [];
@@ -30,6 +31,7 @@ export class TxtReaderEngine {
     this.resources = { headerImg: null, footerImg: null };
     this.config = {};
 
+    // Setup de redimensionamiento responsivo
     this._setupResizeListener();
   }
 
@@ -68,6 +70,7 @@ export class TxtReaderEngine {
 
   _parsePythonArray(text) {
     try {
+      // Conversión segura de booleanos de Python a JS (True -> true, False -> false)
       const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
@@ -87,80 +90,69 @@ export class TxtReaderEngine {
       return;
     }
 
-    // PASO 1: Segmentación Estricta por saltos de línea
-    const rawLines = [];
+    const allLines = [];
+
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      let textStr = (frag.texto || "").replace(/\\n/g, '\n');
       
+      // Normalización: convertimos \n literales en saltos reales
+      let textStr = (frag.texto || "").replace(/\\n/g, '\n');
       const parts = textStr.split(/\r?\n/);
+
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
+
+        // Manejo de saltos de línea explícitos
         if (part === '' && i > 0) {
-          // Detectar salto doble para párrafo
+          // Salto doble = Párrafo
           if (i + 1 < parts.length && parts[i+1] === '') {
-            rawLines.push({ isSpacer: true, height: lineHeightPx * this.settings.paragraphSpacingRatio });
-            i++;
+            allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
+            i++; 
           } else {
-            // Salto simple: línea vacía obligatoria
-            rawLines.push({ isSpacer: false, height: lineHeightPx, fragments: [] });
+            // Salto simple = Línea vacía visible
+            allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
-        } else {
-          rawLines.push({ isSpacer: false, height: lineHeightPx, fragments: [{ ...frag, texto: part }] });
+          continue;
+        }
+
+        if (part.length > 0) {
+          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+          
+          // Word Wrap: Solo si el fragmento excede el ancho del contenedor
+          if (this.ctx.measureText(part).width > maxContentWidth) {
+            const words = part.split(' ');
+            let currentLineFragments = [];
+            let currentX = 0;
+
+            for (let w = 0; w < words.length; w++) {
+              const word = words[w] + (w < words.length - 1 ? ' ' : '');
+              const wordWidth = this.ctx.measureText(word).width;
+
+              if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+                currentLineFragments = [];
+                currentX = 0;
+              }
+              currentLineFragments.push({ ...frag, texto: word });
+              currentX += wordWidth;
+            }
+            if (currentLineFragments.length > 0) {
+              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+            }
+          } else {
+            allLines.push({ 
+              fragments: [{ ...frag, texto: part }], 
+              height: lineHeightPx 
+            });
+          }
         }
       }
     }
 
-    // PASO 2: Expansión por Word Wrap (Ajuste al ancho)
-    const finalLines = [];
-    rawLines.forEach(line => {
-      if (line.isSpacer) {
-        finalLines.push(line);
-        return;
-      }
-
-      const fragments = line.fragments;
-      if (!fragments || fragments.length === 0) {
-        finalLines.push(line);
-        return;
-      }
-
-      // Simulamos la medida del texto completo de la línea
-      this.ctx.font = `${this.ptToPx(fragments[0].tamano || this.settings.defaultFontSize)}px ${this.FONT_FAMILY}`;
-      let fullText = fragments.map(f => f.texto).join('');
-      
-      if (this.ctx.measureText(fullText).width > maxContentWidth) {
-        // Dividimos en palabras solo si excede el ancho
-        let currentLineFragments = [];
-        let currentX = 0;
-        const sizePx = this.ptToPx(fragments[0].tamano || this.settings.defaultFontSize);
-
-        // Simplificamos: usamos el primer fragmento como base para el wrap de la línea
-        const words = fullText.split(' ');
-        for (let w = 0; w < words.length; w++) {
-          const word = words[w] + (w < words.length - 1 ? ' ' : '');
-          const wordWidth = this.ctx.measureText(word).width;
-
-          if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            finalLines.push({ fragments: currentLineFragments, height: sizePx * this.LINE_HEIGHT_RATIO });
-            currentLineFragments = [];
-            currentX = 0;
-          }
-          currentLineFragments.push({ ...fragments[0], texto: word });
-          currentX += wordWidth;
-        }
-        if (currentLineFragments.length > 0) {
-          finalLines.push({ fragments: currentLineFragments, height: sizePx * this.LINE_HEIGHT_RATIO });
-        }
-      } else {
-        finalLines.push(line);
-      }
-    });
-
-    this.allLines = finalLines;
+    this.allLines = allLines;
     
-    // PAGINACIÓN (Interna para memoria)
+    // PAGINACIÓN INTERNA (Gestión de memoria)
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
@@ -176,7 +168,11 @@ export class TxtReaderEngine {
       currentPageLines.push(line);
       currentH += h;
     });
-    if (currentPageLines.length > 0) pages.push(currentPageLines);
+
+    if (currentPageLines.length > 0) {
+      pages.push(currentPageLines);
+    }
+
     this.pages = pages;
   }
 
@@ -184,7 +180,7 @@ export class TxtReaderEngine {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const allLinesToRender = this.allLines || [];
 
-    // Cálculo de altura exacto basado en la simulación final
+    // Altura total exacta basada en la simulación de todas las líneas
     let totalH = this.settings.marginTop;
     allLinesToRender.forEach(l => {
       totalH += (l.height || this.settings.lineHeightDefault);
@@ -204,6 +200,7 @@ export class TxtReaderEngine {
     let y = this.settings.marginTop;
     allLinesToRender.forEach(line => {
       if (y > totalH) return;
+
       if (line.isSpacer) {
         y += line.height;
         return;
@@ -239,6 +236,7 @@ export class TxtReaderEngine {
             ctx.lineTo(x + textWidth, y + size * 0.9);
             ctx.stroke();
           }
+
           x += ctx.measureText(frag.texto).width;
         });
       }
