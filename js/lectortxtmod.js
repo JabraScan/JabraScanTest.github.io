@@ -79,7 +79,7 @@ export class TxtReaderEngine {
     }
   }
 
-  _processText(text) {
+_processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
 
@@ -92,62 +92,120 @@ export class TxtReaderEngine {
 
     const allLines = [];
 
+    // 1. CONSTRUCCIÓN DE TOKENS: Desglosamos cada fragmento en palabras y espacios manteniendo su estilo
+    let inlineTokens = [];
     for (const frag of data) {
-      const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-      const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      
-      // Normalización: convertimos \n literales en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
-      const parts = textStr.split(/\r?\n/);
+      
+      const rawParts = textStr.split(/(\r?\n)/);
 
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i];
+      for (let p = 0; p < rawParts.length; p++) {
+        const part = rawParts[p];
+        if (part === '') continue;
 
-        // Manejo de saltos de línea explícitos
-        if (part === '' && i > 0) {
-          // Salto doble = Párrafo
-          if (i + 1 < parts.length && parts[i+1] === '') {
-            allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
-            i++; 
-          } else {
-            // Salto simple = Línea vacía visible
-            allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
-          }
-          continue;
-        }
-
-        if (part.length > 0) {
-          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-          
-          // Word Wrap: Solo si el fragmento excede el ancho del contenedor
-          if (this.ctx.measureText(part).width > maxContentWidth) {
-            const words = part.split(' ');
-            let currentLineFragments = [];
-            let currentX = 0;
-
-            for (let w = 0; w < words.length; w++) {
-              const word = words[w] + (w < words.length - 1 ? ' ' : '');
-              const wordWidth = this.ctx.measureText(word).width;
-
-              if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-                currentLineFragments = [];
-                currentX = 0;
-              }
-              currentLineFragments.push({ ...frag, texto: word });
-              currentX += wordWidth;
+        if (part === '\n' || part === '\r\n') {
+          inlineTokens.push({ type: 'newline', frag });
+        } else {
+          const words = part.split(' ');
+          for (let w = 0; w < words.length; w++) {
+            if (words[w] !== '') {
+              inlineTokens.push({ type: 'word', texto: words[w], frag });
             }
-            if (currentLineFragments.length > 0) {
-              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+            if (w < words.length - 1) {
+              inlineTokens.push({ type: 'space', texto: ' ', frag });
             }
-          } else {
-            allLines.push({ 
-              fragments: [{ ...frag, texto: part }], 
-              height: lineHeightPx 
-            });
           }
         }
       }
+    }
+
+    // 2. AGRUPACIÓN EN LÍNEAS VISUALES CON WORD WRAP FLUIDO
+    let currentLineFragments = [];
+    let currentLineWidth = 0;
+    
+    const getLineHeight = (frags) => {
+      const sizePt = frags.length > 0 && frags[0].tamano ? frags[0].tamano : this.settings.defaultFontSize;
+      return this.ptToPx(sizePt) * this.LINE_HEIGHT_RATIO;
+    };
+
+    const flushLine = (frags, isSpacer = false, customHeight = null) => {
+      const height = customHeight !== null ? customHeight : (frags.length > 0 ? getLineHeight(frags) : this.settings.lineHeightDefault);
+      allLines.push({ fragments: [...frags], height, isSpacer });
+    };
+
+    let i = 0;
+    while (i < inlineTokens.length) {
+      const token = inlineTokens[i];
+
+      if (token.type === 'newline') {
+        let consecutiveNewlines = 1;
+        let peekIdx = i + 1;
+        while (peekIdx < inlineTokens.length && inlineTokens[peekIdx].type === 'newline') {
+          consecutiveNewlines++;
+          peekIdx++;
+        }
+
+        if (currentLineFragments.length > 0) {
+          flushLine(currentLineFragments);
+          currentLineFragments = [];
+          currentLineWidth = 0;
+        }
+
+        const baseSizePx = this.ptToPx(token.frag.tamano || this.settings.defaultFontSize);
+        const baseLineH = baseSizePx * this.LINE_HEIGHT_RATIO;
+
+        if (consecutiveNewlines >= 2) {
+          flushLine([], true, baseLineH * this.settings.paragraphSpacingRatio);
+          i = peekIdx;
+          continue;
+        } else {
+          flushLine([], false, baseLineH);
+          i++;
+          continue;
+        }
+      }
+
+      // Medir ancho del token actual de forma limpia
+      const sizePx = this.ptToPx(token.frag.tamano || this.settings.defaultFontSize);
+      const weight = token.frag.negrita ? 'bold' : 'normal';
+      const style = token.frag.cursiva ? 'italic' : 'normal';
+      
+      this.ctx.font = `${style} ${weight} ${sizePx}px ${this.FONT_FAMILY}`;
+      const tokenText = token.texto;
+      const tokenWidth = this.ctx.measureText(tokenText).width;
+
+      if (currentLineWidth + tokenWidth > maxContentWidth && currentLineFragments.length > 0) {
+        flushLine(currentLineFragments);
+        currentLineFragments = [];
+        currentLineWidth = 0;
+        if (token.type === 'space') {
+          i++;
+          continue;
+        }
+      }
+
+      const lastFrag = currentLineFragments[currentLineFragments.length - 1];
+      const isSameStyle = lastFrag &&
+        lastFrag.tamano === token.frag.tamano &&
+        lastFrag.negrita === token.frag.negrita &&
+        lastFrag.cursiva === token.frag.cursiva &&
+        lastFrag.subrayado === token.frag.subrayado &&
+        lastFrag.superindice === token.frag.superindice &&
+        lastFrag.subindice === token.frag.subindice &&
+        lastFrag.color === token.frag.color;
+
+      if (isSameStyle) {
+        lastFrag.texto += tokenText;
+      } else {
+        currentLineFragments.push({ ...token.frag, texto: tokenText });
+      }
+
+      currentLineWidth += tokenWidth;
+      i++;
+    }
+
+    if (currentLineFragments.length > 0) {
+      flushLine(currentLineFragments);
     }
 
     this.allLines = allLines;
