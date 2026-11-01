@@ -1,0 +1,954 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Book",
+      "name": [
+        "¡Cállate, dragón malvado! No quiero tener mas hijos contigo.",
+        "Shut Up, Malevolent Dragon! I Don’t Want to Have Any More Children With You",
+        "闭嘴恶龙我不想再跟你生孩子了",
+        "Shut up, Evil Dragon, I Don't Want to Raise A Child with You Anymore"
+      ],
+      "image": [
+        "CallateDragonaMalvada/CallateDragonaMalvada.webp",
+        "shut-up-evil-dragon-i-dont-want-to-raise-a-child-with-v0_1.webp",
+        "shut-up-evil-dragon-i-dont-want-to-raise-a-child-with-v0_2.webp"
+      ],
+      "genre": [
+        "Drama",
+        "Romance",
+        "Acción",
+        "Comedia",
+        "Fantasía",
+        "Aventura",
+        "Ecchi",
+        "sobrenatural",
+        "Magia"
+      ],
+      "identifier": "CDMNQTMHC",
+      "description": "Después de ser derrotado y capturado, el héroe asesino de dragones, Leon, se convirtió en prisionero de la Emperatriz Dragón Plateado. Con la resolución de una muerte segura, León inesperadamente dio vuelta la situación y embarazó con éxito a la emperatriz cuando estaba a punto de morir. Pensó que esto sería suficiente para dejar a la emperatriz vivir con vergüenza por el resto de su vida y también cumplió con su deber como cazador de dragones. Sin embargo, dos años después, cuando León abrió los ojos, encontró a una pequeña niña dragón con cola acostada a su lado",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-08-24",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Activo",
+      "translator": "Tavo",
+      "mainEntityOfPage": "https://shut-up-evil-dragon-i-dont-want-to-raise-a-child.fandom.com/wiki/Shut_up_Evil_Dragon_I_don%27t_want_to_have_any_more_kids_with_you!_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "奶昔尾尾酱"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "si",
+      "discussionUrl": "https://discord.gg/Mk2qb65AxA",
+      "bannerOpcional": "discord_oficial_jabrascan.jpg"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Cultivation Online",
+        "Cultivo En Línea",
+        "Cultivación Online",
+        "Cultivo Online",
+        "オンライン修行 (Onrain Shugyō)",
+        "在线修炼 (Zàixiàn Xiūliàn)"
+      ],
+      "image": [
+        "CultivationOnline/CultivationOnline.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "Comedia",
+        "Cultivo",
+        "Fantasía",
+        "Harem",
+        "Realidad Virtual",
+        "Videojuegos (VRMMORPG)"
+      ],
+      "identifier": "CultivationOnline",
+      "description": "Yuan nació con una enfermedad incurable que le dejó ciego a una edad temprana y lisiado unos años después, dejando inútil todo lo que tenía por debajo de la cabeza. Considerado irremediable y sin esperanza, sus padres se dieron rápidamente por vencidos y el mundo lo ignoró. En este mundo oscuro e inmóvil, su hermana pequeña se convirtió en su única razón para vivir. Observa cómo este joven alcanza la cúspide como genio en Cultivation Online, el más reciente VRMMORPG, convirtiéndose en una figura legendaria en ambos mundos.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-08-24",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://cultivation-online.fandom.com/wiki/Cultivation_Online_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "MyLittleBrother"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.5"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Cultivo Dual: Reuniendo Esposas de Rango SSS en el Mundo del Cultivo",
+        "Dual Cultivation: Gathering SSS-Rank Wives in the Cultivation World"
+      ],
+      "image": [
+        "CDREdRSSelMdC/CDREdRSSelMdC.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Adultos",
+        "Fantasía",
+        "Harén",
+        "Romance"
+      ],
+      "identifier": "CDREdRSSelMdC",
+      "description": "« ATENCIÓN : CONTENIDO PARA ADULTOS »\n        Se suponía que debía revisar mis estadísticas. En cambio, revisé mis pecados.\n        Un desplazamiento a través de las notificaciones del sistema y me di cuenta de que había cometido el error más tonto, más caliente y más catastrófico en la historia del cultivo:\n        [Concepción del heredero confirmada: Las tres esposas bendecidas han sido impregnadas.]\n        ...\n        Se pusieron a mi lado, izquierda, derecha y medio paso por delante. Sin darse cuenta de que su contoneo de caderas y el menear de sus melones me distraían demasiado.\n        '...' Solo pude mirar a tres de mis bellezas, pensando en lo diferentes que eran anoche, pero de nuevo parece que tendré que corromperlas aún más.\n        'Entonces, ¿comenzamos el viaje del Cultivo Dual?'",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-12",
+      "locationCreated": "Novela Inglesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Leo",
+      "author": {
+        "@type": "Person",
+        "name": "Idiocrat"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Danmachi - Relato Heroico: Argonauta",
+        "Arugonouto zenshou douke koushin danjon ni deai o motomeru no wa machigatte irudarou ka eiyuutan"
+      ],
+      "image": [
+        "DanmachiArgonauta/DanmachiArgonauta.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "Comedia",
+        "Fantasía",
+        "Romance"
+      ],
+      "identifier": "DanmachiArgonauta",
+      "description": "Una historia ambientada en la antigüedad temprana, cuando no existía la \"Bendición de los Dioses\".\n              El romance heroico de un hombre, transmitido hasta el día de hoy en innumerables relatos. Un héroe extremadamente débil y deslucido en comparación con otros héroes de la historia. Sin embargo, algunos lo llaman el \"Héroe del Comienzo\".\n              Pero, ¿por qué se le llama así?\n              Esta es la historia de un hombre ridículo.\n              Un bufón que tenía deseos desproporcionados, fue manipulado por innumerables intrigas, y aún así se mantuvo como un tonto hasta el final.\n              Ahora, comencemos la \"Comedia\".",
+      "bookFormat": "Novela Ligera",
+      "dateCreated": "2024-04-31",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Finalizado",
+      "translator": "<a href=\"https://frizcosas.blogspot.com/2024/05/argonauta-novela-ligera-espanol.html\" target=\"_blank\">Turret Translations</a>",
+      "author": {
+        "@type": "Person",
+        "name": "Fujino Ōmori"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no",
+      "observaciones": "Traductor Japonés-Español: Frizcop"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Dual Cultivation",
+        "Cultivo Dual"
+      ],
+      "image": [
+        "DualCultivation/DualCultivation.webp",
+        "DualCultivation/DualCultivation_1.webp",
+        "DualCultivation/DualCultivation_2.webp",
+        "DualCultivation/DualCultivation_3.webp"
+      ],
+      "genre": [
+        "Romance",
+        "Acción",
+        "Venganza",
+        "Harem",
+        "Fantasía",
+        "Cultivo"
+      ],
+      "identifier": "DualCultivation",
+      "description": "Su Yang es un poderoso Cultivador Dual que fue encarcelado después de ofender al Emperador Celestial. ¿Su crimen? Cometió adulterio con la esposa del Dios de la Luna, secuestró a la hermana menor del Rey Dragón, sedujo a la Diosa Divina e incluso probó la fruta prohibida que es la amada hija del Emperador Celestial. Dentro de la prisión, Su Yang conoce a un anciano misterioso que le ofrece la oportunidad de salir de este lugar, pero ese método requiere que experimente la reencarnación. En su nueva vida, Su Yang jura reunirse con sus parejas y abrazarlas una vez más, mientras encuentra otras nuevas en el camino.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-08-24",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://dual-cultivation-novel.fandom.com/wiki/Dual_Cultivation_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "MyLittleBrother"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "First Demonic Dragon",
+        "Primer Dragon Demoniaco"
+      ],
+      "image": [
+        "FirstDemonicDragon/FirstDemonicDragon.webp",
+        "FirstDemonicDragon/FirstDemonic_01.webp",
+        "FirstDemonicDragon/FirstDemonic_02.webp",
+        "FirstDemonicDragon/FirstDemonic_03.webp",
+        "FirstDemonicDragon/FirstDemonic_04.webp",
+        "FirstDemonicDragon/FirstDemonic_05.webp",
+        "FirstDemonicDragon/FirstDemonic_06.webp",
+        "FirstDemonicDragon/FirstDemonic_07.webp",
+        "FirstDemonicDragon/FirstDemonic_08.webp",
+        "FirstDemonicDragon/FirstDemonic_09.webp",
+        "FirstDemonicDragon/FirstDemonic_10.webp",
+        "FirstDemonicDragon/FirstDemonic_11.webp",
+        "FirstDemonicDragon/FirstDemonic_12.webp",
+        "FirstDemonicDragon/FirstDemonic_13.webp",
+        "FirstDemonicDragon/FirstDemonic_14.webp",
+        "FirstDemonicDragon/FirstDemonic_15.webp",
+        "FirstDemonicDragon/FirstDemonic_16.webp",
+        "FirstDemonicDragon/FirstDemonic_17.webp",
+        "FirstDemonicDragon/FirstDemonic_18.webp",
+        "FirstDemonicDragon/FirstDemonic_19.webp",
+        "FirstDemonicDragon/FirstDemonic_20.webp",
+        "FirstDemonicDragon/FirstDemonic_21.webp",
+        "FirstDemonicDragon/FirstDemonic_22.webp",
+        "FirstDemonicDragon/FirstDemonic_23.webp",
+        "FirstDemonicDragon/FirstDemonic_24.webp",
+        "FirstDemonicDragon/FirstDemonic_25.webp",
+        "FirstDemonicDragon/FirstDemonic_26.webp",
+        "FirstDemonicDragon/FirstDemonic_27.webp",
+        "FirstDemonicDragon/FirstDemonic_28.png",
+        "FirstDemonicDragon/FirstDemonic_29.webp",
+        "FirstDemonicDragon/FirstDemonic_30.webp",
+        "FirstDemonicDragon/FirstDemonic_31.webp",
+        "FirstDemonicDragon/FirstDemonic_32.jpg",
+        "FirstDemonicDragon/FirstDemonic_33.webp",
+        "FirstDemonicDragon/FirstDemonic_34.webp",
+        "FirstDemonicDragon/FirstDemonic_35.webp",
+        "FirstDemonicDragon/FirstDemonic_36.webp",
+        "FirstDemonicDragon/FirstDemonic_37.webp",
+        "FirstDemonicDragon/FirstDemonic_38.webp",
+        "FirstDemonicDragon/FirstDemonic_39.jpg",
+        "FirstDemonicDragon/FirstDemonic_40.webp",
+        "FirstDemonicDragon/FirstDemonic_41.webp",
+        "FirstDemonicDragon/FirstDemonic_42.webp",
+        "FirstDemonicDragon/FirstDemonic_43.webp",
+        "FirstDemonicDragon/FirstDemonic_44.webp",
+        "FirstDemonicDragon/FirstDemonic_45.webp",
+        "FirstDemonicDragon/FirstDemonic_46.webp",
+        "FirstDemonicDragon/FirstDemonic_47.webp",
+        "FirstDemonicDragon/FirstDemonic_48.webp",
+        "FirstDemonicDragon/FirstDemonic_49.webp",
+        "FirstDemonicDragon/FirstDemonic_50.webp",
+        "FirstDemonicDragon/FirstDemonic_51.webp",
+        "FirstDemonicDragon/FirstDemonic_52.webp",
+        "FirstDemonicDragon/FirstDemonic_53.webp",
+        "FirstDemonicDragon/FirstDemonic_54.webp",
+        "FirstDemonicDragon/FirstDemonic_55.webp",
+        "FirstDemonicDragon/FirstDemonic_56.webp",
+        "FirstDemonicDragon/FirstDemonic_57.webp",
+        "FirstDemonicDragon/FirstDemonic_58.webp",
+        "FirstDemonicDragon/FirstDemonic_59.webp",
+        "FirstDemonicDragon/FirstDemonic_60.webp",
+        "FirstDemonicDragon/FirstDemonic_61.webp",
+        "FirstDemonicDragon/FirstDemonic_62.webp",
+        "FirstDemonicDragon/FirstDemonic_63.webp",
+        "FirstDemonicDragon/FirstDemonic_64.webp",
+        "FirstDemonicDragon/FirstDemonic_65.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Aventura",
+        "Comedia",
+        "Fantasia",
+        "Harén",
+        "Romance"
+      ],
+      "identifier": "FirstDemonicDragon",
+      "description": "Carter Williams era el típico perdedor de veinte años. \n        Después de una pelea en la calle que lo deja inconsciente, se despierta en el cuerpo de un joven dragón en un mundo completamente nuevo.\n        Armado con un sistema que lo ayuda y dos hermosas esposas que lo apoyan, Carter jura no volver a vivir su vida escondido en la oscuridad mientras busca el título de rey dragón.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-04-03",
+      "locationCreated": "Novela USA",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://first-demonic-dragon.fandom.com/wiki/First_Demonic_Dragon_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "AnathaShesha"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Imperfect Girl",
+        "少女不十分 (Shōjo Fujūbun)"
+      ],
+      "image": [
+        "ImperfectGirl/ImperfectGirl.webp"
+      ],
+      "genre": [
+        "Drama",
+        "Maduro",
+        "Misterio",
+        "Psicológico"
+      ],
+      "identifier": "ImperfectGirl",
+      "description": "Lo siento, pero aquí no encontrará un resumen de la trama. Esto no es una novela. Si busca un giro argumental, un giro inesperado o un chiste, no lo encontrará. Se trata de una vieja historia de un acontecimiento pasado que terminó hace tiempo. \n\nOcurrió hace 10 años, y mi recuerdo de todo ello es ciertamente bastante vago, y tampoco vamos a especular sobre el futuro. Desde luego, no puedo recomendarlo por su valor como entretenimiento, pero hay algo que sí puedo afirmar con rotundidad.\n\nHe tardado diez años en escribir este libro.",
+      "bookFormat": "Novela",
+      "dateCreated": "2025-10-18",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Finalizado",
+      "translator": "Gran Maestro",
+      "author": {
+        "@type": "Person",
+        "name": "Nisio Isin (西尾維新)"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no",
+      "observaciones": "Traductor Inglés: ShwampBam"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "La Leyenda de la Espada del Norte",
+        "Leyenda de la Hoja del Norte",
+        "Legend of the Northern Blade",
+        "북검전기 (Bukgeom Jeongi)",
+        "Bukgeom Chronicles",
+        "LOTNB"
+      ],
+      "image": [
+        "LaLeyendaDeLaEspadaDelNorte/LaLeyendaDeLaEspadaDelNorte.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Fantasia",
+        "Aventura",
+        "Artes Marciales",
+        "Recuentos de Vida"
+      ],
+      "identifier": "LaLeyendaDeLaEspadaDelNorte",
+      "description": "Durante décadas, los valientes guerreros del Ejército del Norte lucharon para mantener el mundo a salvo del malvado Silent Night. Pero cuando el líder de la cuarta generación, Jin Kwan-Ho, es acusado de colusión con el enemigo, se ve obligado a disolver la secta y suicidarse para proteger a su hijo, Jin Mu-Won. Sin familiares ni aliados, Mu-Won lleva una vida aburrida bajo estrecha vigilancia... hasta que un ataque sorpresa de Silent Night le da la oportunidad de escapar a las montañas. Allí, el joven guerrero se entrena para dominar las técnicas de lucha de sus predecesores, antes de que la misteriosa desaparición de un ser querido lo lleve de vuelta al continente. ¡Sigue a Jin Mu-Won mientras se embarca en un viaje para vengar la muerte de su padre y derrotar a los villanos que amenazan con sumir al mundo en la oscuridad!",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-08-24",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://legend-of-the-northern-blade.fandom.com/wiki/Main_Page",
+      "author": {
+        "@type": "Person",
+        "name": "Woo-Gak"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "¡El Héroe de Nivel Máximo Ha Regresado!",
+        "¡Max Level Hero Strikes Back!",
+        "만렙 영웅님께서 귀환하신다!"
+      ],
+      "image": [
+        "mlhsb/mlhsb.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Aventura",
+        "Fantasia",
+        "Harém"
+      ],
+      "identifier": "MLHSB",
+      "description": "Davey, el débil príncipe de un país insignificante. Tras entrar en coma, su alma escapó a un templo donde se reunían las almas de los héroes.\n              ¡Se entrenó durante mil años y ahora ha regresado como un héroe de nivel máximo!\n              “¡Solo esperen, chicos, los enfrentaré a todos cara a cara!”\n              La refrescante historia de la vida real y la venganza de Davey acaba de comenzar.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-09-28",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://the-max-level-hero-strikes-back.fandom.com/wiki/The_Max_Level_Hero_Strikes_Back_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "Devil's tail"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Mis Tres Esposas son Hermosas Vampiros",
+        "My Three Wives Are Beautiful Vampires"
+      ],
+      "image": [
+        "Mis3EsposasSonHermosasVampiros/Mis3EsposasSonHermosasVampiros.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Comedia",
+        "Fantasia",
+        "Gore",
+        "Harem",
+        "Magia",
+        "Romance",
+        "Sobrenatural",
+        "Superpoderes",
+        "Vampiros"
+      ],
+      "identifier": "Mis3EsposasSonHermosasVampiros",
+      "description": "Víctor era un hombre normal de 21 años, creció en una familia amorosa que lo ayudó a cuidarse sabiendo que tenía una enfermedad prácticamente incurable, la sangre RH nula, era dueño de un tipo de sangre raro…\n            Pero lo que Víctor no sabía, es que ese tipo de sangre era un manjar en el mundo sobrenatural, las criaturas que se alimentaban de sangre amaban su tipo de sangre…\n            Y esa sangre que odiaba sería el factor que haría de Víctor el mayor vampiro de todos los tiempos.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-12",
+      "locationCreated": "Novela Inglesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://mtwabv.fandom.com/wiki/My_Three_Wives_Are_Beautiful_Vampires_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "Victor Weismann"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Path to Dual Cultivation",
+        "Camíno al Cultivo Dual"
+      ],
+      "image": [
+        "PathtoDualCultivation/PathtoDualCultivation.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "cultivo",
+        "Fantasía",
+        "Harem",
+        "Romance"
+      ],
+      "identifier": "PathtoDualCultivation",
+      "description": "Bendecido por los cielos, Su Yang nació con una apariencia extraordinariamente hermosa, que podía convencer incluso a las bellezas más frías, y talentos de espada innatos, que harían que incluso el Emperador de la Espada se pusiera verde de envidia. Esta es la historia de cómo un prodigio de la espada terminó recorriendo el camino del Cultivo Dual, llegando a convertirse en el Cultivador Dual más poderoso bajo el cielo.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-05-24",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Pausado",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://dual-cultivation-novel.fandom.com/wiki/Path_to_Dual_Cultivation_(Prequel)",
+      "author": {
+        "@type": "Person",
+        "name": "MyLittleBrother"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Señora, por favor comportese",
+        "Madam, Please Behave",
+        "太太请自重"
+      ],
+      "image": [
+        "MadamePleaseBehave/MadamePleaseBehave.webp"
+      ],
+      "genre": [
+        "Comedia",
+        "Drama",
+        "Fantasía",
+        "Recuentos de vida",
+        "Romance",
+        "Tragedia"
+      ],
+      "identifier": "MadamePleaseBehave",
+      "description": "Tras transmigrar, Liu Changqing se saltó la etapa de las citas y se vio envuelto directamente en la paternidad con un hijo y una hija. Esto lo dejó sumido en un profundo desánimo. Su hijo mayor es maduro e inteligente, mientras que su hija pequeña, resentida por el divorcio de sus padres, culpa a Liu Changqing de todo y lo trata con hostilidad. El dueño original de este cuerpo era el más ingenuo. Se humillaba tanto que el único acuerdo de su exsuegra le permitió a su exesposa apropiarse de todos los bienes familiares a cambio de la custodia de sus dos hijos. Ahora, con su fábrica en quiebra, Liu Changqing se devana los sesos pensando en cómo criar a sus hijos. Esto se ha convertido en su mayor dolor de cabeza. *** Sin reconciliación, sin humillación, y con valores firmemente arraigados.",
+      "bookFormat": "Qidian",
+      "dateCreated": "2025-08-21",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Activo",
+      "translator": "Tavo",
+      "author": {
+        "@type": "Person",
+        "name": "刘家长子.CS"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Me convertí en el patrón de los villanos",
+        "Became the Patron of Villains",
+        "악당들의 후원자가 되었다"
+      ],
+      "image": [
+        "MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos.webp",
+        "MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos_2.webp",
+        "MeConvertiEnPatronVillanos/MeConvertiEnPatronVillanos_3.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "Comedia",
+        "Fantasía",
+        "Harem",
+        "Transmigración",
+        "Malentendidos"
+      ],
+      "identifier": "MeConvertiEnPatronVillanos",
+      "description": "Durante diez años apoyé a los villanos con la intención de reformarlos. Pero ahora me descubro a mí mismo como el gran artífice detrás de la oscuridad del reino…",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-11-08",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Activo",
+      "translator": "Leo",
+      "author": {
+        "@type": "Person",
+        "name": "봄한방울 (Bom Hanbangul)"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Mi Maestra de la Universidad es la Mamá de Mis Hijos",
+        "My College Teacher Is My Children´s Mom"
+      ],
+      "image": [
+        "MyCollegeTeacherMyChildrenMom/MyCollegeTeacherMyChildrenMom.webp"
+      ],
+      "genre": [
+        "Drama",
+        "Romance",
+        "Vida escolar",
+        "Recuentos de la vida"
+      ],
+      "identifier": "MyCollegeTeacherMyChildrenMom",
+      "description": "Después de que terminó el Gaokao, Lin Feng comenzó a trabajar en un bar para ganar dinero para la matrícula.\n\n\t\t\tInesperadamente, se encontró con una hermosa mujer que estaba ahogando sus penas, insistiendo en que Lin Feng bebiera con ella.\n\n\t\t\tAmbos quedaron ebrios, como cubas, inconscientes.\n\n\t\t\tCuando Lin Feng se despertó, la hermosa mujer ya se había ido y la noche anterior parecía un sueño.\n\n\t\t\tDos años después, durante el primer semestre de su segundo año, una hermosa tutora se unió repentinamente a su clase.\n\n\t\t\tLin Feng: ¿Hm? ¿Por qué esta hermosa dama me resulta tan familiar?\n\n\t\t\tZhang Yuxi: Lin Feng, ¿todavía recuerdas aquella noche de hace dos años?\n\n\t\t\tLin Feng:???\n\n\t\t\tCuando Lin Feng vio a los cuatro bebés adorablemente despistados en la casa de Zhang Yuxi, supo que ya no podía huir más...",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-23",
+      "locationCreated": "Novela China",
+      "creativeWorkStatus": "Activo",
+      "translator": "Leo",
+      "author": {
+        "@type": "Person",
+        "name": "J.K. luosen"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Roshidere - Alya-san, quien se sienta a mi lado, a veces susurra cosas dulces en ruso.",
+        "Alya Sometimes Hides Her Feelings in Russian",
+        "時々ボソッとロシア語でデレる隣のアーリャさん"
+      ],
+      "image": [
+        "Roshidere/Roshidere.webp"
+      ],
+      "genre": [
+        "Academia",
+        "Comedia",
+        "Recuentos de Vida"
+      ],
+      "identifier": "Roshidere",
+      "description": "Alya Mikhailovna Kujo, que asiste a una escuela privada, Seirei Gakuen, es una chica de secundaria con cabello plateado que se ve tan hermosa que cualquiera puede darse la vuelta si ella camina.\n\t\t\t\tEl personaje principal, Masachika Kuze, que se sienta junto a Alya, es un estudiante desmotivado que solo duerme en la escuela y siempre se queja.\n\t\t\t\tPor alguna razón, Alya a veces habla ruso. Sin embargo, Alyano sabía que Masachika también podía entender el ruso en su nivel nativo.",
+      "bookFormat": "Novela Ligera",
+      "dateCreated": "2025-10-22",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Tavo",
+      "mainEntityOfPage": "https://roshidere.fandom.com/wiki/Alya_Sometimes_Hides_Her_Feelings_in_Russian_(Light_Novel)#Japanese",
+      "author": {
+        "@type": "Person",
+        "name": "SunSunSun"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no",
+      "observaciones": "Tokidoki Bosotto Russia-go de Dereru Tonari no Alya-san"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Shadow Slave",
+        "Esclavo de la Sombra",
+        "Nightmare Spell",
+        "Awakened Chronicles",
+        "Slave of Shadows"
+      ],
+      "image": [
+        "ShadowSlave/ShadowSlave.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "Drama",
+        "Fantasía",
+        "Romance",
+        "Sobrenatural"
+      ],
+      "identifier": "ShadowSlave",
+      "description": "Creciendo en la pobreza, Sunny nunca esperó nada bueno de la vida. Sin embargo, ni siquiera él anticipó ser elegido por el Hechizo de la Pesadilla y convertirse en uno de los Despiertos, un grupo de élite de personas dotadas de poderes sobrenaturales. Transportado a un mundo mágico en ruinas, se encontró enfrentándose a terribles monstruos y a otros Despiertos en una batalla mortal por la supervivencia. Lo que es peor, el poder divino que recibió resultó tener un pequeño, pero potencialmente fatal efecto secundario...",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-03-05",
+      "locationCreated": "Novela Inglesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Morlan",
+      "mainEntityOfPage": "https://shadowslave.fandom.com/wiki/Shadow_Slave_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "Guiltythree"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Shimoneta"
+      ],
+      "image": [
+        "Shimoneta/Shimoneta.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Adulto",
+        "Comedia",
+        "Ecchi",
+        "Maduro",
+        "Harem",
+        "Romance",
+        "Vida Escolar"
+      ],
+      "identifier": "Shimoneta",
+      "description": "Hace dieciséis años, con la aprobación de la Ley de Orden Público y Moral, el lenguaje soez fue objeto de luto por parte del público. El protagonista, Okuma Tanukichi, se matricula en una de las mejores escuelas de moral pública de Japón, pero nada más entrar en la escuela es reclutado por Ayame Kajou, la fundadora de la organización antisocial «SOX». \n\t  Tanukichi que se ha convertido en miembro de «SOX» después de que se le hayan extirpado sus debilidades, cooperará en un atentado terrorista para conseguir respaldar a Anna, la presidenta del consejo estudiantil que siente un gran deseo por él, pero… ¿Es una prisión? ¿O es un harem?",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-15",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "[MK and Defous123] , Gran Maestro",
+      "author": {
+        "@type": "Person",
+        "name": "Akagi Hirotaka"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Suzume no Tojimari",
+        "すずめの戸締まり",
+        "Suzume’s Journey",
+        "Suzume’s Locking Up of Doors",
+        "Suzume’s Door-Locking"
+      ],
+      "image": [
+        "Suzume/Suzume.webp"
+      ],
+      "genre": [
+        "Aventura",
+        "Drama",
+        "Fantasía",
+        "Romance",
+        "Sobrenatural"
+      ],
+      "identifier": "Suzume",
+      "description": "Una joven de 17 años llamada Suzume ayuda a un misterioso joven a cerrar las puertas de otro mundo, que están provocando desastres en todo Japón.",
+      "bookFormat": "Novela",
+      "dateCreated": "2025-07-23",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Finalizado",
+      "translator": "Jabracadabra",
+      "mainEntityOfPage": "https://doblaje-espana.fandom.com/es/wiki/Suzume",
+      "author": {
+        "@type": "Person",
+        "name": "Makoto Shinkai (新海 誠)"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "The Eminence in Shadow",
+        "La Eminencia en la Sombra",
+        "陰の実力者になりたくて!",
+        "Kage no Jitsuryokusha ni Naritakute!",
+        "TEIS",
+        "KageJitsu",
+        "Shadow-sama"
+      ],
+      "image": [
+        "TheEminenceInShadow/TheEminenceInShadow.webp"
+      ],
+      "genre": [
+        "Academia",
+        "Acción",
+        "Artes Marciales",
+        "Aventura",
+        "Comedia",
+        "Drama",
+        "fantasía",
+        "Magia",
+        "Reencarnación"
+      ],
+      "identifier": "TheEminenceInShadow",
+      "description": "Tal cual como todos adoraban héroes en su niñez, cierto adolescente adoraba los poderes que se esconden en las sombras. Tras haber ocultado su fuerza y viviendo la vida mediocre de un mob durante el día y entrenando descontroladamente por la noche, él finalmente reencarna en un mundo diferente y gana el poder definitivo. El adolescente que solo juega a ser una eminencia en las sombras, sus subordinados confusos, y una gigante organización en las sombras que es pisoteada... Esta es la historia de un adolescente que adoraba esos poderes en las sombras y que posiblemente llegue a reinar en las sombras de otro mundo.",
+      "bookFormat": "Novela",
+      "dateCreated": "2025-07-01",
+      "locationCreated": "Novela Japonesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Tavo",
+      "author": {
+        "@type": "Person",
+        "name": "逢沢大介, 坂野杏梨"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "El Único Hombre En La Unidad Militar",
+        "부대에 남군이 나 혼자"
+      ],
+      "image": [
+        "UnicoHombreUnidadMilitar/UnicoHombreUnidadMilitar.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Adulto",
+        "Comedia",
+        "Romance",
+        "Haren",
+        "Sexo",
+        "Recuentos de la vida"
+      ],
+      "identifier": "UnicoHombreUnidadMilitar",
+      "description": "«¿Te enviaré a una unidad femenina?»\n\t\t\tJaejoon se ve obligado a unirse a un programa de prueba de unidades mixtas en el que es el único hombre en una unidad compuesta únicamente por mujeres.\n\t\t\t¿Podrá completar su servicio militar en este ambiente lleno de tentaciones y desafíos?\n\t  \n\t\t\tUna mezcla de humor, drama y situaciones complicadas que surgen cuando un hombre se encuentra en medio de un entorno inesperado y dinámico.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-22",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Activo",
+      "translator": "Leo",
+      "author": {
+        "@type": "Person",
+        "name": "TwoJ"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Yo Mate al Jugador de la Academia",
+        "I Killed the Academy Player",
+        "아카데미 플레이어를 죽였다"
+      ],
+      "image": [
+        "YoMateJugadorAcademia/YoMateJugadorAcademia.webp"
+      ],
+      "genre": [
+        "Acción",
+        "Aventura",
+        "Comedia",
+        "Fantasía",
+        "Harem",
+        "Romance",
+        "Vida Escolar"
+      ],
+      "identifier": "YoMateJugadorAcademia",
+      "description": "Hace tres años, me desperté como un personaje de juego; como un personaje secundario, por cierto.\n\n\t\t\t\tLeyendas heroicas de Arhan.\n\t\t\t\tEl protagonista también era un reencarnador como yo, así que decidimos seguir juntos y llevar la historia hasta el final. Pero algo no iba bien... Dijo que no sabía nada del juego, pero esto...\n\t\t\t\t—Está bien, ¿verdad? Al fin y al cabo, este mundo es solo un juego.\n\n\t\t\t\tEl jugador ha sido asesinado. Has fallado el intento.\n\t\t\t\t…¿Este cabrón perdió?\n\n\t\t\t\tRegresé al pasado; a hace tres años.\n\t\t\t\tAhora es mi oportunidad. Debo matar al jugador.\n\t\t\t\tRegresé al pasado; a hace 3 años. Ahora es mi oportunidad. Debo matar al jugador.\"",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-22",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Activo",
+      "translator": "Tavo",
+      "mainEntityOfPage": "https://i-killed-the-player-of-the-academy.fandom.com/wiki/I_Killed_the_Player_of_the_Academy_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "사람살려"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Zombi de Clase S en un Apocalipsis",
+        "Apocalypse’s S-Class Zombie"
+      ],
+      "image": [
+        "ZombieClaseSApocalipsis/ZombieClaseSApocalipsis.webp"
+      ],
+      "genre": [
+        "Accion",
+        "Fantasía",
+        "Maduro",
+        "Romance",
+        "Sobrenatural"
+      ],
+      "identifier": "ZombieClaseSApocalipsis",
+      "description": "Al ser mordida por un zombi, también me convertí en una especie de zombi. Pero entonces,\n  [Regeneración de Zombie (Pasivo)]\n  Clase S\n  Una habilidad de recuperación inusual que solo tienen los zombis. El usuario de la habilidad recupera naturalmente todo el daño infligido en el cuerpo.\n  Esto es totalmente como ganar la lotería, ¿verdad?\n  ...... eso es lo que pensé, hasta hace una hora..",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-08-03",
+      "locationCreated": "Novela Coreana",
+      "creativeWorkStatus": "Finalizado",
+      "translator": "Gran Maestro",
+      "author": {
+        "@type": "Person",
+        "name": "Gaetol[개톨]"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    },
+    {
+      "@type": "Book",
+      "name": [
+        "Mis Esposas son Hermosos Demonios",
+        "My Wives Are Beautiful Demons"
+      ],
+      "image": [
+        "MyWivesAreBeautifulDemons/MyWivesAreBeautifulDemons.webp"
+      ],
+      "genre": [
+        "Fantasía",
+        "Acción",
+        "Romance",
+        "Aventura",
+        "Adultos",
+        "Comedia",
+        "Harén",
+        "Recuentos de la vida"
+      ],
+      "identifier": "MyWivesAreBeautifulDemons",
+      "description": "Vergil, un joven de 21 años, lleva una vida aparentemente sencilla en un mundo un tanto conflictivo. Su familia también es sencilla: aunque su padre ya no está vivo, su madre siempre ha estado a su lado, a pesar de ser un poco... agresiva. Pero eso ya no es tan raro hoy en día, ¿verdad?\n\tTodo cambia drásticamente cuando Vergil, tras una muerte inesperada, despierta convertido en demonio. Para su sorpresa, descubre que se ha casado accidentalmente con hermosas demonios de sangre pura.\n\tAhora, descubrirá cómo funciona realmente el mundo desde la perspectiva de un demonio.",
+      "bookFormat": "Novela Web",
+      "dateCreated": "2025-10-09",
+      "locationCreated": "Novela Inglesa",
+      "creativeWorkStatus": "Activo",
+      "translator": "Leo",
+      "mainEntityOfPage": "https://my-wives-are-beautiful-demons.fandom.com/wiki/My_Wives_are_Beautiful_Demons_Wiki",
+      "author": {
+        "@type": "Person",
+        "name": "Gaetol[개톨]"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.0"
+      },
+      "audience": {
+        "@type": "PeopleAudience",
+        "suggestedMinAge": 18
+      },
+      "visible": "si",
+      "aprobadaAutor": "no"
+    }
+  ]
+}
