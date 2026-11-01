@@ -340,36 +340,6 @@ async _loadResources() {
     }
   }
 
-  //_renderAsset(ctx, img, text, isLink, yPos, availableWidth, margenPx) {
-  //  const TAMANO_BASE = this.settings.defaultFontSize;
-  //  
-  //  if (img) {
-  //    let ancho, alto, xPos;
-  //    if ((img.width / img.height) <= 0.40) {
-  //      let proporcion = margenPx / img.height;
-  //      ancho = img.width * proporcion;
-  //      alto = margenPx;
-  //      xPos = (availableWidth - ancho) / 2;
-  //    } else {
-  //      let proporcion = availableWidth / img.width;
-  //      ancho = availableWidth;
-  //      alto = img.height * proporcion;
-  //      xPos = 0;
-  //    }
-  //    ctx.drawImage(img, xPos, yPos, ancho, alto);
-  //    return alto;
-  //  } else if (text) {
-  //    const fontSizePt = TAMANO_BASE - 2;
-  //    ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
-  //    ctx.fillStyle = isLink ? '#0000FF' : '#555555';
-  //    ctx.textAlign = 'center';
-  //    ctx.fillText(text, availableWidth / 2, yPos);
-  //    ctx.textAlign = 'left';
-  //    return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
-  //  }
-  //  return 0;
-  //}
-
   // --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
   render() {
     if (!this.container) return;
@@ -424,7 +394,7 @@ async _loadResources() {
       if (pageIdx === 0) {
         y = margenPx / 2;
         if (imgHeader || config.headerText) {
-          const headerHeight = this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
+          //const headerHeight = this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
           y += headerHeight > 0 ? headerHeight + 10 : margenPx;
         } else {
           y = margenPx;
@@ -476,7 +446,7 @@ async _loadResources() {
 
       if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
         let yFooter = y + (margenPx / 2);
-        this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
+        //this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
       }
 
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
