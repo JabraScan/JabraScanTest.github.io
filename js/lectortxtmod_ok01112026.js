@@ -83,6 +83,27 @@ export class TxtReaderEngine {
     this.render();
   }
 
+  // --- Mapeo y filtrado de capítulos para recursos/banners ---
+  _getBannerByChapter(chaptersArray, imgsArray, currentChapter) {
+    if (!imgsArray || imgsArray.length === 0) return null;
+    if (!chaptersArray || chaptersArray.length === 0) return imgsArray[0] || null;
+
+    const numCurrent = Number(currentChapter) || 0;
+    let selectedIndex = 0;
+
+    for (let i = 0; i < chaptersArray.length; i++) {
+      const threshold = Number(chaptersArray[i]) || 0;
+      if (numCurrent >= threshold) {
+        if (i < imgsArray.length) {
+          selectedIndex = i;
+        }
+      } else {
+        break;
+      }
+    }
+    return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
+  }
+
   _parsePythonArray(text) {
     try {
       // Conversión segura de booleanos de Python a JS (True -> true, False -> false)

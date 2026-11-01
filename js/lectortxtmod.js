@@ -19,7 +19,11 @@ export class TxtReaderEngine {
     this.container = options.container || (options.canvas ? options.canvas.parentElement : null);
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.3; 
+    this.LINE_HEIGHT_RATIO = 1.3;
+
+    this.clave = options.clave || "";
+    // Asegurar que el capítulo está definido (puedes pasarlo en options o leerlo de la instancia)
+    this.capitulo = options?.capitulo || this.capitulo || 1;
 
     // Fusión de ajustes por defecto con opciones personalizadas del usuario
     this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
@@ -33,6 +37,23 @@ export class TxtReaderEngine {
 
     // Setup de redimensionamiento responsivo
     this._setupResizeListener();
+  }
+
+  get DEFAULT_CONFIG() {
+    return {
+      headerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
+      headerBannerUrl: [`header.webp`],
+      headerChapters: [0],
+      headerBannerUrlFallback: null,
+
+      footerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
+      footerBannerUrl: [`footer.webp`],
+      footerChapters: [0],
+      footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
+      
+      footerLinkUrl: "", 
+      footerLinkText: "https://jabrascan.net"
+    };
   }
 
   _setupResizeListener() {
@@ -52,6 +73,7 @@ export class TxtReaderEngine {
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
+    let fetchedConfig = {};
     
     if (configUrl && typeof configUrl === 'string') {
       try {
@@ -72,6 +94,18 @@ export class TxtReaderEngine {
         // Silenciamos cualquier fallo o error de red para mantener la consola limpia
       }
     }
+    // Filtrar valores vacíos o nulos de la configuración remota
+    const validFetchedConfig = Object.fromEntries(
+      Object.entries(fetchedConfig).filter(([_, v]) => v !== null && v !== undefined && v !== '')
+    );
+    // Combinar la configuración por defecto con la remota ya filtrada
+    this.config = {
+      ...this.DEFAULT_CONFIG,
+      ...validFetchedConfig
+    };
+
+    // Cargamos los recursos gráficos (banners filtrados por capítulo)
+    await this._loadResources();
 
     this._processText(txtContent);
     this.render();
@@ -188,6 +222,65 @@ export class TxtReaderEngine {
     }
 
     this.pages = pages;
+  }
+
+async _loadResources() {
+    const loadImg = (url) => {
+      if (!url) return Promise.resolve(null);
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = url;
+      });
+    };
+
+    const processBanners = async (baseUrl, bannerUrls, fallbackUrl) => {
+      const banners = Array.isArray(bannerUrls) ? bannerUrls : [bannerUrls].filter(Boolean);
+      const loadedImgs = [];
+      for (const filename of banners) {
+        const url = filename.startsWith('http') ? filename : `${baseUrl}${filename}`;
+        let img = await loadImg(url);
+        if (!img && fallbackUrl) {
+          img = await loadImg(fallbackUrl);
+        }
+        loadedImgs.push(img);
+      }
+      return loadedImgs;
+    };
+
+    this.resources.headerImg = await processBanners(
+      this.config?.headerbaseUrl || "",
+      this.config?.headerBannerUrl,
+      this.config?.headerBannerUrlFallback
+    );
+
+    this.resources.footerImg = await processBanners(
+      this.config?.footerbaseUrl || "",
+      this.config?.footerBannerUrl,
+      this.config?.footerBannerUrlFallback
+    );
+  }
+
+  _getBannerByChapter(chaptersArray, imgsArray, currentChapter) {
+    if (!imgsArray || imgsArray.length === 0) return null;
+    if (!chaptersArray || chaptersArray.length === 0) return imgsArray[0] || null;
+
+    const numCurrent = Number(currentChapter) || 0;
+    let selectedIndex = 0;
+
+    for (let i = 0; i < chaptersArray.length; i++) {
+      const threshold = Number(chaptersArray[i]) || 0;
+      if (numCurrent >= threshold) {
+        if (i < imgsArray.length) {
+          selectedIndex = i;
+        }
+      } else {
+        break;
+      }
+    }
+    return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
   }
 
   _renderAsset(ctx, img, text, isLink, yPos, availableWidth, margenPx) {
