@@ -394,7 +394,7 @@ async _loadResources() {
       if (pageIdx === 0) {
         y = margenPx / 2;
         if (imgHeader || config.headerText) {
-          //const headerHeight = this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
+          const headerHeight = 0;// this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
           y += headerHeight > 0 ? headerHeight + 10 : margenPx;
         } else {
           y = margenPx;
