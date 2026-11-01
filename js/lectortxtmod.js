@@ -24,7 +24,7 @@ export const ENGINE_CONSTANTS = {
   ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
   
   // Colores por defecto
-  LINK_COLOR: "#000000"         //'#0000FF',
+  LINK_COLOR: '#000000',         //'#0000FF',
   LINK_TEXT_COLOR: '#555555'
 };
 
