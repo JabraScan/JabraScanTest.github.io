@@ -50,17 +50,26 @@ export class TxtReaderEngine {
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
-    try {
-      if (configUrl && typeof configUrl === 'string') {
-        const res = await fetch(configUrl);
+    
+    if (configUrl && typeof configUrl === 'string') {
+      try {
+        // Llamada POST a tu Worker configobra para evitar errores 404 en consola
+        const res = await fetch('https://jabrascan.net/configobra', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: configUrl })
+        });
+
         if (res.ok) {
           const data = await res.json();
-          if (data && typeof data === 'object') {
+          if (data && typeof data === 'object' && Object.keys(data).length > 0) {
             this.config = { ...this.config, ...data };
           }
         }
+      } catch (e) {
+        // Silenciamos cualquier fallo o error de red para mantener la consola limpia
       }
-    } catch (e) {}
+    }
 
     this._processText(txtContent);
     this.render();
