@@ -2,7 +2,7 @@ import { parseDateDMY, parseChapterNumber } from './utils.js';
 import { incrementarVisita, leerVisitas } from './contadoresGoogle.js';
 import { mostrarurl } from './general.js';
 import { setItem, getItem, removeItem } from "./storage.js";
-import { TxtReaderEngine } from './lectortxtmod.js?v1.14';
+import { TxtReaderEngine } from './lectortxtmod.js?v1.15';
 
 // Variables globales para el lector PDF
 let pdfDoc = null;
