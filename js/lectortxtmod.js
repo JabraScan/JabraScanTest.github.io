@@ -1,25 +1,56 @@
 /**
+ * CONSTANTES Y RUTAS CONFIGURABLES (Sin Hardcoding)
+ */
+export const ENGINE_CONSTANTS = {
+  // URLs de fallback y servicios remotos
+  CONFIG_WORKER_URL: 'https://jabrascan.net/configobra',
+  BASE_IMG_URL: 'https://img.jabrascan.net/',
+  DEFAULT_FOOTER_FALLBACK_IMG: 'https://img.jabrascan.net/main/JabraRexScan02-150w.webp',
+  DEFAULT_FOOTER_LINKURL: "",
+  DEFAULT_FOOTER_LINK_TEXT: 'https://jabrascan.net',
+
+  // IMAGENES DEFECTO
+  DEFAULT_HEADER_IMG: [`header.webp`],
+  DEFAULT_HEADER_CHAPTER: [0],
+  DEFAULT_FOOTER_IMG: [`footer.webp`],
+  DEFAULT_FOOTER_CHAPTER: [0],
+  
+  // Ratios visuales y tipográficos
+  DEFAULT_FONT_FAMILY: 'Arial',
+  DEFAULT_LINE_HEIGHT_RATIO: 1.3,
+  SCRIPT_SIZE_RATIO: 0.65,        // Factor de escala para subíndices/superíndices
+  SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
+  HEADER_FOOTER_ASSET_HEIGHT: 40, // Altura reservada en px para cabeceras/pies
+  ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
+  
+  // Colores por defecto
+  LINK_COLOR: "#000000"         //'#0000FF',
+  LINK_TEXT_COLOR: '#555555'
+};
+
+/**
  * Configuración predeterminada del motor de renderizado.
  * Permite ajustar la apariencia visual sin modificar la lógica interna.
  */
 const DEFAULT_SETTINGS = {
-  marginTop: 40,               // Espacio en px arriba y abajo del contenido total
-  marginLeft: 20,               // Margen izquierdo y derecho del texto en px
-  paragraphSpacingRatio: 1.8,   // Multiplicador de altura para saltos de párrafo (\n\n)
-  pageHeightLimit: 2500,        // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
-  defaultFontSize: 12,          // Tamaño de fuente base en puntos (pt)
+  marginTop: 40,                  // Espacio en px arriba y abajo del contenido total
+  marginLeft: 40,                 // Margen izquierdo y derecho del texto en px
+  paragraphSpacingRatio: 1.8,     // Multiplicador de altura para saltos de párrafo (\n\n)
+  pageHeightLimit: 2500,          // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
+  defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
   defaultTextColor: "#000000",  // Color de texto cuando no se especifica uno en el fragmento
-  lineHeightDefault: 20         // Altura mínima de línea en px para evitar valores NaN o 0
+  lineHeightDefault: 20,          // Altura mínima de línea en px para evitar valores NaN o 0
+  dpi: 96
 };
 
 export class TxtReaderEngine {
   constructor(options) {
     this.initialCanvas = options.canvas;
     this.container = options.container || (options.canvas ? options.canvas.parentElement : null);
-    this.dpi = 96;
-    this.FONT_FAMILY = "Arial";
-    this.LINE_HEIGHT_RATIO = 1.3;
+    this.dpi = options.dpi || DEFAULT_SETTINGS.dpi;
+    this.FONT_FAMILY = options.fontFamily || ENGINE_CONSTANTS.DEFAULT_FONT_FAMILY;
+    this.LINE_HEIGHT_RATIO = options.lineHeightRatio || ENGINE_CONSTANTS.DEFAULT_LINE_HEIGHT_RATIO;
 
     this.clave = options.clave || "";
     // Asegurar que el capítulo está definido (puedes pasarlo en options o leerlo de la instancia)
@@ -41,18 +72,18 @@ export class TxtReaderEngine {
 
   get DEFAULT_CONFIG() {
     return {
-      headerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
-      headerBannerUrl: [`header.webp`],
-      headerChapters: [0],
+      headerbaseUrl: `${ENGINE_CONSTANTS.BASE_IMG_URL}${this.clave}/`,
+      headerBannerUrl: ENGINE_CONSTANTS.DEFAULT_HEADER_IMG,
+      headerChapters: ENGINE_CONSTANTS.DEFAULT_HEADER_CHAPTER,
       headerBannerUrlFallback: null,
 
-      footerbaseUrl: `https://img.jabrascan.net/${this.clave}/`,
-      footerBannerUrl: [`footer.webp`],
-      footerChapters: [0],
-      footerBannerUrlFallback: `https://img.jabrascan.net/main/JabraRexScan02-150w.webp`,
+      footerbaseUrl: `${ENGINE_CONSTANTS.BASE_IMG_URL}${this.clave}/`,
+      footerBannerUrl: ENGINE_CONSTANTS.DEFAULT_FOOTER_IMG,
+      footerChapters: ENGINE_CONSTANTS.DEFAULT_FOOTER_CHAPTER,
+      footerBannerUrlFallback: ENGINE_CONSTANTS.DEFAULT_FOOTER_FALLBACK_IMG,
       
-      footerLinkUrl: "", 
-      footerLinkText: "https://jabrascan.net"
+      footerLinkUrl: ENGINE_CONSTANTS.DEFAULT_FOOTER_LINKURL, 
+      footerLinkText: ENGINE_CONSTANTS.DEFAULT_FOOTER_LINK_TEXT
     };
   }
 
@@ -74,11 +105,11 @@ export class TxtReaderEngine {
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
     let fetchedConfig = {};
-    
+    console.log(configUrl);
     if (configUrl && typeof configUrl === 'string') {
       try {
         // Llamada POST a tu Worker configobra para evitar errores 404 en consola
-        const res = await fetch('https://jabrascan.net/configobra', {
+        const res = await fetch(ENGINE_CONSTANTS.CONFIG_WORKER_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: configUrl })
@@ -238,108 +269,6 @@ export class TxtReaderEngine {
     this.pages = pages;
   }
 
-  // --- TU _processText ORIGINAL 100% INTACTO ---
-  //_processText(text) {
-  //  const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-  //  const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
-  //
-  //  const data = this._parsePythonArray(text);
-  //  if (!data || !Array.isArray(data)) {
-  //    this.allLines = [];
-  //    this.pages = [];
-  //    return;
-  //  }
-  //
-  //  const allLines = [];
-  //
-  //  // Canvas auxiliar invisible exclusivamente para mediciones de texto
-  //  const dummyCanvas = document.createElement('canvas');
-  //  const dummyCtx = dummyCanvas.getContext('2d');
-  //
-  //  for (const frag of data) {
-  //    const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-  //    const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-  //    
-  //    // Normalización: convertimos \n literales en saltos reales
-  //    let textStr = (frag.texto || "").replace(/\\n/g, '\n');
-  //    const parts = textStr.split(/\r?\n/);
-  //
-  //    for (let i = 0; i < parts.length; i++) {
-  //      const part = parts[i];
-  //
-  //      // Manejo de saltos de línea explícitos
-  //      if (part === '' && i > 0) {
-  //        // Salto doble = Párrafo
-  //        if (i + 1 < parts.length && parts[i+1] === '') {
-  //          allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
-  //          i++; 
-  //        } else {
-  //          // Salto simple = Línea vacía visible
-  //          allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
-  //        }
-  //        continue;
-  //      }
-  //
-  //      if (part.length > 0) {
-  //        dummyCtx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-  //        
-  //        // Word Wrap: Solo si el fragmento excede el ancho del contenedor
-  //        if (dummyCtx.measureText(part).width > maxContentWidth) {
-  //          const words = part.split(' ');
-  //          let currentLineFragments = [];
-  //          let currentX = 0;
-  //
-  //          for (let w = 0; w < words.length; w++) {
-  //            const word = words[w] + (w < words.length - 1 ? ' ' : '');
-  //            const wordWidth = dummyCtx.measureText(word).width;
-  //
-  //            if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-  //              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-  //              currentLineFragments = [];
-  //              currentX = 0;
-  //            }
-  //            currentLineFragments.push({ ...frag, texto: word });
-  //            currentX += wordWidth;
-  //          }
-  //          if (currentLineFragments.length > 0) {
-  //            allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-  //          }
-  //        } else {
-  //          allLines.push({ 
-  //            fragments: [{ ...frag, texto: part }], 
-  //            height: lineHeightPx 
-  //          });
-  //        }
-  //      }
-  //    }
-  //  }
-  //
-  //  this.allLines = allLines;
-  //  
-  //  // PAGINACIÓN INTERNA (Gestión de bloques seguros para los canvas en cascada)
-  //  const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
-  //  const pages = [];
-  //  let currentPageLines = [];
-  //  let currentH = this.settings.marginTop;
-  //
-  //  this.allLines.forEach(line => {
-  //    const h = line.height || this.settings.lineHeightDefault;
-  //    if (currentH + h > PAGE_HEIGHT_LIMIT) {
-  //      pages.push(currentPageLines);
-  //      currentPageLines = [];
-  //      currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
-  //    }
-  //    currentPageLines.push(line);
-  //    currentH += h;
-  //  });
-  //
-  //  if (currentPageLines.length > 0) {
-  //    pages.push(currentPageLines);
-  //  }
-  //
-  //  this.pages = pages;
-  //}
-
 async _loadResources() {
     // Función auxiliar para cargar una imagen individual por URL
     const loadImg = (url) => {
@@ -410,7 +339,7 @@ async _loadResources() {
 
     // 1. Calculamos la altura exacta de antemano de forma limpia
     if (img) {
-      if ((img.width / img.height) <= 0.40) {
+      if ((img.width / img.height) <=  ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
         computedHeight = marginPx;
       } else {
         computedHeight = img.height * (availableWidth / img.width);
@@ -435,7 +364,7 @@ async _loadResources() {
     // 3. Pintamos el contenido una sola vez
     if (img) {
       let ancho, xPos;
-      if ((img.width / img.height) <= 0.40) {
+      if ((img.width / img.height) <= ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
         ancho = img.width * (marginPx / img.height);
         xPos = (availableWidth - ancho) / 2;
         ctx.drawImage(img, xPos, 0, ancho, computedHeight);
@@ -445,7 +374,7 @@ async _loadResources() {
     } else if (text) {
       const fontSizePt = TAMANO_BASE - 2;
       ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
-      ctx.fillStyle = isLink ? '#0000FF' : '#555555';
+      ctx.fillStyle = isLink ? ENGINE_CONSTANTS.LINK_COLOR : ENGINE_CONSTANTS.LINK_TEXT_COLOR;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
       ctx.fillText(text, availableWidth / 2, 0);
@@ -479,7 +408,7 @@ async _loadResources() {
       // Solo el primer bloque lleva el margen superior y la cabecera opcional
       if (pageIdx === 0) {
         blockH += margenPx;
-        if (imgHeader || config.headerText) blockH += 40;
+        if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
       }
 
       pageLines.forEach(l => {
@@ -488,7 +417,7 @@ async _loadResources() {
 
       // Solo el último bloque lleva el pie de página opcional y el margen inferior
       if (pageIdx === pages.length - 1) {
-        if (imgFooter || config.footerLinkText) blockH += 40;
+        if (imgFooter || config.footerLinkText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
         blockH += margenPx;
       }
 
@@ -529,11 +458,11 @@ async _loadResources() {
             let offsetY = 0;
 
             if (frag.superindice) {
-              size *= 0.65;
-              offsetY = -size * 0.2;
+              size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
+              offsetY = -size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
             } else if (frag.subindice) {
-              size *= 0.65;
-              offsetY = size * 0.2;
+              size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
+              offsetY = size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
             }
 
             const weight = frag.negrita ? 'bold' : 'normal';
