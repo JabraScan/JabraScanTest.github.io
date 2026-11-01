@@ -303,7 +303,6 @@ async _loadResources() {
       const fontSizePt = TAMANO_BASE - 2;
       computedHeight = this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
     }
-
     // 2. Creamos el canvas con sus dimensiones definitivas a la primera
     const canvasNode = document.createElement('canvas');
     canvasNode.width = availableWidth;
