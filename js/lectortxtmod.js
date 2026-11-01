@@ -3,33 +3,35 @@
  * Permite ajustar la apariencia visual sin modificar la lógica interna.
  */
 const DEFAULT_SETTINGS = {
-  marginTop: 40,               // Margen superior global del texto
+  marginTop: 40,               // Espacio en px arriba y abajo del contenido total
   marginLeft: 20,               // Margen izquierdo y derecho del texto en px
   paragraphSpacingRatio: 1.8,   // Multiplicador de altura para saltos de párrafo (\n\n)
   pageHeightLimit: 2500,        // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
   defaultFontSize: 12,          // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
-  defaultTextColor: "#000000",  // Color de texto por defecto
-  lineHeightDefault: 20         // Altura mínima de línea en px
+  defaultTextColor: "#000000",  // Color de texto cuando no se especifica uno en el fragmento
+  lineHeightDefault: 20         // Altura mínima de línea en px para evitar valores NaN o 0
 };
 
 export class TxtReaderEngine {
   constructor(options) {
-    this.initialCanvas = options.canvas;
-    this.container = options.container || (options.canvas ? options.canvas.parentElement : null);
+    this.canvas = options.canvas;
+    this.ctx = this.canvas.getContext('2d');
+    this.container = options.container || this.canvas.parentElement;
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
     this.LINE_HEIGHT_RATIO = 1.3; 
 
+    // Fusión de ajustes por defecto con opciones personalizadas del usuario
     this.settings = { ...DEFAULT_SETTINGS, ...options.settings };
 
     this.allLines = [];
     this.pages = [];
-    this.canvasElements = [];
     this.isInfiniteScroll = options.isInfiniteScroll || false;
     this.resources = { headerImg: null, footerImg: null };
     this.config = {};
 
+    // Setup de redimensionamiento responsivo
     this._setupResizeListener();
   }
 
@@ -77,7 +79,8 @@ export class TxtReaderEngine {
 
   _parsePythonArray(text) {
     try {
-      const formatted = text.replace(/\bTrue\b/g, 'true').replace(/\bFalse\b/g, 'false');
+      // Conversión segura de booleanos de Python a JS (True -> true, False -> false)
+      const formatted = text.replace(/\\bTrue\\b/g, 'true').replace(/\\bFalse\\b/g, 'false');
       return new Function(`return ${formatted}`)();
     } catch (e) {
       console.error("Error parseando array:", e);
@@ -85,7 +88,6 @@ export class TxtReaderEngine {
     }
   }
 
-  // --- TU _processText ORIGINAL 100% INTACTO ---
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
@@ -99,40 +101,42 @@ export class TxtReaderEngine {
 
     const allLines = [];
 
-    const dummyCanvas = document.createElement('canvas');
-    const dummyCtx = dummyCanvas.getContext('2d');
-
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
       
+      // Normalización: convertimos \n literales en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
       const parts = textStr.split(/\r?\n/);
 
       for (let i = 0; i < parts.length; i++) {
         const part = parts[i];
 
+        // Manejo de saltos de línea explícitos
         if (part === '' && i > 0) {
+          // Salto doble = Párrafo
           if (i + 1 < parts.length && parts[i+1] === '') {
             allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
             i++; 
           } else {
+            // Salto simple = Línea vacía visible
             allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
           continue;
         }
 
         if (part.length > 0) {
-          dummyCtx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
           
-          if (dummyCtx.measureText(part).width > maxContentWidth) {
+          // Word Wrap: Solo si el fragmento excede el ancho del contenedor
+          if (this.ctx.measureText(part).width > maxContentWidth) {
             const words = part.split(' ');
             let currentLineFragments = [];
             let currentX = 0;
 
             for (let w = 0; w < words.length; w++) {
               const word = words[w] + (w < words.length - 1 ? ' ' : '');
-              const wordWidth = dummyCtx.measureText(word).width;
+              const wordWidth = this.ctx.measureText(word).width;
 
               if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
                 allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
@@ -157,6 +161,7 @@ export class TxtReaderEngine {
 
     this.allLines = allLines;
     
+    // PAGINACIÓN INTERNA (Gestión de memoria)
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
@@ -167,7 +172,7 @@ export class TxtReaderEngine {
       if (currentH + h > PAGE_HEIGHT_LIMIT) {
         pages.push(currentPageLines);
         currentPageLines = [];
-        currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
+        currentH = this.settings.marginTop;
       }
       currentPageLines.push(line);
       currentH += h;
@@ -182,6 +187,7 @@ export class TxtReaderEngine {
 
   _renderAsset(ctx, img, text, isLink, yPos, availableWidth, margenPx) {
     const TAMANO_BASE = this.settings.defaultFontSize;
+    
     if (img) {
       let ancho, alto, xPos;
       if ((img.width / img.height) <= 0.40) {
@@ -198,144 +204,93 @@ export class TxtReaderEngine {
       ctx.drawImage(img, xPos, yPos, ancho, alto);
       return alto;
     } else if (text) {
-      const fontSizePt = TAMANO_BASE - 2;
-      ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
+      ctx.font = (TAMANO_BASE - 2) + 'pt ' + this.FONT_FAMILY;
       ctx.fillStyle = isLink ? '#0000FF' : '#555555';
       ctx.textAlign = 'center';
       ctx.fillText(text, availableWidth / 2, yPos);
       ctx.textAlign = 'left';
-      return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
+      return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;;
     }
     return 0;
   }
 
-  // --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS PEGADOS MILIMÉTRICAMENTE) ---
   render() {
-    if (!this.container) return;
+    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
+    const allLinesToRender = this.allLines || [];
 
-    this.container.innerHTML = '';
-    this.canvasElements = [];
+    // Altura total exacta basada en la simulación de todas las líneas
+    let totalH = this.settings.marginTop;
+    allLinesToRender.forEach(l => {
+      totalH += (l.height || this.settings.lineHeightDefault);
+    });
+    totalH += this.settings.marginTop;
 
-    const availableWidth = this.container.clientWidth || window.innerWidth;
-    const pages = this.pages || [];
-    const config = this.config || {};
-    const imgHeader = this.resources.headerImg;
-    const imgFooter = this.resources.footerImg;
-    const margenPx = this.settings.marginTop;
+    this.canvas.width = availableWidth;
+    this.canvas.height = totalH;
+    this.canvas.style.width = `${availableWidth}px`;
+    this.canvas.style.height = `${totalH}px`;
 
-    pages.forEach((pageLines, pageIdx) => {
-      let blockH = 0;
+    const ctx = this.ctx;
+    ctx.fillStyle = this.settings.bgColor;
+    ctx.fillRect(0, 0, availableWidth, totalH);
+    ctx.textBaseline = "top";
 
-      // Solo la primera sección superior lleva el margen inicial
-      if (pageIdx === 0) {
-        blockH += margenPx;
-        if (imgHeader || config.headerText) blockH += 40;
+    let y = this.settings.marginTop;
+    allLinesToRender.forEach(line => {
+      if (y > totalH) return;
+
+      if (line.isSpacer) {
+        y += line.height;
+        return;
       }
 
-      pageLines.forEach(l => {
-        blockH += (l.height || this.settings.lineHeightDefault);
-      });
+      let x = this.settings.marginLeft;
+      if (line.fragments) {
+        line.fragments.forEach(frag => {
+          let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+          let offsetY = 0;
 
-      // Solo la última sección inferior lleva el margen final y el pie
-      if (pageIdx === pages.length - 1) {
-        if (imgFooter || config.footerLinkText) blockH += 40;
-        blockH += margenPx;
+          if (frag.superindice) {
+            size *= 0.65;
+            offsetY = -size * 0.2;
+          } else if (frag.subindice) {
+            size *= 0.65;
+            offsetY = size * 0.2;
+          }
+
+          const weight = frag.negrita ? 'bold' : 'normal';
+          const style = frag.cursiva ? 'italic' : 'normal';
+          ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
+          ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
+
+          ctx.fillText(frag.texto, x, y + offsetY);
+
+          if (frag.subrayado) {
+            const textWidth = ctx.measureText(frag.texto).width;
+            ctx.beginPath();
+            ctx.strokeStyle = ctx.fillStyle;
+            ctx.lineWidth = 1;
+            ctx.moveTo(x, y + size * 0.9);
+            ctx.lineTo(x + textWidth, y + size * 0.9);
+            ctx.stroke();
+          }
+
+          x += ctx.measureText(frag.texto).width;
+        });
       }
-
-      const canvasNode = document.createElement('canvas');
-      canvasNode.width = availableWidth;
-      canvasNode.height = blockH;
-      canvasNode.style.width = `${availableWidth}px`;
-      canvasNode.style.height = `${blockH}px`;
-      // display: block y margin: 0 / padding: 0 para evitar cualquier espacio fantasma entre canvas
-      canvasNode.style.display = 'block';
-      canvasNode.style.margin = '0';
-      canvasNode.style.padding = '0';
-
-      const ctx = canvasNode.getContext('2d');
-      ctx.fillStyle = this.settings.bgColor;
-      ctx.fillRect(0, 0, availableWidth, blockH);
-      ctx.textBaseline = "top";
-
-      let y = 0;
-
-      if (pageIdx === 0) {
-        y = margenPx / 2;
-        if (imgHeader || config.headerText) {
-          const headerHeight = this._renderAsset(ctx, imgHeader, config.headerText, false, y, availableWidth, margenPx);
-          y += headerHeight > 0 ? headerHeight + 10 : margenPx;
-        } else {
-          y = margenPx;
-        }
-      }
-
-      pageLines.forEach(line => {
-        if (line.isSpacer) {
-          y += line.height;
-          return;
-        }
-
-        let x = this.settings.marginLeft;
-        if (line.fragments) {
-          line.fragments.forEach(frag => {
-            let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-            let offsetY = 0;
-
-            if (frag.superindice) {
-              size *= 0.65;
-              offsetY = -size * 0.2;
-            } else if (frag.subindice) {
-              size *= 0.65;
-              offsetY = size * 0.2;
-            }
-
-            const weight = frag.negrita ? 'bold' : 'normal';
-            const style = frag.cursiva ? 'italic' : 'normal';
-            ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
-            ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
-
-            ctx.fillText(frag.texto, x, y + offsetY);
-
-            if (frag.subrayado) {
-              const textWidth = ctx.measureText(frag.texto).width;
-              ctx.beginPath();
-              ctx.strokeStyle = ctx.fillStyle;
-              ctx.lineWidth = 1;
-              ctx.moveTo(x, y + size * 0.9);
-              ctx.lineTo(x + textWidth, y + size * 0.9);
-              ctx.stroke();
-            }
-
-            x += ctx.measureText(frag.texto).width;
-          });
-        }
-        y += line.height || this.settings.lineHeightDefault;
-      });
-
-      if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
-        let yFooter = y + (margenPx / 2);
-        this._renderAsset(ctx, imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
-      }
-
-      this.container.appendChild(canvasNode);
-      this.canvasElements.push(canvasNode);
+      y += line.height || this.settings.lineHeightDefault;
     });
   }
 
   async getPage(pageNum) {
-    const idx = Math.max(0, pageNum - 1);
-    const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
     return {
       num: pageNum,
-      getViewport: () => ({ 
-        width: targetCanvas ? targetCanvas.width : (this.container ? this.container.clientWidth : 0), 
-        height: targetCanvas ? targetCanvas.height : 0 
-      }),
+      getViewport: () => ({ width: this.canvas.width, height: this.canvas.height }),
       render: () => this.render(),
       getTextContent: async () => ({ items: [] })
     };
   }
+
   fitToContainer() { this.render(); }
   get numPages() { return 1; }
-  async getPage(pageNum) { return { num: pageNum, render: () => this.render() }; }
 }
