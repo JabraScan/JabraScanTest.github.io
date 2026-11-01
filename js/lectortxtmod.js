@@ -225,6 +225,7 @@ export class TxtReaderEngine {
   }
 
 async _loadResources() {
+    // Función auxiliar para cargar una imagen individual por URL
     const loadImg = (url) => {
       if (!url) return Promise.resolve(null);
       return new Promise((resolve) => {
@@ -235,21 +236,23 @@ async _loadResources() {
         img.src = url;
       });
     };
-
+    // Procesa el array de banners del JSON (ej: headerBannerUrl: ['img1.webp', 'img2.webp'])
     const processBanners = async (baseUrl, bannerUrls, fallbackUrl) => {
       const banners = Array.isArray(bannerUrls) ? bannerUrls : [bannerUrls].filter(Boolean);
       const loadedImgs = [];
       for (const filename of banners) {
         const url = filename.startsWith('http') ? filename : `${baseUrl}${filename}`;
         let img = await loadImg(url);
+        // Si la imagen del array falla al cargar, intentamos cargar el fallback correspondiente
         if (!img && fallbackUrl) {
           img = await loadImg(fallbackUrl);
         }
+        // Guardamos el resultado en el array (manteniendo el índice exacto para que el capítulo coincida)
         loadedImgs.push(img);
       }
       return loadedImgs;
     };
-
+    //Cargamos los arrays de cabecera y pie
     this.resources.headerImg = await processBanners(
       this.config?.headerbaseUrl || "",
       this.config?.headerBannerUrl,
@@ -351,8 +354,8 @@ async _loadResources() {
     const availableWidth = this.container.clientWidth || window.innerWidth;
     const pages = this.pages || [];
     const config = this.config || {};
-    const imgHeader = this.resources.headerImg;
-    const imgFooter = this.resources.footerImg;
+    const imgHeader = this._getBannerByChapter(config.headerChapters, this.resources.headerImg, currentChapter);
+    const imgFooter = this._getBannerByChapter(config.footerChapters, this.resources.footerImg, currentChapter);
     const margenPx = this.settings.marginTop;
 
     pages.forEach((pageLines, pageIdx) => {
@@ -394,10 +397,7 @@ async _loadResources() {
       if (pageIdx === 0) {
         y = margenPx / 2;
         if (imgHeader || config.headerText) {
-          const headerHeight = 0;// this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
-          y += headerHeight > 0 ? headerHeight + 10 : margenPx;
-        } else {
-          y = margenPx;
+          this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
         }
       }
 
@@ -446,7 +446,7 @@ async _loadResources() {
 
       if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
         let yFooter = y + (margenPx / 2);
-        //this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
+        this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
       }
 
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
