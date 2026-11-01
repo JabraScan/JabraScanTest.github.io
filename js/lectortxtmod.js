@@ -52,18 +52,22 @@ export class TxtReaderEngine {
 
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
-    try {
-      if (configUrl && typeof configUrl === 'string') {
-        const res = await fetch(configUrl);
+    
+    // Si se proporciona una URL de configuración, intentamos cargarla de forma segura
+    if (configUrl && typeof configUrl === 'string') {
+      try {
+        // Opcional: si quieres evitar peticiones a rutas que sabes que no tienen config.json 
+        // o manejarlo con un timeout/verificación previa:
+        const res = await fetch(configUrl, { method: 'GET' });
         if (res.ok) {
           const data = await res.json();
           if (data && typeof data === 'object') {
             this.config = { ...this.config, ...data };
           }
         }
+      } catch (e) {
+        // Silenciamos cualquier excepción de red para que el lector siga funcionando con normalidad
       }
-    } catch (e) {
-      // Silenciamos el error si config.json no existe o falla la red para evitar ruidos en consola
     }
 
     this._processText(txtContent);
