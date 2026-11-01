@@ -354,8 +354,8 @@ async _loadResources() {
     const availableWidth = this.container.clientWidth || window.innerWidth;
     const pages = this.pages || [];
     const config = this.config || {};
-    const imgHeader = this._getBannerByChapter(config.headerChapters, this.resources.headerImg, currentChapter);
-    const imgFooter = this._getBannerByChapter(config.footerChapters, this.resources.footerImg, currentChapter);
+    const imgHeader = this._getBannerByChapter(config.headerChapters, this.resources.headerImg, this.capitulo);
+    const imgFooter = this._getBannerByChapter(config.footerChapters, this.resources.footerImg, this.capitulo);
     const margenPx = this.settings.marginTop;
 
     pages.forEach((pageLines, pageIdx) => {
