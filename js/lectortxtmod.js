@@ -167,12 +167,12 @@ export class TxtReaderEngine {
     let currentPageLines = [];
     let currentH = this.settings.marginTop;
 
-    this.allLines.forEach(line => {
+this.allLines.forEach(line => {
       const h = line.height || this.settings.lineHeightDefault;
       if (currentH + h > PAGE_HEIGHT_LIMIT) {
         pages.push(currentPageLines);
         currentPageLines = [];
-        currentH = this.settings.marginTop;
+        currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
       }
       currentPageLines.push(line);
       currentH += h;
@@ -214,71 +214,118 @@ export class TxtReaderEngine {
     return 0;
   }
 
+  // --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
   render() {
-    const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
-    const allLinesToRender = this.allLines || [];
+    if (!this.container) return;
 
-    // Altura total exacta basada en la simulación de todas las líneas
-    let totalH = this.settings.marginTop;
-    allLinesToRender.forEach(l => {
-      totalH += (l.height || this.settings.lineHeightDefault);
-    });
-    totalH += this.settings.marginTop;
+    // Limpiamos el contenedor y vaciamos el registro anterior de canvas
+    this.container.innerHTML = '';
+    this.canvasElements = [];
 
-    this.canvas.width = availableWidth;
-    this.canvas.height = totalH;
-    this.canvas.style.width = `${availableWidth}px`;
-    this.canvas.style.height = `${totalH}px`;
+    const availableWidth = this.container.clientWidth || window.innerWidth;
+    const pages = this.pages || [];
+    const config = this.config || {};
+    const imgHeader = this.resources.headerImg;
+    const imgFooter = this.resources.footerImg;
+    const margenPx = this.settings.marginTop;
 
-    const ctx = this.ctx;
-    ctx.fillStyle = this.settings.bgColor;
-    ctx.fillRect(0, 0, availableWidth, totalH);
-    ctx.textBaseline = "top";
+    pages.forEach((pageLines, pageIdx) => {
+      let blockH = 0;
 
-    let y = this.settings.marginTop;
-    allLinesToRender.forEach(line => {
-      if (y > totalH) return;
-
-      if (line.isSpacer) {
-        y += line.height;
-        return;
+      // Solo el primer bloque lleva el margen superior y la cabecera opcional
+      if (pageIdx === 0) {
+        blockH += margenPx;
+        if (imgHeader || config.headerText) blockH += 40;
       }
 
-      let x = this.settings.marginLeft;
-      if (line.fragments) {
-        line.fragments.forEach(frag => {
-          let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-          let offsetY = 0;
+      pageLines.forEach(l => {
+        blockH += (l.height || this.settings.lineHeightDefault);
+      });
 
-          if (frag.superindice) {
-            size *= 0.65;
-            offsetY = -size * 0.2;
-          } else if (frag.subindice) {
-            size *= 0.65;
-            offsetY = size * 0.2;
-          }
-
-          const weight = frag.negrita ? 'bold' : 'normal';
-          const style = frag.cursiva ? 'italic' : 'normal';
-          ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
-          ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
-
-          ctx.fillText(frag.texto, x, y + offsetY);
-
-          if (frag.subrayado) {
-            const textWidth = ctx.measureText(frag.texto).width;
-            ctx.beginPath();
-            ctx.strokeStyle = ctx.fillStyle;
-            ctx.lineWidth = 1;
-            ctx.moveTo(x, y + size * 0.9);
-            ctx.lineTo(x + textWidth, y + size * 0.9);
-            ctx.stroke();
-          }
-
-          x += ctx.measureText(frag.texto).width;
-        });
+      // Solo el último bloque lleva el pie de página opcional y el margen inferior
+      if (pageIdx === pages.length - 1) {
+        if (imgFooter || config.footerLinkText) blockH += 40;
+        blockH += margenPx;
       }
-      y += line.height || this.settings.lineHeightDefault;
+
+      // Creamos un canvas independiente por cada bloque seguro
+      const canvasNode = document.createElement('canvas');
+      canvasNode.width = availableWidth;
+      canvasNode.height = blockH;
+      canvasNode.style.width = `${availableWidth}px`;
+      canvasNode.style.height = `${blockH}px`;
+      canvasNode.style.display = 'block';
+      canvasNode.style.margin = '0';
+      canvasNode.style.padding = '0';
+
+      const ctx = canvasNode.getContext('2d');
+      ctx.fillStyle = this.settings.bgColor;
+      ctx.fillRect(0, 0, availableWidth, blockH);
+      ctx.textBaseline = "top";
+
+      let y = 0;
+
+      if (pageIdx === 0) {
+        y = margenPx / 2;
+        if (imgHeader || config.headerText) {
+          const headerHeight = this._renderAsset(ctx, imgHeader, config.headerText, false, y, availableWidth, margenPx);
+          y += headerHeight > 0 ? headerHeight + 10 : margenPx;
+        } else {
+          y = margenPx;
+        }
+      }
+
+      pageLines.forEach(line => {
+        if (line.isSpacer) {
+          y += line.height;
+          return;
+        }
+
+        let x = this.settings.marginLeft;
+        if (line.fragments) {
+          line.fragments.forEach(frag => {
+            let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+            let offsetY = 0;
+
+            if (frag.superindice) {
+              size *= 0.65;
+              offsetY = -size * 0.2;
+            } else if (frag.subindice) {
+              size *= 0.65;
+              offsetY = size * 0.2;
+            }
+
+            const weight = frag.negrita ? 'bold' : 'normal';
+            const style = frag.cursiva ? 'italic' : 'normal';
+            ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
+            ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
+
+            ctx.fillText(frag.texto, x, y + offsetY);
+
+            if (frag.subrayado) {
+              const textWidth = ctx.measureText(frag.texto).width;
+              ctx.beginPath();
+              ctx.strokeStyle = ctx.fillStyle;
+              ctx.lineWidth = 1;
+              ctx.moveTo(x, y + size * 0.9);
+              ctx.lineTo(x + textWidth, y + size * 0.9);
+              ctx.stroke();
+            }
+
+            x += ctx.measureText(frag.texto).width;
+          });
+        }
+        y += line.height || this.settings.lineHeightDefault;
+      });
+
+      if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
+        let yFooter = y + (margenPx / 2);
+        this._renderAsset(ctx, imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
+      }
+
+      // Inyectamos el canvas en cadena al DOM del contenedor
+      this.container.appendChild(canvasNode);
+      this.canvasElements.push(canvasNode);
     });
   }
 
