@@ -122,7 +122,7 @@ export class TxtReaderEngine {
     }
   }
 
-  // --- TU _processText ORIGINAL 100% INTACTO ---
+  // --- MÉTODO _processText CORREGIDO PARA FLUJO HORIZONTAL DE FRAGMENTOS ---
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
@@ -136,66 +136,80 @@ export class TxtReaderEngine {
 
     const allLines = [];
 
-    // Canvas auxiliar invisible exclusivamente para mediciones de texto
+    // Canvas auxiliar exclusivo para mediciones de texto
     const dummyCanvas = document.createElement('canvas');
     const dummyCtx = dummyCanvas.getContext('2d');
+
+    let currentLineFragments = [];
+    let currentLineWidth = 0;
+    let maxHeightInLine = 0;
+
+    // Función auxiliar para volcar la línea actual al array global de líneas
+    const flushLine = (height, isSpacer = false) => {
+      allLines.push({
+        fragments: [...currentLineFragments],
+        height: height || maxHeightInLine || this.settings.lineHeightDefault,
+        isSpacer: isSpacer
+      });
+      currentLineFragments = [];
+      currentLineWidth = 0;
+      maxHeightInLine = 0;
+    };
 
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
-      
+      if (lineHeightPx > maxHeightInLine) {
+        maxHeightInLine = lineHeightPx;
+      }
+
+      const weight = frag.negrita ? 'bold' : '';
+      const style = frag.cursiva ? 'italic' : '';
+      dummyCtx.font = `${style} ${weight} ${sizePx}px ${this.FONT_FAMILY}`.trim();
+
       // Normalización: convertimos \n literales en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
-      const parts = textStr.split(/\r?\n/);
+      
+      // Separar por saltos de línea para respetar los quiebres explícitos
+      const parts = textStr.split(/(\r?\n)/);
 
-      for (let i = 0; i < parts.length; i++) {
-        const part = parts[i];
+      for (let p = 0; p < parts.length; p++) {
+        const part = parts[p];
 
-        // Manejo de saltos de línea explícitos
-        if (part === '' && i > 0) {
-          // Salto doble = Párrafo
-          if (i + 1 < parts.length && parts[i+1] === '') {
-            allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
-            i++; 
+        if (part === '\n' || part === '\r\n') {
+          // Si hay una línea acumulada, la volcamos primero; si no, es un salto simple/doble
+          if (currentLineFragments.length > 0) {
+            flushLine(lineHeightPx);
           } else {
-            // Salto simple = Línea vacía visible
             allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
           }
           continue;
         }
 
-        if (part.length > 0) {
-          dummyCtx.font = `${sizePx}px ${this.FONT_FAMILY}`;
-          
-          // Word Wrap: Solo si el fragmento excede el ancho del contenedor
-          if (dummyCtx.measureText(part).width > maxContentWidth) {
-            const words = part.split(' ');
-            let currentLineFragments = [];
-            let currentX = 0;
+        if (part === '') continue;
 
-            for (let w = 0; w < words.length; w++) {
-              const word = words[w] + (w < words.length - 1 ? ' ' : '');
-              const wordWidth = dummyCtx.measureText(word).width;
+        // Word Wrap por palabras manteniendo el flujo continuo entre fragmentos
+        const words = part.split(' ');
+        for (let w = 0; w < words.length; w++) {
+          const word = words[w] + (w < words.length - 1 ? ' ' : '');
+          if (word === '') continue;
 
-              if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-                allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-                currentLineFragments = [];
-                currentX = 0;
-              }
-              currentLineFragments.push({ ...frag, texto: word });
-              currentX += wordWidth;
-            }
-            if (currentLineFragments.length > 0) {
-              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
-            }
-          } else {
-            allLines.push({ 
-              fragments: [{ ...frag, texto: part }], 
-              height: lineHeightPx 
-            });
+          const wordWidth = dummyCtx.measureText(word).width;
+
+          // Si la palabra excede el ancho, cerramos la línea actual y saltamos
+          if (currentLineWidth + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+            flushLine(lineHeightPx);
           }
+
+          currentLineFragments.push({ ...frag, texto: word });
+          currentLineWidth += wordWidth;
         }
       }
+    }
+
+    // Volcar cualquier residuo pendiente en la última línea
+    if (currentLineFragments.length > 0) {
+      flushLine(maxHeightInLine || this.settings.lineHeightDefault);
     }
 
     this.allLines = allLines;
@@ -223,6 +237,108 @@ export class TxtReaderEngine {
 
     this.pages = pages;
   }
+
+  // --- TU _processText ORIGINAL 100% INTACTO ---
+  //_processText(text) {
+  //  const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
+  //  const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
+  //
+  //  const data = this._parsePythonArray(text);
+  //  if (!data || !Array.isArray(data)) {
+  //    this.allLines = [];
+  //    this.pages = [];
+  //    return;
+  //  }
+  //
+  //  const allLines = [];
+  //
+  //  // Canvas auxiliar invisible exclusivamente para mediciones de texto
+  //  const dummyCanvas = document.createElement('canvas');
+  //  const dummyCtx = dummyCanvas.getContext('2d');
+  //
+  //  for (const frag of data) {
+  //    const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+  //    const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
+  //    
+  //    // Normalización: convertimos \n literales en saltos reales
+  //    let textStr = (frag.texto || "").replace(/\\n/g, '\n');
+  //    const parts = textStr.split(/\r?\n/);
+  //
+  //    for (let i = 0; i < parts.length; i++) {
+  //      const part = parts[i];
+  //
+  //      // Manejo de saltos de línea explícitos
+  //      if (part === '' && i > 0) {
+  //        // Salto doble = Párrafo
+  //        if (i + 1 < parts.length && parts[i+1] === '') {
+  //          allLines.push({ fragments: [], height: lineHeightPx * this.settings.paragraphSpacingRatio, isSpacer: true });
+  //          i++; 
+  //        } else {
+  //          // Salto simple = Línea vacía visible
+  //          allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
+  //        }
+  //        continue;
+  //      }
+  //
+  //      if (part.length > 0) {
+  //        dummyCtx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+  //        
+  //        // Word Wrap: Solo si el fragmento excede el ancho del contenedor
+  //        if (dummyCtx.measureText(part).width > maxContentWidth) {
+  //          const words = part.split(' ');
+  //          let currentLineFragments = [];
+  //          let currentX = 0;
+  //
+  //          for (let w = 0; w < words.length; w++) {
+  //            const word = words[w] + (w < words.length - 1 ? ' ' : '');
+  //            const wordWidth = dummyCtx.measureText(word).width;
+  //
+  //            if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+  //              allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+  //              currentLineFragments = [];
+  //              currentX = 0;
+  //            }
+  //            currentLineFragments.push({ ...frag, texto: word });
+  //            currentX += wordWidth;
+  //          }
+  //          if (currentLineFragments.length > 0) {
+  //            allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
+  //          }
+  //        } else {
+  //          allLines.push({ 
+  //            fragments: [{ ...frag, texto: part }], 
+  //            height: lineHeightPx 
+  //          });
+  //        }
+  //      }
+  //    }
+  //  }
+  //
+  //  this.allLines = allLines;
+  //  
+  //  // PAGINACIÓN INTERNA (Gestión de bloques seguros para los canvas en cascada)
+  //  const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
+  //  const pages = [];
+  //  let currentPageLines = [];
+  //  let currentH = this.settings.marginTop;
+  //
+  //  this.allLines.forEach(line => {
+  //    const h = line.height || this.settings.lineHeightDefault;
+  //    if (currentH + h > PAGE_HEIGHT_LIMIT) {
+  //      pages.push(currentPageLines);
+  //      currentPageLines = [];
+  //      currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
+  //    }
+  //    currentPageLines.push(line);
+  //    currentH += h;
+  //  });
+  //
+  //  if (currentPageLines.length > 0) {
+  //    pages.push(currentPageLines);
+  //  }
+  //
+  //  this.pages = pages;
+  //}
 
 async _loadResources() {
     // Función auxiliar para cargar una imagen individual por URL
