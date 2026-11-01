@@ -62,7 +62,9 @@ export class TxtReaderEngine {
           }
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      // Silenciamos el error si config.json no existe o falla la red para evitar ruidos en consola
+    }
 
     this._processText(txtContent);
     this.render();
