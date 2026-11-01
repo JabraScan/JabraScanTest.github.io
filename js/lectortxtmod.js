@@ -40,7 +40,7 @@ const DEFAULT_SETTINGS = {
   defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
   defaultTextColor: "#000000",  // Color de texto cuando no se especifica uno en el fragmento
-  lineHeightDefault: 20,          // Altura mínima de línea en px para evitar valores NaN o 0
+  lineHeightDefault: 24,          // Altura mínima de línea en px para evitar valores NaN o 0
   dpi: 96
 };
 
@@ -174,17 +174,20 @@ export class TxtReaderEngine {
     let currentLineFragments = [];
     let currentLineWidth = 0;
     let maxHeightInLine = 0;
+    let currentAlign = 'left';
 
     // Función auxiliar para volcar la línea actual al array global de líneas
     const flushLine = (height, isSpacer = false) => {
       allLines.push({
         fragments: [...currentLineFragments],
         height: height || maxHeightInLine || this.settings.lineHeightDefault,
-        isSpacer: isSpacer
+        isSpacer: isSpacer,
+        align: currentAlign
       });
       currentLineFragments = [];
       currentLineWidth = 0;
       maxHeightInLine = 0;
+      currentAlign = 'left';
     };
 
     for (const frag of data) {
@@ -193,6 +196,7 @@ export class TxtReaderEngine {
       if (lineHeightPx > maxHeightInLine) {
         maxHeightInLine = lineHeightPx;
       }
+      currentAlign = frag.align || 'left';
 
       const weight = frag.negrita ? 'bold' : '';
       const style = frag.cursiva ? 'italic' : '';
@@ -452,7 +456,23 @@ async _loadResources() {
         }
 
         let x = this.settings.marginLeft;
+        const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
+
         if (line.fragments) {
+          // Si la línea está centrada, calculamos su ancho total primero para posicionarla en el medio
+          if (line.align === 'center') {
+            let totalLineWidth = 0;
+            line.fragments.forEach(frag => {
+              let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+              if (frag.superindice || frag.subindice) size *= 0.65;
+              const weight = frag.negrita ? 'bold' : 'normal';
+              const style = frag.cursiva ? 'italic' : 'normal';
+              ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
+              totalLineWidth += ctx.measureText(frag.texto).width;
+            });
+            x = this.settings.marginLeft + (maxContentWidth - totalLineWidth) / 2;
+          }
+          
           line.fragments.forEach(frag => {
             let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
             let offsetY = 0;
