@@ -209,7 +209,7 @@ function cargarTXT(parametros) {
       // Instanciamos el motor de texto pasándole el contenedor del canvas
       const txtEngine = new TxtReaderEngine({ 
         canvas: canvas,
-        container: canvas.parentElement,
+        container: canvas.parentElement || document.getElementById('pdfContainer'),,
         clave : claveT,
         capitulo: capituloactual
       });
@@ -220,7 +220,7 @@ function cargarTXT(parametros) {
       // Asignamos el motor a pdfDoc para que sea transparente para la SPA
       pdfDoc = txtEngine;
       pageNum = paginaInicial;
-      renderPage(pageNum); // Usará el renderPage global de lectorpdfmod.js si este llama a pdfDoc.getPage(), o el propio del engine.
+      //renderPage(pageNum); // Usará el renderPage global de lectorpdfmod.js si este llama a pdfDoc.getPage(), o el propio del engine.
       actualizarBotonesNav(idx, capitulosObra, claveT);
       incrementarVisita(idincremento);
     })
