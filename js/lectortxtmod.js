@@ -53,20 +53,23 @@ export class TxtReaderEngine {
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
     
-    // Si se proporciona una URL de configuración, intentamos cargarla de forma segura
     if (configUrl && typeof configUrl === 'string') {
       try {
-        // Opcional: si quieres evitar peticiones a rutas que sabes que no tienen config.json 
-        // o manejarlo con un timeout/verificación previa:
-        const res = await fetch(configUrl, { method: 'GET' });
+        // Llamada POST a tu Worker configobra para evitar errores 404 en consola
+        const res = await fetch('https://jabrascan.net/configobra', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: configUrl })
+        });
+
         if (res.ok) {
           const data = await res.json();
-          if (data && typeof data === 'object') {
+          if (data && typeof data === 'object' && Object.keys(data).length > 0) {
             this.config = { ...this.config, ...data };
           }
         }
       } catch (e) {
-        // Silenciamos cualquier excepción de red para que el lector siga funcionando con normalidad
+        // Silenciamos cualquier fallo o error de red para mantener la consola limpia
       }
     }
 
