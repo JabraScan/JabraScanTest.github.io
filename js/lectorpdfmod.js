@@ -209,7 +209,7 @@ function cargarTXT(parametros) {
       // Instanciamos el motor de texto pasándole el contenedor del canvas
       const txtEngine = new TxtReaderEngine({ 
         canvas: canvas,
-        container: canvas.parentElement || document.getElementById('pdfContainer'),,
+        container: canvas.parentElement || document.getElementById('pdfContainer'),
         clave : claveT,
         capitulo: capituloactual
       });
