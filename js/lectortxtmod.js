@@ -79,7 +79,7 @@ export class TxtReaderEngine {
     }
   }
 
-_processText(text) {
+  _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
 
@@ -91,41 +91,15 @@ _processText(text) {
     }
 
     const allLines = [];
-
-    // 1. CONSTRUCCIÓN DE TOKENS: Desglosamos cada fragmento en palabras y espacios manteniendo su estilo
-    let inlineTokens = [];
-    for (const frag of data) {
-      let textStr = (frag.texto || "").replace(/\\n/g, '\n');
-      
-      const rawParts = textStr.split(/(\r?\n)/);
-
-      for (let p = 0; p < rawParts.length; p++) {
-        const part = rawParts[p];
-        if (part === '') continue;
-
-        if (part === '\n' || part === '\r\n') {
-          inlineTokens.push({ type: 'newline', frag });
-        } else {
-          const words = part.split(' ');
-          for (let w = 0; w < words.length; w++) {
-            if (words[w] !== '') {
-              inlineTokens.push({ type: 'word', texto: words[w], frag });
-            }
-            if (w < words.length - 1) {
-              inlineTokens.push({ type: 'space', texto: ' ', frag });
-            }
-          }
-        }
-      }
-    }
-
-    // 2. AGRUPACIÓN EN LÍNEAS VISUALES CON WORD WRAP FLUIDO
     let currentLineFragments = [];
     let currentLineWidth = 0;
-    
+
     const getLineHeight = (frags) => {
-      const sizePt = frags.length > 0 && frags[0].tamano ? frags[0].tamano : this.settings.defaultFontSize;
-      return this.ptToPx(sizePt) * this.LINE_HEIGHT_RATIO;
+      let maxPt = this.settings.defaultFontSize;
+      for (const f of frags) {
+        if (f.tamano && f.tamano > maxPt) maxPt = f.tamano;
+      }
+      return this.ptToPx(maxPt) * this.LINE_HEIGHT_RATIO;
     };
 
     const flushLine = (frags, isSpacer = false, customHeight = null) => {
@@ -133,75 +107,80 @@ _processText(text) {
       allLines.push({ fragments: [...frags], height, isSpacer });
     };
 
-    let i = 0;
-    while (i < inlineTokens.length) {
-      const token = inlineTokens[i];
-
-      if (token.type === 'newline') {
-        let consecutiveNewlines = 1;
-        let peekIdx = i + 1;
-        while (peekIdx < inlineTokens.length && inlineTokens[peekIdx].type === 'newline') {
-          consecutiveNewlines++;
-          peekIdx++;
-        }
-
-        if (currentLineFragments.length > 0) {
-          flushLine(currentLineFragments);
-          currentLineFragments = [];
-          currentLineWidth = 0;
-        }
-
-        const baseSizePx = this.ptToPx(token.frag.tamano || this.settings.defaultFontSize);
-        const baseLineH = baseSizePx * this.LINE_HEIGHT_RATIO;
-
-        if (consecutiveNewlines >= 2) {
-          flushLine([], true, baseLineH * this.settings.paragraphSpacingRatio);
-          i = peekIdx;
-          continue;
-        } else {
-          flushLine([], false, baseLineH);
-          i++;
-          continue;
-        }
-      }
-
-      // Medir ancho del token actual de forma limpia
-      const sizePx = this.ptToPx(token.frag.tamano || this.settings.defaultFontSize);
-      const weight = token.frag.negrita ? 'bold' : 'normal';
-      const style = token.frag.cursiva ? 'italic' : 'normal';
+    for (const frag of data) {
+      // Normalizamos los \n literales a saltos reales
+      let textStr = (frag.texto || "").replace(/\\n/g, '\n');
       
-      this.ctx.font = `${style} ${weight} ${sizePx}px ${this.FONT_FAMILY}`;
-      const tokenText = token.texto;
-      const tokenWidth = this.ctx.measureText(tokenText).width;
+      // Si el texto está vacío pero tiene formato/estilo, lo ignoramos o gestionamos si procede
+      if (textStr === '') continue;
 
-      if (currentLineWidth + tokenWidth > maxContentWidth && currentLineFragments.length > 0) {
-        flushLine(currentLineFragments);
-        currentLineFragments = [];
-        currentLineWidth = 0;
-        if (token.type === 'space') {
-          i++;
+      // Partimos por saltos de línea reales para respetar los \n y \n\n
+      const parts = textStr.split(/(\r?\n)/);
+
+      for (let p = 0; p < parts.length; p++) {
+        const part = parts[p];
+        if (part === '') continue;
+
+        if (part === '\n' || part === '\r\n') {
+          // Es un salto de línea real
+          if (currentLineFragments.length > 0) {
+            flushLine(currentLineFragments);
+            currentLineFragments = [];
+            currentLineWidth = 0;
+          }
+
+          // Comprobamos si hay saltos múltiples (párrafo) mirando si el siguiente parte también es salto o si el texto acumulaba \n\n
+          const baseSizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+          flushLine([], false, baseSizePx * this.LINE_HEIGHT_RATIO);
           continue;
         }
+
+        // Si hay un salto doble explícito en el texto
+        if (part.includes('\n\n')) {
+          // Lo manejamos dividiendo por palabras normalmente pero respetando el flujo
+        }
+
+        // Dividimos el texto de este fragmento por palabras para el word wrap
+        const words = part.split(' ');
+        for (let w = 0; w < words.length; w++) {
+          const word = words[w] + (w < words.length - 1 ? ' ' : '');
+          if (word === '') continue;
+
+          const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+          const weight = frag.negrita ? 'bold' : 'normal';
+          const style = frag.cursiva ? 'italic' : 'normal';
+          
+          this.ctx.font = `${style} ${weight} ${sizePx}px ${this.FONT_FAMILY}`;
+          const wordWidth = this.ctx.measureText(word).width;
+
+          // Si nos pasamos del ancho máximo, cerramos la línea actual (Word Wrap)
+          if (currentLineWidth + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
+            flushLine(currentLineFragments);
+            currentLineFragments = [];
+            currentLineWidth = 0;
+          }
+
+          // Agrupamos con el fragmento anterior si comparte exactamente el mismo estilo,
+          // de lo contrario creamos un nuevo fragmento dentro de la misma línea visual.
+          const lastFrag = currentLineFragments[currentLineFragments.length - 1];
+          const isSameStyle = lastFrag &&
+            lastFrag.tamano === frag.tamano &&
+            lastFrag.negrita === frag.negrita &&
+            lastFrag.cursiva === frag.cursiva &&
+            lastFrag.subrayado === frag.subrayado &&
+            lastFrag.superindice === frag.superindice &&
+            lastFrag.subindice === frag.subindice &&
+            lastFrag.color === frag.color;
+
+          if (isSameStyle) {
+            lastFrag.texto += word;
+          } else {
+            currentLineFragments.push({ ...frag, texto: word });
+          }
+
+          currentLineWidth += wordWidth;
+        }
       }
-
-      const lastFrag = currentLineFragments[currentLineFragments.length - 1];
-      const isSameStyle = lastFrag &&
-        lastFrag.tamano === token.frag.tamano &&
-        lastFrag.negrita === token.frag.negrita &&
-        lastFrag.cursiva === token.frag.cursiva &&
-        lastFrag.subrayado === token.frag.subrayado &&
-        lastFrag.superindice === token.frag.superindice &&
-        lastFrag.subindice === token.frag.subindice &&
-        lastFrag.color === token.frag.color;
-
-      if (isSameStyle) {
-        lastFrag.texto += tokenText;
-      } else {
-        currentLineFragments.push({ ...token.frag, texto: tokenText });
-      }
-
-      currentLineWidth += tokenWidth;
-      i++;
     }
 
     if (currentLineFragments.length > 0) {
@@ -210,7 +189,7 @@ _processText(text) {
 
     this.allLines = allLines;
     
-    // PAGINACIÓN INTERNA (Gestión de memoria)
+    // PAGINACIÓN INTERNA
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
