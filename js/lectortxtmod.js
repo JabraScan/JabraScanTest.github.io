@@ -564,7 +564,6 @@ async _loadResources() {
     });
     // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
-      console.log(imgFooter);
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
     }
   }
