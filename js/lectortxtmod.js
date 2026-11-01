@@ -396,7 +396,7 @@ async _loadResources() {
       if (pageIdx === 0) {
         y = margenPx / 2;
         if (imgHeader || config.headerText) {
-          this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
+          this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
         }
       }
 
@@ -443,15 +443,15 @@ async _loadResources() {
         y += line.height || this.settings.lineHeightDefault;
       });
 
-      if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
-        let yFooter = y + (margenPx / 2);
-        this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
-      }
 
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
     });
+    if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
+      let yFooter = y + (margenPx / 2);
+      this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
+    }
   }
 
   async getPage(pageNum) {
