@@ -558,13 +558,13 @@ async _loadResources() {
         }
         y += line.height || this.settings.lineHeightDefault;
       });
-
-
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
     });
+    // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
+      console.log(imgFooter);
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
     }
   }
