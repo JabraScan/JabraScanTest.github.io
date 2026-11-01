@@ -15,9 +15,8 @@ const DEFAULT_SETTINGS = {
 
 export class TxtReaderEngine {
   constructor(options) {
-    this.canvas = options.canvas;
-    this.ctx = this.canvas.getContext('2d');
-    this.container = options.container || this.canvas.parentElement;
+    this.initialCanvas = options.canvas;
+    this.container = options.container || (options.canvas ? options.canvas.parentElement : null);
     this.dpi = 96;
     this.FONT_FAMILY = "Arial";
     this.LINE_HEIGHT_RATIO = 1.3; 
@@ -27,6 +26,7 @@ export class TxtReaderEngine {
 
     this.allLines = [];
     this.pages = [];
+    this.canvasElements = []; // Registro de los canvas múltiples creados en cascada
     this.isInfiniteScroll = options.isInfiniteScroll || false;
     this.resources = { headerImg: null, footerImg: null };
     this.config = {};
@@ -88,6 +88,7 @@ export class TxtReaderEngine {
     }
   }
 
+  // --- TU _processText ORIGINAL 100% INTACTO ---
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
@@ -100,6 +101,10 @@ export class TxtReaderEngine {
     }
 
     const allLines = [];
+
+    // Canvas auxiliar invisible exclusivamente para mediciones de texto
+    const dummyCanvas = document.createElement('canvas');
+    const dummyCtx = dummyCanvas.getContext('2d');
 
     for (const frag of data) {
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
@@ -126,17 +131,17 @@ export class TxtReaderEngine {
         }
 
         if (part.length > 0) {
-          this.ctx.font = `${sizePx}px ${this.FONT_FAMILY}`;
+          dummyCtx.font = `${sizePx}px ${this.FONT_FAMILY}`;
           
           // Word Wrap: Solo si el fragmento excede el ancho del contenedor
-          if (this.ctx.measureText(part).width > maxContentWidth) {
+          if (dummyCtx.measureText(part).width > maxContentWidth) {
             const words = part.split(' ');
             let currentLineFragments = [];
             let currentX = 0;
 
             for (let w = 0; w < words.length; w++) {
               const word = words[w] + (w < words.length - 1 ? ' ' : '');
-              const wordWidth = this.ctx.measureText(word).width;
+              const wordWidth = dummyCtx.measureText(word).width;
 
               if (currentX + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
                 allLines.push({ fragments: currentLineFragments, height: lineHeightPx });
@@ -161,13 +166,13 @@ export class TxtReaderEngine {
 
     this.allLines = allLines;
     
-    // PAGINACIÓN INTERNA (Gestión de memoria)
+    // PAGINACIÓN INTERNA (Gestión de bloques seguros para los canvas en cascada)
     const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
     const pages = [];
     let currentPageLines = [];
     let currentH = this.settings.marginTop;
 
-this.allLines.forEach(line => {
+    this.allLines.forEach(line => {
       const h = line.height || this.settings.lineHeightDefault;
       if (currentH + h > PAGE_HEIGHT_LIMIT) {
         pages.push(currentPageLines);
@@ -204,12 +209,13 @@ this.allLines.forEach(line => {
       ctx.drawImage(img, xPos, yPos, ancho, alto);
       return alto;
     } else if (text) {
-      ctx.font = (TAMANO_BASE - 2) + 'pt ' + this.FONT_FAMILY;
+      const fontSizePt = TAMANO_BASE - 2;
+      ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
       ctx.fillStyle = isLink ? '#0000FF' : '#555555';
       ctx.textAlign = 'center';
       ctx.fillText(text, availableWidth / 2, yPos);
       ctx.textAlign = 'left';
-      return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;;
+      return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
     }
     return 0;
   }
@@ -218,7 +224,7 @@ this.allLines.forEach(line => {
   render() {
     if (!this.container) return;
 
-    // Limpiamos el contenedor y vaciamos el registro anterior de canvas
+    // Limpiamos el contenedor y la pila anterior de canvas
     this.container.innerHTML = '';
     this.canvasElements = [];
 
@@ -248,7 +254,7 @@ this.allLines.forEach(line => {
         blockH += margenPx;
       }
 
-      // Creamos un canvas independiente por cada bloque seguro
+      // Creamos un canvas independiente por cada bloque seguro para evitar límites de GPU/móviles
       const canvasNode = document.createElement('canvas');
       canvasNode.width = availableWidth;
       canvasNode.height = blockH;
@@ -323,16 +329,21 @@ this.allLines.forEach(line => {
         this._renderAsset(ctx, imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
       }
 
-      // Inyectamos el canvas en cadena al DOM del contenedor
+      // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
     });
   }
 
   async getPage(pageNum) {
+    const idx = Math.max(0, pageNum - 1);
+    const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
     return {
       num: pageNum,
-      getViewport: () => ({ width: this.canvas.width, height: this.canvas.height }),
+      getViewport: () => ({ 
+        width: targetCanvas ? targetCanvas.width : (this.container ? this.container.clientWidth : 0), 
+        height: targetCanvas ? targetCanvas.height : 0 
+      }),
       render: () => this.render(),
       getTextContent: async () => ({ items: [] })
     };
