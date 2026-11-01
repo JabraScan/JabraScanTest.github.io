@@ -565,7 +565,6 @@ async _loadResources() {
       this.canvasElements.push(canvasNode);
     });
     if ((imgFooter || config.footerLinkText)) {
-      let yFooter = y + (margenPx / 2);
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
     }
   }
