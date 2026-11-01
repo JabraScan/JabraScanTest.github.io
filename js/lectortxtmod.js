@@ -448,10 +448,35 @@ async _loadResources() {
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
     });
-    if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
+    if ((imgFooter || config.footerLinkText)) {
       let yFooter = y + (margenPx / 2);
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
     }
+  }
+
+  // --- Métodos de compatibilidad con SPA ---
+  getTotalPages() {
+    return this.pages.length;
+  }
+
+  getCurrentPage() {
+    return 1;
+  }
+
+  nextPage() {
+    if (this.currentPageIndex < this.pages.length - 1) {
+      this.renderPage(this.currentPageIndex + 2);
+    }
+  }
+
+  previousPage() {
+    if (this.currentPageIndex > 0) {
+      this.renderPage(this.currentPageIndex);
+    }
+  }
+
+  get numPages() {
+    return this.pages.length;
   }
 
   async getPage(pageNum) {
