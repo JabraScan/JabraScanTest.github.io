@@ -590,10 +590,6 @@ async _loadResources() {
     }
   }
 
-  get numPages() {
-    return this.pages.length;
-  }
-
   async getPage(pageNum) {
     const idx = Math.max(0, pageNum - 1);
     const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
