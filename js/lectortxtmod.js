@@ -283,35 +283,92 @@ async _loadResources() {
     return imgsArray[selectedIndex] !== undefined ? imgsArray[selectedIndex] : imgsArray[0];
   }
 
-  _renderAsset(ctx, img, text, isLink, yPos, availableWidth, margenPx) {
+  _renderAsset(img, text, isLink, availableWidth, marginPx) {
+    if (!img && !text) return;
+
     const TAMANO_BASE = this.settings.defaultFontSize;
-    
+    let computedHeight = marginPx;
+
+    // 1. Calculamos la altura exacta de antemano de forma limpia
     if (img) {
-      let ancho, alto, xPos;
       if ((img.width / img.height) <= 0.40) {
-        let proporcion = margenPx / img.height;
-        ancho = img.width * proporcion;
-        alto = margenPx;
-        xPos = (availableWidth - ancho) / 2;
+        computedHeight = marginPx;
       } else {
-        let proporcion = availableWidth / img.width;
-        ancho = availableWidth;
-        alto = img.height * proporcion;
-        xPos = 0;
+        computedHeight = img.height * (availableWidth / img.width);
       }
-      ctx.drawImage(img, xPos, yPos, ancho, alto);
-      return alto;
+    } else if (text) {
+      const fontSizePt = TAMANO_BASE - 2;
+      computedHeight = this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
+    }
+
+    // 2. Creamos el canvas con sus dimensiones definitivas a la primera
+    const canvasNode = document.createElement('canvas');
+    canvasNode.width = availableWidth;
+    canvasNode.height = computedHeight;
+    canvasNode.style.width = `${availableWidth}px`;
+    canvasNode.style.height = `${computedHeight}px`;
+    canvasNode.style.display = 'block';
+    canvasNode.style.margin = '0 auto';
+
+    const ctx = canvasNode.getContext('2d');
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, availableWidth, computedHeight);
+
+    // 3. Pintamos el contenido una sola vez
+    if (img) {
+      let ancho, xPos;
+      if ((img.width / img.height) <= 0.40) {
+        ancho = img.width * (marginPx / img.height);
+        xPos = (availableWidth - ancho) / 2;
+        ctx.drawImage(img, xPos, 0, ancho, computedHeight);
+      } else {
+        ctx.drawImage(img, 0, 0, availableWidth, computedHeight);
+      }
     } else if (text) {
       const fontSizePt = TAMANO_BASE - 2;
       ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
       ctx.fillStyle = isLink ? '#0000FF' : '#555555';
       ctx.textAlign = 'center';
-      ctx.fillText(text, availableWidth / 2, yPos);
+      ctx.textBaseline = 'top';
+      ctx.fillText(text, availableWidth / 2, 0);
       ctx.textAlign = 'left';
-      return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
     }
-    return 0;
+
+    if (canvasNode) {
+      this.container.appendChild(canvasNode);
+      this.canvasElements.push(canvasNode);
+    }
   }
+
+  //_renderAsset(ctx, img, text, isLink, yPos, availableWidth, margenPx) {
+  //  const TAMANO_BASE = this.settings.defaultFontSize;
+  //  
+  //  if (img) {
+  //    let ancho, alto, xPos;
+  //    if ((img.width / img.height) <= 0.40) {
+  //      let proporcion = margenPx / img.height;
+  //      ancho = img.width * proporcion;
+  //      alto = margenPx;
+  //      xPos = (availableWidth - ancho) / 2;
+  //    } else {
+  //      let proporcion = availableWidth / img.width;
+  //      ancho = availableWidth;
+  //      alto = img.height * proporcion;
+  //      xPos = 0;
+  //    }
+  //    ctx.drawImage(img, xPos, yPos, ancho, alto);
+  //    return alto;
+  //  } else if (text) {
+  //    const fontSizePt = TAMANO_BASE - 2;
+  //    ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
+  //    ctx.fillStyle = isLink ? '#0000FF' : '#555555';
+  //    ctx.textAlign = 'center';
+  //    ctx.fillText(text, availableWidth / 2, yPos);
+  //    ctx.textAlign = 'left';
+  //    return this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
+  //  }
+  //  return 0;
+  //}
 
   // --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
   render() {
@@ -367,7 +424,7 @@ async _loadResources() {
       if (pageIdx === 0) {
         y = margenPx / 2;
         if (imgHeader || config.headerText) {
-          const headerHeight = this._renderAsset(ctx, imgHeader, config.headerText, false, y, availableWidth, margenPx);
+          const headerHeight = this._renderAsset(imgHeader, config.headerText, false, y, availableWidth, margenPx);
           y += headerHeight > 0 ? headerHeight + 10 : margenPx;
         } else {
           y = margenPx;
@@ -419,7 +476,7 @@ async _loadResources() {
 
       if (pageIdx === pages.length - 1 && (imgFooter || config.footerLinkText)) {
         let yFooter = y + (margenPx / 2);
-        this._renderAsset(ctx, imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
+        this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, yFooter, availableWidth, margenPx);
       }
 
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
