@@ -393,7 +393,7 @@ async _loadResources() {
     }
   }
 
- --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
+  //--- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
   render() {
     if (!this.container) return;
 
