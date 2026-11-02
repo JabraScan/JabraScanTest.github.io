@@ -35,7 +35,7 @@ export const ENGINE_CONSTANTS = {
 const DEFAULT_SETTINGS = {
   marginTop: 40,                  // Espacio en px arriba y abajo del contenido total
   marginLeft: 40,                 // Margen izquierdo y derecho del texto en px
-  paragraphSpacingRatio: 1.8,     // Multiplicador de altura para saltos de párrafo (\n\n)
+  paragraphSpacingRatio: 2,     // Multiplicador de altura para saltos de párrafo (\n\n)
   pageHeightLimit: 2500,          // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
   defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
@@ -105,7 +105,6 @@ export class TxtReaderEngine {
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
     let fetchedConfig = {};
-    //console.log(configUrl);
     if (configUrl && typeof configUrl === 'string') {
       try {
         // Llamada POST a tu Worker configobra para evitar errores 404 en consola
@@ -153,7 +152,7 @@ export class TxtReaderEngine {
     }
   }
 
-  // --- MÉTODO _processText CORREGIDO PARA FLUJO HORIZONTAL DE FRAGMENTOS ---
+  // --- MÉTODO _processText CORREGIDO PARA RESPETAR LA ALINEACIÓN POR PÁRRAFO ---
   _processText(text) {
     const availableWidth = this.container ? this.container.clientWidth : window.innerWidth;
     const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
@@ -177,17 +176,16 @@ export class TxtReaderEngine {
     let currentAlign = 'left';
 
     // Función auxiliar para volcar la línea actual al array global de líneas
-    const flushLine = (height, isSpacer = false) => {
+    const flushLine = (height, isSpacer = false, align = 'left') => {
       allLines.push({
         fragments: [...currentLineFragments],
         height: height || maxHeightInLine || this.settings.lineHeightDefault,
         isSpacer: isSpacer,
-        align: currentAlign
+        align: align
       });
       currentLineFragments = [];
       currentLineWidth = 0;
       maxHeightInLine = 0;
-      currentAlign = 'left';
     };
 
     for (const frag of data) {
@@ -210,13 +208,14 @@ export class TxtReaderEngine {
 
       for (let p = 0; p < parts.length; p++) {
         const part = parts[p];
-
         if (part === '\n' || part === '\r\n') {
-          // Si hay una línea acumulada, la volcamos primero; si no, es un salto simple/doble
+          // Si hay una línea acumulada, la volcamos manteniendo el alineamiento del fragmento actual
           if (currentLineFragments.length > 0) {
-            flushLine(lineHeightPx);
+            flushLine(lineHeightPx, false, currentAlign);
           } else {
-            allLines.push({ fragments: [], height: lineHeightPx, isSpacer: false });
+            const spacerHeight = lineHeightPx * this.settings.paragraphSpacingRatio;
+            // Línea vacía (salto de línea puro)
+            allLines.push({ fragments: [], height: spacerHeight, isSpacer: false, align: currentAlign });
           }
           continue;
         }
@@ -233,7 +232,7 @@ export class TxtReaderEngine {
 
           // Si la palabra excede el ancho, cerramos la línea actual y saltamos
           if (currentLineWidth + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            flushLine(lineHeightPx);
+            flushLine(lineHeightPx, false, currentAlign);
           }
 
           currentLineFragments.push({ ...frag, texto: word });
@@ -244,7 +243,7 @@ export class TxtReaderEngine {
 
     // Volcar cualquier residuo pendiente en la última línea
     if (currentLineFragments.length > 0) {
-      flushLine(maxHeightInLine || this.settings.lineHeightDefault);
+      flushLine(maxHeightInLine || this.settings.lineHeightDefault, false, currentAlign);
     }
 
     this.allLines = allLines;
