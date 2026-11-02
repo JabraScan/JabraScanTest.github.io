@@ -447,12 +447,12 @@ async _loadResources() {
 
       let y = 0;
 
-      //if (pageIdx === 0) {
-      //  y = margenPx / 2;
-      //  if (imgHeader || config.headerText) {
-      //    this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
-      //  }
-      //}
+      if (pageIdx === 0) {
+        y = margenPx / 2;
+        if (imgHeader || config.headerText) {
+          this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
+        }
+      }
 
       pageLines.forEach(line => {
         if (line.isSpacer) {
