@@ -105,7 +105,7 @@ export class TxtReaderEngine {
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
     let fetchedConfig = {};
-    console.log(configUrl);
+    //console.log(configUrl);
     if (configUrl && typeof configUrl === 'string') {
       try {
         // Llamada POST a tu Worker configobra para evitar errores 404 en consola
