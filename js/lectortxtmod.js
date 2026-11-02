@@ -515,10 +515,10 @@ async _loadResources() {
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
-    });
-    console.log({
-      blockH,
-      yFinal: y
+      console.log({
+        blockH,
+        yFinal: y
+      });
     });
     // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
