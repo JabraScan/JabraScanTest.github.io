@@ -167,6 +167,7 @@ function cargarPDF(parametros) {
       let [claveP, bookPath, paginaInicial, idx, capitulosObra, idincremento] = parametros;
 
       pdfjsLib.getDocument(bookPath).promise.then(doc => {
+        ControlesPdf(true);
         pdfDoc = doc;
         pageNum = paginaInicial;
         renderPage(pageNum);
@@ -220,6 +221,8 @@ function cargarTXT(parametros) {
       // Asignamos el motor a pdfDoc para que sea transparente para la SPA
       pdfDoc = txtEngine;
       pageNum = paginaInicial;
+      //ocultamos los controles de paginado para txt, ya que es scroll continuo
+      ControlesPdf(false);
       //renderPage(pageNum); // Usará el renderPage global de lectorpdfmod.js si este llama a pdfDoc.getPage(), o el propio del engine.
       actualizarBotonesNav(idx, capitulosObra, claveT);
       incrementarVisita(idincremento);
@@ -557,5 +560,19 @@ function configurarBotonesCapitulo(idx, capitulosObra, clave) {
   } else {
     btnNext.disabled = true;
     btnNext.onclick = null;
+  }
+}
+
+function ControlesPdf(activar) {
+  const contenedorPdf = document.querySelector('.pdfContainer');
+  
+  if (!contenedorPdf) return;
+
+  if (activar) {
+    // ACTIVAR: Quita d-none para que se muestre
+    contenedorPdf.classList.remove('d-none');
+  } else {
+    // DESACTIVAR: Añade d-none para ocultarlo
+    contenedorPdf.classList.add('d-none');
   }
 }

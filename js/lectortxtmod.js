@@ -35,7 +35,7 @@ export const ENGINE_CONSTANTS = {
 const DEFAULT_SETTINGS = {
   marginTop: 40,                  // Espacio en px arriba y abajo del contenido total
   marginLeft: 40,                 // Margen izquierdo y derecho del texto en px
-  paragraphSpacingRatio: 2,     // Multiplicador de altura para saltos de párrafo (\n\n)
+  paragraphSpacingRatio: 1.8,     // Multiplicador de altura para saltos de párrafo (\n\n)
   pageHeightLimit: 2500,          // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
   defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
@@ -352,11 +352,14 @@ async _loadResources() {
       computedHeight = this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
     }
     // 2. Creamos el canvas con sus dimensiones definitivas a la primera
+    const finalAssetHeight = Math.round(computedHeight);
     const canvasNode = document.createElement('canvas');
     canvasNode.width = availableWidth;
-    canvasNode.height = computedHeight;
+    //canvasNode.height = computedHeight;
+    canvasNode.height = finalAssetHeight;
+    //canvasNode.style.height = `${computedHeight}px`;
     canvasNode.style.width = `${availableWidth}px`;
-    canvasNode.style.height = `${computedHeight}px`;
+    canvasNode.height = finalAssetHeight;
     canvasNode.style.display = 'block';
     canvasNode.style.margin = '0 auto';
 
@@ -390,7 +393,7 @@ async _loadResources() {
     }
   }
 
-  // --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
+ --- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
   render() {
     if (!this.container) return;
 
@@ -425,11 +428,14 @@ async _loadResources() {
       }
 
       // Creamos un canvas independiente por cada bloque seguro para evitar límites de GPU/móviles
+      const finalBlockH = Math.round(blockH);
       const canvasNode = document.createElement('canvas');
       canvasNode.width = availableWidth;
-      canvasNode.height = blockH;
+      //canvasNode.height = blockH;
+      canvasNode.height = finalBlockH;
       canvasNode.style.width = `${availableWidth}px`;
-      canvasNode.style.height = `${blockH}px`;
+      //canvasNode.style.height = `${blockH}px`;
+      canvasNode.style.height = `${finalBlockH}px`;
       canvasNode.style.display = 'block';
       canvasNode.style.margin = '0';
       canvasNode.style.padding = '0';
@@ -529,21 +535,6 @@ async _loadResources() {
       this.renderPage(this.currentPageIndex);
     }
   }
-  //async getPage(pageNum) {
-  //  const idx = Math.max(0, pageNum - 1);
-  //  const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
-  //  return {
-  //    num: pageNum,
-  //    getViewport: () => ({ 
-  //      width: targetCanvas ? targetCanvas.width : (this.container ? this.container.clientWidth : 0), 
-  //      height: targetCanvas ? targetCanvas.height : 0 
-  //    }),
-  //    render: () => this.render(),
-  //    getTextContent: async () => ({ items: [] })
-  //  };
-  //}
-  //fitToContainer() { this.render(); }
-  //get numPages()   { return 1; }
   async getPage(pageNum) {
     const idx = Math.max(0, pageNum - 1);
     const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
