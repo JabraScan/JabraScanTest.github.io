@@ -412,10 +412,10 @@ async _loadResources() {
       let blockH = 0;
 
       // Solo el primer bloque lleva el margen superior y la cabecera opcional
-      //if (pageIdx === 0) {
-      //  blockH += margenPx;
-      //  if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
-      //}
+      if (pageIdx === 0) {
+        blockH += margenPx;
+        if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+      }
 
       pageLines.forEach(l => {
         blockH += (l.height || this.settings.lineHeightDefault);
