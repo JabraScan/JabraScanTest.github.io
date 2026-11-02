@@ -516,6 +516,10 @@ async _loadResources() {
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
     });
+    console.log({
+      blockH,
+      yFinal: y
+    });
     // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
