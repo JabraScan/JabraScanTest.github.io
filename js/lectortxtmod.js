@@ -472,7 +472,7 @@ async _loadResources() {
             });
             x = this.settings.marginLeft + (maxContentWidth - totalLineWidth) / 2;
           }
-          
+
           line.fragments.forEach(frag => {
             let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
             let offsetY = 0;
@@ -518,29 +518,48 @@ async _loadResources() {
   }
 
   // --- Métodos de compatibilidad con SPA ---
-  getTotalPages() {
-    return this.pages.length;
-  }
-
-  getCurrentPage() {
-    return 1;
-  }
-
+  getTotalPages()  { return this.pages.length; }
+  getCurrentPage() { return 1; }
   nextPage() {
     if (this.currentPageIndex < this.pages.length - 1) {
       this.renderPage(this.currentPageIndex + 2);
     }
   }
-
   previousPage() {
     if (this.currentPageIndex > 0) {
       this.renderPage(this.currentPageIndex);
     }
   }
-
+  //async getPage(pageNum) {
+  //  const idx = Math.max(0, pageNum - 1);
+  //  const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
+  //  return {
+  //    num: pageNum,
+  //    getViewport: () => ({ 
+  //      width: targetCanvas ? targetCanvas.width : (this.container ? this.container.clientWidth : 0), 
+  //      height: targetCanvas ? targetCanvas.height : 0 
+  //    }),
+  //    render: () => this.render(),
+  //    getTextContent: async () => ({ items: [] })
+  //  };
+  //}
+  //fitToContainer() { this.render(); }
+  //get numPages()   { return 1; }
   async getPage(pageNum) {
     const idx = Math.max(0, pageNum - 1);
     const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
+    
+    // 🔍 Extraemos el texto real de los fragmentos de esta página para el Text-to-Speech
+    const pageLines = this.pages[idx] || [];
+    const items = [];
+    pageLines.forEach(line => {
+      if (line.fragments) {
+        line.fragments.forEach(frag => {
+          items.push({ str: frag.texto });
+        });
+      }
+    });
+
     return {
       num: pageNum,
       getViewport: () => ({ 
@@ -548,10 +567,12 @@ async _loadResources() {
         height: targetCanvas ? targetCanvas.height : 0 
       }),
       render: () => this.render(),
-      getTextContent: async () => ({ items: [] })
+      getTextContent: async () => ({ items })
     };
   }
 
   fitToContainer() { this.render(); }
-  get numPages() { return 1; }
+  
+  // 📄 Devolvemos el total de páginas reales calculadas en el procesamiento del texto
+  get numPages() { return this.pages.length || 1; }
 }
