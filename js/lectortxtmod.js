@@ -412,20 +412,20 @@ async _loadResources() {
       let blockH = 0;
 
       // Solo el primer bloque lleva el margen superior y la cabecera opcional
-      if (pageIdx === 0) {
-        blockH += margenPx;
-        if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
-      }
+      //if (pageIdx === 0) {
+      //  blockH += margenPx;
+      //  if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+      //}
 
       pageLines.forEach(l => {
         blockH += (l.height || this.settings.lineHeightDefault);
       });
 
       // Solo el último bloque lleva el pie de página opcional y el margen inferior
-      if (pageIdx === pages.length - 1) {
-        if (imgFooter || config.footerLinkText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
-        blockH += margenPx;
-      }
+      //if (pageIdx === pages.length - 1) {
+      //  if (imgFooter || config.footerLinkText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+      //  blockH += margenPx;
+      //}
 
       // Creamos un canvas independiente por cada bloque seguro para evitar límites de GPU/móviles
       const finalBlockH = Math.round(blockH);
@@ -447,12 +447,12 @@ async _loadResources() {
 
       let y = 0;
 
-      if (pageIdx === 0) {
-        y = margenPx / 2;
-        if (imgHeader || config.headerText) {
-          this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
-        }
-      }
+      //if (pageIdx === 0) {
+      //  y = margenPx / 2;
+      //  if (imgHeader || config.headerText) {
+      //    this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
+      //  }
+      //}
 
       pageLines.forEach(line => {
         if (line.isSpacer) {
