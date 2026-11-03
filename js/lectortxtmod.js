@@ -215,7 +215,7 @@ export class TxtReaderEngine {
             flushLine(lineHeightPx, false, currentAlign);
           } else {
             //const spacerHeight = lineHeightPx * this.settings.paragraphSpacingRatio;
-            spacerHeight = ENGINE_CONSTANTS.PARAGRAPH_SPACING;
+            const spacerHeight = ENGINE_CONSTANTS.PARAGRAPH_SPACING;
             // Línea vacía (salto de línea puro)
             allLines.push({ fragments: [], height: spacerHeight, isSpacer: false, align: currentAlign });
           }
