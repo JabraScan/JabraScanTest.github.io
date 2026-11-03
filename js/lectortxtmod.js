@@ -16,7 +16,7 @@ export const ENGINE_CONSTANTS = {
   DEFAULT_FOOTER_CHAPTER: [0],
   
   // Ratios visuales y tipográficos
-  DEFAULT_FONT_FAMILY: 'Arial',
+  DEFAULT_FONT_FAMILY: 'Helvetica, Arial, sans-serif',
   DEFAULT_LINE_HEIGHT_RATIO: 1.5, // ⬅️ ratio del interlineado global Aumentado de 1.3 a 1.5 (o 1.6)
   SCRIPT_SIZE_RATIO: 0.65,        // Factor de escala para subíndices/superíndices
   SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
