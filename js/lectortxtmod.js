@@ -22,7 +22,7 @@ export const ENGINE_CONSTANTS = {
   SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
   HEADER_FOOTER_ASSET_HEIGHT: 40, // Altura reservada en px para cabeceras/pies
   ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
-  PARAGRAPH_SPACING: 16,
+  PARAGRAPH_SPACING: 18,
 
   // Colores por defecto
   LINK_COLOR: '#000000',         //'#0000FF',
@@ -116,9 +116,9 @@ _setupResizeListener() {
   async load(txtContent, configUrl) {
     this.lastTextContent = txtContent;
     let fetchedConfig = {};
+    
     if (configUrl && typeof configUrl === 'string') {
       try {
-        // Llamada POST a tu Worker configobra para evitar errores 404 en consola
         const res = await fetch(ENGINE_CONSTANTS.CONFIG_WORKER_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -128,26 +128,26 @@ _setupResizeListener() {
         if (res.ok) {
           const data = await res.json();
           if (data && typeof data === 'object' && Object.keys(data).length > 0) {
-            this.config = { ...this.config, ...data };
+            fetchedConfig = data; // ✅ Guardado correcto aquí
           }
         }
       } catch (e) {
-        // Silenciamos cualquier fallo o error de red para mantener la consola limpia
+        // Silenciar errores de red
       }
     }
+
     // Filtrar valores vacíos o nulos de la configuración remota
     const validFetchedConfig = Object.fromEntries(
       Object.entries(fetchedConfig).filter(([_, v]) => v !== null && v !== undefined && v !== '')
     );
-    // Combinar la configuración por defecto con la remota ya filtrada
+
+    // Combinación limpia: por defecto + configuración remota válida
     this.config = {
       ...this.DEFAULT_CONFIG,
       ...validFetchedConfig
     };
 
-    // Cargamos los recursos gráficos (banners filtrados por capítulo)
     await this._loadResources();
-
     this._processText(txtContent);
     this.render();
   }
@@ -529,10 +529,10 @@ async _loadResources() {
       // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
       this.container.appendChild(canvasNode);
       this.canvasElements.push(canvasNode);
-      console.log({
-        blockH,
-        yFinal: y
-      });
+      //console.log({
+      //  blockH,
+      //  yFinal: y
+      //});
     });
     // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
