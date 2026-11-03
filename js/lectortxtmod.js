@@ -22,7 +22,8 @@ export const ENGINE_CONSTANTS = {
   SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
   HEADER_FOOTER_ASSET_HEIGHT: 40, // Altura reservada en px para cabeceras/pies
   ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
-  
+  PARAGRAPH_SPACING: 16,
+
   // Colores por defecto
   LINK_COLOR: '#000000',         //'#0000FF',
   LINK_TEXT_COLOR: '#555555'
@@ -213,7 +214,8 @@ export class TxtReaderEngine {
           if (currentLineFragments.length > 0) {
             flushLine(lineHeightPx, false, currentAlign);
           } else {
-            const spacerHeight = lineHeightPx * this.settings.paragraphSpacingRatio;
+            //const spacerHeight = lineHeightPx * this.settings.paragraphSpacingRatio;
+            spacerHeight = ENGINE_CONSTANTS.PARAGRAPH_SPACING;
             // Línea vacía (salto de línea puro)
             allLines.push({ fragments: [], height: spacerHeight, isSpacer: false, align: currentAlign });
           }
