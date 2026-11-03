@@ -88,27 +88,27 @@ export class TxtReaderEngine {
     };
   }
 
-_setupResizeListener() {
+  _setupResizeListener() {
 
-  let resizeTimer;
-  let lastWidth = this.container.clientWidth;
+    let resizeTimer;
+    let lastWidth = this.container.clientWidth;
 
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      const newWidth = this.container.clientWidth;
-      
-      if (Math.abs(newWidth - lastWidth) < 50) {
-        return;
-      }      
-      lastWidth = newWidth;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const newWidth = this.container.clientWidth;
+        
+        if (Math.abs(newWidth - lastWidth) < 50) {
+          return;
+        }      
+        lastWidth = newWidth;
 
-      if (this.lastTextContent) {
-        this._processText(this.lastTextContent);
-        this.render();
-      }
-    }, 300);
-  });
+        if (this.lastTextContent) {
+          this._processText(this.lastTextContent);
+          this.render();
+        }
+      }, 300);
+    });
 
 }
   ptToPx(pt) { return (pt * this.dpi) / 72; }
