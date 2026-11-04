@@ -21,8 +21,12 @@ export async function renderResumenObras() {
         if (!Array.isArray(resumen) || resumen.length === 0) {
             throw new Error("No se encontraron datos.");
         }
+
+        // 🔍 AQUÍ ESTABA EL FALLO: Llamamos a tu función que filtra y ordena
+        const obrasOrdenadas = obtenerObrasOrdenadas(resumen);
+
         //Procesamos y ordenamos todas las obras
-        const obras = resumen
+        const obras = obrasOrdenadas
             .map(item => ({
                 ...item,
                 total: (item.visitas || 0) + (item.visitasCapitulos || 0)
