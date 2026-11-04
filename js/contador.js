@@ -115,11 +115,16 @@ function renderPodio(container, top3, iconosRes) {
                     obra.obra ||
                     obra.id;
 
+                // Si existe imagenUrl mostramos la etiqueta <img>, si no el icono o emoji por defecto
+                const contenidoCover = obra.imagenUrl
+                    ? `<img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img">`
+                    : (info.icono || "📚");
+
                 return `
                     <div class="podium-item ${clases[posVisual]}">
 
                         <div class="podium-cover">
-                            ${info.icono || "📚"}
+                            ${contenidoCover}
                         </div>
 
                         <div class="podium-block">
