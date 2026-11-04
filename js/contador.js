@@ -245,11 +245,17 @@ function escapeHtml(texto) {
 
 // 📦 Obtener obras ordenadas por visitas, dejando obra_Inicio primero
 function obtenerObrasOrdenadas(resumen) {
-  const copia = [...resumen]; // 🧠 Evitar mutar el original
+  const obras = [...resumen]; // 🧠 Evitar mutar el original
+
+  // 🚫 Añade aquí las claves de las obras que quieras descartar del listado
+  const obrasExcluidas = ['JabraRexScan', 'pwa', 'Test'];
+  const filtradas = obras.filter(item =>
+      !obrasExcluidas.includes(item.obra) && !obrasExcluidas.includes(item.id)
+  );
 
   // 🔍 Separar obra_Inicio si existe
-  const inicio = copia.find(item => item.id === "obra_Inicio");
-  const resto = copia.filter(item => item.id !== "obra_Inicio");
+  const inicio = filtradas.find(item => item.id === "obra_Inicio");
+  const resto = filtradas.filter(item => item.id !== "obra_Inicio");
 
   // 🔢 Ordenar el resto por visitas totales descendente
   resto.sort((a, b) => {
