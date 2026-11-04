@@ -248,7 +248,7 @@ function obtenerObrasOrdenadas(resumen) {
   const obras = [...resumen]; // 🧠 Evitar mutar el original
 
   // 🚫 Añade aquí las claves de las obras que quieras descartar del listado
-  const obrasExcluidas = ['JabraRexScan', 'pwa', 'Test'];
+  const obrasExcluidas = ['obra_JabraRexScan', 'obra_pwa', 'obra_Test', 'obra_Inicio'];
   const filtradas = obras.filter(item =>
       !obrasExcluidas.includes(item.obra) && !obrasExcluidas.includes(item.id)
   );
