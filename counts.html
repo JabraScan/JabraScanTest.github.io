@@ -1,1 +1,44 @@
-<!doctype html><html lang=es><meta charset=UTF-8><meta content="width=device-width,initial-scale=1.0" name=viewport><title>Resumen de Obras</title><link href=css/variables.css rel=stylesheet><link href=css/utilities.css rel=stylesheet><script defer src=./js/chart.umd.min.js></script><script defer src=./js/chartjs-plugin-datalabels@2.2.0></script><body><div><h1>📚 Estadísticas de Obras</h1><p>Visitas totales y capítulos leídos por obra</div><main><div class=loader id=loader>Cargando datos...</div><canvas id=graficaObras></canvas><div class=hidden id=error></div></main><footer></footer><script src=contador.js></script>
+<!DOCTYPE html>
+<html lang="es">
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ranking de Obras</title>
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/ranking.css">
+</head>
+
+<body>
+
+    <div>
+        <h1>🏆 Ranking de Obras</h1>
+        <p>Obras más leídas</p>
+    </div>
+
+    <main>
+
+        <div id="loader" class="loader">
+            Cargando datos...
+        </div>
+
+        <section id="podio" class="podium-container"></section>
+
+        <section id="ranking" class="ranking-container"></section>
+
+        <div id="error" class="hidden"></div>
+
+    </main>
+
+    <footer></footer>
+
+    <script src="contador.js"></script>
+
+</body>
+
+</html>
