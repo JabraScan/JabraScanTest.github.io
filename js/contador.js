@@ -14,8 +14,8 @@ export async function renderResumenObras() {
 
         let [resumen, iconosRes] = await Promise.all([
             obtenerResumenObras(),
-            fetch('./iconos.json').then(res => res.json()),
-            fetch('./obras.json').then(res => res.json())
+            fetch('/iconos.json').then(res => res.json()),
+            fetch('/obras.json').then(res => res.json())
         ]);
 
         if (!Array.isArray(resumen) || resumen.length === 0) {
