@@ -149,15 +149,16 @@ function cargarVista(url) {
       } else if (url === "counts.html") {
         // Cargar Chart.js y plugin antes de renderizar para evitar carga global innecesaria
           window.ocultarDisqus?.();
+          renderResumenObras();
         //const chartUrl = './js/chart.umd.min.js';
         //const datalabelsUrl = './js/chartjs-plugin-datalabels@2.2.0';
-        loadScript(chartUrl, 'Chart')
-          .then(() => loadScript(datalabelsUrl, 'ChartDataLabels'))
-          .then(() => renderResumenObras())
-          .catch(err => {
-            console.error('Error cargando librerías de gráficos:', err);
-            renderResumenObras(); // intentar renderizar de todos modos (mostrará error internamente si falta Chart)
-          });
+        //loadScript(chartUrl, 'Chart')
+        //  .then(() => loadScript(datalabelsUrl, 'ChartDataLabels'))
+        //  .then(() => renderResumenObras())
+        //  .catch(err => {
+        //    console.error('Error cargando librerías de gráficos:', err);
+        //    renderResumenObras(); // intentar renderizar de todos modos (mostrará error internamente si falta Chart)
+        //  });
       } else if (url === "login.html") {
           // Al entrar en login, aseguramos que los datos críticos estén también en cookie
           syncLocalStorageToCookies();
