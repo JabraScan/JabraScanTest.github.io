@@ -14,23 +14,26 @@ export async function renderResumenObras() {
 
         let [resumen, iconosRes] = await Promise.all([
             obtenerResumenObras(),
-            fetch('./iconos.json').then(res => res.json())
+            fetch('./iconos.json').then(res => res.json()),
+            fetch('./obras.json').then(res => res.json())
         ]);
 
         if (!Array.isArray(resumen) || resumen.length === 0) {
             throw new Error("No se encontraron datos.");
         }
-
+        //Procesamos y ordenamos todas las obras
         const obras = resumen
             .map(item => ({
                 ...item,
                 total: (item.visitas || 0) + (item.visitasCapitulos || 0)
             }))
             .sort((a, b) => b.total - a.total);
+        //Extraemos los 3 primeros aplicando el mapeo de imágenes del XML
+        const top3Obras = obtenerImagenes(obras.slice(0, 3), xmlText);
 
         renderPodio(
             podio,
-            obras.slice(0, 3),
+            top3Obras,
             iconosRes
         );
 
@@ -59,6 +62,32 @@ export async function renderResumenObras() {
 
     }
 
+}
+
+/**
+ * 📦 Recibe un array con los 1os elementos ya ordenados y les añade la URL de la primera imagen desde el XML.
+ */
+function obtenerTop3ConImagenes(top3, xmlText) {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+    const obraNodes = xmlDoc.getElementsByTagName("obra");
+    const imagenesMap = {};
+
+    for (let obraNode of obraNodes) {
+        const claveNode = obraNode.getElementsByTagName("clave")[0];
+        const imagenNodes = obraNode.getElementsByTagName("imagen");
+        if (claveNode) {
+            const clave = claveNode.textContent.trim();
+            if (imagenNodes.length > 0) {
+                imagenesMap[clave] = imagenNodes[0].textContent.trim();
+            }
+        }
+    }
+
+    return top3.map(item => ({
+        ...item,
+        imagenUrl: imagenesMap[item.obra] || imagenesMap[item.id] || ""
+    }));
 }
 
 function renderPodio(container, top3, iconosRes) {
