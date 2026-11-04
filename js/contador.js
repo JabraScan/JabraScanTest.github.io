@@ -67,7 +67,7 @@ export async function renderResumenObras() {
 /**
  * 📦 Recibe un array con los 1os elementos ya ordenados y les añade la URL de la primera imagen desde el XML.
  */
-function obtenerTop3ConImagenes(top3, xmlText) {
+function obtenerImagenes(top3, xmlText) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
     const obraNodes = xmlDoc.getElementsByTagName("obra");
