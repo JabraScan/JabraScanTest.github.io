@@ -12,7 +12,7 @@ export async function renderResumenObras() {
 
     try {
 
-        let [resumen, iconosRes] = await Promise.all([
+        let [resumen, iconosRes, xmlText] = await Promise.all([
             obtenerResumenObras(),
             fetch('/iconos.json').then(res => res.json()),
             fetch('/obras.xml').then(res => res.text())
