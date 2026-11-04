@@ -22,28 +22,29 @@ export async function renderResumenObras() {
             throw new Error("No se encontraron datos.");
         }
 
-        // 🔍 AQUÍ ESTABA EL FALLO: Llamamos a tu función que filtra y ordena
+        // 1. Obtenemos las obras ordenadas y filtradas con tu función
         const obrasOrdenadas = obtenerObrasOrdenadas(resumen);
 
-        //Procesamos y ordenamos todas las obras
-        const obras = obrasOrdenadas
+        // 2. Procesamos y calculamos el total de lecturas
+        const obrasConTotales = obrasOrdenadas
             .map(item => ({
                 ...item,
                 total: (item.visitas || 0) + (item.visitasCapitulos || 0)
             }))
             .sort((a, b) => b.total - a.total);
-        //Extraemos los 3 primeros aplicando el mapeo de imágenes del XML
-        const top3Obras = obtenerImagenes(obras.slice(0, 3), xmlText);
+
+        // 3. Enriquecemos todas las obras con la imagen del XML y su enlace directo
+        const obrasFinales = enriquecerObras(obrasConTotales, xmlText);
 
         renderPodio(
             podio,
-            top3Obras,
+            obrasFinales.slice(0, 3),
             iconosRes
         );
 
         renderRanking(
             ranking,
-            obras.slice(3),
+            obrasFinales.slice(3),
             iconosRes
         );
 
@@ -69,30 +70,55 @@ export async function renderResumenObras() {
 }
 
 /**
- * 📦 Recibe un array con los 1os elementos ya ordenados y les añade la URL de la primera imagen desde el XML.
+ * 📦 Recibe un array de obras y les añade la URL de la primera imagen y el enlace directo desde el XML.
  */
-function obtenerImagenes(top3, xmlText) {
+/**
+ * 📦 Recorre el XML una sola vez para extraer imágenes y claves, y enriquece las obras.
+ */
+function enriquecerObras(obras, xmlText) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "text/xml");
     const obraNodes = xmlDoc.getElementsByTagName("obra");
+    
     const imagenesMap = {};
+    const claveMap = {};
 
-    for (let obraNode of obraNodes) {
+    // ⚡ Una única pasada por los nodos del XML
+    for (let i = 0; i < obraNodes.length; i++) {
+        const obraNode = obraNodes[i];
         const claveNode = obraNode.getElementsByTagName("clave")[0];
-        const imagenNodes = obraNode.getElementsByTagName("imagen");
+        
         if (claveNode) {
             const clave = claveNode.textContent.trim();
-            if (imagenNodes.length > 0) {
-                const rutaRelativa = imagenNodes[0].textContent.trim();
-                imagenesMap[clave] = `https://img.jabrascan.net/${rutaRelativa}`;
+            const imagenNodes = obraNode.getElementsByTagName("imagen");
+            const primeraImagen = imagenNodes.length > 0 ? imagenNodes[0].textContent.trim() : "";
+            const imageUrl = primeraImagen ? `https://img.jabrascan.net/${primeraImagen}` : "";
+
+            imagenesMap[clave] = imageUrl;
+            claveMap[clave] = clave;
+
+            const nombreObraNodes = obraNode.getElementsByTagName("nombreobra");
+            for (let j = 0; j < nombreObraNodes.length; j++) {
+                const nombre = nombreObraNodes[j].textContent.trim();
+                if (nombre) {
+                    claveMap[nombre] = clave;
+                    if (imageUrl && !imagenesMap[nombre]) {
+                        imagenesMap[nombre] = imageUrl;
+                    }
+                }
             }
         }
     }
 
-    return top3.map(item => ({
-        ...item,
-        imagenUrl: imagenesMap[item.obra] || imagenesMap[item.id] || ""
-    }));
+    return obras.map(item => {
+        const clave = claveMap[item.obra] || claveMap[item.id] || item.obra || "";
+        const imagenUrl = imagenesMap[item.obra] || imagenesMap[item.id] || imagenesMap[clave] || "";
+        return {
+            ...item,
+            imagenUrl,
+            urlObra: clave ? `https://jabrascan.net/#${clave}` : "#"
+        };
+    });
 }
 
 function renderPodio(container, top3, iconosRes) {
@@ -120,10 +146,12 @@ function renderPodio(container, top3, iconosRes) {
                     obra.obra ||
                     obra.id;
 
-                // Si existe imagenUrl mostramos la etiqueta <img>, si no el icono o emoji por defecto
+                const urlObra = obra.urlObra || "#";
+
+                // Envolvemos tanto la imagen como el título en enlaces directos
                 const contenidoCover = obra.imagenUrl
-                    ? `<img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img">`
-                    : (info.icono || "📚");
+                    ? `<a href="${escapeHtml(urlObra)}"><img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img"></a>`
+                    : `<a href="${escapeHtml(urlObra)}">${info.icono || "📚"}</a>`;
 
                 return `
                     <div class="podium-item ${clases[posVisual]}">
@@ -138,7 +166,9 @@ function renderPodio(container, top3, iconosRes) {
                                 class="podium-title"
                                 title="${escapeHtml(titulo)}">
 
-                                ${escapeHtml(titulo)}
+                                <a href="${escapeHtml(urlObra)}" style="color: inherit; text-decoration: none;">
+                                    ${escapeHtml(titulo)}
+                                </a>
 
                             </div>
 
@@ -184,6 +214,8 @@ function renderRanking(container, obras, iconosRes) {
                         obra.obra ||
                         obra.id;
 
+                    const urlObra = obra.urlObra || "#";
+
                     return `
                         <tr>
 
@@ -199,12 +231,11 @@ function renderRanking(container, obras, iconosRes) {
                                         ${info.icono || "📚"}
                                     </span>
 
-                                    <span
-                                        title="${escapeHtml(titulo)}">
-
-                                        ${escapeHtml(titulo)}
-
-                                    </span>
+                                    <a href="${escapeHtml(urlObra)}" title="${escapeHtml(titulo)}" style="color: inherit; text-decoration: none;">
+                                        <span>
+                                            ${escapeHtml(titulo)}
+                                        </span>
+                                    </a>
 
                                 </div>
 
