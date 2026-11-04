@@ -1,8 +1,6 @@
 import { obtenerResumenObras } from './contadoresGoogle.js';
 import { truncarTexto } from './utils.js';
 
-import { obtenerResumenObras } from './contadoresGoogle.js';
-
 export async function renderResumenObras() {
 
     const podio = document.getElementById("podio");
