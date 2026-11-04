@@ -79,6 +79,7 @@ function obtenerImagenes(top3, xmlText) {
         if (claveNode) {
             const clave = claveNode.textContent.trim();
             if (imagenNodes.length > 0) {
+                const rutaRelativa = imagenNodes[0].textContent.trim();
                 imagenesMap[clave] = `https://img.jabrascan.net/${rutaRelativa}`;
             }
         }
