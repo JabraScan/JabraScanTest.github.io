@@ -149,10 +149,8 @@ function cargarVista(url) {
       } else if (url === "counts.html") {
         // Cargar Chart.js y plugin antes de renderizar para evitar carga global innecesaria
           window.ocultarDisqus?.();
-        //const chartUrl = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js';
-        //const datalabelsUrl = 'https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0';
-        const chartUrl = './js/chart.umd.min.js';
-        const datalabelsUrl = './js/chartjs-plugin-datalabels@2.2.0';
+        //const chartUrl = './js/chart.umd.min.js';
+        //const datalabelsUrl = './js/chartjs-plugin-datalabels@2.2.0';
         loadScript(chartUrl, 'Chart')
           .then(() => loadScript(datalabelsUrl, 'ChartDataLabels'))
           .then(() => renderResumenObras())
