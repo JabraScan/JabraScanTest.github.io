@@ -196,7 +196,8 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
       itemCarousel.querySelector(".carousel-info-title").onclick = () => onLibroClick(clave);
       itemCarousel.prepend(imagenContenedor);
-      fragCarousel.appendChild(itemCarousel);
+      carouselContainer.appendChild(itemCarousel);
+      //fragCarousel.appendChild(itemCarousel);
       //esperarYMontarCarrusel(carouselContainer, itemCarousel, imagenContenedor);
       
       const itemBook = document.createElement("div");
@@ -360,7 +361,8 @@ document.addEventListener("DOMContentLoaded", function () {
       allItemsMobile.push(itemBookNOpc);
     });
 
-    carouselContainer.appendChild(fragCarousel);
+    //carouselContainer.appendChild(fragCarousel);
+    requestAnimationFrame(() => { carouselContainer.classList.add("ready");});
 
     return Promise.all(promesasCapitulos);
   })
