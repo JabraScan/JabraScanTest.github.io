@@ -228,131 +228,24 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
 
       // --- Cargar capítulos según el entorno ---
-      let promesaCapitulo;
-      
-      if (obj.requiresChapterFetch) {
-        // Método localhost: cargar desde capitulos.json
-        promesaCapitulo = fetch("capitulos.json")
-          .then((res) => res.json())
-          .then((index) => {
-            const ruta = index[clave];
-            return fetch(ruta)
-              .then((res) => res.json())
-              .then((data) => {
-                const capitulos = data[clave] || [];
-                const hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
+      manejarCapitulosObra(obj, clave, itemBook, itemBookNOpc, itemCarousel, promesasCapitulos);
 
-                const capitulosConObra = capitulos
-                  .filter((cap) => {
-                    const fechaCap = new Date(parseFecha(cap.Fecha));
-                    return fechaCap <= hoy;
-                  })
-                  .map((cap) => ({ ...cap, obra: clave }));
+      // Para desktop (Card)
+      const imagenContenedorDesktop = crearContenedorImagen(imagen, nombreobra, contenido18);
+      const cardImg = imagenContenedorDesktop.querySelector('img');
+      if (cardImg) cardImg.classList.add('card-img-top');
+      itemBook.querySelector('.card').prepend(imagenContenedorDesktop);
 
-                return { [clave]: capitulosConObra };
-              });
-          })
-          .then((data) => {
-            const bloque = crearUltimoCapituloDeObra(data, clave);
-            if (bloque) {
-              const bloqueB = bloque.cloneNode(true);
-              const bloqueC = bloque.cloneNode(true);
-              itemBook.querySelector(".card-body").appendChild(bloque);
-              itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
-              const imagenContenedorB = itemBookNOpc.querySelector('.imagen-contenedor');
-              if (imagenContenedorB) {
-                const hoyTag = itemBookNOpc.querySelector('.tag-capitulo.hoy');
-                if (hoyTag) {
-                  imagenContenedorB.insertAdjacentElement('afterend', hoyTag);
-                }
-              }
-              const carouselChapterBadge = itemCarousel.querySelector(".carousel-chapter-badge");
-              if (carouselChapterBadge) {
-                bloqueC.classList.add('carousel-chapter-badge-info');
-                carouselChapterBadge.appendChild(bloqueC);
-              }
-              const hoyTag = itemBook.querySelector('.tag-capitulo.hoy');
-              if (hoyTag) {
-                itemBook.classList.add('hoy-book');
-              }
-            }
-          })
-          .catch((err) => console.error("❌ Error cargando capítulos:", err));
-      } else {
-        // Método producción: usar datos ya cargados del endpoint
-        promesaCapitulo = new Promise((resolve) => {
-          const caps = [];
-          if (obj.UltimoCapNom || obj.UltimoCapFecha || obj.UltimoCapNum) {
-            caps.push({
-              nombreCapitulo: obj.UltimoCapNom || '',
-              Fecha: toDDMMYYYY(obj.UltimoCapFecha || ''),
-              numCapitulo: obj.UltimoCapNum || '',
-              obra: clave
-            });
-          }
-          resolve({ [clave]: caps });
-        })
-          .then((data) => {
-            const bloque = crearUltimoCapituloDeObra(data, clave);
-            if (bloque) {
-              const bloqueB = bloque.cloneNode(true);
-              const bloqueC = bloque.cloneNode(true);
-              itemBook.querySelector(".card-body").appendChild(bloque);
-              itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
-              const imagenContenedorB = itemBookNOpc.querySelector('.imagen-contenedor');
-              if (imagenContenedorB) {
-                const hoyTag = itemBookNOpc.querySelector('.tag-capitulo.hoy');
-                if (hoyTag) {
-                  imagenContenedorB.insertAdjacentElement('afterend', hoyTag);
-                }
-              }
-              const carouselChapterBadge = itemCarousel.querySelector(".carousel-chapter-badge");
-              if (carouselChapterBadge) {
-                bloqueC.classList.add('carousel-chapter-badge-info');
-                carouselChapterBadge.appendChild(bloqueC);
-              }
-              const hoyTag = itemBook.querySelector('.tag-capitulo.hoy');
-              if (hoyTag) {
-                itemBook.classList.add('hoy-book');
-              }
-            }
-          })
-          .catch((err) => console.error("❌ Error procesando último capítulo:", err));
-      }
-
-      promesasCapitulos.push(promesaCapitulo);
-
-      // Clonado de imagen con srcset (igual que antes)
-      const clonarImagenConSrcset = (contenedor) => {
-        const clone = contenedor.cloneNode(true);
-        const imgOriginal = contenedor.querySelector('img');
-        const imgClone = clone.querySelector('img');
-        if (imgOriginal && imgClone) {
-          if (imgOriginal.srcset) imgClone.srcset = imgOriginal.srcset;
-          if (imgOriginal.sizes) imgClone.sizes = imgOriginal.sizes;
-        }
-        return clone;
-      };
-
-      const imagenContenedorA = clonarImagenConSrcset(imagenContenedor);
-      const imagenContenedorB = clonarImagenConSrcset(imagenContenedor);
-
-      const cardImg = imagenContenedorA.querySelector('img');
-      if (cardImg) {
-        cardImg.classList.add('card-img-top');
-        itemBook.querySelector('.card').prepend(imagenContenedorA);
-      }
-
+      // Para móvil (Lista sin opciones)
+      const imagenContenedorMobile = crearContenedorImagen(imagen, nombreobra, contenido18);
       const imgBadgeBlock = document.createElement('div');
       imgBadgeBlock.className = 'img-badge-block';
-      imgBadgeBlock.appendChild(imagenContenedorB);
-      //setTimeout(() => {
-        const badges = itemBookNOpc.querySelectorAll('.tag-capitulo');
-        badges.forEach(badge => {
-          imgBadgeBlock.appendChild(badge);
-        });
-      //}, 0);
+      imgBadgeBlock.appendChild(imagenContenedorMobile);
+      
+      // Los badges se colocan directamente sin setTimeout
+      itemBookNOpc.querySelectorAll('.tag-capitulo').forEach(badge => {
+        imgBadgeBlock.appendChild(badge);
+      });
       itemBookNOpc.prepend(imgBadgeBlock);
 
       allCardsDesktop.push(itemBook);
@@ -693,6 +586,98 @@ function setupPagination() {
     setupPagination();
   });
   paginationContainer.appendChild(sizeSelect);*/
+}
+
+function manejarCapitulosObra(obj, clave, itemBook, itemBookNOpc, itemCarousel, promesasCapitulos) {
+  if (!obj.requiresChapterFetch) {
+    // Producción: Síncrono e instantáneo con los datos del endpoint
+    const caps = [];
+    if (obj.UltimoCapNom || obj.UltimoCapFecha || obj.UltimoCapNum) {
+      caps.push({
+        nombreCapitulo: obj.UltimoCapNom || '',
+        Fecha: toDDMMYYYY(obj.UltimoCapFecha || ''),
+        numCapitulo: obj.UltimoCapNum || '',
+        obra: clave
+      });
+    }
+    const data = { [clave]: caps };
+    const bloque = crearUltimoCapituloDeObra(data, clave);
+    if (bloque) {
+      const bloqueB = bloque.cloneNode(true);
+      const bloqueC = bloque.cloneNode(true);
+      itemBook.querySelector(".card-body").appendChild(bloque);
+      itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
+      
+      const carouselChapterBadge = itemCarousel.querySelector(".carousel-chapter-badge");
+      if (carouselChapterBadge) {
+        bloqueC.classList.add('carousel-chapter-badge-info');
+        carouselChapterBadge.appendChild(bloqueC);
+      }
+      if (itemBook.querySelector('.tag-capitulo.hoy')) {
+        itemBook.classList.add('hoy-book');
+      }
+    }
+  } else {
+    // Localhost (XML): Asíncrono por detrás
+    const promesaCapitulo = fetch("capitulos.json")
+      .then((res) => res.json())
+      .then((index) => {
+        const ruta = index[clave];
+        return fetch(ruta)
+          .then((res) => res.json())
+          .then((data) => {
+            const capitulos = data[clave] || [];
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+
+            const capitulosConObra = capitulos
+              .filter((cap) => new Date(parseFecha(cap.Fecha)) <= hoy)
+              .map((cap) => ({ ...cap, obra: clave }));
+
+            return { [clave]: capitulosConObra };
+          });
+      })
+      .then((data) => {
+        const bloque = crearUltimoCapituloDeObra(data, clave);
+        if (bloque) {
+          const bloqueB = bloque.cloneNode(true);
+          const bloqueC = bloque.cloneNode(true);
+          itemBook.querySelector(".card-body").appendChild(bloque);
+          itemBookNOpc.querySelector(".info-libro").appendChild(bloqueB);
+          
+          const carouselChapterBadge = itemCarousel.querySelector(".carousel-chapter-badge");
+          if (carouselChapterBadge) {
+            bloqueC.classList.add('carousel-chapter-badge-info');
+            carouselChapterBadge.appendChild(bloqueC);
+          }
+          if (itemBook.querySelector('.tag-capitulo.hoy')) {
+            itemBook.classList.add('hoy-book');
+          }
+        }
+      })
+      .catch((err) => console.error("❌ Error cargando capítulos:", err));
+
+    promesasCapitulos.push(promesaCapitulo);
+  }
+}
+
+function crearContenedorImagen(imagenUrl, nombreobra, contenido18) {
+  const contenedor = document.createElement("div");
+  contenedor.classList.add("imagen-contenedor");
+  
+  const img = createImg(imagenUrl, nombreobra, 'main');
+  img.loading = "lazy";
+  contenedor.appendChild(img);
+
+  if (contenido18 === "adulto") {
+    contenedor.classList.add("adulto");
+    const indicador = document.createElement("div");
+    indicador.classList.add("indicador-adulto");
+    indicador.textContent = "+18";
+    contenedor.appendChild(indicador);
+  }
+
+  return contenedor;
 }
 
 // Permitir navegación por hash manual (#page=3)
