@@ -362,10 +362,7 @@ document.addEventListener("DOMContentLoaded", function () {
     carouselContainer.appendChild(fragCarousel);
     requestAnimationFrame(() => { carouselContainer.classList.add("ready"); });
 
-    return Promise.all(promesasCapitulos);
-  })
-  .then(() => {
-    // El flujo posterior (ordenarColeccionPorFecha, renderPage, setupPagination, búsqueda) queda intacto
+    // RENDERIZAR LA VISTA AL INSTANTE (Sin esperar a los capítulos)
     ordenarColeccionPorFecha(allCardsDesktop);
     ordenarColeccionPorFecha(allItemsMobile);
 
@@ -379,53 +376,112 @@ document.addEventListener("DOMContentLoaded", function () {
     renderPage(currentPage);
     setupPagination();
 
-    if (searchInput) {
-      // Función para búsqueda fuzzy (acepta coincidencias parciales)
-      const fuzzyMatch = (text, query) => {
-        // Primero intenta coincidencia exacta para mejor rendimiento
-        if (text.includes(query)) return true;
-        
-        // Búsqueda fuzzy: cada carácter de la búsqueda debe aparecer en orden
-        let queryIndex = 0;
-        for (let i = 0; i < text.length && queryIndex < query.length; i++) {
-          if (text[i] === query[queryIndex]) {
-            queryIndex++;
-          }
-        }
-        return queryIndex === query.length;
-      };
+    // Configurar el buscador de inmediato
+    configurarBuscador();
 
-      const doFilter = () => {
-        const q = searchInput.value.trim().toLowerCase();
-        if (!q) {
-          filteredCardsDesktop = [...allCardsDesktop];
-          filteredItemsMobile = [...allItemsMobile];
-        } else {
-          const match = (el) => {
-            const title = el.querySelector('.card-title')?.textContent?.toLowerCase() || '';
-            const autor = el.querySelector('.book-author-name')?.textContent?.toLowerCase() || '';
-            const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
-            return fuzzyMatch(title, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
-          };
-          filteredCardsDesktop = allCardsDesktop.filter(match);
-          const matchMobile = (el) => {
-            const t = el.querySelector('strong')?.textContent?.toLowerCase() || '';
-            const autor = el.querySelector('.info-libro span')?.textContent?.toLowerCase() || '';
-            const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
-            return fuzzyMatch(t, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
-          };
-          filteredItemsMobile = allItemsMobile.filter(matchMobile);
-        }
-        renderPage(1);
-        setupPagination();
-      };
-      searchInput.addEventListener('input', doFilter);
-    }
+//    return Promise.all(promesasCapitulos);
+//  })
+//  .then(() => {
+//    // El flujo posterior (ordenarColeccionPorFecha, renderPage, setupPagination, búsqueda) queda intacto
+//    ordenarColeccionPorFecha(allCardsDesktop);
+//    ordenarColeccionPorFecha(allItemsMobile);
+//
+//    filteredCardsDesktop = [...allCardsDesktop];
+//    filteredItemsMobile = [...allItemsMobile];
+//
+//    const hash = window.location.hash || '';
+//    const m = hash.match(/page=(\d+)/i);
+//    if (m) currentPage = Math.max(1, parseInt(m[1], 10));
+//
+//    renderPage(currentPage);
+//    setupPagination();
+//
+//    if (searchInput) {
+//      // Función para búsqueda fuzzy (acepta coincidencias parciales)
+//      const fuzzyMatch = (text, query) => {
+//        // Primero intenta coincidencia exacta para mejor rendimiento
+//        if (text.includes(query)) return true;
+//        
+//        // Búsqueda fuzzy: cada carácter de la búsqueda debe aparecer en orden
+//        let queryIndex = 0;
+//        for (let i = 0; i < text.length && queryIndex < query.length; i++) {
+//          if (text[i] === query[queryIndex]) {
+//            queryIndex++;
+//          }
+//        }
+//        return queryIndex === query.length;
+//      };
+//
+//      const doFilter = () => {
+//        const q = searchInput.value.trim().toLowerCase();
+//        if (!q) {
+//          filteredCardsDesktop = [...allCardsDesktop];
+//          filteredItemsMobile = [...allItemsMobile];
+//        } else {
+//          const match = (el) => {
+//            const title = el.querySelector('.card-title')?.textContent?.toLowerCase() || '';
+//            const autor = el.querySelector('.book-author-name')?.textContent?.toLowerCase() || '';
+//            const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
+//            return fuzzyMatch(title, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
+//          };
+//          filteredCardsDesktop = allCardsDesktop.filter(match);
+//          const matchMobile = (el) => {
+//            const t = el.querySelector('strong')?.textContent?.toLowerCase() || '';
+//            const autor = el.querySelector('.info-libro span')?.textContent?.toLowerCase() || '';
+//            const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
+//            return fuzzyMatch(t, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
+//          };
+//          filteredItemsMobile = allItemsMobile.filter(matchMobile);
+//        }
+//        renderPage(1);
+//        setupPagination();
+//      };
+//      searchInput.addEventListener('input', doFilter);
+//    }
   })
   .catch(err => console.error("Error cargando endpoint:", err));
 
 //FIN fetch('obras.xml')
 });
+
+function configurarBuscador() {
+  if (!searchInput) return;
+
+  const fuzzyMatch = (text, query) => {
+    if (text.includes(query)) return true;
+    let queryIndex = 0;
+    for (let i = 0; i < text.length && queryIndex < query.length; i++) {
+      if (text[i] === query[queryIndex]) queryIndex++;
+    }
+    return queryIndex === query.length;
+  };
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) {
+      filteredCardsDesktop = [...allCardsDesktop];
+      filteredItemsMobile = [...allItemsMobile];
+    } else {
+      const matchDesktop = (el) => {
+        const title = el.querySelector('.card-title')?.textContent?.toLowerCase() || '';
+        const autor = el.querySelector('.book-author-name')?.textContent?.toLowerCase() || '';
+        const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
+        return fuzzyMatch(title, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
+      };
+      filteredCardsDesktop = allCardsDesktop.filter(matchDesktop);
+
+      const matchMobile = (el) => {
+        const t = el.querySelector('strong')?.textContent?.toLowerCase() || '';
+        const autor = el.querySelector('.info-libro span')?.textContent?.toLowerCase() || '';
+        const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
+        return fuzzyMatch(t, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
+      };
+      filteredItemsMobile = allItemsMobile.filter(matchMobile);
+    }
+    renderPage(1);
+    setupPagination();
+  });
+}
 /*
 export function onLibroClick(libroId) {
   setItem('libroSeleccionado', libroId);
