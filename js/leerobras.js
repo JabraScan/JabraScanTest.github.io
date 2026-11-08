@@ -380,30 +380,14 @@ document.addEventListener("DOMContentLoaded", function () {
     setupPagination();
 
     if (searchInput) {
-        const fuzzyMatch = (text, query) => {
-          // Normalizamos ambos textos para quitar tildes y pasarlos a minúsculas
-          const cleanText = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-          const cleanQuery = query.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const fuzzyMatch = (text, query) => {
+        const cleanText = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        const cleanQuery = query.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-          //// Primero intenta coincidencia exacta para mejor rendimiento
-          //if (cleanText.includes(cleanQuery)) return true;
-          //
-          //// Búsqueda fuzzy: cada carácter de la búsqueda debe aparecer en orden
-          //let queryIndex = 0;
-          //for (let i = 0; i < cleanText.length && queryIndex < cleanQuery.length; i++) {
-          //  if (cleanText[i] === cleanQuery[queryIndex]) {
-          //    queryIndex++;
-          //  }
-          //}
-          //return queryIndex === cleanQuery.length;
+        const queryWords = cleanQuery.split(/\s+/).filter(Boolean);
+        if (queryWords.length === 0) return true;
 
-          // Dividimos la búsqueda del usuario por espacios en palabras individuales
-          const queryWords = cleanQuery.split(/\s+/).filter(Boolean);
-          if (queryWords.length === 0) return true;
-
-          // Comprobamos que TODAS las palabras escritas aparezcan en el texto (en cualquier orden)
-          return queryWords.every(word => cleanText.includes(word));
-        };
+        return queryWords.every(word => cleanText.includes(word));
       };
 
       const doFilter = () => {
