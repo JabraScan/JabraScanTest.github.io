@@ -22,9 +22,9 @@
 
     .podium-cover img{
         width:90px;
-        height:90px;
-        border-radius:50%;
-        object-fit:cover;
+        height:120px;
+        border-radius:20%;
+        /*object-fit:cover;*/
         border:3px solid #ddd;
         margin-bottom:10px;
     }
