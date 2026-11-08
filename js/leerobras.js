@@ -89,11 +89,14 @@ document.addEventListener("DOMContentLoaded", function () {
   
   cargarObras.then(obrasArr => {
     const carouselContainer = document.querySelector(".custom-carousel-track");
+    const fragCarousel = document.createDocumentFragment();
+
     const booklistContainer = document.querySelector(".book-list");
     const booklistContainernopc = document.querySelector(".lista-libros");
     const booklastread = document.querySelector(".main-ultimoCapituloleido");
 
     const promesasCapitulos = [];
+
 
     obrasArr.forEach((obj, index) => {
       if ((obj.visible || '').toLowerCase() !== 'si') return;
@@ -193,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
       itemCarousel.querySelector(".carousel-info-title").onclick = () => onLibroClick(clave);
       itemCarousel.prepend(imagenContenedor);
-      carouselContainer.appendChild(itemCarousel);
+      fragCarousel.appendChild(itemCarousel);
       //esperarYMontarCarrusel(carouselContainer, itemCarousel, imagenContenedor);
       
       const itemBook = document.createElement("div");
@@ -356,6 +359,8 @@ document.addEventListener("DOMContentLoaded", function () {
       allCardsDesktop.push(itemBook);
       allItemsMobile.push(itemBookNOpc);
     });
+
+    carouselContainer.appendChild(fragCarousel);
 
     return Promise.all(promesasCapitulos);
   })
