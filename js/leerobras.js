@@ -21,9 +21,9 @@ function isLocalhost() {
          window.location.hostname === '127.0.0.1' || 
          window.location.hostname === '';
 }
-function esperarYMontarCarrusel(itemCarousel, imagenContenedor) {
+function esperarYMontarCarrusel(container, itemCarousel, imagenContenedor) {
   const intentar = () => {
-    const container = document.querySelector(".custom-carousel-track");
+    //const container = document.querySelector(".custom-carousel-track");
     if (container) {
       itemCarousel.prepend(imagenContenedor);
       container.appendChild(itemCarousel);
@@ -192,9 +192,9 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="carousel-chapter-badge"></div>
         `;
       itemCarousel.querySelector(".carousel-info-title").onclick = () => onLibroClick(clave);
-      //itemCarousel.prepend(imagenContenedor);
-      //carouselContainer.appendChild(itemCarousel);
-      esperarYMontarCarrusel(itemCarousel, imagenContenedor);
+      itemCarousel.prepend(imagenContenedor);
+      carouselContainer.appendChild(itemCarousel);
+      //esperarYMontarCarrusel(carouselContainer, itemCarousel, imagenContenedor);
       
       const itemBook = document.createElement("div");
       itemBook.classList.add("col");
