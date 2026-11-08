@@ -398,6 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
           const match = (el) => {
             const title = el.querySelector('.card-title')?.textContent?.toLowerCase() || '';
+            const altNames = el.querySelector('.hidden-alt-names')?.textContent?.toLowerCase() || '';
             const autor = el.querySelector('.book-author-name')?.textContent?.toLowerCase() || '';
             const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
             return fuzzyMatch(title, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
@@ -405,9 +406,10 @@ document.addEventListener("DOMContentLoaded", function () {
           filteredCardsDesktop = allCardsDesktop.filter(match);
           const matchMobile = (el) => {
             const t = el.querySelector('strong')?.textContent?.toLowerCase() || '';
+            const altNames = el.querySelector('.hidden-alt-names')?.textContent?.toLowerCase() || '';
             const autor = el.querySelector('.info-libro span')?.textContent?.toLowerCase() || '';
             const clave = el.querySelector('.clave')?.textContent?.toLowerCase() || '';
-            return fuzzyMatch(t, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
+            return fuzzyMatch(t, q) || fuzzyMatch(altNames, q) || fuzzyMatch(autor, q) || fuzzyMatch(clave, q);
           };
           filteredItemsMobile = allItemsMobile.filter(matchMobile);
         }
