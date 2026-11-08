@@ -58,7 +58,7 @@
     document.addEventListener('keydown', keydownHandler);
     window.addEventListener('resize', resizeHandler);
 
-    showItem(0);
+    //showItem(0);
 
     // 🚀 Desplazamiento automático
     let intervalId;
