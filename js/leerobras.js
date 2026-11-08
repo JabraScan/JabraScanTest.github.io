@@ -347,12 +347,12 @@ document.addEventListener("DOMContentLoaded", function () {
       const imgBadgeBlock = document.createElement('div');
       imgBadgeBlock.className = 'img-badge-block';
       imgBadgeBlock.appendChild(imagenContenedorB);
-      setTimeout(() => {
+      //setTimeout(() => {
         const badges = itemBookNOpc.querySelectorAll('.tag-capitulo');
         badges.forEach(badge => {
           imgBadgeBlock.appendChild(badge);
         });
-      }, 0);
+      //}, 0);
       itemBookNOpc.prepend(imgBadgeBlock);
 
       allCardsDesktop.push(itemBook);
