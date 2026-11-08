@@ -22,7 +22,6 @@ export const ENGINE_CONSTANTS = {
   SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
   HEADER_FOOTER_ASSET_HEIGHT: 40, // Altura reservada en px para cabeceras/pies
   ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
-  PARAGRAPH_SPACING: 18,
 
   // Colores por defecto
   LINK_COLOR: '#000000',         //'#0000FF',
@@ -36,7 +35,12 @@ export const ENGINE_CONSTANTS = {
 const DEFAULT_SETTINGS = {
   marginTop: 40,                  // Espacio en px arriba y abajo del contenido total
   marginLeft: 40,                 // Margen izquierdo y derecho del texto en px
-  paragraphSpacingRatio: 1.8,     // Multiplicador de altura para saltos de párrafo (\n\n)
+  // Espacio EXTRA entre párrafos expresado como fracción del interlineado.
+  // 0.6 → el hueco total entre párrafos = interlineado × 1.6 (siempre mayor que el interlineado)
+  paragraphSpacingRatio: 0.6,
+  // Doble salto (\n\n, \n \n, ...): pinta una línea en BLANCO real.
+  // 1.0 → el hueco = interlineado completo (una línea vacía visible).
+  blankLineRatio: 1.0,
   pageHeightLimit: 2500,          // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
   defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
@@ -186,6 +190,24 @@ export class TxtReaderEngine {
     let maxHeightInLine = 0;
     let currentAlign = 'left';
 
+    // ⚠️ El array llega separado por estilos: el mismo salto de párrafo puede caer
+    // al final de un fragmento, al inicio del siguiente o partirse en medio ("\n" + "\n").
+    // Por eso el salto NO se materializa en el momento: se marca como pendiente y el
+    // hueco se inserta UNA sola vez, justo antes del primer texto del párrafo siguiente.
+    // Reglas: un \n simple = hueco de párrafo (mayor que el interlineado); un \n\n
+    // seguido = línea en blanco real; un \n centrado = solo cambio de línea (títulos
+    // a dos líneas). El resultado es idéntico aunque el texto venga partido en N
+    // fragmentos por estilo, porque todo depende de la alineación y del orden de
+    // saltos/contenido, no de cómo se haya cortado el array.
+    let pendingParagraphBreak = false;
+    let pendingSpacerHeight = 0;
+    // Un salto simple DENTRO de un bloque centrado (título a dos líneas) es solo
+    // un cambio de línea: NO abre párrafo. El hueco solo se materializa si el
+    // contenido siguiente no continúa el bloque centrado (separación título → cuerpo).
+    // La decisión es por ALINEACIÓN, no por identidad de fragmento, para que el
+    // resultado no cambie si el generador parte el array por estilos.
+    let pendingCenteredOnly = false;
+
     // Función auxiliar para volcar la línea actual al array global de líneas
     const flushLine = (height, isSpacer = false, align = 'left') => {
       allLines.push({
@@ -197,6 +219,30 @@ export class TxtReaderEngine {
       currentLineFragments = [];
       currentLineWidth = 0;
       maxHeightInLine = 0;
+    };
+
+    // Vuelca el hueco de párrafo pendiente (si lo hay) antes del contenido siguiente
+    const pushParagraphSpacer = () => {
+      if (!pendingParagraphBreak) return;
+
+      // Salto simple de un título centrado + contenido también centrado:
+      // sigue siendo el mismo bloque (Capítulo 1: / Prólogo) → sin hueco.
+      if (pendingCenteredOnly && currentAlign === 'center') {
+        pendingParagraphBreak = false;
+        pendingSpacerHeight = 0;
+        pendingCenteredOnly = false;
+        return;
+      }
+
+      allLines.push({
+        fragments: [],
+        height: pendingSpacerHeight,
+        isSpacer: true,
+        align: currentAlign
+      });
+      pendingParagraphBreak = false;
+      pendingSpacerHeight = 0;
+      pendingCenteredOnly = false;
     };
 
     for (const frag of data) {
@@ -213,26 +259,58 @@ export class TxtReaderEngine {
 
       // Normalización: convertimos \n literales en saltos reales
       let textStr = (frag.texto || "").replace(/\\n/g, '\n');
-      
+
       // Separar por saltos de línea para respetar los quiebres explícitos
       const parts = textStr.split(/(\r?\n)/);
 
       for (let p = 0; p < parts.length; p++) {
         const part = parts[p];
         if (part === '\n' || part === '\r\n') {
+          // Altura de referencia del párrafo que se acaba de cerrar (antes de resetear)
+          const breakHeight = Math.max(maxHeightInLine, lineHeightPx);
+
           // Si hay una línea acumulada, la volcamos manteniendo el alineamiento del fragmento actual
           if (currentLineFragments.length > 0) {
-            flushLine(lineHeightPx, false, currentAlign);
+            flushLine(maxHeightInLine || lineHeightPx, false, currentAlign);
+          }
+
+          if (pendingParagraphBreak) {
+            // Hay un salto pendiente sin contenido real entre medias: este es el
+            // segundo (\n\n, \n \n, ...) → se pinta una LÍNEA EN BLANCO real
+            // (antes de la corrección todos los saltos colapsaban al mismo hueco).
+            pendingCenteredOnly = false;
+            pendingSpacerHeight = Math.max(
+              pendingSpacerHeight,
+              breakHeight * this.settings.blankLineRatio
+            );
+          } else if (currentAlign === 'center') {
+            // Salto simple dentro de un bloque centrado (título a dos líneas):
+            // solo cambio de línea, sin hueco. Se guarda un candidato por si el
+            // contenido siguiente no es centrado (ahí sí haría falta separar bloques).
+            pendingParagraphBreak = true;
+            pendingCenteredOnly = true;
+            pendingSpacerHeight = breakHeight * this.settings.paragraphSpacingRatio;
           } else {
-            //const spacerHeight = lineHeightPx * this.settings.paragraphSpacingRatio;
-            const spacerHeight = ENGINE_CONSTANTS.PARAGRAPH_SPACING;
-            // Línea vacía (salto de línea puro)
-            allLines.push({ fragments: [], height: spacerHeight, isSpacer: false, align: currentAlign });
+            pendingParagraphBreak = true;
+            pendingCenteredOnly = false;
+            pendingSpacerHeight = breakHeight * this.settings.paragraphSpacingRatio;
           }
           continue;
         }
 
         if (part === '') continue;
+
+        // Un espacio suelto junto a un salto (" \n") no debe abrir una línea vacía:
+        // si la línea está en blanco se descarta, así el render no cambia según cómo
+        // haya partido el array el generador (un espacio puede caer en un fragmento
+        // o en el siguiente).
+        if (part.trim() === '' && currentLineFragments.length === 0) continue;
+
+        // Contenido real: si quedaba un salto de párrafo pendiente, se vuelca aquí.
+        // El espaciado depende del interlineado, nunca de cómo se haya partido el array.
+        if (part.trim() !== '') {
+          pushParagraphSpacer();
+        }
 
         // Word Wrap por palabras manteniendo el flujo continuo entre fragmentos
         const words = part.split(' ');
@@ -244,11 +322,15 @@ export class TxtReaderEngine {
 
           // Si la palabra excede el ancho, cerramos la línea actual y saltamos
           if (currentLineWidth + wordWidth > maxContentWidth && currentLineFragments.length > 0) {
-            flushLine(lineHeightPx, false, currentAlign);
+            flushLine(maxHeightInLine || lineHeightPx, false, currentAlign);
           }
 
           currentLineFragments.push({ ...frag, texto: word });
           currentLineWidth += wordWidth;
+          // Tras un corte de línea (wrap o salto) maxHeightInLine queda a 0:
+          // se re-siembra para que la línea en curso mantenga su interlineado real
+          // (afecta a la altura de la última línea del capítulo).
+          if (lineHeightPx > maxHeightInLine) maxHeightInLine = lineHeightPx;
         }
       }
     }
@@ -257,6 +339,7 @@ export class TxtReaderEngine {
     if (currentLineFragments.length > 0) {
       flushLine(maxHeightInLine || this.settings.lineHeightDefault, false, currentAlign);
     }
+    // Un salto final de párrafo NO genera hueco: no hay párrafo siguiente.
 
     this.allLines = allLines;
     

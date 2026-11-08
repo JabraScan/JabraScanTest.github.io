@@ -91,8 +91,7 @@ function enriquecerObras(obras, xmlText) {
         if (claveNode) {
             const clave = claveNode.textContent.trim();
             const imagenNodes = obraNode.getElementsByTagName("imagen");
-            const primeraImagen = imagenNodes.length > 0 ? imagenNodes[0].textContent.trim() : "";
-            const imageUrl = primeraImagen ? `https://img.jabrascan.net/${primeraImagen}` : "";
+            const imageUrl = imagenNodes.length > 0 ? obtenerUrlImagen150w(imagenNodes[0].textContent) : "";
 
             imagenesMap[clave] = imageUrl;
             claveMap[clave] = clave;
@@ -301,4 +300,17 @@ function obtenerObrasOrdenadas(resumen) {
 
   // 📎 Combinar obra_Inicio al principio si existe
   return inicio ? [inicio, ...resto] : resto;
+}
+
+// 🖼️ Función auxiliar elegante para formatear la URL con -150w
+function obtenerUrlImagen150w(rutaRelativa) {
+    if (!rutaRelativa) return "";
+    const ruta = rutaRelativa.trim();
+    const lastDot = ruta.lastIndexOf('.');
+    
+    if (lastDot === -1) return `https://img.jabrascan.net/${ruta}-150w`;
+    
+    const base = ruta.slice(0, lastDot);
+    const ext = ruta.slice(lastDot);
+    return `https://img.jabrascan.net/${base}-150w${ext}`;
 }

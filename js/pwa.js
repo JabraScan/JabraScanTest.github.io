@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mi-pwa-cache-v1.2';
+const CACHE_NAME = 'mi-pwa-cache-v1.3';
 
 import { incrementarVisita } from './contadoresGoogle.js';
 // pwa.js
@@ -8,15 +8,8 @@ export function initPWA() {
   // 0. CONTAR APERTURAS DE LA PWA ---
   if (('standalone' in window.navigator && window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches) {
     incrementarVisita('pwa_1');
+    checkVersion();
   }
-  // 1. REGISTRAR EL SERVICE WORKER (El motor offline)
-  //if ('serviceWorker' in navigator) {
-  //  window.addEventListener('load', () => {
-  //    navigator.serviceWorker.register('/sw.js')
-  //      //.then(() => console.log('Service Worker registrado con éxito.'))
-  //      .catch((err) => console.log('Error al registrar el Service Worker:', err));
-  //  });
-  //}
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js').then((registration) => {
@@ -95,4 +88,32 @@ export function initPWA() {
       navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
     }
   });
+}
+
+async function checkVersion() {
+  try {
+    const response = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
+    const data = await response.json();
+    const currentVersion = localStorage.getItem('app_version');
+
+    if (!currentVersion) {
+      localStorage.setItem('app_version', data.version);
+      return;
+    }
+
+    if (currentVersion !== data.version) {
+
+      // Limpia cualquier cache del navegador
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        await Promise.all(
+          keys.map(key => caches.delete(key))
+        );
+      }
+      localStorage.setItem('app_version', data.version);
+      window.location.reload(true);
+    }
+  } catch (err) {
+    console.error(err);
+  }
 }

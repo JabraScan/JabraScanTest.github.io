@@ -4,7 +4,7 @@ import { abrirLectorPDF } from './lector.js';
 import { cargarlibro } from './libroficha.js';
 import { renderResumenObras } from './contador.js';
 import { syncLocalStorageToCookies, setItem, getItem, removeItem } from "./storage.js";
-import { initPWA } from './pwa.js'; // 📱 Importamos la lógica de la PWA
+import { initPWA } from './pwa.js?20261106'; // 📱 Importamos la lógica de la PWA
 
 // Helper: carga un script externo sólo una vez y devuelve una Promise
 function loadScript(src, globalName) {
