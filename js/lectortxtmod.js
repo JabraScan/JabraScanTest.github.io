@@ -22,6 +22,7 @@ export const ENGINE_CONSTANTS = {
   SCRIPT_OFFSET_RATIO: 0.2,       // Desplazamiento vertical de subíndices/superíndices
   HEADER_FOOTER_ASSET_HEIGHT: 40, // Altura reservada en px para cabeceras/pies
   ASPECT_RATIO_THRESHOLD: 0.40,   // Umbral de relación de aspecto para banners verticales
+  MAX_CACHED_IMAGES: 24,          // Nº máximo de imágenes en caché (evita disparar la memoria)
 
   // Colores por defecto
   LINK_COLOR: '#000000',         //'#0000FF',
@@ -41,6 +42,10 @@ const DEFAULT_SETTINGS = {
   // Doble salto (\n\n, \n \n, ...): pinta una línea en BLANCO real.
   // 1.0 → el hueco = interlineado completo (una línea vacía visible).
   blankLineRatio: 1.0,
+  // Imágenes dentro del texto (elementos {tipo: 'imagen'}):
+  imageMargin: 18,                // Espacio vertical (px) alrededor de la imagen
+  imageMaxHeight: 1400,           // Alto máximo (px) de seguridad para una imagen inline
+  bannerMaxHeight: 220,           // Alto máximo (px) de una imagen con formato 'banner'
   pageHeightLimit: 2500,          // Altura máxima de cada bloque de canvas para evitar colapsos de memoria
   defaultFontSize: 12,            // Tamaño de fuente base en puntos (pt)
   bgColor: "#FFFFFF",           // Color de fondo del canvas
@@ -49,6 +54,31 @@ const DEFAULT_SETTINGS = {
   dpi: 96
 };
 
+/**
+ * FORMATO DEL ARRAY DE CAPÍTULOS (entrada del motor)
+ *
+ * Cada elemento es un fragmento de texto:
+ *   { texto: '...', fuente: 'Arial', tamano: 14.0, color: '000000', align: 'left' }
+ *
+ * ...o una imagen insertada entre fragmentos de texto:
+ *   { tipo: 'imagen', src: 'https://.../imagen.webp', alt: 'Descripción',
+ *     maxWidth: 0.95, align: 'center', formato: 'inline' }
+ *
+ * - `src`: URL absoluta, ruta relativa al documento ('./img.webp') o nombre suelto
+ *   (se resuelve contra la base de imágenes de la obra).
+ * - `maxWidth`: fracción del ancho de página que puede ocupar (0 < maxWidth <= 1).
+ * - `align`: 'left' | 'center' | 'right' (por defecto 'center').
+ * - `formato`: cómo se pinta la imagen:
+ *     · 'inline'  (por defecto): imagen dentro del texto, con margen vertical y
+ *       alto máximo `imageMaxHeight` (1400 px).
+ *     · 'pagina':  imagen a página completa: ocupa el ancho de la página y puede
+ *       ser tan alta como una página de texto (`pageHeightLimit`, 2500 px).
+ *     · 'banner':  banda ancha como el header/footer: ancho de página y alto
+ *       máximo `bannerMaxHeight` (220 px).
+ *
+ * Cada imagen se pinta en un canvas propio (igual que el header/footer) y corta
+ * el flujo de texto: el texto anterior y el posterior siguen su curso.
+ */
 export class TxtReaderEngine {
   constructor(options) {
     this.initialCanvas = options.canvas;
@@ -66,10 +96,13 @@ export class TxtReaderEngine {
 
     this.allLines = [];
     this.pages = [];
+    this.flow = [];                // Secuencia de bloques a renderizar (páginas de texto + imágenes)
+    this.pageCanvasIndex = [];     // Página de texto → índice de su canvas en canvasElements
     this.canvasElements = []; // Registro de los canvas múltiples creados en cascada
     this.isInfiniteScroll = options.isInfiniteScroll || false;
     this.resources = { headerImg: null, footerImg: null };
     this.config = {};
+    this._imageCache = new Map();  // URL → Promise<HTMLImageElement|null> (caché LRU simple)
 
     // Setup de redimensionamiento responsivo
     this._setupResizeListener();
@@ -109,7 +142,7 @@ export class TxtReaderEngine {
 
         if (this.lastTextContent) {
           this._processText(this.lastTextContent);
-          this.render();
+          this.render().catch(() => {});
         }
       }, 300);
     });
@@ -153,7 +186,7 @@ export class TxtReaderEngine {
 
     await this._loadResources();
     this._processText(txtContent);
-    this.render();
+    await this.render();
   }
 
   _parsePythonArray(text) {
@@ -176,6 +209,7 @@ export class TxtReaderEngine {
     if (!data || !Array.isArray(data)) {
       this.allLines = [];
       this.pages = [];
+      this.flow = [];
       return;
     }
 
@@ -246,6 +280,22 @@ export class TxtReaderEngine {
     };
 
     for (const frag of data) {
+      // 🖼️ Elemento de imagen: corta el flujo de texto y se renderiza después
+      // en su propio canvas (igual que el header/footer). No lleva texto ni saltos.
+      if (this._isImageFragment(frag)) {
+        const image = this._normalizeImageFragment(frag);
+        if (image) {
+          // Cerramos la línea en curso y materializamos el salto pendiente para
+          // que la imagen quede separada del párrafo anterior.
+          if (currentLineFragments.length > 0) {
+            flushLine(maxHeightInLine || this.settings.lineHeightDefault, false, currentAlign);
+          }
+          pushParagraphSpacer();
+          allLines.push({ isImage: true, ...image });
+        }
+        continue;
+      }
+
       const sizePx = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
       const lineHeightPx = sizePx * this.LINE_HEIGHT_RATIO;
       if (lineHeightPx > maxHeightInLine) {
@@ -342,53 +392,168 @@ export class TxtReaderEngine {
     // Un salto final de párrafo NO genera hueco: no hay párrafo siguiente.
 
     this.allLines = allLines;
-    
+
     // PAGINACIÓN INTERNA (Gestión de bloques seguros para los canvas en cascada)
-    const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit; 
+    // Las imágenes son bloques independientes: cortan el flujo de texto y se
+    // pintan en su propio canvas. NO cuentan como página de texto (así el
+    // contador de páginas y la lectura en voz alta no se ven afectados).
+    const PAGE_HEIGHT_LIMIT = this.settings.pageHeightLimit;
     const pages = [];
+    const flow = [];
     let currentPageLines = [];
     let currentH = this.settings.marginTop;
 
+    const closeTextPage = () => {
+      if (currentPageLines.length === 0) return;
+      const pageIdx = pages.length;
+      pages.push(currentPageLines);
+      flow.push({ type: 'text', pageIdx, lines: currentPageLines });
+      currentPageLines = [];
+      currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
+    };
+
     this.allLines.forEach(line => {
+      if (line.isImage) {
+        closeTextPage();
+        flow.push({ type: 'image', item: line });
+        return;
+      }
       const h = line.height || this.settings.lineHeightDefault;
       if (currentH + h > PAGE_HEIGHT_LIMIT) {
-        pages.push(currentPageLines);
-        currentPageLines = [];
-        currentH = 0; // Sin margen acumulado entre bloques para garantizar continuidad exacta
+        closeTextPage();
       }
       currentPageLines.push(line);
       currentH += h;
     });
 
-    if (currentPageLines.length > 0) {
-      pages.push(currentPageLines);
-    }
+    closeTextPage();
 
     this.pages = pages;
+    this.flow = flow;
   }
 
-async _loadResources() {
-    // Función auxiliar para cargar una imagen individual por URL
-    const loadImg = (url) => {
-      if (!url) return Promise.resolve(null);
-      return new Promise((resolve) => {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => resolve(img);
-        img.onerror = () => resolve(null);
-        img.src = url;
-      });
+  /**
+   * Carga una imagen y la cachea por URL (una sola descarga por imagen).
+   * Si el servidor no envía cabeceras CORS se reintenta sin `crossOrigin`:
+   * el canvas quedaría "tainted", pero aquí nunca se leen píxeles de él.
+   * @param {string} url - URL completa de la imagen
+   * @returns {Promise<HTMLImageElement|null>} La imagen cargada o null si falla
+   */
+  _loadImage(url) {
+    if (!url) return Promise.resolve(null);
+    if (this._imageCache.has(url)) return this._imageCache.get(url);
+
+    const load = (useCors) => new Promise((resolve) => {
+      const img = new Image();
+      if (useCors) img.crossOrigin = "anonymous";
+      img.onload = () => resolve(img);
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+
+    const promise = load(true).then((img) => (img ? img : load(false)));
+    this._imageCache.set(url, promise);
+
+    // Caché LRU sencilla: si crece demasiado se descarta la entrada más antigua
+    while (this._imageCache.size > ENGINE_CONSTANTS.MAX_CACHED_IMAGES) {
+      const oldest = this._imageCache.keys().next().value;
+      this._imageCache.delete(oldest);
+    }
+
+    return promise;
+  }
+
+  /**
+   * ¿Es este fragmento una imagen insertada entre el texto?
+   * Formato: {tipo: 'imagen', src: '...', alt: '...', maxWidth: 0.95, align: 'center'}
+   * @param {Object} frag - Fragmento del array de la obra
+   * @returns {boolean}
+   */
+  _isImageFragment(frag) {
+    if (!frag || typeof frag !== 'object') return false;
+    const tipo = frag.tipo ? String(frag.tipo).toLowerCase() : '';
+    if (tipo === 'imagen' || tipo === 'image') return true;
+    return typeof frag.imagen === 'string' && frag.imagen.length > 0;
+  }
+
+  /**
+   * Normaliza el "formato" de una imagen insertada:
+   * - 'inline'  : imagen dentro del texto (por defecto), limitada por imageMaxHeight.
+   * - 'pagina'  : imagen a página completa, ocupa el ancho de la página y puede
+   *               ser tan alta como una página de texto (pageHeightLimit).
+   * - 'banner'  : banda ancha (como el header/footer), altura limitada por bannerMaxHeight.
+   * @param {string} value - Valor recibido en el array
+   * @returns {string} 'inline' | 'pagina' | 'banner'
+   */
+  _normalizeImageFormat(value) {
+    const format = String(value || '').trim().toLowerCase();
+    if (format === 'pagina' || format === 'página' || format === 'page' || format === 'pagina-completa') {
+      return 'pagina';
+    }
+    if (format === 'banner' || format === 'banda') return 'banner';
+    return 'inline';
+  }
+
+  /**
+   * Normaliza un fragmento de imagen y resuelve su URL.
+   * @param {Object} frag - Fragmento del array de la obra
+   * @returns {Object|null} {src, alt, maxWidth, align, formato} o null si no es usable
+   */
+  _normalizeImageFragment(frag) {
+    const rawSrc = frag.src || frag.imagen || frag.url || '';
+    if (!rawSrc) return null;
+
+    const ratio = Number(frag.maxWidth);
+    const maxWidth = Number.isFinite(ratio) && ratio > 0 ? Math.min(1, ratio) : 1;
+    const align = ['left', 'right', 'center'].includes(frag.align) ? frag.align : 'center';
+
+    return {
+      src: this._resolveImageUrl(rawSrc),
+      alt: frag.alt || '',
+      maxWidth,
+      align,
+      formato: this._normalizeImageFormat(frag.formato)
     };
+  }
+
+  /**
+   * Resuelve la ruta de una imagen:
+   * - URL absoluta (http/https/data): se usa tal cual.
+   * - Ruta relativa al documento ("./img.webp", "../img.webp", "/img.webp"):
+   *   se resuelve contra la URL de la página.
+   * - Nombre suelto ("img.webp"): se resuelve contra la base de imágenes de la obra.
+   * @param {string} rawSrc
+   * @returns {string}
+   */
+  _resolveImageUrl(rawSrc) {
+    if (/^(https?:)?\/\//i.test(rawSrc) || rawSrc.startsWith('data:')) return rawSrc;
+
+    // Rutas relativas al documento actual
+    if (/^\.{1,2}\//.test(rawSrc) || rawSrc.startsWith('/')) {
+      const base = (typeof document !== 'undefined' && document.baseURI) ? document.baseURI : undefined;
+      try {
+        return base ? new URL(rawSrc, base).href : rawSrc;
+      } catch (e) {
+        return rawSrc;
+      }
+    }
+
+    const base = this.config?.imagebaseUrl || this.config?.headerbaseUrl || '';
+    if (!base) return rawSrc;
+    return `${base}${rawSrc.replace(/^\/+/, '')}`;
+  }
+
+  async _loadResources() {
     // Procesa el array de banners del JSON (ej: headerBannerUrl: ['img1.webp', 'img2.webp'])
     const processBanners = async (baseUrl, bannerUrls, fallbackUrl) => {
       const banners = Array.isArray(bannerUrls) ? bannerUrls : [bannerUrls].filter(Boolean);
       const loadedImgs = [];
       for (const filename of banners) {
         const url = filename.startsWith('http') ? filename : `${baseUrl}${filename}`;
-        let img = await loadImg(url);
+        let img = await this._loadImage(url);
         // Si la imagen del array falla al cargar, intentamos cargar el fallback correspondiente
         if (!img && fallbackUrl) {
-          img = await loadImg(fallbackUrl);
+          img = await this._loadImage(fallbackUrl);
         }
         // Guardamos el resultado en el array (manteniendo el índice exacto para que el capítulo coincida)
         loadedImgs.push(img);
@@ -489,138 +654,311 @@ async _loadResources() {
   }
 
   //--- RENDERIZADO EN CASCADA CON SCROLL INFINITO (CANVAS MÚLTIPLES SEGUROS) ---
-  render() {
+  /**
+   * Pinta el capítulo completo: bloques de texto y bloques de imagen, en orden.
+   * Las imágenes se cargan antes de pintar para que el capítulo no dé saltos.
+   * @returns {Promise<void>}
+   */
+  async render() {
     if (!this.container) return;
 
     // Limpiamos el contenedor y la pila anterior de canvas
     this.container.innerHTML = '';
     this.canvasElements = [];
+    this.pageCanvasIndex = [];
 
     const availableWidth = this.container.clientWidth || window.innerWidth;
-    const pages = this.pages || [];
+    const flow = this.flow || [];
     const config = this.config || {};
     const imgHeader = this._getBannerByChapter(config.headerChapters, this.resources.headerImg, this.capitulo);
     const imgFooter = this._getBannerByChapter(config.footerChapters, this.resources.footerImg, this.capitulo);
     const margenPx = this.settings.marginTop;
 
-    pages.forEach((pageLines, pageIdx) => {
-      let blockH = 0;
+    // Las imágenes inline se cargan ANTES de pintar: así el capítulo aparece
+    // completo (y sin saltos de maquetación) aunque tarden en descargarse.
+    await Promise.all(flow.map(async (block) => {
+      if (block.type !== 'image') return;
+      block.item.image = await this._loadImage(block.item.src);
+    }));
 
+    // Cabecera (banner) antes del primer bloque, igual que el lector original
+    if (imgHeader || config.headerText) {
+      this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
+    }
 
-      pageLines.forEach(l => {
-        blockH += (l.height || this.settings.lineHeightDefault);
-      });
-
-      // Solo el primer bloque lleva el margen superior y la cabecera opcional
-      if (pageIdx === 0) {
-        blockH += margenPx/2;
-        //if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+    for (const block of flow) {
+      if (block.type === 'image') {
+        this._renderImageCanvas(block.item, availableWidth);
+        continue;
       }
+      this._renderTextPage(block.lines, block.pageIdx, availableWidth, margenPx, config);
+    }
 
-      // Solo el último bloque lleva el pie de página opcional y el margen inferior
-      if (pageIdx === pages.length - 1) {
-         blockH += margenPx / 2;
-      //  if (imgFooter || config.footerLinkText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
-      //  blockH += margenPx;
-      }
-
-      // Creamos un canvas independiente por cada bloque seguro para evitar límites de GPU/móviles
-      const finalBlockH = Math.round(blockH);
-      const canvasNode = document.createElement('canvas');
-      canvasNode.width = availableWidth;
-      //canvasNode.height = blockH;
-      canvasNode.height = finalBlockH;
-      canvasNode.style.width = `${availableWidth}px`;
-      //canvasNode.style.height = `${blockH}px`;
-      canvasNode.style.height = `${finalBlockH}px`;
-      canvasNode.style.display = 'block';
-      canvasNode.style.margin = '0';
-      canvasNode.style.padding = '0';
-
-      const ctx = canvasNode.getContext('2d');
-      ctx.fillStyle = this.settings.bgColor;
-      ctx.fillRect(0, 0, availableWidth, blockH);
-      ctx.textBaseline = "top";
-
-      let y = 0;
-
-      if (pageIdx === 0) {
-        y = margenPx / 2;
-        if (imgHeader || config.headerText) {
-          this._renderAsset(imgHeader, config.headerText, false, availableWidth, margenPx);
-        }
-      }
-
-      pageLines.forEach(line => {
-        if (line.isSpacer) {
-          y += line.height;
-          return;
-        }
-
-        let x = this.settings.marginLeft;
-        const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
-
-        if (line.fragments) {
-          // Si la línea está centrada, calculamos su ancho total primero para posicionarla en el medio
-          if (line.align === 'center') {
-            let totalLineWidth = 0;
-            line.fragments.forEach(frag => {
-              let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-              if (frag.superindice || frag.subindice) size *= 0.65;
-              const weight = frag.negrita ? 'bold' : 'normal';
-              const style = frag.cursiva ? 'italic' : 'normal';
-              ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
-              totalLineWidth += ctx.measureText(frag.texto).width;
-            });
-            x = this.settings.marginLeft + (maxContentWidth - totalLineWidth) / 2;
-          }
-
-          line.fragments.forEach(frag => {
-            let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
-            let offsetY = 0;
-
-            if (frag.superindice) {
-              size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
-              offsetY = -size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
-            } else if (frag.subindice) {
-              size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
-              offsetY = size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
-            }
-
-            const weight = frag.negrita ? 'bold' : 'normal';
-            const style = frag.cursiva ? 'italic' : 'normal';
-            ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
-            ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
-
-            ctx.fillText(frag.texto, x, y + offsetY);
-
-            if (frag.subrayado) {
-              const textWidth = ctx.measureText(frag.texto).width;
-              ctx.beginPath();
-              ctx.strokeStyle = ctx.fillStyle;
-              ctx.lineWidth = 1;
-              ctx.moveTo(x, y + size * 0.9);
-              ctx.lineTo(x + textWidth, y + size * 0.9);
-              ctx.stroke();
-            }
-
-            x += ctx.measureText(frag.texto).width;
-          });
-        }
-        y += line.height || this.settings.lineHeightDefault;
-      });
-      // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
-      this.container.appendChild(canvasNode);
-      this.canvasElements.push(canvasNode);
-      //console.log({
-      //  blockH,
-      //  yFinal: y
-      //});
-    });
     // Inserción de Pie de Pagina (Footer)
     if ((imgFooter || config.footerLinkText)) {
       this._renderAsset(imgFooter, config.footerLinkText, !!config.footerLinkUrl, availableWidth, margenPx);
     }
+  }
+
+  /**
+   * Pinta una página de texto en su propio canvas (bloque seguro para GPU/móvil).
+   * @param {Array} pageLines - Líneas de la página
+   * @param {number} pageIdx - Índice de la página dentro de this.pages
+   * @param {number} availableWidth - Ancho disponible en px
+   * @param {number} margenPx - Margen superior/inferior
+   * @param {Object} config - Configuración remota
+   */
+  _renderTextPage(pageLines, pageIdx, availableWidth, margenPx, config) {
+    let blockH = 0;
+
+    pageLines.forEach(l => {
+      blockH += (l.height || this.settings.lineHeightDefault);
+    });
+
+    // Solo el primer bloque lleva el margen superior y la cabecera opcional
+    if (pageIdx === 0) {
+      blockH += margenPx/2;
+      //if (imgHeader || config.headerText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+    }
+
+    // Solo el último bloque lleva el pie de página opcional y el margen inferior
+    if (pageIdx === this.pages.length - 1) {
+       blockH += margenPx / 2;
+      //  if (imgFooter || config.footerLinkText) blockH += ENGINE_CONSTANTS.HEADER_FOOTER_ASSET_HEIGHT;
+      //  blockH += margenPx;
+    }
+
+    // Creamos un canvas independiente por cada bloque seguro para evitar límites de GPU/móviles
+    const finalBlockH = Math.round(blockH);
+    const canvasNode = document.createElement('canvas');
+    canvasNode.width = availableWidth;
+    //canvasNode.height = blockH;
+    canvasNode.height = finalBlockH;
+    canvasNode.style.width = `${availableWidth}px`;
+    //canvasNode.style.height = `${blockH}px`;
+    canvasNode.style.height = `${finalBlockH}px`;
+    canvasNode.style.display = 'block';
+    canvasNode.style.margin = '0';
+    canvasNode.style.padding = '0';
+
+    const ctx = canvasNode.getContext('2d');
+    ctx.fillStyle = this.settings.bgColor;
+    ctx.fillRect(0, 0, availableWidth, blockH);
+    ctx.textBaseline = "top";
+
+    let y = 0;
+
+    if (pageIdx === 0) {
+      y = margenPx / 2;
+    }
+
+    pageLines.forEach(line => {
+      if (line.isSpacer) {
+        y += line.height;
+        return;
+      }
+
+      let x = this.settings.marginLeft;
+      const maxContentWidth = availableWidth - (this.settings.marginLeft * 2);
+
+      if (line.fragments) {
+        // Si la línea está centrada, calculamos su ancho total primero para posicionarla en el medio
+        if (line.align === 'center') {
+          let totalLineWidth = 0;
+          line.fragments.forEach(frag => {
+            let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+            if (frag.superindice || frag.subindice) size *= 0.65;
+            const weight = frag.negrita ? 'bold' : 'normal';
+            const style = frag.cursiva ? 'italic' : 'normal';
+            ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
+            totalLineWidth += ctx.measureText(frag.texto).width;
+          });
+          x = this.settings.marginLeft + (maxContentWidth - totalLineWidth) / 2;
+        }
+
+        line.fragments.forEach(frag => {
+          let size = this.ptToPx(frag.tamano || this.settings.defaultFontSize);
+          let offsetY = 0;
+
+          if (frag.superindice) {
+            size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
+            offsetY = -size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
+          } else if (frag.subindice) {
+            size *= ENGINE_CONSTANTS.SCRIPT_SIZE_RATIO;
+            offsetY = size * ENGINE_CONSTANTS.SCRIPT_OFFSET_RATIO;
+          }
+
+          const weight = frag.negrita ? 'bold' : 'normal';
+          const style = frag.cursiva ? 'italic' : 'normal';
+          ctx.font = `${style} ${weight} ${size}px ${this.FONT_FAMILY}`;
+          ctx.fillStyle = frag.color ? `#${frag.color}` : this.settings.defaultTextColor;
+
+          ctx.fillText(frag.texto, x, y + offsetY);
+
+          if (frag.subrayado) {
+            const textWidth = ctx.measureText(frag.texto).width;
+            ctx.beginPath();
+            ctx.strokeStyle = ctx.fillStyle;
+            ctx.lineWidth = 1;
+            ctx.moveTo(x, y + size * 0.9);
+            ctx.lineTo(x + textWidth, y + size * 0.9);
+            ctx.stroke();
+          }
+
+          x += ctx.measureText(frag.texto).width;
+        });
+      }
+      y += line.height || this.settings.lineHeightDefault;
+    });
+
+    // Inyectamos el canvas en cadena al DOM del contenedor para el scroll continuo
+    this.container.appendChild(canvasNode);
+    this.canvasElements.push(canvasNode);
+    // Guardamos qué canvas corresponde a esta página de texto: entre páginas
+    // puede haber canvases de imágenes que desplazan la posición en la lista.
+    this.pageCanvasIndex[pageIdx] = this.canvasElements.length - 1;
+  }
+
+  /**
+   * Pinta una imagen insertada entre fragmentos de texto en su propio canvas,
+   * según el "formato" indicado: inline (dentro del texto), pagina (a página
+   * completa) o banner (banda ancha, como el header/footer).
+   * Si la imagen no se pudo cargar, se salta y el texto continúa.
+   * @param {Object} item - Bloque de imagen {src, alt, maxWidth, align, formato, image}
+   * @param {number} availableWidth - Ancho disponible en px
+   */
+  _renderImageCanvas(item, availableWidth) {
+    const img = item.image;
+    if (!img || !img.width || !img.height) return;
+
+    if (item.formato === 'pagina') {
+      this._renderPageImage(img, item, availableWidth);
+      return;
+    }
+    if (item.formato === 'banner') {
+      this._renderBannerImage(img, item, availableWidth);
+      return;
+    }
+    this._renderInlineImage(img, item, availableWidth);
+  }
+
+  /**
+   * Crea el canvas de una imagen (fondo, tamaño y accesibilidad) y lo engancha
+   * al contenedor en cascada.
+   * @param {number} availableWidth - Ancho disponible en px
+   * @param {number} height - Alto del canvas en px
+   * @param {string} alt - Texto alternativo (opcional)
+   * @returns {CanvasRenderingContext2D} Contexto del canvas ya insertado
+   */
+  _createImageCanvas(availableWidth, height, alt) {
+    const canvasNode = document.createElement('canvas');
+    canvasNode.width = availableWidth;
+    canvasNode.height = height;
+    canvasNode.style.width = `${availableWidth}px`;
+    canvasNode.style.height = `${height}px`;
+    canvasNode.style.display = 'block';
+    canvasNode.style.margin = '0';
+    canvasNode.style.padding = '0';
+
+    if (alt) {
+      canvasNode.setAttribute('role', 'img');
+      canvasNode.setAttribute('aria-label', alt);
+    }
+
+    const ctx = canvasNode.getContext('2d');
+    ctx.fillStyle = this.settings.bgColor;
+    ctx.fillRect(0, 0, availableWidth, height);
+
+    this.container.appendChild(canvasNode);
+    this.canvasElements.push(canvasNode);
+    return ctx;
+  }
+
+  /**
+   * Calcula la posición horizontal de la imagen según su alineación.
+   * @param {string} align - 'left' | 'center' | 'right'
+   * @param {number} availableWidth - Ancho disponible en px
+   * @param {number} drawW - Ancho dibujado de la imagen
+   * @returns {number} Coordenada X
+   */
+  _imageX(align, availableWidth, drawW) {
+    if (align === 'left') return this.settings.marginLeft;
+    if (align === 'right') return availableWidth - this.settings.marginLeft - drawW;
+    return (availableWidth - drawW) / 2;
+  }
+
+  /**
+   * Imagen insertada dentro del texto: tamaño proporcional al ancho pedido,
+   * con margen vertical y alto máximo de seguridad.
+   * @param {HTMLImageElement} img - Imagen ya cargada
+   * @param {Object} item - Bloque de imagen
+   * @param {number} availableWidth - Ancho disponible en px
+   */
+  _renderInlineImage(img, item, availableWidth) {
+    const marginPx = this.settings.imageMargin;
+    const maxContentWidth = Math.max(1, availableWidth - (this.settings.marginLeft * 2));
+    const maxWidth = Math.min(maxContentWidth * (item.maxWidth || 1), availableWidth);
+
+    // Alto proporcional al ancho original de la imagen
+    let drawW = Math.max(1, Math.round(maxWidth));
+    let drawH = Math.max(1, Math.round((img.height / img.width) * drawW));
+
+    // Límite de seguridad: evita canvas gigantes en imágenes muy verticales
+    if (drawH > this.settings.imageMaxHeight) {
+      drawH = this.settings.imageMaxHeight;
+      drawW = Math.max(1, Math.round((img.width / img.height) * drawH));
+    }
+
+    const ctx = this._createImageCanvas(availableWidth, drawH + marginPx * 2, item.alt);
+    ctx.drawImage(img, this._imageX(item.align, availableWidth, drawW), marginPx, drawW, drawH);
+  }
+
+  /**
+   * Imagen a página completa: ocupa el ancho de la página y puede ser tan alta
+   * como una página de texto (sin margen vertical: es la página).
+   * @param {HTMLImageElement} img - Imagen ya cargada
+   * @param {Object} item - Bloque de imagen
+   * @param {number} availableWidth - Ancho disponible en px
+   */
+  _renderPageImage(img, item, availableWidth) {
+    const maxContentWidth = Math.max(1, availableWidth - (this.settings.marginLeft * 2));
+    const maxWidth = Math.min(maxContentWidth * (item.maxWidth || 1), availableWidth);
+
+    let drawW = Math.max(1, Math.round(maxWidth));
+    let drawH = Math.max(1, Math.round((img.height / img.width) * drawW));
+
+    // Una imagen de página no puede superar la altura de una página de texto
+    if (drawH > this.settings.pageHeightLimit) {
+      drawH = this.settings.pageHeightLimit;
+      drawW = Math.max(1, Math.round((img.width / img.height) * drawH));
+    }
+
+    const ctx = this._createImageCanvas(availableWidth, drawH, item.alt);
+    ctx.drawImage(img, this._imageX(item.align, availableWidth, drawW), 0, drawW, drawH);
+  }
+
+  /**
+   * Banner: banda ancha al ancho de la página (como el header/footer) con la
+   * altura limitada para que no domine el texto.
+   * @param {HTMLImageElement} img - Imagen ya cargada
+   * @param {Object} item - Bloque de imagen
+   * @param {number} availableWidth - Ancho disponible en px
+   */
+  _renderBannerImage(img, item, availableWidth) {
+    const marginPx = this.settings.imageMargin;
+    const maxWidth = Math.min(availableWidth * (item.maxWidth || 1), availableWidth);
+
+    let drawW = Math.max(1, Math.round(maxWidth));
+    let drawH = Math.max(1, Math.round((img.height / img.width) * drawW));
+
+    // Un banner es ancho y bajo: si es demasiado alto se reduce (contenido)
+    if (drawH > this.settings.bannerMaxHeight) {
+      drawH = this.settings.bannerMaxHeight;
+      drawW = Math.max(1, Math.round((img.width / img.height) * drawH));
+    }
+
+    const ctx = this._createImageCanvas(availableWidth, drawH + marginPx * 2, item.alt);
+    ctx.drawImage(img, this._imageX(item.align, availableWidth, drawW), marginPx, drawW, drawH);
   }
 
   // --- Métodos de compatibilidad con SPA ---
@@ -638,7 +976,10 @@ async _loadResources() {
   }
   async getPage(pageNum) {
     const idx = Math.max(0, pageNum - 1);
-    const targetCanvas = this.canvasElements[idx] || this.canvasElements[0];
+    // El canvas de una página de texto puede no ser el que le toca por índice
+    // si hay imágenes intercaladas: usamos el mapa pageCanvasIndex.
+    const canvasIdx = this.pageCanvasIndex[idx] ?? idx;
+    const targetCanvas = this.canvasElements[canvasIdx] || this.canvasElements[0];
     
     // 🔍 Extraemos el texto real de los fragmentos de esta página para el Text-to-Speech
     const pageLines = this.pages[idx] || [];
@@ -662,7 +1003,7 @@ async _loadResources() {
     };
   }
 
-  fitToContainer() { this.render(); }
+  fitToContainer() { this.render().catch(() => {}); }
   
   // 📄 Devolvemos el total de páginas reales calculadas en el procesamiento del texto
   get numPages() { return this.pages.length || 1; }
