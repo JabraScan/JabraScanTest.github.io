@@ -129,7 +129,7 @@ export async function obtenerInfo(idvisitado) {
       fechaActualizacion: data?.fechaActualizacion ?? null,
       votos: data?.votos ?? 0,
       obra: data?.obra ?? null,
-      numVisitasCapitulo: data?.numVisitasCapitulo ?? 0,
+      numVisitasCapitulo: 0 ?? data?.numVisitasCapitulo,
     };
   } catch (err) {
     return {
