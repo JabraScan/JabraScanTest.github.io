@@ -280,3 +280,23 @@
         gap: 0.6rem;
     }
 }
+
+/* Cajas para PC */
+.top-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem;
+    height: 100%;
+}
+
+.top-box-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.9rem;
+    color: #495057;
+}
+
+/* Separación con el podio */
+#top-periodos {
+    margin-bottom: 2.8rem;
+}
