@@ -210,3 +210,94 @@
         width: 98px;
     }
 }
+
+/* ===== TOP DIARIO & MENSUAL ===== */
+.top-periodo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.top-periodo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.75rem 0.5rem;
+    border-radius: 12px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.top-periodo-item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+}
+
+.top-periodo-pos {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #6c757d;
+    margin-bottom: 0.4rem;
+}
+
+.top-periodo-img-wrapper {
+    width: 64px;
+    height: 84px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+    margin-bottom: 0.5rem;
+}
+
+.top-periodo-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.top-periodo-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f3f5;
+    font-size: 1.5rem;
+}
+
+.top-periodo-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+    width: 100%;
+}
+
+.top-periodo-lecturas {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .top-periodo-grid {
+        gap: 0.6rem;
+    }
+
+    .top-periodo-img-wrapper {
+        width: 56px;
+        height: 74px;
+    }
+
+    .top-periodo-title {
+        font-size: 0.75rem;
+    }
+}
