@@ -223,61 +223,38 @@ function enriquecerObras(obras, xmlText) {
 }
 
 function renderPodio(container, top3, iconosRes) {
-
     if (!container) return;
 
-    const orden = [1, 0, 2];
+    const orden = [1, 0, 2]; // 2º, 1º, 3º
     const clases = ["second", "first", "third"];
+    const medallas = ["🥈", "🥇", "🥉"];
 
     container.innerHTML = `
         <div class="podium">
             ${orden.map((idx, posVisual) => {
-
                 const obra = top3[idx];
-
                 if (!obra) return '';
 
-                const info =
-                    iconosRes[obra.obra] ||
-                    iconosRes["Default"] ||
-                    {};
-
-                const titulo =
-                    info.descripcion ||
-                    obra.obra ||
-                    obra.id;
-
+                const info = iconosRes[obra.obra] || iconosRes["Default"] || {};
+                const titulo = obra.nombreObra || info.descripcion || obra.obra || obra.id || "";
                 const urlObra = obra.urlObra || "#";
 
-                const contenidoCover = obra.imagenUrl
-                    ? `<a href="${escapeHtml(urlObra)}"><img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img"></a>`
-                    : `<a href="${escapeHtml(urlObra)}">${info.icono || "📚"}</a>`;
+                const coverContent = obra.imagenUrl
+                    ? `<img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img">`
+                    : `<div class="podium-fallback">${info.icono || "📚"}</div>`;
 
                 return `
                     <div class="podium-item ${clases[posVisual]}">
-
-                        <div class="podium-cover">
-                            ${contenidoCover}
-                        </div>
-
+                        <div class="podium-medal">${medallas[posVisual]}</div>
+                        <a href="${escapeHtml(urlObra)}" class="podium-cover" title="${escapeHtml(titulo)}">
+                            ${coverContent}
+                        </a>
                         <div class="podium-block">
-
-                            <div
-                                class="podium-title"
-                                title="${escapeHtml(titulo)}">
-
-                                <a href="${escapeHtml(urlObra)}" style="color: inherit; text-decoration: none;">
-                                    ${escapeHtml(titulo)}
-                                </a>
-
+                            <div class="podium-title">
+                                <a href="${escapeHtml(urlObra)}">${escapeHtml(titulo)}</a>
                             </div>
-
-                            <div class="lecturas">
-                                ${formatLecturas(obra.total)}
-                            </div>
-
+                            <div class="lecturas">${formatLecturas(obra.total)}</div>
                         </div>
-
                     </div>
                 `;
             }).join("")}
@@ -286,75 +263,44 @@ function renderPodio(container, top3, iconosRes) {
 }
 
 function renderRanking(container, obras, iconosRes) {
-
     if (!container) return;
 
     container.innerHTML = `
-        <table class="table">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 70px">POS</th>
+                        <th>OBRA</th>
+                        <th class="text-end">LECT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${obras.map((obra, index) => {
+                        const info = iconosRes[obra.obra] || iconosRes["Default"] || {};
+                        const titulo = obra.nombreObra || info.descripcion || obra.obra || obra.id || "";
+                        const urlObra = obra.urlObra || "#";
 
-            <thead>
-                <tr>
-                    <th width="80">POS</th>
-                    <th>OBRA</th>
-                    <th class="text-end">LECT</th>
-                </tr>
-            </thead>
+                        const cover = obra.imagenUrl
+                            ? `<img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="ranking-cover">`
+                            : `<span class="ranking-icon">${info.icono || "📚"}</span>`;
 
-            <tbody>
-
-                ${obras.map((obra, index) => {
-
-                    const info =
-                        iconosRes[obra.obra] ||
-                        iconosRes["Default"] ||
-                        {};
-
-                    const titulo =
-                        info.descripcion ||
-                        obra.obra ||
-                        obra.id;
-
-                    const urlObra = obra.urlObra || "#";
-
-                    return `
-                        <tr>
-
-                            <td>
-                                #${index + 4}
-                            </td>
-
-                            <td>
-
-                                <div class="obra-row">
-
-                                    <span class="obra-icono">
-                                        ${info.icono || "📚"}
-                                    </span>
-
-                                    <a href="${escapeHtml(urlObra)}" title="${escapeHtml(titulo)}" style="color: inherit; text-decoration: none;">
-                                        <span>
-                                            ${escapeHtml(titulo)}
-                                        </span>
+                        return `
+                            <tr>
+                                <td class="fw-semibold">#${index + 4}</td>
+                                <td>
+                                    <a href="${escapeHtml(urlObra)}" class="obra-link" title="${escapeHtml(titulo)}">
+                                        ${cover}
+                                        <span class="obra-titulo">${escapeHtml(titulo)}</span>
                                     </a>
-
-                                </div>
-
-                            </td>
-
-                            <td class="text-end">
-
-                                ${formatLecturas(obra.total)}
-
-                            </td>
-
-                        </tr>
-                    `;
-
-                }).join("")}
-
-            </tbody>
-
-        </table>
+                                </td>
+                                <td class="text-end fw-bold">${formatLecturas(obra.total)}</td>
+                            </tr>
+                        `;
+                    }).join("")}
+                </tbody>
+            </table>
+        </div>
     `;
 }
 
