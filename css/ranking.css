@@ -211,7 +211,7 @@
     }
 }
 
-/* ===== TOP DIARIO & MENSUAL ===== */
+/* ===== TOP DIARIO / MENSUAL (Bootstrap Tabs) ===== */
 .top-periodo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -225,13 +225,13 @@
     text-align: center;
     text-decoration: none;
     color: inherit;
-    padding: 0.6rem 0.4rem;
+    padding: 0.5rem 0.3rem;
     border-radius: 10px;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .top-periodo-item:hover {
-    background-color: rgba(0, 0, 0, 0.035);
+    background-color: rgba(0, 0, 0, 0.03);
     transform: translateY(-2px);
 }
 
@@ -240,8 +240,8 @@
     height: 90px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.13);
-    margin-bottom: 0.55rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    margin-bottom: 0.5rem;
 }
 
 .top-periodo-cover {
@@ -262,21 +262,25 @@
 }
 
 .top-periodo-title {
-    font-size: 0.83rem;
+    font-size: 0.84rem;
     font-weight: 600;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 0.25rem;
     width: 100%;
 }
 
-.top-periodo-lecturas {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #0d6efd;
+/* Ajuste de los pills de Bootstrap */
+#topTabs .nav-link {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.1rem;
+}
+
+#topTabs .nav-link.active {
+    background-color: #0d6efd;
 }
 
 /* Responsive */
@@ -291,6 +295,6 @@
     }
 
     .top-periodo-title {
-        font-size: 0.76rem;
+        font-size: 0.78rem;
     }
 }

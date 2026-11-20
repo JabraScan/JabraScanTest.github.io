@@ -113,7 +113,6 @@ function renderTopPeriodo(elementId, items, iconosRes) {
                             ${cover}
                         </div>
                         <div class="top-periodo-title">${escapeHtml(titulo)}</div>
-                        <div class="top-periodo-lecturas">${formatLecturas(item.total)}</div>
                     </a>
                 `;
             }).join("")}
