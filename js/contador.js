@@ -194,7 +194,7 @@ function renderPodio(container, top3, iconosRes) {
 
     const orden = [1, 0, 2]; // 2º, 1º, 3º
     const clases = ["second", "first", "third"];
-    const medallas = ["🥈", "🥇", "🥉"];
+    const posiciones = ["2", "1", "3"];
 
     container.innerHTML = `
         <div class="podium">
@@ -206,22 +206,22 @@ function renderPodio(container, top3, iconosRes) {
                 const titulo = obra.nombreObra || info.descripcion || obra.obra || obra.id || "";
                 const urlObra = obra.urlObra || "#";
 
-                const coverContent = obra.imagenUrl
+                const cover = obra.imagenUrl
                     ? `<img src="${escapeHtml(obra.imagenUrl)}" alt="${escapeHtml(titulo)}" class="podium-img">`
                     : `<div class="podium-fallback">${info.icono || "📚"}</div>`;
 
                 return `
                     <div class="podium-item ${clases[posVisual]}">
-                        <div class="podium-medal">${medallas[posVisual]}</div>
-                        <a href="${escapeHtml(urlObra)}" class="podium-cover" title="${escapeHtml(titulo)}">
-                            ${coverContent}
-                        </a>
-                        <div class="podium-block">
-                            <div class="podium-title">
-                                <a href="${escapeHtml(urlObra)}">${escapeHtml(titulo)}</a>
+                        <div class="podium-rank">${posiciones[posVisual]}</div>
+                        <a href="${escapeHtml(urlObra)}" class="podium-card" title="${escapeHtml(titulo)}">
+                            <div class="podium-cover">
+                                ${cover}
                             </div>
-                            <div class="lecturas">${formatLecturas(obra.total)}</div>
-                        </div>
+                            <div class="podium-info">
+                                <div class="podium-title">${escapeHtml(titulo)}</div>
+                                <div class="podium-lecturas">${formatLecturas(obra.total)}</div>
+                            </div>
+                        </a>
                     </div>
                 `;
             }).join("")}

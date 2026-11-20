@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ranking de Obras</title>
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/utilities.css">
+    <link rel="stylesheet" href="css/ranking.css">
+</head>
+
+<body>
+
+    <div>
+        <h1>🏆 Ranking de Obras</h1>
+    </div>
+
+    <main>
+        <div id="loader" class="loader">
+            Cargando datos...
+        </div>
+
+        <section id="top-periodos" class="mb-4">
+            <ul class="nav nav-pills mb-3" id="topTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="diario-tab" data-bs-toggle="tab" data-bs-target="#top-diario" type="button" role="tab">
+                        Diario
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="mensual-tab" data-bs-toggle="tab" data-bs-target="#top-mensual" type="button" role="tab">
+                        Mensual
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="top-diario" role="tabpanel">
+                    <div data-role="lista">Cargando...</div>
+                </div>
+                <div class="tab-pane fade" id="top-mensual" role="tabpanel">
+                    <div data-role="lista">Cargando...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="podio" class="podium-container"></section>
+
+        <section id="ranking" class="ranking-container"></section>
+
+        <div id="error" class="hidden"></div>
+
+    </main>
+
+    <footer></footer>
+</body>
+
+</html>
