@@ -86,10 +86,8 @@ async function obtenerTopPeriodo(url) {
 }
 
 function renderTopPeriodo(elementId, items, iconosRes) {
-    const box = document.getElementById(elementId);
-    if (!box) return;
-
-    const target = box.querySelector('[data-role="lista"]') || box;
+    const target = document.getElementById(elementId);
+    if (!target) return;
 
     if (!Array.isArray(items) || items.length === 0) {
         target.innerHTML = `<p class="text-muted mb-0">Sin lecturas registradas.</p>`;
@@ -121,15 +119,21 @@ function renderTopPeriodo(elementId, items, iconosRes) {
 }
 
 async function cargarTopsPeriodos(xmlText, iconosRes) {
-    if (!document.getElementById("top-diario") && !document.getElementById("top-mensual")) return;
-
     const [topDayRaw, topMonthRaw] = await Promise.all([
         obtenerTopPeriodo(TOP_DAY_URL).catch(() => []),
         obtenerTopPeriodo(TOP_MONTH_URL).catch(() => [])
     ]);
 
-    renderTopPeriodo("top-diario", enriquecerObras(topDayRaw, xmlText), iconosRes);
-    renderTopPeriodo("top-mensual", enriquecerObras(topMonthRaw, xmlText), iconosRes);
+    const topDay = enriquecerObras(topDayRaw, xmlText);
+    const topMonth = enriquecerObras(topMonthRaw, xmlText);
+
+    // Móvil
+    renderTopPeriodo("lista-diario-mobile", topDay, iconosRes);
+    renderTopPeriodo("lista-mensual-mobile", topMonth, iconosRes);
+
+    // PC
+    renderTopPeriodo("lista-diario-pc", topDay, iconosRes);
+    renderTopPeriodo("lista-mensual-pc", topMonth, iconosRes);
 }
 
 /**
