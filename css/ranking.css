@@ -1,10 +1,77 @@
+/* ===== TOP DIARIO / MENSUAL ===== */
+#top-periodos {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 1.2rem 1rem 1.4rem;
+    margin-bottom: 2.5rem;
+}
+
+.top-periodo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.top-periodo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.4rem;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.top-periodo-item:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.top-periodo-img-wrapper {
+    width: 40px;
+    height: 54px;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    margin-bottom: 0.4rem;
+}
+
+.top-periodo-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.top-periodo-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e9ecef;
+    font-size: 1.1rem;
+}
+
+.top-periodo-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 100%;
+}
+
 /* ===== PODIO ===== */
 .podium {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    gap: 1.25rem;
-    margin: 2rem 0 3rem;
+    gap: 1.5rem;
+    margin: 1rem 0 3rem;
     padding: 0 10px;
 }
 
@@ -16,21 +83,20 @@
 }
 
 .podium-medal {
-    font-size: 1.75rem;
-    margin-bottom: 0.35rem;
-    line-height: 1;
+    font-size: 1.8rem;
+    margin-bottom: 0.4rem;
 }
 
 .podium-cover {
     display: block;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     transition: transform 0.2s ease;
 }
 
 .podium-cover:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
 }
 
 .podium-img {
@@ -40,48 +106,34 @@
     display: block;
 }
 
-.podium-fallback {
-    width: 90px;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    background: #f1f3f5;
-}
-
-/* Diferenciación 1º, 2º y 3º */
-.podium-item.first .podium-img,
-.podium-item.first .podium-fallback {
-    width: 110px;
-    height: 146px;
+.podium-item.first .podium-img {
+    width: 120px;
+    height: 160px;
     border: 3px solid #ffd700;
 }
 
-.podium-item.second .podium-img,
-.podium-item.second .podium-fallback {
+.podium-item.second .podium-img {
     border: 3px solid #c0c0c0;
 }
 
-.podium-item.third .podium-img,
-.podium-item.third .podium-fallback {
+.podium-item.third .podium-img {
     border: 3px solid #cd7f32;
 }
 
 .podium-block {
     width: 150px;
-    margin-top: 0.75rem;
-    padding: 0.85rem 0.6rem;
+    margin-top: 0.8rem;
+    padding: 0.9rem 0.6rem;
     border-radius: 12px 12px 0 0;
     background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
 }
 
 .podium-item.first .podium-block {
-    min-height: 110px;
+    min-height: 120px;
 }
 
 .podium-item.second .podium-block {
-    min-height: 90px;
+    min-height: 95px;
 }
 
 .podium-item.third .podium-block {
@@ -110,19 +162,7 @@
     font-size: 0.95rem;
 }
 
-/* ===== RANKING LISTA ===== */
-.obra-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: inherit;
-    text-decoration: none;
-}
-
-.obra-link:hover .obra-titulo {
-    color: #0d6efd;
-}
-
+/* ===== LISTA RANKING ===== */
 .ranking-cover {
     width: 40px;
     height: 54px;
@@ -132,16 +172,12 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.ranking-icon {
-    width: 40px;
-    height: 54px;
+.obra-link {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    background: #f1f3f5;
-    border-radius: 6px;
-    flex-shrink: 0;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
 }
 
 .obra-titulo {
@@ -153,148 +189,39 @@
     line-height: 1.35;
 }
 
-/* ===== RESPONSIVE ===== */
+/* Responsive */
 @media (max-width: 768px) {
     .podium {
-        gap: 0.75rem;
+        gap: 0.9rem;
     }
 
-    .podium-img,
-    .podium-fallback {
-        width: 72px !important;
-        height: 96px !important;
+    .podium-img {
+        width: 74px !important;
+        height: 100px !important;
     }
 
-    .podium-item.first .podium-img,
-    .podium-item.first .podium-fallback {
-        width: 86px !important;
-        height: 114px !important;
+    .podium-item.first .podium-img {
+        width: 96px !important;
+        height: 128px !important;
     }
 
     .podium-block {
-        width: 110px;
-        padding: 0.65rem 0.4rem;
-    }
-
-    .podium-title {
-        font-size: 0.8rem;
-    }
-
-    .lecturas {
-        font-size: 0.85rem;
-    }
-
-    .podium-medal {
-        font-size: 1.4rem;
+        width: 120px;
     }
 }
 
 @media (max-width: 480px) {
-    .podium {
-        gap: 0.5rem;
+    .podium-img {
+        width: 66px !important;
+        height: 88px !important;
     }
 
-    .podium-img,
-    .podium-fallback {
-        width: 64px !important;
-        height: 86px !important;
-    }
-
-    .podium-item.first .podium-img,
-    .podium-item.first .podium-fallback {
-        width: 76px !important;
-        height: 100px !important;
+    .podium-item.first .podium-img {
+        width: 84px !important;
+        height: 112px !important;
     }
 
     .podium-block {
-        width: 98px;
-    }
-}
-
-/* ===== TOP DIARIO / MENSUAL (Bootstrap Tabs) ===== */
-.top-periodo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.1rem;
-}
-
-.top-periodo-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    text-decoration: none;
-    color: inherit;
-    padding: 0.5rem 0.3rem;
-    border-radius: 10px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.top-periodo-item:hover {
-    background-color: rgba(0, 0, 0, 0.03);
-    transform: translateY(-2px);
-}
-
-.top-periodo-img-wrapper {
-    width: 68px;
-    height: 90px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    margin-bottom: 0.5rem;
-}
-
-.top-periodo-cover {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.top-periodo-fallback {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f1f3f5;
-    font-size: 1.5rem;
-}
-
-.top-periodo-title {
-    font-size: 0.84rem;
-    font-weight: 600;
-    line-height: 1.3;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    width: 100%;
-}
-
-/* Ajuste de los pills de Bootstrap */
-#topTabs .nav-link {
-    font-weight: 600;
-    font-size: 0.9rem;
-    padding: 0.4rem 1.1rem;
-}
-
-#topTabs .nav-link.active {
-    background-color: #0d6efd;
-}
-
-/* Responsive */
-@media (max-width: 576px) {
-    .top-periodo-grid {
-        gap: 0.7rem;
-    }
-
-    .top-periodo-img-wrapper {
-        width: 58px;
-        height: 78px;
-    }
-
-    .top-periodo-title {
-        font-size: 0.78rem;
+        width: 105px;
     }
 }
