@@ -215,7 +215,7 @@
 .top-periodo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 1.1rem;
 }
 
 .top-periodo-item {
@@ -225,30 +225,23 @@
     text-align: center;
     text-decoration: none;
     color: inherit;
-    padding: 0.75rem 0.5rem;
-    border-radius: 12px;
+    padding: 0.6rem 0.4rem;
+    border-radius: 10px;
     transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .top-periodo-item:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.035);
     transform: translateY(-2px);
 }
 
-.top-periodo-pos {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #6c757d;
-    margin-bottom: 0.4rem;
-}
-
 .top-periodo-img-wrapper {
-    width: 64px;
-    height: 84px;
+    width: 68px;
+    height: 90px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+    margin-bottom: 0.55rem;
 }
 
 .top-periodo-cover {
@@ -269,7 +262,7 @@
 }
 
 .top-periodo-title {
-    font-size: 0.82rem;
+    font-size: 0.83rem;
     font-weight: 600;
     line-height: 1.3;
     display: -webkit-box;
@@ -289,15 +282,15 @@
 /* Responsive */
 @media (max-width: 576px) {
     .top-periodo-grid {
-        gap: 0.6rem;
+        gap: 0.7rem;
     }
 
     .top-periodo-img-wrapper {
-        width: 56px;
-        height: 74px;
+        width: 58px;
+        height: 78px;
     }
 
     .top-periodo-title {
-        font-size: 0.75rem;
+        font-size: 0.76rem;
     }
 }

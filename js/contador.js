@@ -98,11 +98,10 @@ function renderTopPeriodo(elementId, items, iconosRes) {
 
     target.innerHTML = `
         <div class="top-periodo-grid">
-            ${items.map((item, index) => {
+            ${items.map((item) => {
                 const info = iconosRes[item.obra] || iconosRes["Default"] || {};
                 const titulo = item.nombreObra || info.descripcion || item.obra || "";
                 const urlObra = item.urlObra || "#";
-                const posicion = index + 1;
 
                 const cover = item.imagenUrl
                     ? `<img src="${escapeHtml(item.imagenUrl)}" alt="${escapeHtml(titulo)}" class="top-periodo-cover">`
@@ -110,7 +109,6 @@ function renderTopPeriodo(elementId, items, iconosRes) {
 
                 return `
                     <a href="${escapeHtml(urlObra)}" class="top-periodo-item" title="${escapeHtml(titulo)}">
-                        <div class="top-periodo-pos">${posicion}</div>
                         <div class="top-periodo-img-wrapper">
                             ${cover}
                         </div>
