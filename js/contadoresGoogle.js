@@ -145,25 +145,11 @@ async function leerVisitasSupabase(idRecurso) {
     // @param {string} idvisitado
     // @returns {Promise<string>} "OK" si se actualizó correctamente
     //
-//    export async function incrementarVisita(idvisitado) {
-//      // Iniciar la actualización en paralelo (prioridad a la llamada de visitas)
-//        startUpdateUltimoCapituloIfNeeded(idvisitado);
-//      //Incremento de visitas
-//      // Llamada CloudFlare
-//      //  incrementarVisitaCloudflare(idvisitado)
-//      //  .then(res => console.log("Respuesta CF Incrementar:", res));
-//      // 🚀 Lanzamos Supabase en segundo plano sin bloquear la página
-//      return incrementarVisitaSupabase(idvisitado)
-//          .catch(() => {
-//            // 3. Si Supabase falla por red o latencia, capturamos el error de forma silenciosa
-//            // y ejecutamos el respaldo de Google, devolviendo su resultado.
-//            return incrementarVisitaGoogle(idvisitado);
-//          });
-//    }
       export async function incrementarVisita(idvisitado) {
         // Iniciar la actualización en paralelo del capítulo (si aplica)
         startUpdateUltimoCapituloIfNeeded(idvisitado);
-
+        //registrar en Turso de forma asíncrona
+        incrementarVisitaTurso(idvisitado);
         // 🚀 Retardamos la llamada a la red para dar margen a que el navegador pinte la web
         return new Promise((resolve) => {
           setTimeout(async () => {
@@ -233,182 +219,163 @@ async function leerVisitasSupabase(idRecurso) {
       return leerVisitasGoogle(idvisitado);
     }
 
-//
-//Envía una valoración (de 0 a 5) para un recurso identificado por ID
-//@param {string} idvisitado
-//@param {number} valor Valor numérico entre 0 y 5
-//@returns {Promise<string>} "OK" si se registró correctamente
-//
-export function valorarRecurso(idvisitado, valor) {
-  // Recuperamos el user_id guardado en localStorage (debe contener el token/JWT)
-  const usuarioId = getItem("user_id") || "null";
-  const token = getItem("jwt") || "null";
-  // URL de Google (igual que antes)
-  const url = `${URL_GOOGLE}?id=${encodeURIComponent(idvisitado)}&accion=valorar&valor=${encodeURIComponent(valor)}&usuario_id=${encodeURIComponent(usuarioId)}`;
-  // URL y opciones para Cloudflare (POST)
-  const urlCF = `${URL_CLOUDFLARE}/valoraciones/votar`;
-  const cfOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      // Enviamos el token en Authorization con esquema Bearer para que ConseguirUsuario lo lea
-      ...(usuarioId && usuarioId !== "null" ? { 'Authorization': `Bearer ${token}` } : {})
-    },
-    body: JSON.stringify({
-      id_obra: idvisitado,
-      valoracion: valor
-    })
-  };
-   //console.log(urlCF);
-   //console.log(cfOptions);
-  // Hacemos primero el POST a Cloudflare (no bloqueante respecto a la llamada a Google)
-  fetch(urlCF, cfOptions)
-    .then(res => res.json().catch(() => ({ ok: false, status: res.status })))
-    .catch(err => {
-      console.error("Error en POST a Cloudflare:", err);
-      return { ok: false, error: String(err) };
-    });
-  // Llamada a Google (igual que antes) y devolución del texto
-  //return fetch(url)
-  //  .then(res => res.text())
-  //  .catch(err => {
-  //    console.error("Error valorando recurso:", err);
-  //    return "ERROR";
-  //  });
-}
-
-// ==========================================
-// 📊 OBTENER INFORMACIÓN (Google + Supabase)
-// ==========================================
-
-// 1. Función específica para Google Apps Script
-function obtenerInfoGoogle(idvisitado) {
-  const url = `${URL_GOOGLE}?id=${encodeURIComponent(idvisitado)}&accion=obtenerInfo`;
-  return fetch(url)
-    .then(res => res.json())
-    .catch(err => {
-      //console.error("Error obteniendo info de Google:", err);
-      return null;
-    });
-}
-
-// 2. Función específica para Supabase (vía RPC o consulta de tabla)
-function obtenerInfoSupabase(idvisitado) {
-  return fetch(`${SUPABASE_URL}/rest/v1/rpc/obtener_info_recurso`, {
-    method: "POST",
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ p_id: idvisitado })
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Error en Supabase");
-    return res.json();
-  });
-}
-
-// 0. Función maestra para obtener la información
-export function obtenerInfo(idvisitado) {
-  return obtenerInfoSupabase(idvisitado)
-    .catch(err => {
-      console.warn("Supabase falló en obtenerInfo, usando respaldo de Google:", err);
-      return obtenerInfoGoogle(idvisitado);
-    })
-    .then(data => {
-      // Si por lo que sea ambos fallan o devuelven vacío, aportamos estructura segura
-      return data || {
-        visitas: 1,
-        valoracion: 5,
-        fechaActualizacion: null,
-        votos: 1,
-        obra: null,
-        numVisitasCapitulo: 0
+    //
+    //Envía una valoración (de 0 a 5) para un recurso identificado por ID
+    //@param {string} idvisitado
+    //@param {number} valor Valor numérico entre 0 y 5
+    //@returns {Promise<string>} "OK" si se registró correctamente
+    //
+    export function valorarRecurso(idvisitado, valor) {
+      // Recuperamos el user_id guardado en localStorage (debe contener el token/JWT)
+      const usuarioId = getItem("user_id") || "null";
+      const token = getItem("jwt") || "null";
+      // URL de Google (igual que antes)
+      const url = `${URL_GOOGLE}?id=${encodeURIComponent(idvisitado)}&accion=valorar&valor=${encodeURIComponent(valor)}&usuario_id=${encodeURIComponent(usuarioId)}`;
+      // URL y opciones para Cloudflare (POST)
+      const urlCF = `${URL_CLOUDFLARE}/valoraciones/votar`;
+      const cfOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Enviamos el token en Authorization con esquema Bearer para que ConseguirUsuario lo lea
+          ...(usuarioId && usuarioId !== "null" ? { 'Authorization': `Bearer ${token}` } : {})
+        },
+        body: JSON.stringify({
+          id_obra: idvisitado,
+          valoracion: valor
+        })
       };
-    });
-}
+      //console.log(urlCF);
+      //console.log(cfOptions);
+      // Hacemos primero el POST a Cloudflare (no bloqueante respecto a la llamada a Google)
+      fetch(urlCF, cfOptions)
+        .then(res => res.json().catch(() => ({ ok: false, status: res.status })))
+        .catch(err => {
+          console.error("Error en POST a Cloudflare:", err);
+          return { ok: false, error: String(err) };
+        });
+      // Llamada a Google (igual que antes) y devolución del texto
+      //return fetch(url)
+      //  .then(res => res.text())
+      //  .catch(err => {
+      //    console.error("Error valorando recurso:", err);
+      //    return "ERROR";
+      //  });
+    }
 
-// ==========================================
-// 📋 RESUMEN DE OBRAS (Google + Supabase)
-// ==========================================
+    // ==========================================
+    // 📊 OBTENER INFORMACIÓN (Google + Supabase)
+    // ==========================================
 
-// 1. Función específica para Google Apps Script
-function obtenerResumenObrasGoogle() {
-  const url = `${URL_GOOGLE}?accion=resumenObras`;
-  return fetch(url)
-    .then(res => res.json())
-    .catch(err => {
-      //console.error("Error obteniendo resumen de obras:", err);
-      return [];
-    });
-}
+    // 1. Función específica para Google Apps Script
+    function obtenerInfoGoogle(idvisitado) {
+      const url = `${URL_GOOGLE}?id=${encodeURIComponent(idvisitado)}&accion=obtenerInfo`;
+      return fetch(url)
+        .then(res => res.json())
+        .catch(err => {
+          //console.error("Error obteniendo info de Google:", err);
+          return null;
+        });
+    }
 
-// 2. Función específica para Supabase
-function obtenerResumenObrasSupabase() {
-  return fetch(`${SUPABASE_URL}/rest/v1/rpc/obtener_resumen_obras`, {
-    method: "POST",
-    headers: {
-      "apikey": SUPABASE_KEY,
-      "Authorization": `Bearer ${SUPABASE_KEY}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({})
-  })
-  .then(res => {
-    if (!res.ok) throw new Error("Error en Supabase resumen");
-    return res.json();
-  });
-}
+    // 2. Función específica para Supabase (vía RPC o consulta de tabla)
+    function obtenerInfoSupabase(idvisitado) {
+      return fetch(`${SUPABASE_URL}/rest/v1/rpc/obtener_info_recurso`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ p_id: idvisitado })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Error en Supabase");
+        return res.json();
+      });
+    }
 
-// 0. Función maestra para el resumen de obras
-export function obtenerResumenObras() {
-  return obtenerResumenObrasSupabase()
-    .catch(err => {
-      console.warn("Supabase falló en resumenObras, usando respaldo de Google:", err);
-      return obtenerResumenObrasGoogle();
-    })
-    .then(data => {
-      return data || [];
-    });
-}
+    // 0. Función maestra para obtener la información
+    export function obtenerInfo(idvisitado) {
+      return obtenerInfoSupabase(idvisitado)
+        .catch(err => {
+          console.warn("Supabase falló en obtenerInfo, usando respaldo de Google:", err);
+          return obtenerInfoGoogle(idvisitado);
+        })
+        .then(data => {
+          // Si por lo que sea ambos fallan o devuelven vacío, aportamos estructura segura
+          return data || {
+            visitas: 1,
+            valoracion: 5,
+            fechaActualizacion: null,
+            votos: 1,
+            obra: null,
+            numVisitasCapitulo: 0
+          };
+        });
+    }
 
-// //
-// //Obtiene la información completa del recurso: visitas, valoración promedio y fecha de última actualización
-// //@param {string} idvisitado
-// //@returns {Promise<Object>} Objeto con propiedades: visitas, valoracion, fechaActualizacion
-// //
-// export function obtenerInfo(idvisitado) {
-//   const url = `${URL_GOOGLE}?id=${encodeURIComponent(idvisitado)}&accion=obtenerInfo`;
-//   return fetch(url)
-//     .then(res => res.json())
-//     .catch(err => {
-//       console.error("Error obteniendo información:", err);
-//       return {
-//         visitas: 1,
-//         valoracion: 5,
-//         fechaActualizacion: null,
-//         votos: 1,
-//         obra: null,
-//         numVisitasCapitulo: 0
-//       };
-//     });
-// }
-// 
-// //
-// //📋 Obtiene el resumen completo de todas las obras
-// //@returns {Promise<Array>} Array de objetos con datos de cada obra
-// //
-// export function obtenerResumenObras() {
-//   const url = `${URL_GOOGLE}?accion=resumenObras`;
-//   return fetch(url)
-//     .then(res => res.json())
-//     .catch(err => {
-//       console.error("Error obteniendo resumen de obras:", err);
-//       return [];
-//     });
-// }
-// 
+    // ==========================================
+    // 📋 RESUMEN DE OBRAS (Google + Supabase)
+    // ==========================================
+
+    // 1. Función específica para Google Apps Script
+    function obtenerResumenObrasGoogle() {
+      const url = `${URL_GOOGLE}?accion=resumenObras`;
+      return fetch(url)
+        .then(res => res.json())
+        .catch(err => {
+          //console.error("Error obteniendo resumen de obras:", err);
+          return [];
+        });
+    }
+
+    // 2. Función específica para Supabase
+    function obtenerResumenObrasSupabase() {
+      return fetch(`${SUPABASE_URL}/rest/v1/rpc/obtener_resumen_obras`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({})
+      })
+      .then(res => {
+        if (!res.ok) throw new Error("Error en Supabase resumen");
+        return res.json();
+      });
+    }
+
+    // 2. Función específica para Cloudflare
+    export async function obtenerResumenObrasCloudflare() {
+      const response = fetch(`${URL_CLOUDFLARE}/resumen-obras`)
+        .then(res => res.json());
+      return response;
+    }
+
+    // 0. Función maestra para el resumen de obras
+    export function obtenerResumenObras() {
+      return obtenerResumenObrasCloudflare()
+        .catch(err => {
+          //console.warn("Supabase falló en resumenObras, usando respaldo de Google:", err);
+          return obtenerResumenObrasSupabase();
+        })
+        .then(data => {
+          return data || [];
+        });
+    }
+    //export function obtenerResumenObras() {
+    //  return obtenerResumenObrasSupabase()
+    //    .catch(err => {
+    //      console.warn("Supabase falló en resumenObras, usando respaldo de Google:", err);
+    //      return obtenerResumenObrasGoogle();
+    //    })
+    //    .then(data => {
+    //      return data || [];
+    //    });
+    //}
+
     /**
      * Consulta la media y el número de votos para una obra
      *
@@ -496,4 +463,51 @@ export function obtenerResumenObras() {
         }
       }
 
+/**
+ * 📊 Registra una lectura de forma asíncrona directamente en Turso vía API HTTP
+ * @param {string} obraId - Identificador de la obra
+ */
+export async function incrementarVisitaTurso(obraId) {
+    if (!obraId) return;
 
+    const url = "https://dbjabrarex-jabrarexscan.aws-us-east-1.turso.io/v2/pipeline";
+    const authToken = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3OTUwMTk2MTksImlkIjoiMDFhMWI3MGQtODIwMS03ZDBjLWE1NTYtOTYwM2VmZjMyZDdlIiwia2lkIjoiZ0FUTU1uenU1S1Y2VEhSaEFnekg5MXFaU05KUkhxV1JoZGlDdlFNQVlJcyIsInJpZCI6ImRmN2JhMjE5LTkzYjMtNGU0My1hMWI1LWE1YjU4YWFkOTQ2MyJ9.H42cNttQl3XDXHPug4HtMIvCSyL4LjLMhArqIjKmIYWi5YCjWm_mXUBAZjQDBfoiKGAGZyO-R4kOL1mTSZZEBw"; // Tu token real de Turso
+
+    // Estructura de la API pipeline de Turso (compatible con SQLite)
+    const payload = {
+        requests: [
+            {
+                type: "execute",
+                stmt: {
+                    sql: "INSERT INTO contador_lecturas (obra_id) VALUES (?)",
+                    args: [
+                        { type: "text", value: String(obraId) }
+                    ]
+                }
+            },
+            {
+                type: "close"
+            }
+        ]
+    };
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${authToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+        //console.log(`[Turso] Lectura registrada correctamente para: ${obraId}`, data);
+    } catch (error) {
+        //console.error("[Turso] Error al registrar la lectura:", error);
+    }
+}

@@ -10,9 +10,9 @@ export const ENGINE_CONSTANTS = {
   DEFAULT_FOOTER_LINK_TEXT: 'https://jabrascan.net',
 
   // IMAGENES DEFECTO
-  DEFAULT_HEADER_IMG: [`header.webp`],
+  DEFAULT_HEADER_IMG: [],
   DEFAULT_HEADER_CHAPTER: [0],
-  DEFAULT_FOOTER_IMG: [`footer.webp`],
+  DEFAULT_FOOTER_IMG: [],
   DEFAULT_FOOTER_CHAPTER: [0],
   
   // Ratios visuales y tipográficos
@@ -602,7 +602,7 @@ export class TxtReaderEngine {
 
     // 1. Calculamos la altura exacta de antemano de forma limpia
     if (img) {
-      if ((img.width / img.height) <=  ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
+      if ((img.height / img.width) <=  ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
         computedHeight = marginPx;
       } else {
         computedHeight = img.height * (availableWidth / img.width);

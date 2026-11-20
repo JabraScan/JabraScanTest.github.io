@@ -1,0 +1,30 @@
+{
+  "TBATE": [
+		{ "Fecha" : "15-11-2026", "NombreArchivo" : "TBATE-00000_01000_JabraScan.txt", "numCapitulo" :  "0"   , "nombreCapitulo" : "v1.0· Prólogo"                                                         	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "15-11-2026", "NombreArchivo" : "TBATE-00100_01010_JabraScan.txt", "numCapitulo" :  "1"   , "nombreCapitulo" : "v1.1· La Luz al Final del Túnel"                                      	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "16-11-2026", "NombreArchivo" : "TBATE-00200_01020_JabraScan.txt", "numCapitulo" :  "2"   , "nombreCapitulo" : "v1.2· La Enciclopedia de Manipulación de Maná"                         	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "16-11-2026", "NombreArchivo" : "TBATE-00300_01030_JabraScan.txt", "numCapitulo" :  "3"   , "nombreCapitulo" : "v1.3· Tomando Ventaja"                                                 	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "17-11-2026", "NombreArchivo" : "TBATE-00400_01040_JabraScan.txt", "numCapitulo" :  "4"   , "nombreCapitulo" : "v1.4· Mi Vida Ahora"                                                   	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "17-11-2026", "NombreArchivo" : "TBATE-00500_01050_JabraScan.txt", "numCapitulo" :  "5"   , "nombreCapitulo" : "v1.5· Que Comience el Viaje"                                           	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "18-11-2026", "NombreArchivo" : "TBATE-00600_01060_JabraScan.txt", "numCapitulo" :  "6"   , "nombreCapitulo" : "v1.6· Hacia Las Grandes Montañas"                                      	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "18-11-2026", "NombreArchivo" : "TBATE-00700_01070_JabraScan.txt", "numCapitulo" :  "7"   , "nombreCapitulo" : "v1.7· Cómo Lo Deseaba"                                                 	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "19-11-2026", "NombreArchivo" : "TBATE-00800_01080_JabraScan.txt", "numCapitulo" :  "8"   , "nombreCapitulo" : "v1.8· Preguntas"                                                       	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "19-11-2026", "NombreArchivo" : "TBATE-00900_01090_JabraScan.txt", "numCapitulo" :  "9"   , "nombreCapitulo" : "v1.9· Los Que Se Tienen En Estima"                                     	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "20-11-2026", "NombreArchivo" : "TBATE-01000_01100_JabraScan.txt", "numCapitulo" :  "10"  , "nombreCapitulo" : "v1.10· El Camino Por Delante"                                          	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "20-11-2026", "NombreArchivo" : "TBATE-01100_01110_JabraScan.txt", "numCapitulo" :  "11"  , "nombreCapitulo" : "v1.11· De Un Lado A Otro"                                              	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "21-11-2026", "NombreArchivo" : "TBATE-01200_01120_JabraScan.txt", "numCapitulo" :  "12"  , "nombreCapitulo" : "v1.12· Encuentro"                                                      	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "21-11-2026", "NombreArchivo" : "TBATE-01300_01130_JabraScan.txt", "numCapitulo" :  "13"  , "nombreCapitulo" : "v1.13· Preguntas y Respuestas"                                         	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "22-11-2026", "NombreArchivo" : "TBATE-01400_01140_JabraScan.txt", "numCapitulo" :  "14"  , "nombreCapitulo" : "v1.14· Lo que Está por Venir"                                          	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "22-11-2026", "NombreArchivo" : "TBATE-01405_01145_JabraScan.txt", "numCapitulo" :  "14.5", "nombreCapitulo" : "v1.14.5· El Otro Lado"                                                 	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "23-11-2026", "NombreArchivo" : "TBATE-01500_01150_JabraScan.txt", "numCapitulo" :  "15"  , "nombreCapitulo" : "v1.15· El Siguiente Paso"                                              	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "23-11-2026", "NombreArchivo" : "TBATE-01600_01160_JabraScan.txt", "numCapitulo" :  "16"  , "nombreCapitulo" : "v1.16· Compañero"                                                      	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "24-11-2026", "NombreArchivo" : "TBATE-01700_01170_JabraScan.txt", "numCapitulo" :  "17"  , "nombreCapitulo" : "v1.17· Familia"                                                        	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "24-11-2026", "NombreArchivo" : "TBATE-01800_01180_JabraScan.txt", "numCapitulo" :  "18"  , "nombreCapitulo" : "v1.18· Paz"                                                            	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "25-11-2026", "NombreArchivo" : "TBATE-01900_01190_JabraScan.txt", "numCapitulo" :  "19"  , "nombreCapitulo" : "v1.19· Proclamación"                                                   	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "25-11-2026", "NombreArchivo" : "TBATE-02000_01200_JabraScan.txt", "numCapitulo" :  "20"  , "nombreCapitulo" : "v1.20· Todos Ganan"                                                    	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "26-11-2026", "NombreArchivo" : "TBATE-02100_01210_JabraScan.txt", "numCapitulo" :  "21"  , "nombreCapitulo" : "v1.21· Por Ellos"                                                      	, "tituloObra" : "TBATE v01·Primeros Años"  },
+		{ "Fecha" : "26-11-2026", "NombreArchivo" : "TBATE-02200_02010_JabraScan.txt", "numCapitulo" :  "22"  , "nombreCapitulo" : "v2.1· La Realeza"                                                      	, "tituloObra" : "TBATE v02·Nuevas Alturas" },
+		{ "Fecha" : "27-11-2026", "NombreArchivo" : "TBATE-02300_02020_JabraScan.txt", "numCapitulo" :  "23"  , "nombreCapitulo" : "v2.2· Casa De Subastas"                                                	, "tituloObra" : "TBATE v02·Nuevas Alturas" }
+
+  ]
+}
