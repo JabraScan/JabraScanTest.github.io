@@ -419,7 +419,9 @@ document.addEventListener("DOMContentLoaded", function () {
       searchInput.addEventListener('input', doFilter);
     }
   })
-  .catch(err => console.error("Error cargando endpoint:", err));
+  .catch(
+    //err => console.error("Error cargando endpoint:", err)
+  );
 
 //FIN fetch('obras.xml')
 });
