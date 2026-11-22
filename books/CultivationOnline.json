@@ -2721,6 +2721,10 @@
 		{ "Fecha" : "18-11-2026", "NombreArchivo" : "CultivationOnline-2719_JabraScan.pdf", "numCapitulo" : "2719", "nombreCapitulo" : "Entrando en la Zona Negra de Nivel 4"                                  				, "tituloObra" : "Cultivation Online" },
 		{ "Fecha" : "18-11-2026", "NombreArchivo" : "CultivationOnline-2720_JabraScan.pdf", "numCapitulo" : "2720", "nombreCapitulo" : "El Comienzo de la Invasión"                                            				, "tituloObra" : "Cultivation Online" },
 		{ "Fecha" : "19-11-2026", "NombreArchivo" : "CultivationOnline-2721_JabraScan.pdf", "numCapitulo" : "2721", "nombreCapitulo" : "Luchando Contra El Invasor (1)"                                            			, "tituloObra" : "Cultivation Online" },
-		{ "Fecha" : "20-11-2026", "NombreArchivo" : "CultivationOnline-2722_JabraScan.pdf", "numCapitulo" : "2722", "nombreCapitulo" : "Luchando Contra El Invasor (2)"                                        				, "tituloObra" : "Cultivation Online" }
+		{ "Fecha" : "20-11-2026", "NombreArchivo" : "CultivationOnline-2722_JabraScan.pdf", "numCapitulo" : "2722", "nombreCapitulo" : "Luchando Contra El Invasor (2)"                                        				, "tituloObra" : "Cultivation Online" },
+		{ "Fecha" : "20-11-2026", "NombreArchivo" : "CultivationOnline-2723_JabraScan.pdf", "numCapitulo" : "2723", "nombreCapitulo" : "Luchando Contra El Invasor (3)"                                        				, "tituloObra" : "Cultivation Online" },
+		{ "Fecha" : "21-11-2026", "NombreArchivo" : "CultivationOnline-2724_JabraScan.pdf", "numCapitulo" : "2724", "nombreCapitulo" : "Derrotando A Los Invasores"                                            				, "tituloObra" : "Cultivation Online" },
+		{ "Fecha" : "22-11-2026", "NombreArchivo" : "CultivationOnline-2725_JabraScan.pdf", "numCapitulo" : "2725", "nombreCapitulo" : "Salvando A Las Otras Ciudades"                                         				, "tituloObra" : "Cultivation Online" },
+		{ "Fecha" : "22-11-2026", "NombreArchivo" : "CultivationOnline-2726_JabraScan.pdf", "numCapitulo" : "2726", "nombreCapitulo" : "Derrotando Al Último Invasor"                                          				, "tituloObra" : "Cultivation Online" }
 	]
 }
