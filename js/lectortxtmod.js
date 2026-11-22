@@ -595,64 +595,69 @@ export class TxtReaderEngine {
   }
 
   _renderAsset(img, text, isLink, availableWidth, marginPx) {
-    if (!img && !text) return;
+    if (!img && !text) return; //
 
-    const TAMANO_BASE = this.settings.defaultFontSize;
-    const canvasNode = document.createElement('canvas');
-    const ctx = canvasNode.getContext('2d');
+    const TAMANO_BASE = this.settings.defaultFontSize; //[cite: 6]
+    const canvasNode = document.createElement('canvas'); //[cite: 6]
+    const ctx = canvasNode.getContext('2d'); //[cite: 6]
 
-    let drawW = availableWidth;
-    let drawH = marginPx;
+    let drawW = 0;
+    let drawH = 0;
     let drawX = 0;
     let drawY = 0;
 
     if (img && img.width && img.height) {
-      const aspectRatio = img.height / img.width;
-      const esBannerAjustable = aspectRatio <= ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD;
+      const natW = img.naturalWidth || img.width;
+      const natH = img.naturalHeight || img.height;
+      const aspectRatio = natH / natW;
+      const esBannerAjustable = aspectRatio <= ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD; //[cite: 6]
 
-      if (esBannerAjustable || img.width >= availableWidth) {
-        drawW = availableWidth;
-        drawH = Math.max(1, Math.round(availableWidth * aspectRatio));
-        drawX = 0;
-        drawY = 0;
-      } else {
-        drawW = img.width;
-        drawH = img.height;
-        drawX = Math.round((availableWidth - drawW) / 2);
-        drawY = 0;
+      // Si es banner ajustable o más ancha que el contenedor, ocupa el ancho total (supera márgenes del texto)
+      const targetW = (esBannerAjustable || natW >= availableWidth) ? availableWidth : natW;
+      let scale = targetW / natW;
+
+      // Si se aplica un límite de alto, escalamos ancho y alto con el MISMO factor (sin deformar)
+      const maxH = this.settings.bannerMaxHeight;
+      if (maxH && natH * scale > maxH) {
+        scale = maxH / natH;
       }
+
+      drawW = Math.max(1, Math.round(natW * scale));
+      drawH = Math.max(1, Math.round(natH * scale));
+      drawX = Math.round((availableWidth - drawW) / 2);
+      drawY = 0;
     } else if (text) {
-      const fontSizePt = TAMANO_BASE - 2;
-      const fontPx = this.ptToPx(fontSizePt);
-      drawH = Math.max(marginPx, Math.round(fontPx * this.LINE_HEIGHT_RATIO));
+      const fontSizePt = TAMANO_BASE - 2; //[cite: 6]
+      const fontPx = this.ptToPx(fontSizePt); //[cite: 6]
+      drawH = Math.max(marginPx, Math.round(fontPx * this.LINE_HEIGHT_RATIO)); //[cite: 6]
       drawY = Math.round((drawH - fontPx) / 2);
     }
 
     const finalHeight = Math.max(1, Math.round(drawH));
-    canvasNode.width = availableWidth;
-    canvasNode.height = finalHeight;
-    canvasNode.style.width = `${availableWidth}px`;
-    canvasNode.style.height = `${finalHeight}px`;
-    canvasNode.style.display = 'block';
-    canvasNode.style.margin = '0 auto';
+    canvasNode.width = availableWidth; //[cite: 6]
+    canvasNode.height = finalHeight; //[cite: 6]
+    canvasNode.style.width = `${availableWidth}px`; //[cite: 6]
+    canvasNode.style.height = `${finalHeight}px`; //[cite: 6]
+    canvasNode.style.display = 'block'; //[cite: 6]
+    canvasNode.style.margin = '0 auto'; //[cite: 6]
 
-    ctx.fillStyle = this.settings.bgColor || '#FFFFFF';
-    ctx.fillRect(0, 0, availableWidth, finalHeight);
+    ctx.fillStyle = this.settings.bgColor || '#FFFFFF'; //[cite: 6]
+    ctx.fillRect(0, 0, availableWidth, finalHeight); //[cite: 6]
 
     if (img && img.width && img.height) {
-      ctx.drawImage(img, drawX, drawY, drawW, drawH);
+      ctx.drawImage(img, drawX, drawY, drawW, drawH); //[cite: 6]
     } else if (text) {
-      const fontSizePt = TAMANO_BASE - 2;
-      ctx.font = `${fontSizePt}pt ${this.FONT_FAMILY}`;
-      ctx.fillStyle = isLink ? ENGINE_CONSTANTS.LINK_COLOR : ENGINE_CONSTANTS.LINK_TEXT_COLOR;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(text, availableWidth / 2, drawY);
+      const fontSizePt = TAMANO_BASE - 2; //[cite: 6]
+      ctx.font = `${fontSizePt}pt ${this.FONT_FAMILY}`; //[cite: 6]
+      ctx.fillStyle = isLink ? ENGINE_CONSTANTS.LINK_COLOR : ENGINE_CONSTANTS.LINK_TEXT_COLOR; //[cite: 6]
+      ctx.textAlign = 'center'; //[cite: 6]
+      ctx.textBaseline = 'top'; //[cite: 6]
+      ctx.fillText(text, availableWidth / 2, drawY); //[cite: 6]
     }
 
-    if (canvasNode) {
-      this.container.appendChild(canvasNode);
-      this.canvasElements.push(canvasNode);
+    if (canvasNode) { //[cite: 6]
+      this.container.appendChild(canvasNode); //[cite: 6]
+      this.canvasElements.push(canvasNode); //[cite: 6]
     }
   }
 
