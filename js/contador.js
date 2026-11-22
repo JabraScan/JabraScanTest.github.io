@@ -258,7 +258,7 @@ function renderRanking(container, obras, iconosRes) {
 
                         return `
                             <tr>
-                                <td class="fw-semibold">#${index + 4}</td>
+                                <td class="fw-semibold">${index + 4}</td>
                                 <td>
                                     <a href="${escapeHtml(urlObra)}" class="obra-link" title="${escapeHtml(titulo)}">
                                         ${cover}

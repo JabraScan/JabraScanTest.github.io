@@ -598,53 +598,56 @@ export class TxtReaderEngine {
     if (!img && !text) return;
 
     const TAMANO_BASE = this.settings.defaultFontSize;
-    let computedHeight = marginPx;
+    const canvasNode = document.createElement('canvas');
+    const ctx = canvasNode.getContext('2d');
 
-    // 1. Calculamos la altura exacta de antemano de forma limpia
-    if (img) {
-      if ((img.height / img.width) <=  ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
-        computedHeight = marginPx;
+    let drawW = availableWidth;
+    let drawH = marginPx;
+    let drawX = 0;
+    let drawY = 0;
+
+    if (img && img.width && img.height) {
+      const aspectRatio = img.height / img.width;
+      const esBannerAjustable = aspectRatio <= ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD;
+
+      if (esBannerAjustable || img.width >= availableWidth) {
+        drawW = availableWidth;
+        drawH = Math.max(1, Math.round(availableWidth * aspectRatio));
+        drawX = 0;
+        drawY = 0;
       } else {
-        computedHeight = img.height * (availableWidth / img.width);
+        drawW = img.width;
+        drawH = img.height;
+        drawX = Math.round((availableWidth - drawW) / 2);
+        drawY = 0;
       }
     } else if (text) {
       const fontSizePt = TAMANO_BASE - 2;
-      computedHeight = this.ptToPx(fontSizePt) * this.LINE_HEIGHT_RATIO;
+      const fontPx = this.ptToPx(fontSizePt);
+      drawH = Math.max(marginPx, Math.round(fontPx * this.LINE_HEIGHT_RATIO));
+      drawY = Math.round((drawH - fontPx) / 2);
     }
-    // 2. Creamos el canvas con sus dimensiones definitivas a la primera
-    const finalAssetHeight = Math.round(computedHeight);
-    const canvasNode = document.createElement('canvas');
+
+    const finalHeight = Math.max(1, Math.round(drawH));
     canvasNode.width = availableWidth;
-    //canvasNode.height = computedHeight;
-    canvasNode.height = finalAssetHeight;
-    //canvasNode.style.height = `${computedHeight}px`;
+    canvasNode.height = finalHeight;
     canvasNode.style.width = `${availableWidth}px`;
-    canvasNode.height = finalAssetHeight;
+    canvasNode.style.height = `${finalHeight}px`;
     canvasNode.style.display = 'block';
     canvasNode.style.margin = '0 auto';
 
-    const ctx = canvasNode.getContext('2d');
-    ctx.fillStyle = "#FFFFFF";
-    ctx.fillRect(0, 0, availableWidth, computedHeight);
+    ctx.fillStyle = this.settings.bgColor || '#FFFFFF';
+    ctx.fillRect(0, 0, availableWidth, finalHeight);
 
-    // 3. Pintamos el contenido una sola vez
-    if (img) {
-      let ancho, xPos;
-      if ((img.width / img.height) <= ENGINE_CONSTANTS.ASPECT_RATIO_THRESHOLD) {
-        ancho = img.width * (marginPx / img.height);
-        xPos = (availableWidth - ancho) / 2;
-        ctx.drawImage(img, xPos, 0, ancho, computedHeight);
-      } else {
-        ctx.drawImage(img, 0, 0, availableWidth, computedHeight);
-      }
+    if (img && img.width && img.height) {
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
     } else if (text) {
       const fontSizePt = TAMANO_BASE - 2;
-      ctx.font = fontSizePt + 'pt ' + this.FONT_FAMILY;
+      ctx.font = `${fontSizePt}pt ${this.FONT_FAMILY}`;
       ctx.fillStyle = isLink ? ENGINE_CONSTANTS.LINK_COLOR : ENGINE_CONSTANTS.LINK_TEXT_COLOR;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillText(text, availableWidth / 2, 0);
-      ctx.textAlign = 'left';
+      ctx.fillText(text, availableWidth / 2, drawY);
     }
 
     if (canvasNode) {

@@ -1,31 +1,55 @@
-const CACHE_NAME = 'mi-pwa-cache-v1.3';
-
 import { incrementarVisita } from './contadoresGoogle.js';
-// pwa.js
+
 let deferredPrompt = null;
 
 export function initPWA() {
-  // 0. CONTAR APERTURAS DE LA PWA ---
-  if (('standalone' in window.navigator && window.navigator.standalone) || window.matchMedia('(display-mode: standalone)').matches) {
+  // 0. CONTAR APERTURAS DE LA PWA
+  const isStandalone =
+    ('standalone' in window.navigator && window.navigator.standalone) ||
+    window.matchMedia('(display-mode: standalone)').matches;
+
+  if (isStandalone) {
     incrementarVisita('pwa_1');
-    checkVersion();
   }
+
+  // Comprobar versión siempre (navegador y PWA)
+  checkVersion();
+
+  // 1. REGISTRO DEL SERVICE WORKER
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then((registration) => {
-        // Detectar si hay una nueva versión del Service Worker esperando
-        registration.onupdatefound = () => {
-          const installingWorker = registration.installing;
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                console.log('Nueva versión disponible. Actualizando...');
-                window.location.reload();
+      navigator.serviceWorker
+        .register('/sw.js', { updateViaCache: 'none' })
+        .then((registration) => {
+          registration.update();
+
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+            if (!installingWorker) return;
+
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('Nueva versión disponible.');
               }
-            }
+            };
           };
-        };
-      }).catch((err) => console.log('Error al registrar el Service Worker:', err));
+        })
+        .catch((err) => console.log('Error al registrar el Service Worker:', err));
+    });
+
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!refreshing) {
+        refreshing = true;
+        window.location.reload();
+      }
+    });
+
+    window.addEventListener('focus', () => {
+      checkVersion();
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
+      }
     });
   }
 
@@ -45,10 +69,9 @@ export function initPWA() {
       if (deferredPrompt) {
         installBtn.style.display = 'none';
         deferredPrompt.prompt();
-        
+
         const { outcome } = await deferredPrompt.userChoice;
         if (outcome === 'accepted') {
-          //console.log('El usuario aceptó instalar la PWA');
           incrementarVisita('obra_pwa');
         }
         deferredPrompt = null;
@@ -72,27 +95,12 @@ export function initPWA() {
   if (isIosDevice && !isInStandaloneMode && installBtn) {
     installBtn.style.display = 'inline-flex';
   }
-
-  // Añade esto al final de tu initPWA()
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!refreshing) {
-      window.location.reload();
-      refreshing = true;
-    }
-  });
-
-  // Forzar revisión cuando la app vuelve a estar activa
-  window.addEventListener('focus', () => {
-    if (navigator.serviceWorker.controller) {
-      navigator.serviceWorker.controller.postMessage({ type: 'CHECK_UPDATE' });
-    }
-  });
 }
 
 async function checkVersion() {
   try {
     const response = await fetch(`/version.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) return;
     const data = await response.json();
     const currentVersion = localStorage.getItem('app_version');
 
@@ -102,16 +110,12 @@ async function checkVersion() {
     }
 
     if (currentVersion !== data.version) {
-
-      // Limpia cualquier cache del navegador
       if ('caches' in window) {
         const keys = await caches.keys();
-        await Promise.all(
-          keys.map(key => caches.delete(key))
-        );
+        await Promise.all(keys.map((key) => caches.delete(key)));
       }
       localStorage.setItem('app_version', data.version);
-      window.location.reload(true);
+      window.location.reload();
     }
   } catch (err) {
     console.error(err);

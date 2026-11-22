@@ -15,42 +15,25 @@ import { setItem, getItem, removeItem } from "./storage.js";
 
 const URL_CLOUDFLARE = "https://jabrascan.net";
 
-const TURSO_URL = "https://dbjabrarex-jabrarexscan.aws-us-east-1.turso.io/v2/pipeline";
-const TURSO_TOKEN = "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3OTUwMTk2MTksImlkIjoiMDFhMWI3MGQtODIwMS03ZDBjLWE1NTYtOTYwM2VmZjMyZDdlIiwia2lkIjoiZ0FUTU1uenU1S1Y2VEhSaEFnekg5MXFaU05KUkhxV1JoZGlDdlFNQVlJcyIsInJpZCI6ImRmN2JhMjE5LTkzYjMtNGU0My1hMWI1LWE1YjU4YWFkOTQ2MyJ9.H42cNttQl3XDXHPug4HtMIvCSyL4LjLMhArqIjKmIYWi5YCjWm_mXUBAZjQDBfoiKGAGZyO-R4kOL1mTSZZEBw";
-
 const token = getItem("jwt");
 
 export async function incrementarVisitaTurso(obraId) {
   if (!obraId) return "ERROR";
 
-  const payload = {
-    requests: [
-      {
-        type: "execute",
-        stmt: {
-          sql: "INSERT INTO contador_lecturas (obra_id) VALUES (?)",
-          args: [{ type: "text", value: String(obraId) }],
-        },
-      },
-      { type: "close" },
-    ],
-  };
-
   try {
-    const response = await fetch(TURSO_URL, {
+    const response = await fetch(`${URL_CLOUDFLARE}/visitas/incrementar`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${TURSO_TOKEN}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ id_obra: String(obraId) }),
     });
 
     if (!response.ok) {
       throw new Error(`Error HTTP: ${response.status}`);
     }
 
-    return "✅ OK inc";
+    return await response.text();
   } catch (error) {
     return "ERROR";
   }
@@ -58,11 +41,9 @@ export async function incrementarVisitaTurso(obraId) {
 
 export async function incrementarVisita(idvisitado) {
   startUpdateUltimoCapituloIfNeeded(idvisitado);
-
   return new Promise((resolve) => {
-    setTimeout(async () => {
-      const resultado = await incrementarVisitaTurso(idvisitado);
-      resolve(resultado);
+    setTimeout(() => {
+      resolve(incrementarVisitaTurso(idvisitado));
     }, 1500);
   });
 }

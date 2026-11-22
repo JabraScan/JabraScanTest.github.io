@@ -359,8 +359,10 @@ document.addEventListener("DOMContentLoaded", function () {
       allItemsMobile.push(itemBookNOpc);
     });
     //inyectar Carousel completo
-    carouselContainer.appendChild(fragCarousel);
-    requestAnimationFrame(() => { carouselContainer.classList.add("ready"); });
+    if (fragCarousel && carouselContainer) {
+      carouselContainer.appendChild(fragCarousel);
+      requestAnimationFrame(() => { carouselContainer.classList.add("ready"); });
+    }
 
     return Promise.all(promesasCapitulos);
   })
